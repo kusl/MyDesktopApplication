@@ -497,3 +497,99 @@ user	0m2.612s
 sys	0m0.368s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
 
+
+I'll create a script that updates all package versions in your `Directory.Packages.props` file to the latest versions shown in your `dotnet list package --outdated` output.Run it with:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x update-packages.sh
+./update-packages.sh
+```
+
+**Summary of updates this script will make:**
+
+| Package | Current | Latest |
+|---------|---------|--------|
+| Avalonia.* | 11.3.0 | 11.3.10 |
+| Microsoft.Extensions.* | 10.0.0 | 10.0.1 |
+| Microsoft.EntityFrameworkCore.* | 10.0.0 | 10.0.1 |
+| FluentValidation | 11.11.0 | 12.1.1 |
+| Microsoft.NET.Test.Sdk | 17.14.1 | 18.0.1 |
+| FluentAssertions | 8.0.1 | 8.8.0 |
+| Bogus | 35.6.1 | 35.6.5 |
+| Testcontainers.* | 4.3.0 | 4.9.0 |
+| xunit.runner.visualstudio | 3.1.4 | 3.1.5 |
+
+**Note about FluentValidation 12.x:** This is a major version bump (11 → 12), which may have breaking changes. If you encounter issues, you can check the [FluentValidation changelog](https://github.com/FluentValidation/FluentValidation/releases) or rollback with:
+
+```bash
+cp Directory.Packages.props.bak Directory.Packages.props
+dotnet restore
+```
+
+After updating, run your tests to make sure everything still works:
+
+```bash
+dotnet test
+```
+
+
+
+
+
+
+I got this output when running 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh update-packages.sh
+==============================================
+  Updating Package Versions
+==============================================
+
+✓ Backed up Directory.Packages.props to Directory.Packages.props.bak
+✓ Updated Directory.Packages.props with latest versions
+
+Package version changes:
+  Avalonia:                    11.3.0  → 11.3.10
+  Microsoft.Extensions.*:      10.0.0  → 10.0.1
+  Microsoft.EntityFrameworkCore: 10.0.0 → 10.0.1
+  FluentValidation:            11.11.0 → 12.1.1
+  Microsoft.NET.Test.Sdk:      17.14.1 → 18.0.1
+  FluentAssertions:            8.0.1   → 8.8.0
+  Bogus:                       35.6.1  → 35.6.5
+  Testcontainers:              4.3.0   → 4.9.0
+  xunit.runner.visualstudio:   3.1.4   → 3.1.5
+
+✓ Running dotnet restore...
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1102: 
+      Unable to find package Npgsql.EntityFrameworkCore.PostgreSQL with version (>= 10.0.1)
+        - Found 132 version(s) in nuget.org [ Nearest version: 10.0.0 ]
+        - Found 0 version(s) in /usr/lib64/dotnet/library-packs
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1102: 
+      Unable to find package Npgsql.EntityFrameworkCore.PostgreSQL with version (>= 10.0.1)
+        - Found 132 version(s) in nuget.org [ Nearest version: 10.0.0 ]
+        - Found 0 version(s) in /usr/lib64/dotnet/library-packs
+    /usr/lib64/dotnet/sdk/10.0.100/NuGet.targets(196,5): error The given key 'Npgsql.EntityFrameworkCore.PostgreSQL' was not present in the dictionary.
+
+Restore failed with 3 error(s) in 3.4s
+
+real	0m3.540s
+user	0m3.304s
+sys	0m1.267s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+and now dotnet list packages does not work 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package --outdated
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1102: 
+      Unable to find package Npgsql.EntityFrameworkCore.PostgreSQL with version (>= 10.0.1)
+        - Found 132 version(s) in nuget.org [ Nearest version: 10.0.0 ]
+        - Found 0 version(s) in /usr/lib64/dotnet/library-packs
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1102: 
+      Unable to find package Npgsql.EntityFrameworkCore.PostgreSQL with version (>= 10.0.1)
+        - Found 132 version(s) in nuget.org [ Nearest version: 10.0.0 ]
+        - Found 0 version(s) in /usr/lib64/dotnet/library-packs
+    /usr/lib64/dotnet/sdk/10.0.100/NuGet.targets(196,5): error The given key 'Npgsql.EntityFrameworkCore.PostgreSQL' was not present in the dictionary.
+
+Restore failed with 3 error(s) in 0.7s
+
+real	0m0.896s
+user	0m1.226s
+sys	0m0.251s
+
