@@ -1834,4 +1834,29 @@ Build succeeded in 2.4s
 real	0m2.573s
 user	0m1.600s
 sys	0m0.338s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time git push origin --all --verbose
+Pushing to github.com:kusl/MyDesktopApplication.git
+Enumerating objects: 30, done.
+Counting objects: 100% (30/30), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (23/23), done.
+Writing objects: 100% (23/23), 25.92 KiB | 5.18 MiB/s, done.
+Total 23 (delta 9), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (9/9), completed with 3 local objects.
+To github.com:kusl/MyDesktopApplication.git
+   dfe27dc..a88d80d  master -> master
+updating local tracking ref 'refs/remotes/origin/master'
+
+real	0m0.907s
+user	0m0.022s
+sys	0m0.020s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git tag v1.0.0
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time git push origin v1.0.0
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To github.com:kusl/MyDesktopApplication.git
+ * [new tag]         v1.0.0 -> v1.0.0
+
+real	0m0.642s
+user	0m0.011s
+sys	0m0.011s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
