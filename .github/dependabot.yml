@@ -4,16 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
     open-pull-requests-limit: 10
-    groups:
-      avalonia:
-        patterns:
-          - "Avalonia*"
-      microsoft:
-        patterns:
-          - "Microsoft.*"
-
+    
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
