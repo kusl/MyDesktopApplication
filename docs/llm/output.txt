@@ -407,4 +407,48 @@ File types included:
 real	0m0.775s
 user	0m0.392s
 sys	0m0.561s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-android-code.sh 
+==============================================
+  Fixing Android Project Code
+==============================================
+
+Fixing MainActivity.cs...
+✓ MainActivity.cs fixed
+Fixing App.cs...
+✓ App.cs fixed
+Fixing App.axaml...
+✓ App.axaml fixed
+Fixing MainView.axaml...
+✓ MainView.axaml fixed
+Fixing MainView.axaml.cs...
+✓ MainView.axaml.cs fixed
+Updating MyDesktopApplication.Android.csproj...
+✓ csproj fixed
+Setting up Android resources...
+✓ Created placeholder icon
+✓ styles.xml updated
+✓ strings.xml updated
+✓ AndroidManifest.xml updated
+
+==============================================
+  Testing Build
+==============================================
+
+Building Android project...
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+Attempting to cancel the build...
+
+Build failed in 8895.3s
+
+! Build had issues - check output above
+
+==============================================
+  Done!
+==============================================
+
+real	148m15.483s
+user	0m21.191s
+sys	0m10.820s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh

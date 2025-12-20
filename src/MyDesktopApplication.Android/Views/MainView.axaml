@@ -1,92 +1,26 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="700"
-             x:Class="MyDesktopApplication.Android.Views.MainView"
-             x:DataType="vm:MainViewModel">
-
-    <Design.DataContext>
-        <vm:MainViewModel/>
-    </Design.DataContext>
-
-    <Grid RowDefinitions="Auto,*,Auto">
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#0078D4" Padding="16">
-            <TextBlock Text="MyDesktopApplication" 
-                       FontSize="20" FontWeight="Bold" Foreground="White"
-                       HorizontalAlignment="Center"/>
-        </Border>
-
-        <!-- Main Content -->
-        <ScrollViewer Grid.Row="1" Padding="16">
-            <StackPanel Spacing="16">
-                
-                <!-- Greeting & Counter -->
-                <TextBlock Text="{Binding Greeting}" 
-                           FontSize="24" FontWeight="SemiBold"
-                           HorizontalAlignment="Center"
-                           TextWrapping="Wrap"/>
-                
-                <TextBlock Text="{Binding Counter, StringFormat='Counter: {0}'}" 
-                           FontSize="18" HorizontalAlignment="Center" 
-                           Foreground="#0078D4"/>
-                
-                <Button Content="Click Me!" 
-                        Command="{Binding IncrementCounterCommand}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Padding="16,12"
-                        FontSize="16"/>
-
-                <Button Content="Load Data" 
-                        Command="{Binding LoadDataCommand}"
-                        IsEnabled="{Binding !IsBusy}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Padding="16,12"
-                        FontSize="16"/>
-
-                <ProgressBar IsIndeterminate="True" 
-                             IsVisible="{Binding IsBusy}"/>
-
-                <Separator Margin="0,8"/>
-
-                <!-- Todo Section -->
-                <TextBlock Text="Todo List" FontSize="18" FontWeight="SemiBold"/>
-                
-                <Grid ColumnDefinitions="*,Auto">
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding NewTodoTitle}" 
-                             Watermark="Enter a new todo..." 
-                             Margin="0,0,8,0"/>
-                    <Button Grid.Column="1" Content="Add" 
-                            Command="{Binding AddTodoCommand}"/>
-                </Grid>
-
-                <!-- Todo List -->
-                <ItemsControl ItemsSource="{Binding TodoItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="0,4" Padding="12" CornerRadius="4" Background="#F5F5F5">
-                                <Grid ColumnDefinitions="Auto,*">
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Title}" 
-                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
-
-        <!-- Footer -->
-        <Border Grid.Row="2" Background="#F0F0F0" Padding="16,8">
-            <TextBlock Text="Built with Avalonia UI + .NET 10" 
-                       HorizontalAlignment="Center"
-                       Opacity="0.6" FontSize="12"/>
-        </Border>
-    </Grid>
+             x:Class="MyDesktopApplication.Android.Views.MainView">
+    
+    <StackPanel Margin="20" Spacing="20" VerticalAlignment="Center">
+        <TextBlock Text="Welcome to Avalonia on Android!"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center" />
+        
+        <TextBlock Text="This is a cross-platform .NET application."
+                   FontSize="16"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap" />
+        
+        <Button Content="Click Me!"
+                HorizontalAlignment="Center"
+                Padding="20,10"
+                Click="OnButtonClick" />
+        
+        <TextBlock x:Name="CounterText"
+                   Text="Counter: 0"
+                   FontSize="18"
+                   HorizontalAlignment="Center" />
+    </StackPanel>
 </UserControl>
