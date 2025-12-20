@@ -1344,3 +1344,10 @@ sys	0m0.191s
 also please write another shell script to update our github actions 
 Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
 I have updated the code in `dump.txt` please do NOT hallucinate. 
+also please make the following changes to github actions:
+bump 
+- actions/cache from 4 to 5 
+- actions/upload-artifact from 4 to 6 
+- softprops/action-gh-release from 1 to 2 
+- actions/setup-dotnet from 4 to 5 
+- actions/download-artifact from 4 to 7 
