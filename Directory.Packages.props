@@ -1,7 +1,13 @@
 <Project>
   <!-- Central Package Management - All package versions in one place -->
-  <!-- All packages are MIT/Apache-2.0 licensed and free for any use -->
-  <!-- Last updated: 2025-12-20 -->
+  <!-- ================================================================ -->
+  <!-- LICENSE POLICY: Only packages with truly free licenses allowed   -->
+  <!-- Allowed: MIT, Apache-2.0, BSD, Public Domain, PostgreSQL License -->
+  <!-- NOT Allowed: Packages requiring payment for any use              -->
+  <!-- ================================================================ -->
+  <!-- Removed: FluentAssertions (Xceed license - requires payment)     -->
+  <!-- Removed: Moq (SponsorLink controversy)                           -->
+  <!-- ================================================================ -->
   
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -9,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Avalonia UI (MIT License) - Updated to 11.3.10 -->
+    <!-- Avalonia UI (MIT License) -->
     <PackageVersion Include="Avalonia" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10" />
@@ -23,7 +29,7 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveUI" Version="20.2.62" />
 
-    <!-- Microsoft Extensions (MIT License) - Updated to 10.0.1 -->
+    <!-- Microsoft Extensions (MIT License) -->
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
@@ -33,39 +39,40 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
 
-    <!-- Logging - Serilog (Apache-2.0) -->
+    <!-- Logging - Serilog (Apache-2.0 License) -->
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
 
-    <!-- OpenTelemetry (Apache-2.0) -->
+    <!-- OpenTelemetry (Apache-2.0 License) -->
     <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
 
-    <!-- Database - Updated to 10.0.1 -->
+    <!-- Database (MIT / Public Domain / PostgreSQL License) -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.66" />
 
-    <!-- Validation - Updated to 12.1.1 -->
+    <!-- Validation (Apache-2.0 License) -->
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
 
-    <!-- Testing - Updated versions -->
+    <!-- Testing (MIT / Apache-2.0 License) -->
+    <!-- Using plain xUnit assertions - no FluentAssertions (Xceed license) -->
+    <!-- No Moq (SponsorLink controversy) - use NSubstitute if mocking needed -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="Testcontainers" Version="4.9.0" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="4.9.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
 
     <!-- HTTP & Serialization (MIT License) -->
     <PackageVersion Include="System.Text.Json" Version="10.0.1" />
