@@ -647,4 +647,48 @@ Output file size: 0.03 MB
 real	0m0.281s
 user	0m0.113s
 sys	0m0.223s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet run --project src/MyDesktopApplication.Desktop
+
+real	0m50.831s
+user	0m5.809s
+sys	0m0.802s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.03 MB
+
+real	0m0.280s
+user	0m0.110s
+sys	0m0.225s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
