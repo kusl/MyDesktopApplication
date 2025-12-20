@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 01:21:10 AM CST 2025
+Generated: Sat Dec 20 01:26:51 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -17,6 +17,7 @@ DIRECTORY STRUCTURE:
 ├── .gitignore
 ├── MyDesktopApplication.slnx
 ├── README.md
+├── setup-all.sh
 ├── setup-project.sh
 ├── setup.sh
 ├── src
@@ -728,7 +729,7 @@ public class UnitTest1
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 01:21:10 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 01:26:52 AM CST 2025
 Total Files Exported: 23
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
