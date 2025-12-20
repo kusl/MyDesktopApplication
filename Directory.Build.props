@@ -1,5 +1,4 @@
 <Project>
-  <!-- Shared build properties for all projects -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -11,8 +10,6 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
-  <!-- Assembly and versioning -->
   <PropertyGroup>
     <Company>YourCompanyName</Company>
     <Authors>Your Name</Authors>
@@ -21,14 +18,10 @@
     <VersionSuffix Condition="'$(Configuration)' == 'Debug'">dev</VersionSuffix>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-
-  <!-- Deterministic builds for reproducibility -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
-
-  <!-- Test project conventions -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>

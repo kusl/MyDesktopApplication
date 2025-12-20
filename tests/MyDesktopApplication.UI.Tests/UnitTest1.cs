@@ -1,10 +1,11 @@
-﻿namespace MyDesktopApplication.UI.Tests;
+namespace MyDesktopApplication.UI.Tests;
 
-public class UnitTest1
+public class UITest1
 {
     [Fact]
-    public void Test1()
+    public void PlaceholderTest()
     {
-
+        // Placeholder for UI tests with Avalonia.Headless
+        Assert.True(true);
     }
 }

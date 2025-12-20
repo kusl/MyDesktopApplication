@@ -1,6 +1,9 @@
-﻿namespace MyDesktopApplication.Infrastructure;
+namespace MyDesktopApplication.Infrastructure;
 
-public class Class1
+/// <summary>
+/// Placeholder for infrastructure services (repositories, data access, etc.)
+/// </summary>
+public class PlaceholderService
 {
-
+    public string GetMessage() => "Infrastructure layer ready!";
 }

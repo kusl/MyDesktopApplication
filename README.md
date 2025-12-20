@@ -16,25 +16,12 @@ dotnet run --project src/MyDesktopApplication.Desktop
 dotnet test
 ```
 
-## Project Structure
-
-```
-├── src/
-│   ├── MyDesktopApplication.Core/          # Domain logic
-│   ├── MyDesktopApplication.Infrastructure/ # Data access
-│   ├── MyDesktopApplication.Shared/        # Shared code
-│   └── MyDesktopApplication.Desktop/       # Avalonia UI
-└── tests/
-    ├── MyDesktopApplication.Core.Tests/
-    ├── MyDesktopApplication.Integration.Tests/
-    └── MyDesktopApplication.UI.Tests/
-```
-
 ## Features
 
-- ✅ .NET 10 with SLNX solution format
-- ✅ Central Package Management
-- ✅ Avalonia UI 11.3 (cross-platform)
-- ✅ SQLite & PostgreSQL support
-- ✅ OpenTelemetry observability
-- ✅ 100% free/open source packages
+- .NET 10 with SLNX solution format
+- Central Package Management
+- Avalonia UI 11.3 (cross-platform)
+- CommunityToolkit.Mvvm for MVVM pattern
+- SQLite & PostgreSQL support ready
+- OpenTelemetry observability ready
+- 100% free/open source packages

@@ -1,41 +1,12 @@
-# Build outputs
 [Bb]in/
 [Oo]bj/
-[Oo]ut/
-[Ll]og/
-[Ll]ogs/
-
-# IDE
 .vs/
 .vscode/
 .idea/
-*.suo
 *.user
-*.sln.iml
-
-# Test results
+*.suo
 TestResults/
-coverage*/
-*.coverage
-
-# NuGet
-*.nupkg
-**/[Pp]ackages/*
-
-# Local settings
-appsettings.*.local.json
-.env
-.env.local
-
-# Databases
 *.db
-*.db-shm
-*.db-wal
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
 *.log
-logs/
+.DS_Store
+appsettings.*.local.json

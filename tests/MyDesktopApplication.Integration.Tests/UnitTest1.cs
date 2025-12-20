@@ -1,10 +1,11 @@
-﻿namespace MyDesktopApplication.Integration.Tests;
+namespace MyDesktopApplication.Integration.Tests;
 
-public class UnitTest1
+public class IntegrationTest1
 {
     [Fact]
-    public void Test1()
+    public void PlaceholderTest()
     {
-
+        // Placeholder for integration tests
+        Assert.True(true);
     }
 }
