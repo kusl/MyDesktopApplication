@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 01:34:53 AM CST 2025
+Generated: Sat Dec 20 01:44:19 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -12,6 +12,7 @@ DIRECTORY STRUCTURE:
 ├── continue-setup.sh
 ├── Directory.Build.props
 ├── Directory.Packages.props
+├── Directory.Packages.props.bak
 ├── export.sh
 ├── fix-cpm.sh
 ├── .gitignore
@@ -46,16 +47,17 @@ DIRECTORY STRUCTURE:
 │   └── MyDesktopApplication.Shared
 │       ├── Class1.cs
 │       └── MyDesktopApplication.Shared.csproj
-└── tests
-    ├── MyDesktopApplication.Core.Tests
-    │   ├── MyDesktopApplication.Core.Tests.csproj
-    │   └── UnitTest1.cs
-    ├── MyDesktopApplication.Integration.Tests
-    │   ├── MyDesktopApplication.Integration.Tests.csproj
-    │   └── UnitTest1.cs
-    └── MyDesktopApplication.UI.Tests
-        ├── MyDesktopApplication.UI.Tests.csproj
-        └── UnitTest1.cs
+├── tests
+│   ├── MyDesktopApplication.Core.Tests
+│   │   ├── MyDesktopApplication.Core.Tests.csproj
+│   │   └── UnitTest1.cs
+│   ├── MyDesktopApplication.Integration.Tests
+│   │   ├── MyDesktopApplication.Integration.Tests.csproj
+│   │   └── UnitTest1.cs
+│   └── MyDesktopApplication.UI.Tests
+│       ├── MyDesktopApplication.UI.Tests.csproj
+│       └── UnitTest1.cs
+└── update-packages.sh
 
 
 FILE CONTENTS:
@@ -137,68 +139,81 @@ MODIFIED: 2025-12-20 01:27:19
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 3.78 KB
-MODIFIED: 2025-12-20 01:27:19
+SIZE: 4.08 KB
+MODIFIED: 2025-12-20 01:42:28
 ================================================================================
 
 <Project>
+  <!-- Central Package Management - All package versions in one place -->
+  <!-- All packages are MIT/Apache-2.0 licensed and free for any use -->
+  <!-- Last updated: 2025-12-20 -->
+  
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
+
   <ItemGroup>
-    <!-- Avalonia UI (MIT License) -->
-    <PackageVersion Include="Avalonia" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Headless" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.0" />
+    <!-- Avalonia UI (MIT License) - Updated to 11.3.10 -->
+    <PackageVersion Include="Avalonia" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Headless" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.10" />
+
     <!-- MVVM (MIT License) -->
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveUI" Version="20.2.62" />
-    <!-- Microsoft Extensions (MIT License) -->
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+
+    <!-- Microsoft Extensions (MIT License) - Updated to 10.0.1 -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
+
     <!-- Logging - Serilog (Apache-2.0) -->
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+
     <!-- OpenTelemetry (Apache-2.0) -->
     <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
-    <!-- Database -->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+
+    <!-- Database - Updated to 10.0.1 -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.66" />
-    <!-- Validation -->
-    <PackageVersion Include="FluentValidation" Version="11.11.0" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-    <!-- Testing -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+
+    <!-- Validation - Updated to 12.1.1 -->
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+
+    <!-- Testing - Updated versions -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="FluentAssertions" Version="8.0.1" />
-    <PackageVersion Include="Bogus" Version="35.6.1" />
-    <PackageVersion Include="Testcontainers" Version="4.3.0" />
-    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.3.0" />
+    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
+    <PackageVersion Include="Bogus" Version="35.6.5" />
+    <PackageVersion Include="Testcontainers" Version="4.9.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.9.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <!-- HTTP & Serialization -->
-    <PackageVersion Include="System.Text.Json" Version="10.0.0" />
+
+    <!-- HTTP & Serialization (MIT License) -->
+    <PackageVersion Include="System.Text.Json" Version="10.0.1" />
     <PackageVersion Include="Refit" Version="8.0.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
   </ItemGroup>
@@ -789,7 +804,7 @@ public class UITest1
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 01:34:54 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 01:44:19 AM CST 2025
 Total Files Exported: 23
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

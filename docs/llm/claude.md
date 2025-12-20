@@ -681,4 +681,53 @@ The given project `MyDesktopApplication.UI.Tests` has no updates given the curre
 real	0m4.076s
 user	0m4.251s
 sys	0m1.058s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (1.9s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (2.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build succeeded in 3.3s
+
+real	0m3.418s
+user	0m1.829s
+sys	0m0.352s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet test
+Restore complete (0.5s)
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.05]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (0.7s)
+
+Test summary: total: 4, failed: 0, succeeded: 4, skipped: 0, duration: 0.8s
+Build succeeded in 1.6s
+
+real	0m1.764s
+user	0m1.370s
+sys	0m0.341s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
 
