@@ -2696,3 +2696,569 @@ real	0m0.771s
 user	0m0.366s
 sys	0m0.584s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+kushal@fedora:~$ cd ~/src/dotnet/MyDesktopApplication/
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): appsettings.json
+Processing (2/67): continue-setup.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): docs/llm/claude.md
+Processing (6/67): docs/llm/dump.txt
+Processing (7/67): docs/llm/output.txt
+Processing (8/67): docs/thoughts.md
+Processing (9/67): export.sh
+Processing (10/67): fix-all.sh
+Processing (11/67): fix-ci-and-add-android.sh
+Processing (12/67): fix-cpm.sh
+Processing (13/67): fix-tests.sh
+Processing (14/67): .gitattributes
+Processing (15/67): .github/dependabot.yml
+Processing (16/67): .github/workflows/ci.yml
+Processing (17/67): .github/workflows/mobile.yml
+Processing (18/67): .github/workflows/nightly.yml
+Processing (19/67): .github/workflows/release.yml
+Processing (20/67): .gitignore
+Processing (21/67): MyDesktopApplication.slnx
+Processing (22/67): README.md
+Processing (23/67): setup-all.sh
+Processing (24/67): setup-github-actions.sh
+Processing (25/67): setup-project.sh
+Processing (26/67): setup.sh
+Processing (27/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (28/67): src/MyDesktopApplication.Android/App.axaml
+Processing (29/67): src/MyDesktopApplication.Android/App.cs
+Processing (30/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (31/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (32/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (33/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (34/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (35/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (37/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (38/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (67/67): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    679.74 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.809s
+user	0m0.364s
+sys	0m0.597s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ #!/bin/bash
+# =============================================================================
+# Setup Android SDK for .NET MAUI/Avalonia on Fedora
+# =============================================================================
+# Uses Fedora DNF packages where possible, downloads Android SDK via dotnet
+# =============================================================================
+
+set -e
+
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+log() { echo -e "${GREEN}✓${NC} $1"; }
+warn() { echo -e "${YELLOW}!${NC} $1"; }
+error() { echo -e "${RED}✗${NC} $1"; }
+
+echo "=============================================="
+echo "  Android SDK Setup for Fedora"
+echo "=============================================="
+echo ""
+
+# =============================================================================
+# Step 1: Install Java JDK 17 (required by Android SDK)
+# =============================================================================
+# Android SDK requires JDK 17 (not 25 which you have)
+echo "Step 1: Installing Java JDK 17..."
+
+if ! rpm -q java-17-openjdk-devel &>/dev/null; then
+    log "Installing java-17-openjdk-devel..."
+    sudo dnf install -y java-17-openjdk-devel
+else
+    log "java-17-openjdk-devel already installed"
+fi
+
+# Set JAVA_HOME to JDK 17
+JAVA17_HOME="/usr/lib/jvm/java-17-openjdk"
+
+if [ -d "$JAVA17_HOME" ]; then
+    log "Found JDK 17 at $JAVA17_HOME"
+else
+    # Try to find it
+    JAVA17_HOME=$(dirname $(dirname $(readlink -f $(which java) 2>/dev/null || echo "/usr/lib/jvm/java-17-openjdk/bin/java"))) 
+    if [[ "$JAVA17_HOME" != *"17"* ]]; then
+        JAVA17_HOME=$(ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null | head -1)
+    fi
+    
+    if [ -z "$JAVA17_HOME" ] || [ ! -d "$JAVA17_HOME" ]; then
+        error "Could not find JDK 17. Please install it manually."
+        exit 1
+    fi
+    log "Found JDK 17 at $JAVA17_HOME"
+fi
+
+# Verify jar exists
+if [ ! -f "$JAVA17_HOME/bin/jar" ]; then
+    error "JDK 17 installation incomplete - missing 'jar' tool"
+    error "Try: sudo dnf reinstall java-17-openjdk-devel"
+    exit 1
+fi
+
+log "JDK 17 verified (jar tool found)"
+
+# =============================================================================
+# Step 2: Install Android workload via dotnet
+# =============================================================================
+echo ""
+echo "Step 2: Installing .NET Android workload..."
+
+# Check if already installed
+if dotnet workload list | grep -q "android"; then
+    log "Android workload already installed"
+else
+    log "Installing Android workload (this may take a few minutes)..."
+    dotnet workload install android
+fi
+
+# =============================================================================
+# Step 3: Set up Android SDK via dotnet
+# =============================================================================
+echo ""
+echo "Step 3: Setting up Android SDK..."
+
+ANDROID_HOME="$HOME/.android/sdk"
+mkdir -p "$ANDROID_HOME"
+
+# The Android workload should have installed command-line tools
+# Let's trigger the SDK download by doing a restore
+log "Triggering Android SDK download via restore..."
+
+# Create a temp project to trigger SDK download
+TEMP_DIR=$(mktemp -d)
+cat > "$TEMP_DIR/temp.csproj" << 'EOF'
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+</Project>
+EOF
+
+# Set JAVA_HOME for the restore
+export JAVA_HOME="$JAVA17_HOME"
+
+# This will download Android SDK components
+dotnet restore "$TEMP_DIR/temp.csproj" 2>/dev/null || true
+rm -rf "$TEMP_DIR"
+
+# Find where Android SDK was installed
+POSSIBLE_SDK_PATHS=(
+    "$HOME/.android/sdk"
+    "$HOME/.local/share/Android/Sdk"
+    "$HOME/Android/Sdk"
+    "/usr/lib/android-sdk"
+)
+
+for path in "${POSSIBLE_SDK_PATHS[@]}"; do
+    if [ -d "$path/platforms" ] || [ -d "$path/platform-tools" ]; then
+        ANDROID_HOME="$path"
+        log "Found Android SDK at $ANDROID_HOME"
+        break
+    fi
+done
+
+# =============================================================================
+# Step 4: Create environment setup script
+# =============================================================================
+echo ""
+echo "Step 4: Creating environment configuration..."
+
+ENV_FILE="$HOME/.android-env.sh"
+
+cat > "$ENV_FILE" << EOF
+# Android SDK environment variables for .NET development
+# Source this file: source ~/.android-env.sh
+
+export JAVA_HOME="$JAVA17_HOME"
+export ANDROID_HOME="$ANDROID_HOME"
+export ANDROID_SDK_ROOT="\$ANDROID_HOME"
+export PATH="\$JAVA_HOME/bin:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools:\$PATH"
+EOF
+
+log "Created $ENV_FILE"
+
+# Also add to .bashrc if not already there
+if ! grep -q "android-env.sh" "$HOME/.bashrc" 2>/dev/null; then
+    echo "" >> "$HOME/.bashrc"
+    echo "# Android SDK for .NET development" >> "$HOME/.bashrc"
+    echo "[ -f ~/.android-env.sh ] && source ~/.android-env.sh" >> "$HOME/.bashrc"
+    log "Added to .bashrc"
+fi
+
+# Source it now
+source "$ENV_FILE"
+
+# =============================================================================
+# Step 5: Accept Android SDK licenses
+# =============================================================================
+echo ""
+echo "Step 5: Accepting Android SDK licenses..."
+
+# Find sdkmanager
+SDKMANAGER=""
+for sm in "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+          "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" \
+          "$ANDROID_HOME/tools/bin/sdkmanager"; do
+    if [ -f "$sm" ]; then
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                 cd ~/src/dotnet/MyDesktopApplication/
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh 
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Installing Java JDK 17...
+✓ Installing java-17-openjdk-devel...
+[sudo] password for kushal: 
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: java-17-openjdk-devel
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+
+real	0m6.442s
+user	0m0.041s
+sys	0m0.053s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 68 files to export
+
+Processing (1/68): appsettings.json
+Processing (2/68): continue-setup.sh
+Processing (3/68): Directory.Build.props
+Processing (4/68): Directory.Packages.props
+Processing (5/68): docs/llm/claude.md
+Processing (6/68): docs/llm/dump.txt
+Processing (7/68): docs/llm/output.txt
+Processing (8/68): docs/thoughts.md
+Processing (9/68): export.sh
+Processing (10/68): fix-all.sh
+Processing (11/68): fix-ci-and-add-android.sh
+Processing (12/68): fix-cpm.sh
+Processing (13/68): fix-tests.sh
+Processing (14/68): .gitattributes
+Processing (15/68): .github/dependabot.yml
+Processing (16/68): .github/workflows/ci.yml
+Processing (17/68): .github/workflows/mobile.yml
+Processing (18/68): .github/workflows/nightly.yml
+Processing (19/68): .github/workflows/release.yml
+Processing (20/68): .gitignore
+Processing (21/68): MyDesktopApplication.slnx
+Processing (22/68): README.md
+Processing (23/68): setup-all.sh
+Processing (24/68): setup-android-fedora.sh
+Processing (25/68): setup-github-actions.sh
+Processing (26/68): setup-project.sh
+Processing (27/68): setup.sh
+Processing (28/68): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (29/68): src/MyDesktopApplication.Android/App.axaml
+Processing (30/68): src/MyDesktopApplication.Android/App.cs
+Processing (31/68): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (32/68): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (33/68): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (34/68): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (35/68): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (36/68): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (37/68): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (38/68): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (39/68): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (40/68): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (41/68): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (42/68): src/MyDesktopApplication.Desktop/App.axaml
+Processing (43/68): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (44/68): src/MyDesktopApplication.Desktop/app.manifest
+Processing (45/68): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (46/68): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (47/68): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (48/68): src/MyDesktopApplication.Desktop/Program.cs
+Processing (49/68): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (50/68): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (51/68): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (52/68): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (53/68): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (54/68): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (55/68): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (56/68): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (57/68): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (58/68): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (59/68): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (60/68): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/68): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/68): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (63/68): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (64/68): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (65/68): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (66/68): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (67/68): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (68/68): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 68
+Files skipped:  0
+Output size:    689.04 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.770s
+user	0m0.378s
+sys	0m0.579s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

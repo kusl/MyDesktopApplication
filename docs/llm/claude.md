@@ -1351,3 +1351,90 @@ bump
 - softprops/action-gh-release from 1 to 2 
 - actions/setup-dotnet from 4 to 5 
 - actions/download-artifact from 4 to 7 
+
+
+
+
+
+
+
+I'll create two scripts: one to set up Android SDK on Fedora, and one to fix the GitHub Actions workflows.Run the scripts:
+
+**1. First, set up Android SDK on Fedora:**
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x setup-android-fedora.sh
+./setup-android-fedora.sh
+```
+
+**2. Then, fix the GitHub Actions:**
+```bash
+chmod +x fix-github-actions.sh
+./fix-github-actions.sh
+```
+
+**3. Push the changes:**
+```bash
+git add .
+git commit -m "Fix GitHub Actions and add Android support"
+git push
+```
+
+## Summary
+
+### Fedora Android Setup Script
+
+| Step | Action |
+|------|--------|
+| 1 | Install JDK 17 via `dnf` (Android SDK requires JDK 17, not 25) |
+| 2 | Install Android workload via `dotnet workload install android` |
+| 3 | Set up Android SDK (auto-downloaded by workload) |
+| 4 | Create `~/.android-env.sh` with environment variables |
+| 5 | Accept Android SDK licenses |
+| 6 | Test build |
+
+### GitHub Actions Fixes
+
+| Fix | Description |
+|-----|-------------|
+| **Workload install** | Added `dotnet workload install android` before Android builds |
+| **Java setup** | Added `actions/setup-java@v4` with JDK 17 for Android |
+| **Shell bash** | Using `shell: bash` for cross-platform compatibility |
+| **Explicit solution** | Using `MyDesktopApplication.slnx` explicitly |
+
+### Action Version Updates
+
+| Action | Old | New | Note |
+|--------|-----|-----|------|
+| `actions/setup-dotnet` | v4 | v5 | ✅ Updated |
+| `actions/cache` | v4 | v5 | ✅ Updated |
+| `softprops/action-gh-release` | v1 | v2 | ✅ Updated |
+| `actions/upload-artifact` | v4 | v4 | ⚠️ v6 has breaking changes |
+| `actions/download-artifact` | v4 | v4 | ⚠️ v7 has breaking changes |
+
+**Note about artifact actions:** Version 6/7 of the artifact actions have breaking changes - they no longer merge artifacts automatically and require workflow restructuring. I kept them at v4 for stability. If you want to update to v6/v7 later, let me know and I can help restructure the workflows.
+
+
+
+
+
+Yes, rewrite and restructure all github actions and update the upload and download artifacts to the latest versions required. also change it so that every push results in a pre-release artifact and keep the releases for git tags. also please do not hallucinate. please fix the setup-android-fedora.sh to use official fedora repositories 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh 
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Installing Java JDK 17...
+✓ Installing java-17-openjdk-devel...
+[sudo] password for kushal: 
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: java-17-openjdk-devel
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+
+real	0m6.442s
+user	0m0.041s
+sys	0m0.053s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
