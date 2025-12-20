@@ -1238,3 +1238,93 @@ I've included a disabled `mobile.yml` workflow that shows the structure. If you 
 
 
 
+This is great. Some issues I found 
+Run dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+ParserError: D:\a\_temp\968f87c8-10b0-493f-8bc1-84d414359af2.ps1:3
+Line |
+   3 |    --configuration Release \
+     |      ~
+     | Missing expression after unary operator '--'.
+Error: Process completed with exit code 1.
+Run dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+ParserError: D:\a\_temp\4a19949d-4c1c-4d4c-bfb3-b0845a3f80a9.ps1:3
+Line |
+   3 |    --configuration Release \n
+     |      ~
+     | Missing expression after unary operator '--'.
+Error: Process completed with exit code 1.
+Lets not worry about iPhone/iOS because it requires payment but when you fix the error above, can you also add in your shell script the changes required in our project to support releases to android? please include all the changes required, even if it means source code, unit test changes. please do not hallucinate. I have the latest code in `dump.txt` thank you 
+
+
+
+
+The error is because Windows PowerShell doesn't understand the bash-style line continuation (`\`). I need to fix the workflow to use proper cross-platform syntax. Let me also add Android support to the project.Run the script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-ci-and-add-android.sh
+./fix-ci-and-add-android.sh
+```
+
+## Summary of Fixes
+
+### 1. Fixed PowerShell Error
+
+The problem was using bash-style line continuation (`\`) which PowerShell doesn't understand. Fixed by:
+- Adding `shell: bash` to the publish steps on all platforms
+- This makes even Windows runners use Git Bash which understands `\`
+
+### 2. Added Android Support
+
+| New Files | Purpose |
+|-----------|---------|
+| `src/MyDesktopApplication.Android/` | Android project folder |
+| `MainActivity.cs` | Android entry point |
+| `App.cs` / `App.axaml` | Avalonia Android app |
+| `Views/MainView.axaml` | Mobile-optimized UI |
+| `AndroidManifest.xml` | Android configuration |
+| `Resources/` | Android resources (strings, styles) |
+
+### 3. Shared ViewModels
+
+Created `src/MyDesktopApplication.Shared/ViewModels/` with:
+- `ViewModelBase.cs` - Shared base class
+- `MainViewModel.cs` - Shared logic for both Desktop and Android
+
+This allows code reuse between platforms!
+
+### 4. Release Workflow Now Builds
+
+| Platform | Archive |
+|----------|---------|
+| Windows x64 | `.zip` |
+| Windows ARM64 | `.zip` |
+| Linux x64 | `.tar.gz` |
+| Linux ARM64 | `.tar.gz` |
+| macOS x64 | `.tar.gz` |
+| macOS ARM64 | `.tar.gz` |
+| **Android** | `.apk` |
+
+### To Test Locally
+
+```bash
+# Desktop (works now)
+dotnet run --project src/MyDesktopApplication.Desktop
+
+# Android (requires workload - one-time install)
+dotnet workload install android
+dotnet build src/MyDesktopApplication.Android
+```
+
+### To Create a Release
+
+```bash
+git add .
+git commit -m "Fix CI + Add Android support"
+git push
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+
+
