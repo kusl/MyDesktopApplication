@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 02:05:33 AM CST 2025
+Generated: Sat Dec 20 02:06:33 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -54,13 +54,13 @@ DIRECTORY STRUCTURE:
 ├── tests
 │   ├── MyDesktopApplication.Core.Tests
 │   │   ├── MyDesktopApplication.Core.Tests.csproj
-│   │   └── UnitTest1.cs
+│   │   └── TodoItemTests.cs
 │   ├── MyDesktopApplication.Integration.Tests
 │   │   ├── MyDesktopApplication.Integration.Tests.csproj
-│   │   └── UnitTest1.cs
+│   │   └── TodoRepositoryTests.cs
 │   └── MyDesktopApplication.UI.Tests
-│       ├── MyDesktopApplication.UI.Tests.csproj
-│       └── UnitTest1.cs
+│       ├── MainWindowViewModelTests.cs
+│       └── MyDesktopApplication.UI.Tests.csproj
 ├── appsettings.json
 ├── continue-setup.sh
 ├── Directory.Build.props
@@ -224,14 +224,20 @@ MODIFIED: 2025-12-20 01:27:19
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 4.08 KB
-MODIFIED: 2025-12-20 01:42:28
+SIZE: 4.67 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
 <Project>
   <!-- Central Package Management - All package versions in one place -->
-  <!-- All packages are MIT/Apache-2.0 licensed and free for any use -->
-  <!-- Last updated: 2025-12-20 -->
+  <!-- ================================================================ -->
+  <!-- LICENSE POLICY: Only packages with truly free licenses allowed   -->
+  <!-- Allowed: MIT, Apache-2.0, BSD, Public Domain, PostgreSQL License -->
+  <!-- NOT Allowed: Packages requiring payment for any use              -->
+  <!-- ================================================================ -->
+  <!-- Removed: FluentAssertions (Xceed license - requires payment)     -->
+  <!-- Removed: Moq (SponsorLink controversy)                           -->
+  <!-- ================================================================ -->
   
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -239,7 +245,7 @@ MODIFIED: 2025-12-20 01:42:28
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Avalonia UI (MIT License) - Updated to 11.3.10 -->
+    <!-- Avalonia UI (MIT License) -->
     <PackageVersion Include="Avalonia" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10" />
@@ -253,7 +259,7 @@ MODIFIED: 2025-12-20 01:42:28
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveUI" Version="20.2.62" />
 
-    <!-- Microsoft Extensions (MIT License) - Updated to 10.0.1 -->
+    <!-- Microsoft Extensions (MIT License) -->
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
@@ -263,39 +269,40 @@ MODIFIED: 2025-12-20 01:42:28
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
 
-    <!-- Logging - Serilog (Apache-2.0) -->
+    <!-- Logging - Serilog (Apache-2.0 License) -->
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
 
-    <!-- OpenTelemetry (Apache-2.0) -->
+    <!-- OpenTelemetry (Apache-2.0 License) -->
     <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
 
-    <!-- Database - Updated to 10.0.1 -->
+    <!-- Database (MIT / Public Domain / PostgreSQL License) -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.66" />
 
-    <!-- Validation - Updated to 12.1.1 -->
+    <!-- Validation (Apache-2.0 License) -->
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
 
-    <!-- Testing - Updated versions -->
+    <!-- Testing (MIT / Apache-2.0 License) -->
+    <!-- Using plain xUnit assertions - no FluentAssertions (Xceed license) -->
+    <!-- No Moq (SponsorLink controversy) - use NSubstitute if mocking needed -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="Testcontainers" Version="4.9.0" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="4.9.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
 
     <!-- HTTP & Serialization (MIT License) -->
     <PackageVersion Include="System.Text.Json" Version="10.0.1" />
@@ -1435,8 +1442,8 @@ The xUnit assertions are perfectly good and don't require any paid license!
 
 ================================================================================
 FILE: docs/llm/dump.txt
-SIZE: 67.13 KB
-MODIFIED: 2025-12-20 02:05:33
+SIZE: 67.75 KB
+MODIFIED: 2025-12-20 02:06:33
 ================================================================================
 
 [ERROR: Could not read file]
@@ -7905,8 +7912,8 @@ MODIFIED: 2025-12-20 01:27:19
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-SIZE: 1.04 KB
-MODIFIED: 2025-12-20 01:27:19
+SIZE: 1.07 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -7914,7 +7921,9 @@ MODIFIED: 2025-12-20 01:27:19
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
   <ItemGroup>
+    <!-- Test framework - xUnit with built-in assertions (MIT License) -->
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -7925,13 +7934,14 @@ MODIFIED: 2025-12-20 01:27:19
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="NSubstitute" />
+    <!-- Test data generation (MIT License) -->
     <PackageReference Include="Bogus" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
@@ -7939,16 +7949,19 @@ MODIFIED: 2025-12-20 01:27:19
 
 
 ================================================================================
-FILE: tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
-SIZE: 2.42 KB
-MODIFIED: 2025-12-20 01:51:45
+FILE: tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+SIZE: 4.00 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
-using FluentAssertions;
 using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Core.Tests;
 
+/// <summary>
+/// Unit tests for TodoItem entity using plain xUnit assertions.
+/// No FluentAssertions - it requires payment for commercial use.
+/// </summary>
 public class TodoItemTests
 {
     [Fact]
@@ -7957,12 +7970,17 @@ public class TodoItemTests
         // Arrange & Act
         var todo = new TodoItem();
 
-        // Assert
-        todo.Id.Should().NotBeEmpty();
-        todo.Title.Should().BeEmpty();
-        todo.IsCompleted.Should().BeFalse();
-        todo.Priority.Should().Be(Priority.Normal);
-        todo.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+        // Assert using plain xUnit
+        Assert.NotEqual(Guid.Empty, todo.Id);
+        Assert.Equal(string.Empty, todo.Title);
+        Assert.False(todo.IsCompleted);
+        Assert.Equal(Priority.Normal, todo.Priority);
+        Assert.Null(todo.Description);
+        Assert.Null(todo.DueDate);
+        
+        // Check timestamp is recent (within 1 second)
+        var timeDiff = DateTime.UtcNow - todo.CreatedAt;
+        Assert.True(timeDiff.TotalSeconds < 1, "CreatedAt should be recent");
     }
 
     [Fact]
@@ -7970,13 +7988,30 @@ public class TodoItemTests
     {
         // Arrange
         var todo = new TodoItem { Title = "Test Todo" };
+        Assert.False(todo.IsCompleted);
 
         // Act
         todo.MarkComplete();
 
         // Assert
-        todo.IsCompleted.Should().BeTrue();
-        todo.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+        Assert.True(todo.IsCompleted);
+    }
+
+    [Fact]
+    public void MarkComplete_ShouldUpdateTimestamp()
+    {
+        // Arrange
+        var todo = new TodoItem { Title = "Test" };
+        var originalUpdatedAt = todo.UpdatedAt;
+        
+        // Small delay to ensure timestamp changes
+        System.Threading.Thread.Sleep(10);
+
+        // Act
+        todo.MarkComplete();
+
+        // Assert
+        Assert.True(todo.UpdatedAt >= originalUpdatedAt);
     }
 
     [Fact]
@@ -7984,12 +8019,13 @@ public class TodoItemTests
     {
         // Arrange
         var todo = new TodoItem { Title = "Test", IsCompleted = true };
+        Assert.True(todo.IsCompleted);
 
         // Act
         todo.MarkIncomplete();
 
         // Assert
-        todo.IsCompleted.Should().BeFalse();
+        Assert.False(todo.IsCompleted);
     }
 
     [Fact]
@@ -8004,7 +8040,22 @@ public class TodoItemTests
         };
 
         // Assert
-        todo.IsOverdue.Should().BeTrue();
+        Assert.True(todo.IsOverdue);
+    }
+
+    [Fact]
+    public void IsOverdue_WhenFutureDueDate_ShouldReturnFalse()
+    {
+        // Arrange
+        var todo = new TodoItem
+        {
+            Title = "Future",
+            DueDate = DateTime.UtcNow.AddDays(1),
+            IsCompleted = false
+        };
+
+        // Assert
+        Assert.False(todo.IsOverdue);
     }
 
     [Fact]
@@ -8019,17 +8070,17 @@ public class TodoItemTests
         };
 
         // Assert
-        todo.IsOverdue.Should().BeFalse();
+        Assert.False(todo.IsOverdue);
     }
 
     [Fact]
     public void IsOverdue_WhenNoDueDate_ShouldReturnFalse()
     {
         // Arrange
-        var todo = new TodoItem { Title = "No deadline" };
+        var todo = new TodoItem { Title = "No deadline", DueDate = null };
 
         // Assert
-        todo.IsOverdue.Should().BeFalse();
+        Assert.False(todo.IsOverdue);
     }
 
     [Theory]
@@ -8043,15 +8094,41 @@ public class TodoItemTests
         var todo = new TodoItem { Title = "Test", Priority = priority };
 
         // Assert
-        todo.Priority.Should().Be(priority);
+        Assert.Equal(priority, todo.Priority);
+    }
+
+    [Fact]
+    public void Title_ShouldBeSettable()
+    {
+        // Arrange
+        var todo = new TodoItem();
+
+        // Act
+        todo.Title = "My Task";
+
+        // Assert
+        Assert.Equal("My Task", todo.Title);
+    }
+
+    [Fact]
+    public void Description_ShouldBeSettable()
+    {
+        // Arrange
+        var todo = new TodoItem { Title = "Test" };
+
+        // Act
+        todo.Description = "This is a description";
+
+        // Assert
+        Assert.Equal("This is a description", todo.Description);
     }
 }
 
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-SIZE: 1.29 KB
-MODIFIED: 2025-12-20 01:27:19
+SIZE: 1.46 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -8059,7 +8136,9 @@ MODIFIED: 2025-12-20 01:27:19
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
   <ItemGroup>
+    <!-- Test framework (MIT License) -->
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -8070,16 +8149,20 @@ MODIFIED: 2025-12-20 01:27:19
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" />
+    <!-- Test data generation (MIT License) -->
     <PackageReference Include="Bogus" />
+    <!-- Database - using SQLite for in-memory testing -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <!-- Testcontainers for realistic integration tests (MIT License) -->
     <PackageReference Include="Testcontainers" />
     <PackageReference Include="Testcontainers.PostgreSql" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\..\src\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
@@ -8087,12 +8170,12 @@ MODIFIED: 2025-12-20 01:27:19
 
 
 ================================================================================
-FILE: tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
-SIZE: 2.86 KB
-MODIFIED: 2025-12-20 01:51:45
+FILE: tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+SIZE: 5.64 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
-using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using MyDesktopApplication.Core.Entities;
 using MyDesktopApplication.Infrastructure.Data;
@@ -8100,24 +8183,36 @@ using MyDesktopApplication.Infrastructure.Repositories;
 
 namespace MyDesktopApplication.Integration.Tests;
 
+/// <summary>
+/// Integration tests for TodoRepository using SQLite in-memory database.
+/// SQLite in-memory is more realistic than EF InMemory provider.
+/// </summary>
 public class TodoRepositoryTests : IDisposable
 {
+    private readonly SqliteConnection _connection;
     private readonly AppDbContext _context;
     private readonly TodoRepository _repository;
 
     public TodoRepositoryTests()
     {
+        // SQLite in-memory requires the connection to stay open
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .UseSqlite(_connection)
             .Options;
 
         _context = new AppDbContext(options);
+        _context.Database.EnsureCreated();
+        
         _repository = new TodoRepository(_context);
     }
 
     public void Dispose()
     {
         _context.Dispose();
+        _connection.Dispose();
     }
 
     [Fact]
@@ -8130,25 +8225,53 @@ public class TodoRepositoryTests : IDisposable
         var result = await _repository.AddAsync(todo);
 
         // Assert
-        result.Id.Should().NotBeEmpty();
+        Assert.NotEqual(Guid.Empty, result.Id);
+        
         var saved = await _repository.GetByIdAsync(result.Id);
-        saved.Should().NotBeNull();
-        saved!.Title.Should().Be("Test Todo");
+        Assert.NotNull(saved);
+        Assert.Equal("Test Todo", saved.Title);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_WhenNotFound_ShouldReturnNull()
+    {
+        // Act
+        var result = await _repository.GetByIdAsync(Guid.NewGuid());
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task GetAllAsync_ShouldReturnAllTodos()
+    {
+        // Arrange
+        await _repository.AddAsync(new TodoItem { Title = "Todo 1" });
+        await _repository.AddAsync(new TodoItem { Title = "Todo 2" });
+        await _repository.AddAsync(new TodoItem { Title = "Todo 3" });
+
+        // Act
+        var result = await _repository.GetAllAsync();
+
+        // Assert
+        Assert.Equal(3, result.Count);
     }
 
     [Fact]
     public async Task GetCompletedAsync_ShouldReturnOnlyCompletedTodos()
     {
         // Arrange
-        await _repository.AddAsync(new TodoItem { Title = "Done", IsCompleted = true });
-        await _repository.AddAsync(new TodoItem { Title = "Pending", IsCompleted = false });
+        var completed = new TodoItem { Title = "Done", IsCompleted = true };
+        var pending = new TodoItem { Title = "Pending", IsCompleted = false };
+        await _repository.AddAsync(completed);
+        await _repository.AddAsync(pending);
 
         // Act
-        var completed = await _repository.GetCompletedAsync();
+        var result = await _repository.GetCompletedAsync();
 
         // Assert
-        completed.Should().HaveCount(1);
-        completed[0].Title.Should().Be("Done");
+        Assert.Single(result);
+        Assert.Equal("Done", result[0].Title);
     }
 
     [Fact]
@@ -8156,14 +8279,50 @@ public class TodoRepositoryTests : IDisposable
     {
         // Arrange
         await _repository.AddAsync(new TodoItem { Title = "Done", IsCompleted = true });
-        await _repository.AddAsync(new TodoItem { Title = "Pending", IsCompleted = false });
+        await _repository.AddAsync(new TodoItem { Title = "Pending 1", IsCompleted = false });
+        await _repository.AddAsync(new TodoItem { Title = "Pending 2", IsCompleted = false });
 
         // Act
-        var pending = await _repository.GetPendingAsync();
+        var result = await _repository.GetPendingAsync();
 
         // Assert
-        pending.Should().HaveCount(1);
-        pending[0].Title.Should().Be("Pending");
+        Assert.Equal(2, result.Count);
+        Assert.All(result, todo => Assert.False(todo.IsCompleted));
+    }
+
+    [Fact]
+    public async Task GetOverdueAsync_ShouldReturnOverdueTodos()
+    {
+        // Arrange
+        var overdue = new TodoItem 
+        { 
+            Title = "Overdue", 
+            DueDate = DateTime.UtcNow.AddDays(-1),
+            IsCompleted = false 
+        };
+        var future = new TodoItem 
+        { 
+            Title = "Future", 
+            DueDate = DateTime.UtcNow.AddDays(1),
+            IsCompleted = false 
+        };
+        var completedOverdue = new TodoItem 
+        { 
+            Title = "Done", 
+            DueDate = DateTime.UtcNow.AddDays(-1),
+            IsCompleted = true 
+        };
+        
+        await _repository.AddAsync(overdue);
+        await _repository.AddAsync(future);
+        await _repository.AddAsync(completedOverdue);
+
+        // Act
+        var result = await _repository.GetOverdueAsync();
+
+        // Assert
+        Assert.Single(result);
+        Assert.Equal("Overdue", result[0].Title);
     }
 
     [Fact]
@@ -8176,9 +8335,10 @@ public class TodoRepositoryTests : IDisposable
         // Act
         await _repository.UpdateAsync(todo);
 
-        // Assert
+        // Assert - get fresh from database
         var updated = await _repository.GetByIdAsync(todo.Id);
-        updated!.Title.Should().Be("Updated");
+        Assert.NotNull(updated);
+        Assert.Equal("Updated", updated.Title);
     }
 
     [Fact]
@@ -8186,65 +8346,70 @@ public class TodoRepositoryTests : IDisposable
     {
         // Arrange
         var todo = await _repository.AddAsync(new TodoItem { Title = "To Delete" });
+        var id = todo.Id;
 
         // Act
         await _repository.DeleteAsync(todo);
 
         // Assert
-        var deleted = await _repository.GetByIdAsync(todo.Id);
-        deleted.Should().BeNull();
+        var deleted = await _repository.GetByIdAsync(id);
+        Assert.Null(deleted);
+    }
+
+    [Fact]
+    public async Task ExistsAsync_WhenExists_ShouldReturnTrue()
+    {
+        // Arrange
+        var todo = await _repository.AddAsync(new TodoItem { Title = "Exists" });
+
+        // Act
+        var exists = await _repository.ExistsAsync(todo.Id);
+
+        // Assert
+        Assert.True(exists);
+    }
+
+    [Fact]
+    public async Task ExistsAsync_WhenNotExists_ShouldReturnFalse()
+    {
+        // Act
+        var exists = await _repository.ExistsAsync(Guid.NewGuid());
+
+        // Assert
+        Assert.False(exists);
     }
 }
 
 
 ================================================================================
-FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 1.07 KB
-MODIFIED: 2025-12-20 01:27:19
+FILE: tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+SIZE: 4.20 KB
+MODIFIED: 2025-12-20 02:06:05
 ================================================================================
 
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="Avalonia.Headless" />
-    <PackageReference Include="Avalonia.Headless.XUnit" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\MyDesktopApplication.Desktop\MyDesktopApplication.Desktop.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-</Project>
-
-
-================================================================================
-FILE: tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
-SIZE: 2.16 KB
-MODIFIED: 2025-12-20 01:51:45
-================================================================================
-
-using FluentAssertions;
 using MyDesktopApplication.Desktop.ViewModels;
 
 namespace MyDesktopApplication.UI.Tests;
 
+/// <summary>
+/// Unit tests for MainWindowViewModel using plain xUnit assertions.
+/// </summary>
 public class MainWindowViewModelTests
 {
+    [Fact]
+    public void Constructor_ShouldSetDefaultValues()
+    {
+        // Act
+        var viewModel = new MainWindowViewModel();
+
+        // Assert
+        Assert.Equal(0, viewModel.Counter);
+        Assert.Contains("Welcome", viewModel.Greeting);
+        Assert.False(viewModel.IsBusy);
+        Assert.Null(viewModel.CurrentPage);
+        Assert.Empty(viewModel.TodoItems);
+    }
+
     [Fact]
     public void IncrementCounter_ShouldIncreaseCounterByOne()
     {
@@ -8256,11 +8421,11 @@ public class MainWindowViewModelTests
         viewModel.IncrementCounterCommand.Execute(null);
 
         // Assert
-        viewModel.Counter.Should().Be(initialCount + 1);
+        Assert.Equal(initialCount + 1, viewModel.Counter);
     }
 
     [Fact]
-    public void IncrementCounter_ShouldUpdateGreeting()
+    public void IncrementCounter_FirstClick_ShouldUpdateGreeting()
     {
         // Arrange
         var viewModel = new MainWindowViewModel();
@@ -8269,22 +8434,40 @@ public class MainWindowViewModelTests
         viewModel.IncrementCounterCommand.Execute(null);
 
         // Assert
-        viewModel.Greeting.Should().Be("You clicked once!");
+        Assert.Equal("You clicked once!", viewModel.Greeting);
     }
 
     [Fact]
-    public void IncrementCounter_MultipleTimes_ShouldUpdateGreetingCorrectly()
+    public void IncrementCounter_MultipleClicks_ShouldUpdateGreetingCorrectly()
     {
         // Arrange
         var viewModel = new MainWindowViewModel();
 
-        // Act
-        for (int i = 0; i < 5; i++)
-            viewModel.IncrementCounterCommand.Execute(null);
+        // Act - click 3 times
+        viewModel.IncrementCounterCommand.Execute(null);
+        viewModel.IncrementCounterCommand.Execute(null);
+        viewModel.IncrementCounterCommand.Execute(null);
 
         // Assert
-        viewModel.Counter.Should().Be(5);
-        viewModel.Greeting.Should().Contain("5");
+        Assert.Equal(3, viewModel.Counter);
+        Assert.Contains("3", viewModel.Greeting);
+    }
+
+    [Fact]
+    public void IncrementCounter_TenClicks_ShouldShowAmazingMessage()
+    {
+        // Arrange
+        var viewModel = new MainWindowViewModel();
+
+        // Act - click 10 times
+        for (int i = 0; i < 10; i++)
+        {
+            viewModel.IncrementCounterCommand.Execute(null);
+        }
+
+        // Assert
+        Assert.Equal(10, viewModel.Counter);
+        Assert.Contains("Amazing", viewModel.Greeting);
     }
 
     [Fact]
@@ -8292,12 +8475,14 @@ public class MainWindowViewModelTests
     {
         // Arrange
         var viewModel = new MainWindowViewModel();
+        Assert.Null(viewModel.CurrentPage);
 
         // Act
         viewModel.NavigateToHomeCommand.Execute(null);
 
         // Assert
-        viewModel.CurrentPage.Should().BeOfType<HomeViewModel>();
+        Assert.NotNull(viewModel.CurrentPage);
+        Assert.IsType<HomeViewModel>(viewModel.CurrentPage);
     }
 
     [Fact]
@@ -8310,22 +8495,107 @@ public class MainWindowViewModelTests
         viewModel.NavigateToSettingsCommand.Execute(null);
 
         // Assert
-        viewModel.CurrentPage.Should().BeOfType<SettingsViewModel>();
+        Assert.NotNull(viewModel.CurrentPage);
+        Assert.IsType<SettingsViewModel>(viewModel.CurrentPage);
     }
 
     [Fact]
-    public void NewViewModel_ShouldHaveDefaultValues()
+    public void NavigateToHome_ThenSettings_ShouldReplaceCurrentPage()
     {
-        // Act
+        // Arrange
         var viewModel = new MainWindowViewModel();
 
+        // Act
+        viewModel.NavigateToHomeCommand.Execute(null);
+        var homePage = viewModel.CurrentPage;
+        
+        viewModel.NavigateToSettingsCommand.Execute(null);
+
         // Assert
-        viewModel.Counter.Should().Be(0);
-        viewModel.Greeting.Should().Contain("Welcome");
-        viewModel.IsBusy.Should().BeFalse();
-        viewModel.CurrentPage.Should().BeNull();
+        Assert.NotNull(viewModel.CurrentPage);
+        Assert.IsType<SettingsViewModel>(viewModel.CurrentPage);
+        Assert.NotSame(homePage, viewModel.CurrentPage);
     }
 }
+
+public class HomeViewModelTests
+{
+    [Fact]
+    public void Constructor_ShouldSetDefaultTitle()
+    {
+        // Act
+        var viewModel = new HomeViewModel();
+
+        // Assert
+        Assert.Equal("Home", viewModel.Title);
+    }
+}
+
+public class SettingsViewModelTests
+{
+    [Fact]
+    public void Constructor_ShouldSetDefaultValues()
+    {
+        // Act
+        var viewModel = new SettingsViewModel();
+
+        // Assert
+        Assert.Equal("Settings", viewModel.Title);
+        Assert.False(viewModel.DarkMode);
+    }
+
+    [Fact]
+    public void DarkMode_ShouldBeSettable()
+    {
+        // Arrange
+        var viewModel = new SettingsViewModel();
+
+        // Act
+        viewModel.DarkMode = true;
+
+        // Assert
+        Assert.True(viewModel.DarkMode);
+    }
+}
+
+
+================================================================================
+FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+SIZE: 1.12 KB
+MODIFIED: 2025-12-20 02:06:05
+================================================================================
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Test framework (MIT License) -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!-- Avalonia Headless for UI testing (MIT License) -->
+    <PackageReference Include="Avalonia.Headless" />
+    <PackageReference Include="Avalonia.Headless.XUnit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MyDesktopApplication.Desktop\MyDesktopApplication.Desktop.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
 
 
 ================================================================================
@@ -8479,7 +8749,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 02:05:34 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 02:06:34 AM CST 2025
 Total Files Found: 48
 Files Exported: 48
 Files Skipped: 0 (binary or large files)
