@@ -3324,4 +3324,28 @@ File types included:
 real	0m0.775s
 user	0m0.353s
 sys	0m0.600s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Restore complete (0.4s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 6 warning(s) (0.1s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Java SDK directory could not be found. Install the Java SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom JDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 6 warning(s) in 0.8s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which javac
+/usr/bin/javac
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ javac --version
+javac 21.0.9
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which java
+/usr/lib/jvm/java-25-openjdk/bin/java
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ java --version
+openjdk 25.0.1 2025-10-21
+OpenJDK Runtime Environment (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8, mixed mode, sharing)
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
