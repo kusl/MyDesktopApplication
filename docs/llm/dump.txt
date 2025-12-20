@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 12:56:38 AM CST 2025
+Generated: Sat Dec 20 01:05:44 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -9,7 +9,8 @@ DIRECTORY STRUCTURE:
 
 /home/kushal/src/dotnet/MyDesktopApplication
 ├── appsettings.json
-├── DIrectory.Build.props
+├── continue-setup.sh
+├── Directory.Build.props
 ├── Directory.Packages.props
 ├── export.sh
 ├── .gitignore
@@ -20,10 +21,38 @@ DIRECTORY STRUCTURE:
 │   ├── MyDesktopApplication.Core
 │   │   ├── Class1.cs
 │   │   └── MyDesktopApplication.Core.csproj
-│   └── MyDesktopApplication.Infrastructure
+│   ├── MyDesktopApplication.Desktop
+│   │   ├── App.axaml
+│   │   ├── App.axaml.cs
+│   │   ├── app.manifest
+│   │   ├── Assets
+│   │   │   └── avalonia-logo.ico
+│   │   ├── Models
+│   │   ├── MyDesktopApplication.Desktop.csproj
+│   │   ├── Program.cs
+│   │   ├── ViewLocator.cs
+│   │   ├── ViewModels
+│   │   │   ├── MainWindowViewModel.cs
+│   │   │   └── ViewModelBase.cs
+│   │   └── Views
+│   │       ├── MainWindow.axaml
+│   │       └── MainWindow.axaml.cs
+│   ├── MyDesktopApplication.Infrastructure
+│   │   ├── Class1.cs
+│   │   └── MyDesktopApplication.Infrastructure.csproj
+│   └── MyDesktopApplication.Shared
 │       ├── Class1.cs
-│       └── MyDesktopApplication.Infrastructure.csproj
+│       └── MyDesktopApplication.Shared.csproj
 └── tests
+    ├── MyDesktopApplication.Core.Tests
+    │   ├── MyDesktopApplication.Core.Tests.csproj
+    │   └── UnitTest1.cs
+    ├── MyDesktopApplication.Integration.Tests
+    │   ├── MyDesktopApplication.Integration.Tests.csproj
+    │   └── UnitTest1.cs
+    └── MyDesktopApplication.UI.Tests
+        ├── MyDesktopApplication.UI.Tests.csproj
+        └── UnitTest1.cs
 
 
 FILE CONTENTS:
@@ -67,7 +96,7 @@ MODIFIED: 2025-12-20 00:53:16
 
 
 ================================================================================
-FILE: DIrectory.Build.props
+FILE: Directory.Build.props
 SIZE: 1.58 KB
 MODIFIED: 2025-12-20 00:52:17
 ================================================================================
@@ -201,14 +230,21 @@ MODIFIED: 2025-12-20 00:52:51
 
 ================================================================================
 FILE: MyDesktopApplication.slnx
-SIZE: 0.25 KB
-MODIFIED: 2025-12-20 00:50:20
+SIZE: 0.76 KB
+MODIFIED: 2025-12-20 01:03:20
 ================================================================================
 
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <Project Path="src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj" />
     <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+    <Project Path="src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj" />
   </Folder>
 </Solution>
 
@@ -245,6 +281,216 @@ MODIFIED: 2025-12-20 00:50:18
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
+SIZE: 1.51 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Markup.Xaml;
+using MyDesktopApplication.Desktop.ViewModels;
+using MyDesktopApplication.Desktop.Views;
+
+namespace MyDesktopApplication.Desktop;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+}
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+SIZE: 1.22 KB
+MODIFIED: 2025-12-20 01:03:16
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.10" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.10">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+</Project>
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/Program.cs
+SIZE: 0.69 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+﻿using Avalonia;
+using System;
+
+namespace MyDesktopApplication.Desktop;
+
+sealed class Program
+{
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace();
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/ViewLocator.cs
+SIZE: 1.06 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using MyDesktopApplication.Desktop.ViewModels;
+
+namespace MyDesktopApplication.Desktop;
+
+/// <summary>
+/// Given a view model, returns the corresponding view if possible.
+/// </summary>
+[RequiresUnreferencedCode(
+    "Default implementation of ViewLocator involves reflection which may be trimmed away.",
+    Url = "https://docs.avaloniaui.net/docs/concepts/view-locator")]
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? param)
+    {
+        if (param is null)
+            return null;
+        
+        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            return (Control)Activator.CreateInstance(type)!;
+        }
+        
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+SIZE: 0.18 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+﻿namespace MyDesktopApplication.Desktop.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
+{
+    public string Greeting { get; } = "Welcome to Avalonia!";
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+SIZE: 0.16 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace MyDesktopApplication.Desktop.ViewModels;
+
+public abstract class ViewModelBase : ObservableObject
+{
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+SIZE: 0.19 KB
+MODIFIED: 2025-12-20 01:03:15
+================================================================================
+
+using Avalonia.Controls;
+
+namespace MyDesktopApplication.Desktop.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+}
+
+================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Class1.cs
 SIZE: 0.07 KB
 MODIFIED: 2025-12-20 00:50:19
@@ -275,8 +521,177 @@ MODIFIED: 2025-12-20 00:50:19
 </Project>
 
 
+================================================================================
+FILE: src/MyDesktopApplication.Shared/Class1.cs
+SIZE: 0.07 KB
+MODIFIED: 2025-12-20 01:03:14
+================================================================================
+
+﻿namespace MyDesktopApplication.Shared;
+
+public class Class1
+{
+
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+SIZE: 0.21 KB
+MODIFIED: 2025-12-20 01:03:14
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+================================================================================
+FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+SIZE: 0.60 KB
+MODIFIED: 2025-12-20 01:03:16
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
+
+================================================================================
+FILE: tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+SIZE: 0.12 KB
+MODIFIED: 2025-12-20 01:03:16
+================================================================================
+
+﻿namespace MyDesktopApplication.Core.Tests;
+
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}
+
+
+================================================================================
+FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+SIZE: 0.60 KB
+MODIFIED: 2025-12-20 01:03:18
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
+
+================================================================================
+FILE: tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+SIZE: 0.13 KB
+MODIFIED: 2025-12-20 01:03:18
+================================================================================
+
+﻿namespace MyDesktopApplication.Integration.Tests;
+
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}
+
+
+================================================================================
+FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+SIZE: 0.60 KB
+MODIFIED: 2025-12-20 01:03:19
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
+
+================================================================================
+FILE: tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+SIZE: 0.12 KB
+MODIFIED: 2025-12-20 01:03:19
+================================================================================
+
+﻿namespace MyDesktopApplication.UI.Tests;
+
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}
+
+
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 12:56:39 AM CST 2025
-Total Files Exported: 8
+EXPORT COMPLETED: Sat Dec 20 01:05:44 AM CST 2025
+Total Files Exported: 23
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
