@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+  </Folder>
+</Solution>
