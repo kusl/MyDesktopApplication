@@ -664,4 +664,101 @@ File types included:
 real	0m0.780s
 user	0m0.370s
 sys	0m0.596s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Checking available Java versions...
+Available Java packages in Fedora repos:
+✓ Found available: java-21-openjdk-devel
+
+Step 2: Installing java-21-openjdk-devel...
+✓ Installing java-21-openjdk-devel...
+[sudo] password for kushal: 
+Updating and loading repositories:
+Repositories loaded.
+Package                                                                 Arch             Version                                                                  Repository                                    Size
+Installing:
+ java-21-openjdk-devel                                                  x86_64           1:21.0.9.0.10-1.fc43                                                     updates                                   11.5 MiB
+Installing dependencies:
+ java-21-openjdk                                                        x86_64           1:21.0.9.0.10-1.fc43                                                     updates                                  991.4 KiB
+ java-21-openjdk-headless                                               x86_64           1:21.0.9.0.10-1.fc43                                                     updates                                  197.8 MiB
+ mkfontscale                                                            x86_64           1.2.3-3.fc43                                                             fedora                                    45.0 KiB
+ ttmkfdir                                                               x86_64           3.0.9-73.fc43                                                            fedora                                   122.5 KiB
+ xorg-x11-fonts-Type1                                                   noarch           7.5-41.fc43                                                              fedora                                   863.3 KiB
+
+Transaction Summary:
+ Installing:         6 packages
+
+Total size of inbound packages is 52 MiB. Need to download 52 MiB.
+After this operation, 211 MiB extra will be used (install 211 MiB, remove 0 B).
+[1/6] java-21-openjdk-1:21.0.9.0.10-1.fc43.x86_64                                                                                                                           100% |   1.9 MiB/s | 380.7 KiB |  00m00s
+[2/6] java-21-openjdk-devel-1:21.0.9.0.10-1.fc43.x86_64                                                                                                                     100% |   9.2 MiB/s |   4.9 MiB |  00m01s
+[3/6] xorg-x11-fonts-Type1-0:7.5-41.fc43.noarch                                                                                                                             100% | 995.1 KiB/s | 505.5 KiB |  00m01s
+[4/6] mkfontscale-0:1.2.3-3.fc43.x86_64                                                                                                                                     100% | 184.2 KiB/s |  31.5 KiB |  00m00s
+[5/6] ttmkfdir-0:3.0.9-73.fc43.x86_64                                                                                                                                       100% | 405.0 KiB/s |  56.3 KiB |  00m00s
+[6/6] java-21-openjdk-headless-1:21.0.9.0.10-1.fc43.x86_64                                                                                                                  100% |  25.2 MiB/s |  46.1 MiB |  00m02s
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[6/6] Total                                                                                                                                                                 100% |  22.2 MiB/s |  52.0 MiB |  00m02s
+Running transaction
+[1/8] Verify package files                                                                                                                                                  100% |  48.0   B/s |   6.0   B |  00m00s
+[2/8] Prepare transaction                                                                                                                                                   100% |  32.0   B/s |   6.0   B |  00m00s
+[3/8] Installing java-21-openjdk-headless-1:21.0.9.0.10-1.fc43.x86_64                                                                                                       100% | 451.8 MiB/s | 197.9 MiB |  00m00s
+[4/8] Installing ttmkfdir-0:3.0.9-73.fc43.x86_64                                                                                                                            100% |   8.6 MiB/s | 123.6 KiB |  00m00s
+[5/8] Installing mkfontscale-0:1.2.3-3.fc43.x86_64                                                                                                                          100% |   4.1 MiB/s |  46.4 KiB |  00m00s
+[6/8] Installing xorg-x11-fonts-Type1-0:7.5-41.fc43.noarch                                                                                                                  100% |  18.0 MiB/s | 865.6 KiB |  00m00s
+[7/8] Installing java-21-openjdk-1:21.0.9.0.10-1.fc43.x86_64                                                                                                                100% |  46.2 MiB/s | 992.6 KiB |  00m00s
+[8/8] Installing java-21-openjdk-devel-1:21.0.9.0.10-1.fc43.x86_64                                                                                                          100% |  19.5 MiB/s |  11.5 MiB |  00m01s
+Complete!
+
+Step 3: Locating JAVA_HOME...
+✓ JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+! jar tool not found in JAVA_HOME
+This might cause issues with Android builds
+
+Step 4: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 5: Setting up environment variables...
+✓ Created /home/kushal/.android-env.sh
+✓ Added to .bashrc
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+✓ Building Android project...
+
+Restore complete (1.3s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 6 warning(s) (0.3s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 6 warning(s) in 2.0s
+
+! Build had issues - see output above
+
+Common fixes:
+  1. Restart terminal and try again
+  2. Run: source ~/.android-env.sh
+  3. Check JAVA_HOME: echo $JAVA_HOME
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run: source ~/.android-env.sh
+Or restart your terminal.
+
+real	0m47.814s
+user	0m3.135s
+sys	0m0.831s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
