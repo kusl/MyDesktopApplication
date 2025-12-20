@@ -1160,4 +1160,91 @@ Output file size: .09 MB
 real	0m0.227s
 user	0m0.106s
 sys	0m0.172s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time cp export.sh export.sh.bak
+
+real	0m0.002s
+user	0m0.000s
+sys	0m0.002s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 47 files to export
+
+Processing (1/47): appsettings.json
+Processing (2/47): continue-setup.sh
+Processing (3/47): Directory.Build.props
+Processing (4/47): Directory.Packages.props
+Processing (5/47): docs/llm/claude.md
+Processing (6/47): docs/llm/dump.txt
+Processing (7/47): docs/llm/output.txt
+Processing (8/47): docs/thoughts.md
+Processing (9/47): export.sh
+Processing (10/47): fix-all.sh
+Processing (11/47): fix-cpm.sh
+Processing (12/47): .gitignore
+Processing (13/47): MyDesktopApplication.slnx
+Processing (14/47): README.md
+Processing (15/47): setup-all.sh
+Processing (16/47): setup-project.sh
+Processing (17/47): setup.sh
+Processing (18/47): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (19/47): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (20/47): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (21/47): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (22/47): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (23/47): src/MyDesktopApplication.Desktop/App.axaml
+Processing (24/47): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (25/47): src/MyDesktopApplication.Desktop/app.manifest
+Processing (26/47): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (27/47): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (28/47): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (29/47): src/MyDesktopApplication.Desktop/Program.cs
+Processing (30/47): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (31/47): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (32/47): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (33/47): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (34/47): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (35/47): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (36/47): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (37/47): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (38/47): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (39/47): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (40/47): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (41/47): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (42/47): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (43/47): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (44/47): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (45/47): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (46/47): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+Processing (47/47): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 47
+Files skipped:  0
+Output size:    457.38 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.561s
+user	0m0.262s
+sys	0m0.420s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
