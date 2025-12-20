@@ -188,3 +188,53 @@ mv DIrectory.Build.props Directory.Build.props
 
 
 
+Thank you. Looks like the current issues got resolved but I have new issues. I have a fuller context in the dump.txt and output.txt in the project files but here is my summary:
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet restore
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : error NU1008: The following PackageReference items cannot define a value for Version: Avalonia, Avalonia.Desktop, Avalonia.Themes.Fluent, Avalonia.Fonts.Inter, Avalonia.Diagnostics, CommunityToolkit.Mvvm. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Restore failed with 4 error(s) in 1.0s
+
+
+
+This is a common issue with Central Package Management (CPM). The problem is that the templates created `.csproj` files with explicit `Version` attributes on `PackageReference` items, but your `Directory.Build.props` enables CPM (`ManagePackageVersionsCentrally`). When CPM is enabled, versions must be defined in `Directory.Packages.props`, not in individual project files.
+
+Let me create fixed versions of the affected `.csproj` files that remove the `Version` attributes:Now let me also update the `Directory.Packages.props` to ensure all the package versions match what the templates were using:Now here's a quick script to fix all the files in place:**To fix your project, you have two options:**
+
+---
+
+**Option 1: Run the fix script**
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-cpm.sh
+./fix-cpm.sh
+dotnet restore
+dotnet build
+```
+
+---
+
+**Option 2: Manually replace the `.csproj` files**
+
+Copy the content from the artifacts I created above to replace these files:
+
+1. `src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj`
+2. `tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj`
+3. `tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj`
+4. `tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj`
+
+Also update `Directory.Packages.props` with the new version (I updated the test SDK versions to match what the templates created: `17.14.1` and `3.1.4`).
+
+---
+
+**The root cause explained:**
+
+When you have `<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>` in `Directory.Build.props`, NuGet expects:
+- **`Directory.Packages.props`**: Define versions with `<PackageVersion Include="..." Version="..." />`
+- **Individual `.csproj` files**: Reference packages with `<PackageReference Include="..." />` (NO `Version` attribute)
+
+The templates created `.csproj` files with `Version` attributes, which conflicts with CPM. The fix is simply removing those `Version` attributes from the project files.
+
+
