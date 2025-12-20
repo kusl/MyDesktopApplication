@@ -11,29 +11,19 @@
 .idea/
 *.suo
 *.user
-*.userosscache
-*.sln.docstates
-
-# Rider
 *.sln.iml
 
 # Test results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
 TestResults/
 coverage*/
 *.coverage
-*.coveragexml
 
 # NuGet
 *.nupkg
-*.snupkg
 **/[Pp]ackages/*
-!**/[Pp]ackages/build/
 
-# Local environment
+# Local settings
 appsettings.*.local.json
-appsettings.local.json
 .env
 .env.local
 
@@ -41,7 +31,6 @@ appsettings.local.json
 *.db
 *.db-shm
 *.db-wal
-*.sqlite
 
 # OS files
 .DS_Store
@@ -50,27 +39,3 @@ Thumbs.db
 # Logs
 *.log
 logs/
-
-# User-specific
-*.rsuser
-*.pidb
-*.dbmdl
-*.jfm
-
-# JetBrains Rider
-.idea/
-*.sln.iml
-
-# Publish profiles
-PublishProfiles/
-
-# NuGet
-project.lock.json
-project.fragment.lock.json
-artifacts/
-
-# ASP.NET Scaffolding
-ScaffoldingReadMe.txt
-
-# Avalonia
-avalonia.generated.cs
