@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 02:30:56 AM CST 2025
+Generated: Sat Dec 20 02:33:22 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1676,7 +1676,7 @@ git push origin v1.0.0
 ================================================================================
 FILE: docs/llm/dump.txt
 SIZE: 75.09 KB
-MODIFIED: 2025-12-20 02:30:56
+MODIFIED: 2025-12-20 02:33:22
 ================================================================================
 
 [ERROR: Could not read file]
@@ -10379,7 +10379,7 @@ public class MainActivity : AvaloniaMainActivity<App>
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
 SIZE: 1.36 KB
-MODIFIED: 2025-12-20 02:30:20
+MODIFIED: 2025-12-20 02:32:44
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -10397,7 +10397,7 @@ MODIFIED: 2025-12-20 02:30:20
     
     <!-- Android SDK versions -->
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
-    <TargetPlatformVersion>35</TargetPlatformVersion>
+    <TargetPlatformVersion>36</TargetPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12630,7 +12630,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 02:30:57 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 02:33:23 AM CST 2025
 Total Files Found: 67
 Files Exported: 67
 Files Skipped: 0 (binary or large files)
