@@ -1738,3 +1738,33 @@ git push
 
 
 
+As you can see in `build.txt` and `output.txt` I have installed android tools and now I get this error 
+Restore complete (0.4s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.0s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+Build failed with 1 error(s) in 0.8s
+! Build had issues - see output above
+I believe this is the information you need 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which fastboot
+/usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which adb
+/usr/bin/adb
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ adb --version
+Android Debug Bridge version 1.0.41
+Version 35.0.2-android-tools
+Installed as /usr/bin/adb
+Running on Linux 6.17.12-300.fc43.x86_64 (x86_64)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ fastboot --version
+fastboot version 35.0.2-android-tools
+Installed as /usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+can you please give me a shell script to update the code as needed. the code in `dump.txt` is up to date. 
+
+
+
+
+
+
+
