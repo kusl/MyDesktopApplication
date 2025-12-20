@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 06:35:23 AM CST 2025
+Generated: Sat Dec 20 06:46:21 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -337,8 +337,8 @@ MODIFIED: 2025-12-20 02:30:20
 
 ================================================================================
 FILE: docs/llm/claude.md
-SIZE: 69.63 KB
-MODIFIED: 2025-12-20 06:30:11
+SIZE: 80.95 KB
+MODIFIED: 2025-12-20 06:46:09
 ================================================================================
 
 I am using an Acer Swift Go 14 with AMD Ryzen 8845HS processor running Fedora Linux. How do I get started writing an Avalonia UI application? 
@@ -1861,12 +1861,162 @@ Every push to `master`, `main`, or `develop` will:
 This gives you always-fresh development builds!
 
 
+I hit an error again with java. 
+I think what you want is java-21-openjdk-devel 
+java-25-openjdk-devel and java-latest-openjdk-devel are also available. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Checking available Java versions...
+Available Java packages in Fedora repos:
+✓ Found available: java-21-openjdk-devel
+
+Step 2: Installing java-21-openjdk-devel...
+✓ java-21-openjdk-devel already installed
+
+Step 3: Locating JAVA_HOME...
+✓ JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+! jar tool not found in JAVA_HOME
+This might cause issues with Android builds
+
+Step 4: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 5: Setting up environment variables...
+✓ Found Android SDK at: /home/kushal/.android/sdk
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+✓ Building Android project...
+
+Restore complete (0.7s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 8 warning(s) (0.3s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 8 warning(s) in 1.3s
+
+! Build had issues - see output above
+
+Common fixes:
+  1. Restart terminal and try again
+  2. Run: source ~/.android-env.sh
+  3. Check JAVA_HOME: echo $JAVA_HOME
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run: source ~/.android-env.sh
+Or restart your terminal.
+
+real	0m3.299s
+user	0m2.435s
+sys	0m0.633s
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ java --version
+openjdk 25.0.1 2025-10-21
+OpenJDK Runtime Environment (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8, mixed mode, sharing)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which java
+/usr/lib/jvm/java-25-openjdk/bin/java
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ javac --version
+javac 21.0.9
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-17-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+No matching packages to list
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-21-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Installed packages
+Name            : java-21-openjdk-devel
+Epoch           : 1
+Version         : 21.0.9.0.10
+Release         : 1.fc43
+Architecture    : x86_64
+Installed size  : 11.5 MiB
+Source          : java-21-openjdk-21.0.9.0.10-1.fc43.src.rpm
+From repository : updates
+Summary         : OpenJDK 21 Development Environment
+URL             : http://openjdk.java.net/
+License         : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND
+                :  LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description     : The OpenJDK 21 development tools.
+Vendor          : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-25-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Available packages
+Name           : java-25-openjdk-devel
+Epoch          : 1
+Version        : 25.0.1.0.8
+Release        : 1.fc43
+Architecture   : x86_64
+Download size  : 6.1 MiB
+Installed size : 11.7 MiB
+Source         : java-25-openjdk-25.0.1.0.8-1.fc43.src.rpm
+Repository     : updates
+Summary        : OpenJDK 25 Development Environment
+URL            : http://openjdk.java.net/
+License        : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND 
+               : LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description    : The OpenJDK 25 development tools.
+Vendor         : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-latest-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Available packages
+Name           : java-latest-openjdk-devel
+Epoch          : 1
+Version        : 25.0.1.0.8
+Release        : 0.1.fc43
+Architecture   : x86_64
+Download size  : 6.1 MiB
+Installed size : 11.7 MiB
+Source         : java-latest-openjdk-25.0.1.0.8-0.1.fc43.src.rpm
+Repository     : updates
+Summary        : OpenJDK 25 Development Environment
+URL            : http://openjdk.java.net/
+License        : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND 
+               : LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description    : The OpenJDK 25 development tools.
+Vendor         : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+also I got the following error in CI action for all os
+
+Run dotnet restore
+  Determining projects to restore...
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To install these workloads, run the following command: dotnet workload restore [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: Process completed with exit code 1.
+
+please fix both the shell scripts and please do not hallucinate. thank you. 
+
 
 
 ================================================================================
 FILE: docs/llm/dump.txt
-SIZE: 83.10 KB
-MODIFIED: 2025-12-20 06:35:23
+SIZE: 94.42 KB
+MODIFIED: 2025-12-20 06:46:21
 ================================================================================
 
 [ERROR: Could not read file]
@@ -1874,8 +2024,8 @@ MODIFIED: 2025-12-20 06:35:23
 
 ================================================================================
 FILE: docs/llm/output.txt
-SIZE: 5.20 KB
-MODIFIED: 2025-12-20 06:34:07
+SIZE: 88.49 KB
+MODIFIED: 2025-12-20 06:41:36
 ================================================================================
 
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd ~/src/dotnet/MyDesktopApplication/
@@ -1982,6 +2132,1215 @@ File types included:
 real	0m0.782s
 user	0m0.379s
 sys	0m0.583s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Checking available Java versions...
+Available Java packages in Fedora repos:
+✓ Found available: java-21-openjdk-devel
+
+Step 2: Installing java-21-openjdk-devel...
+✓ java-21-openjdk-devel already installed
+
+Step 3: Locating JAVA_HOME...
+✓ JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+! jar tool not found in JAVA_HOME
+This might cause issues with Android builds
+
+Step 4: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 5: Setting up environment variables...
+✓ Found Android SDK at: /home/kushal/.android/sdk
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+✓ Building Android project...
+
+Restore complete (0.7s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 8 warning(s) (0.3s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 8 warning(s) in 1.3s
+
+! Build had issues - see output above
+
+Common fixes:
+  1. Restart terminal and try again
+  2. Run: source ~/.android-env.sh
+  3. Check JAVA_HOME: echo $JAVA_HOME
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run: source ~/.android-env.sh
+Or restart your terminal.
+
+real	0m3.299s
+user	0m2.435s
+sys	0m0.633s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-github-actions.sh 
+==============================================
+  Setting up GitHub Actions
+==============================================
+
+✓ Creating ci.yml...
+✓ Creating build.yml...
+✓ Creating release.yml...
+✓ Creating dependabot.yml...
+✓ Cleaning up old workflows...
+
+==============================================
+  GitHub Actions Updated!
+==============================================
+
+Workflows:
+  ci.yml      - Build & test on every push/PR
+  build.yml   - Build artifacts + pre-release on push to main branches
+  release.yml - Create release on tags (v*)
+
+Action versions:
+  actions/checkout@v4
+  actions/setup-dotnet@v5
+  actions/setup-java@v4
+  actions/cache@v4
+  actions/upload-artifact@v4
+  actions/download-artifact@v4
+  softprops/action-gh-release@v2
+
+Behavior:
+  • Every push to master/main/develop → Pre-release with 'dev' tag
+  • Push tag 'v1.0.0' → Creates stable release
+
+To push:
+  git add .
+  git commit -m 'Update GitHub Actions'
+  git push
+
+real	0m0.013s
+user	0m0.004s
+sys	0m0.009s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): appsettings.json
+Processing (2/67): continue-setup.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): docs/llm/claude.md
+Processing (6/67): docs/llm/dump.txt
+Processing (7/67): docs/llm/output.txt
+Processing (8/67): docs/thoughts.md
+Processing (9/67): export.sh
+Processing (10/67): fix-all.sh
+Processing (11/67): fix-ci-and-add-android.sh
+Processing (12/67): fix-cpm.sh
+Processing (13/67): fix-tests.sh
+Processing (14/67): .gitattributes
+Processing (15/67): .github/dependabot.yml
+Processing (16/67): .github/workflows/build.yml
+Processing (17/67): .github/workflows/ci.yml
+Processing (18/67): .github/workflows/release.yml
+Processing (19/67): .gitignore
+Processing (20/67): MyDesktopApplication.slnx
+Processing (21/67): README.md
+Processing (22/67): setup-all.sh
+Processing (23/67): setup-android-fedora.sh
+Processing (24/67): setup-github-actions.sh
+Processing (25/67): setup-project.sh
+Processing (26/67): setup.sh
+Processing (27/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (28/67): src/MyDesktopApplication.Android/App.axaml
+Processing (29/67): src/MyDesktopApplication.Android/App.cs
+Processing (30/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (31/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (32/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (33/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (34/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (35/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (37/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (38/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (67/67): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    558.03 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.757s
+user	0m0.382s
+sys	0m0.561s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time git push origin --all --verbose
+Pushing to github.com:kusl/MyDesktopApplication.git
+Enumerating objects: 79, done.
+Counting objects: 100% (79/79), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (67/67), done.
+Writing objects: 100% (67/67), 38.02 KiB | 2.53 MiB/s, done.
+Total 67 (delta 34), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (34/34), completed with 8 local objects.
+To github.com:kusl/MyDesktopApplication.git
+   fdb435b..c101a93  master -> master
+updating local tracking ref 'refs/remotes/origin/master'
+
+real	0m0.936s
+user	0m0.041s
+sys	0m0.031s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf search java
+Updating and loading repositories:
+Repositories loaded.
+Matched fields: name, summary
+ BareBonesBrowserLaunch-javadoc.noarch	Javadoc for BareBonesBrowserLaunch
+ CFR-javadoc.noarch	Javadoc for CFR
+ CardManager-javadoc.noarch	Javadocs for CardManager
+ Java-WebSocket.noarch	A barebones WebSocket client and server implementation written in 100% Java
+ Java-WebSocket-javadoc.noarch	Javadoc for Java-WebSocket
+ OpenStego-javadoc.noarch	Javadoc generated documentation for Openstego
+ R-java.x86_64	R with Fedora provided Java Runtime Environment
+ R-java-devel.x86_64	Development package for use with Java enabled R components
+ R-rJava.x86_64	Low-Level R to Java Interface
+ ant-contrib-javadoc.noarch	Javadoc for ant-contrib
+ antlr3-java.noarch	Java run-time support for ANTLR-generated parsers
+ antlr3-javascript.noarch	Javascript run-time support for ANTLR-generated parsers
+ apache-commons-exec-javadoc.noarch	Javadocs for apache-commons-exec
+ apache-commons-math-javadoc.noarch	Javadoc for apache-commons-math
+ apache-commons-modeler-javadoc.noarch	Javadoc for apache-commons-modeler
+ auto-javadoc.noarch	Javadoc for auto
+ autolink-java.noarch	Java library to extract links from plain text
+ autolink-java-javadoc.noarch	API documentation for autolink-java
+ batik-javadoc.noarch	Javadoc for batik
+ beansbinding-javadoc.noarch	Javadoc for beansbinding
+ bouncycastle-javadoc.noarch	Javadoc for bouncycastle
+ brazil-javadoc.noarch	Java-docs for brazil
+ brlapi-java.x86_64	Java binding for BrlAPI
+ byteman-javadoc.noarch	Javadoc for byteman
+ cambozola-javadoc.noarch	Javadoc for cambozola
+ canl-java.noarch	EMI Common Authentication library - bindings for Java
+ canl-java-javadoc.noarch	Javadoc documentation for canl-java
+ capstone-java.noarch	Java bindings for capstone
+ classloader-leak-test-framework-javadoc.noarch	Javadoc for classloader-leak-test-framework
+ collectd-java.x86_64	Java bindings for collectd
+ colossus-javadoc.noarch	Javadocs for colossus
+ cortado-javadoc.noarch	Java docs for cortado
+ cryptlib-java.x86_64	Cryptlib bindings for Java
+ cryptlib-javadoc.noarch	Cryptlib Java documentation
+ cvc5-java.x86_64	Java interface to cvc5
+ directory-maven-plugin-javadoc.noarch	Javadoc for directory-maven-plugin
+ dogtag-jss-javadoc.x86_64	Java Security Services (JSS) Javadocs
+ dogtag-ldapjdk-javadoc.noarch	Javadoc for LDAP SDK
+ dogtag-pki-java.noarch	Dogtag PKI Base Java Package
+ dogtag-pki-javadoc.noarch	Dogtag PKI Javadoc Package
+ dom4j-javadoc.noarch	Javadoc for dom4j
+ ed25519-java.noarch	Implementation of EdDSA (Ed25519) in Java
+ ed25519-java-javadoc.noarch	Javadoc for ed25519-java
+ f3d-java.x86_64	Java bindings for the f3d
+ fedora-review-plugin-java.noarch	Java plugin for FedoraReview
+ flexmark-java.noarch	CommonMark/Markdown Java parser with source level AST
+ flexmark-java-javadoc.noarch	API documentation for flexmark-java
+ flute-javadoc.noarch	Javadoc for flute
+ fop-javadoc.noarch	Javadoc for fop
+ freewrl-java.x86_64	Java support for FreeWRL
+ gdal-java.x86_64	Java modules for the GDAL file format library
+ gdal-javadoc.noarch	Javadocs for gdal
+ genders-java.x86_64	Java libraries
+ genders-java-devel.x86_64	Java Development libraries
+ genders-javadoc.x86_64	Java Documentation
+ ghc-language-java.x86_64	Java source manipulation
+ ghc-language-java-devel.x86_64	Haskell language-java library development files
+ ghc-language-java-doc.noarch	Haskell language-java library documentation
+ ghc-language-java-prof.x86_64	Haskell language-java profiling library
+ ghc-language-javascript.x86_64	Parser for JavaScript
+ ghc-language-javascript-devel.x86_64	Haskell language-javascript library development files
+ ghc-language-javascript-doc.noarch	Haskell language-javascript library documentation
+ ghc-language-javascript-prof.x86_64	Haskell language-javascript profiling library
+ gnulib-javaversion.x86_64	javaversion built unit
+ google-noto-sans-javanese-fonts.noarch	Noto Sans Javanese font
+ google-noto-sans-javanese-vf-fonts.noarch	Noto Sans Javanese variable font
+ graphviz-java.x86_64	Java extension for graphviz
+ hawtjni-javadoc.noarch	Javadocs for hawtjni
+ healpix-java.noarch	Java version of HEALPix
+ healpix-javadoc.noarch	Javadocs for healpix
+ hibernate-jpa-2.0-api-javadoc.noarch	Javadoc for hibernate-jpa-2.0-api
+ hid4java.noarch	Java wrapper for the hidapi library
+ hid4java-javadoc.noarch	Javadoc for hid4java
+ hyperestraier-java.x86_64	Hyper Estraier library for Java
+ jFormatString-javadoc.noarch	Javadoc documentation for jFormatString
+ jackson-annotations-javadoc.noarch	Javadoc for jackson-annotations
+ jackson-jaxrs-providers-javadoc.noarch	Javadoc for jackson-jaxrs-providers
+ jakarta-el-javadoc.noarch	Javadoc for jakarta-el
+ jakarta-interceptors-javadoc.noarch	Javadoc for jakarta-interceptors
+ jakarta-server-pages-javadoc.noarch	Javadoc for jakarta-server-pages
+ jakarta-xml-ws-javadoc.noarch	Javadocs for jakarta-xml-ws
+ jansi-native-javadoc.noarch	Javadocs for jansi-native
+ java-diff-utils.noarch	Java library for performing diff operations
+ java-diff-utils-javadoc.noarch	API documentation for java-diff-utils
+ java-diff-utils-parent.noarch	Java Diff Utils parent POM
+ java-hdf.x86_64	HDF4 java library
+ java-hdf5.x86_64	HDF5 java library
+ java-jd-decompiler.noarch	JAVA library having JAVA decompiler of "Java Decompiler project"
+ java-jd-decompiler-javadoc.noarch	Javadoc for java-jd-decompiler
+ java-kolabformat.x86_64	Java Bindings for libkolabxml
+ java-packaging-howto.noarch	Fedora Java packaging HowTo
+ java-runtime-decompiler-asmtools-plugin.noarch	asmtools disassembler and assembler plugin for java-runtime-decompiler
+ java-runtime-decompiler-asmtools7-plugin.noarch	asmtools7 disassembler and assembler plugin for java-runtime-decompiler
+ java-runtime-decompiler-cfr-plugin.noarch	CFR decompiler plugin for java-runtime-decompiler
+ java-runtime-decompiler-fernflower-plugin.noarch	fernflower decompiler plugin for java-runtime-decompiler
+ java-runtime-decompiler-javadoc.noarch	Javadoc for java-runtime-decompiler
+ java-runtime-decompiler-jd-plugin.noarch	JD decompiler java-runtime-decompiler
+ java-runtime-decompiler-procyon-plugin.noarch	procyon decompiler plugin for java-runtime-decompiler
+ java-scrypt.noarch	Java implementation of scrypt
+ java-scrypt-javadoc.noarch	Javadoc for java-scrypt
+ java-srpm-macros.noarch	RPM macros for building Java source packages
+ java-z3.x86_64	Java interface to z3
+ java_cup.noarch	LALR parser generator for Java
+ java_cup-manual.noarch	Documentation for java_cup
+ javacc.noarch	A parser/scanner generator for java
+ javacc-demo.noarch	Examples for javacc
+ javacc-manual.noarch	Manual for javacc
+ javacc-maven-plugin.noarch	JavaCC Maven Plugin
+ javaewah.noarch	A word-aligned compressed variant of the Java bitset class
+ javaewah-javadoc.noarch	Javadoc for javaewah
+ javapackages-bootstrap.noarch	A means of bootstrapping Java Packages Tools
+ javapackages-common.noarch	Non-essential macros and scripts for Java packaging support
+ javapackages-compat.noarch	Previously deprecated macros and scripts for Java packaging support
+ javapackages-filesystem.noarch	Java packages filesystem layout
+ javapackages-local-openjdk21.noarch	Non-essential macros and scripts for Java packaging support
+ javapackages-local-openjdk25.noarch	Non-essential macros and scripts for Java packaging support
+ javapackages-tools.noarch	Macros and scripts for Java packaging support
+ javaparser.noarch	Java 1 to 13 Parser and Abstract Syntax Tree for Java
+ javapoet.noarch	A Java API for generating .java source files
+ javapoet-javadoc.noarch	Javadoc for javapoet
+ javascriptcoregtk4.1.i686	JavaScript engine from webkit2gtk4.1
+ javascriptcoregtk4.1.x86_64	JavaScript engine from webkit2gtk4.1
+ javascriptcoregtk4.1-devel.i686	Development files for JavaScript engine from webkit2gtk4.1
+ javascriptcoregtk4.1-devel.x86_64	Development files for JavaScript engine from webkit2gtk4.1
+ javascriptcoregtk6.0.i686	JavaScript engine from webkitgtk6.0
+ javascriptcoregtk6.0.x86_64	JavaScript engine from webkitgtk6.0
+ javascriptcoregtk6.0-devel.i686	Development files for JavaScript engine from webkitgtk6.0
+ javascriptcoregtk6.0-devel.x86_64	Development files for JavaScript engine from webkitgtk6.0
+ javassist.noarch	Java Programming Assistant for Java bytecode manipulation
+ javassist-javadoc.noarch	Javadocs for javassist
+ jaxb-api2-javadoc.noarch	Javadoc for jaxb-api2
+ jaxen-javadoc.noarch	Javadoc for jaxen
+ jblas-javadoc.noarch	Javadocs for jblas
+ jcip-annotations-javadoc.noarch	Javadoc for jcip-annotations
+ jericho-html-javadoc.noarch	Javadoc for jericho-html
+ jetty-javadoc.noarch	Javadoc for jetty
+ jglobus-javadoc.noarch	Javadoc for jglobus
+ jgoodies-common-javadoc.noarch	Javadoc for jgoodies-common
+ jgoodies-forms-javadoc.noarch	Javadoc for jgoodies-forms
+ jgoodies-looks-javadoc.noarch	Javadoc for jgoodies-looks
+ jigawatts-javadoc.x86_64	Javadoc for jigawatts
+ jopt-simple-javadoc.noarch	Javadoc for jopt-simple
+ jorbis-javadoc.noarch	Java docs for jorbis
+ jpanoramamaker-javadoc.noarch	Javadocs for jpanoramamaker
+ jssc-javadoc.noarch	Javadoc for jssc package
+ libbase-javadoc.noarch	Javadoc for libbase
+ libfonts-javadoc.noarch	Javadoc for libfonts
+ libformula-javadoc.noarch	Javadoc for libformula
+ libgda5-java.x86_64	Java provider for libgda
+ libidn-java.noarch	Java port of the GNU Libidn library
+ libidn-javadoc.noarch	Javadoc for libidn-java
+ liblayout-javadoc.noarch	Javadoc for liblayout
+ libloader-javadoc.noarch	Javadoc for libloader
+ librepository-javadoc.noarch	Javadoc for librepository
+ libserializer-javadoc.noarch	Javadoc for libserializer
+ libsvm-java.noarch	Java tools and interfaces for libsvm
+ libsvm-javadoc.noarch	Javadoc for libsvm
+ libtree-sitter-java.i686	Java grammar for Tree-sitter
+ libtree-sitter-java.x86_64	Java grammar for Tree-sitter
+ libtree-sitter-java-devel.i686	Development files for libtree-sitter-java
+ libtree-sitter-java-devel.x86_64	Development files for libtree-sitter-java
+ libtree-sitter-javascript.i686	JavaScript grammar for Tree-sitter
+ libtree-sitter-javascript.x86_64	JavaScript grammar for Tree-sitter
+ libtree-sitter-javascript-devel.i686	Development files for libtree-sitter-javascript
+ libtree-sitter-javascript-devel.x86_64	Development files for libtree-sitter-javascript
+ libvirt-java.noarch	Java bindings for the libvirt virtualization API
+ libvirt-java-devel.noarch	Compressed Java source files for libvirt-java
+ libvirt-java-javadoc.noarch	Java documentation for libvirt-java
+ libwebp-java.x86_64	Java bindings for libwebp, a library for the WebP format
+ link-grammar-java.x86_64	Java libraries for liblink-grammar
+ link-grammar-java-devel.x86_64	Support files necessary to compile Java applications with liblink-grammar
+ mapserver-java.x86_64	Java/Mapscript map making extensions to Java
+ mariadb-java-client.noarch	Connects applications developed in Java to MariaDB and MySQL databases
+ mariadb-java-client-tests.noarch	Tests for mariadb-java-client
+ maven-doxia-sitetools-javadoc.noarch	Javadoc for maven-doxia-sitetools
+ maven-invoker-javadoc.noarch	Javadoc for maven-invoker
+ maven-invoker-plugin-javadoc.noarch	Javadoc for maven-invoker-plugin
+ maven-native-javadoc.noarch	Javadoc for maven-native
+ maven-patch-plugin-javadoc.noarch	Javadoc for maven-patch-plugin
+ maven-plugin-tools-java.noarch	Maven Plugin Tool for Java
+ maven-script-interpreter-javadoc.noarch	Javadoc for maven-script-interpreter
+ maven-verifier-plugin-javadoc.noarch	Javadoc for maven-verifier-plugin
+ mecab-java.x86_64	Java binding for MeCab
+ miglayout-javadoc.noarch	Javadocs for MiGLayout
+ nekohtml-javadoc.noarch	Javadoc for nekohtml
+ nom-tam-fits-javadoc.noarch	Javadoc for nom-tam-fits
+ opencv-java.x86_64	Java bindings for apps which use OpenCV
+ openjdk-asmtools-javadoc.noarch	Javadoc for openjdk-asmtools
+ openjdk-asmtools7-javadoc.noarch	Javadoc for openjdk-asmtools7
+ openmpi-java.x86_64	Java library
+ openmpi-java-devel.x86_64	Java development files for openmpi
+ openni-java.x86_64	openni Java library
+ parserng-javadoc.noarch	Javadoc for parserng
+ pentaho-libxml-javadoc.noarch	Javadoc for pentaho-libxml
+ pentaho-reporting-flow-engine-javadoc.noarch	Javadoc for pentaho-reporting-flow-engine
+ perl-Data-JavaScript.noarch	Dump perl data structures into JavaScript code
+ perl-JavaScript-Beautifier.noarch	Beautify Javascript (beautifier for javascript)
+ perl-JavaScript-Minifier.noarch	Perl extension for minifying JavaScript code
+ perl-JavaScript-Minifier-XS.x86_64	XS based JavaScript minifier
+ perl-JavaScript-Minifier-tests.noarch	Tests for perl-JavaScript-Minifier
+ perl-Template-Plugin-JavaScript.noarch	Encodes text to be safe in JavaScript
+ plplot-java.x86_64	Functions for scientific plotting with Java
+ ppl-java.x86_64	The Java interface of the Parma Polyhedra Library
+ ppl-java-javadoc.x86_64	Javadocs for ppl-java
+ protobuf-java.noarch	Java Protocol Buffers runtime library
+ protobuf-javadoc.noarch	Javadoc for protobuf-java
+ protobuf-javalite.noarch	Java Protocol Buffers lite runtime library
+ python3-javapackages.noarch	Module for handling various files for Java packaging
+ python3-javaproperties.noarch	Read & write Java .properties files
+ qdbm-java.x86_64	QDBM Database Library for Java
+ qdbm-javadoc.noarch	API docs for QDBM Database Library Java interface
+ relaxng-datatype-java.noarch	The relaxng datatype library for Java
+ replacer-javadoc.noarch	Javadoc for replacer
+ rundoc-javadoc.noarch	Javadocs for rundoc
+ rust-tree-sitter-java+default-devel.noarch	Java grammar for tree-sitter
+ rust-tree-sitter-java-devel.noarch	Java grammar for tree-sitter
+ rust-tree-sitter-javascript+default-devel.noarch	JavaScript grammar for tree-sitter
+ rust-tree-sitter-javascript-devel.noarch	JavaScript grammar for tree-sitter
+ sac-javadoc.noarch	Javadoc for sac
+ sblim-cim-client-javadoc.noarch	Javadoc for sblim-cim-client
+ sblim-cim-client2-javadoc.noarch	Javadoc for sblim-cim-client2
+ scannotation-javadoc.noarch	Javadoc for scannotation
+ sdljava.x86_64	Java binding to the SDL API
+ sdljava-demo.noarch	Some examples for sdljava
+ sdljava-javadoc.noarch	Javadoc for sdljava
+ sequence-library-javadoc.noarch	Javadocs for sequence-library
+ snip-javadoc.noarch	Javadocs for snip
+ snowball-java.noarch	Stemming algorithms written in Java
+ stringtemplate4-javadoc.noarch	Javadoc for stringtemplate4
+ swi-prolog-java.x86_64	Bidirectional interface between SWI-Prolog and Java
+ system-switch-java.noarch	A tool for changing the default Java toolset
+ systemtap-runtime-java.x86_64	Systemtap Java Runtime Support
+ t-digest-javadoc.noarch	Javadoc for t-digest
+ tagsoup-javadoc.noarch	Javadoc for tagsoup
+ tomcat-jakartaee-migration-javadoc.noarch	Javadoc for tomcat-jakartaee-migration
+ treelayout-javadoc.noarch	Javadoc for treelayout
+ trilead-ssh2-javadoc.noarch	Javadoc for trilead-ssh2
+ tzdata-java.noarch	Timezone data for Java
+ vecmath1.2-javadoc.noarch	Javadoc for vecmath1.2
+ vim-javabrowser.noarch	The javabrowser plugin for VIM editor
+ vim-syntastic-java.noarch	A syntax checker for java programming language
+ voms-api-java.noarch	Virtual Organization Membership Service Java API
+ voms-api-java-javadoc.noarch	Virtual Organization Membership Service Java API Documentation
+ voms-clients-java.noarch	Virtual Organization Membership Service Java clients
+ vtk-java.x86_64	Java bindings for VTK
+ vtk-mpich-java.x86_64	Java bindings for VTK with mpich
+ vtk-openmpi-java.x86_64	Java bindings for VTK with openmpi
+ ws-commons-util-javadoc.noarch	Javadoc for ws-commons-util
+ wsdl4j-javadoc.noarch	Javadoc for wsdl4j
+ xml-maven-plugin-javadoc.noarch	Javadocs for xml-maven-plugin
+ xmlgraphics-commons-javadoc.noarch	Javadoc for xmlgraphics-commons
+ xmlstreambuffer-javadoc.noarch	Javadoc for xmlstreambuffer
+ xz-java.noarch	Java implementation of XZ data compression
+ zbar-java.x86_64	Bar code reader Java library
+Matched fields: name
+ adoptium-temurin-java-repository.noarch	Fedora package repository files for yum and dnf along with gpg public keys
+ ant-antunit-javadoc.noarch	API documentation for ant-antunit
+ antlr3-javadoc.noarch	API documentation for antlr3
+ antlr4-javadoc.noarch	API Documentation for antlr4
+ apache-commons-collections4-javadoc.noarch	API documentation for apache-commons-collections4
+ apache-commons-digester-javadoc.noarch	API documentation for apache-commons-digester
+ apache-commons-pool-javadoc.noarch	API documentation for apache-commons-pool
+ apache-commons-text-javadoc.noarch	API documentation for apache-commons-text
+ apache-commons-vfs-javadoc.noarch	API documentation for apache-commons-vfs
+ apache-ivy-javadoc.noarch	API documentation for apache-ivy
+ apache-sshd-javadoc.noarch	API documentation for apache-sshd
+ args4j-javadoc.noarch	API documentation for args4j
+ bsh-javadoc.noarch	API documentation for bsh
+ decentxml-javadoc.noarch	API documentation for decentxml
+ dirgra-javadoc.noarch	API documentation for dirgra
+ eclipse-swt-javadoc.noarch	API documentation for eclipse-swt
+ exec-maven-plugin-javadoc.noarch	API documentation for exec-maven-plugin
+ fernflower-javadoc.noarch	fernflower API documentation
+ fishbowl-javadoc.noarch	API documentation for fishbowl
+ flexmark-java-all.noarch	All flexmark extension and converter modules
+ flexmark-java-ext-abbreviation.noarch	Flexmark extension for abbreviations in text
+ flexmark-java-ext-admonition.noarch	Flexmark extension for admonition syntax processing
+ flexmark-java-ext-anchorlink.noarch	Flexmark extension to generate anchor links for headers
+ flexmark-java-ext-aside.noarch	Flexmark extension for converting | to aside tags
+ flexmark-java-ext-attributes.noarch	Flexmark extension for attributes
+ flexmark-java-ext-autolink.noarch	Flexmark extension for autolinking
+ flexmark-java-ext-definition.noarch	Flexmark extension for definition list processing
+ flexmark-java-ext-emoji.noarch	Flexmark extension for emoji shortcuts
+ flexmark-java-ext-enumerated-reference.noarch	Flexmark extension for enumerated reference processing
+ flexmark-java-ext-escaped-character.noarch	Flexmark extension for escaped characters
+ flexmark-java-ext-footnotes.noarch	Flexmark extension for footnotes
+ flexmark-java-ext-gfm-issues.noarch	Flexmark extension for GitHub issue syntax
+ flexmark-java-ext-gfm-strikethrough.noarch	Flexmark extension for GitHub strikethrough syntax
+ flexmark-java-ext-gfm-tasklist.noarch	Flexmark extension for GitHub task list items
+ flexmark-java-ext-gfm-users.noarch	Flexmark extension for GitHub user syntax
+ flexmark-java-ext-gitlab.noarch	Flexmark extension for GitLab Flavored Markdown
+ flexmark-java-ext-ins.noarch	Flexmark extension for inserted text
+ flexmark-java-ext-jekyll-front-matter.noarch	Flexmark extension for Jekyll front matter
+ flexmark-java-ext-jekyll-tag.noarch	Flexmark extension for Jekyll tag parsing
+ flexmark-java-ext-macros.noarch	Flexmark extension for processing macros
+ flexmark-java-ext-media-tags.noarch	Flexmark extension for HTML5 media tags
+ flexmark-java-ext-resizable-image.noarch	Flexmark extension to set image size
+ flexmark-java-ext-spec-example.noarch	Flexmark extension for spec test example processing
+ flexmark-java-ext-superscript.noarch	Flexmark extension for superscript processing
+ flexmark-java-ext-tables.noarch	Flexmark extension for tables
+ flexmark-java-ext-toc.noarch	Flexmark extension for table of contents
+ flexmark-java-ext-typographic.noarch	Flexmark extension for typographic processing
+ flexmark-java-ext-wikilink.noarch	Flexmark extension for wiki links
+ flexmark-java-ext-xwiki-macros.noarch	Flexmark extension for xwiki application-specific macros
+ flexmark-java-ext-yaml-front-matter.noarch	Flexmark extension for YAML front matter
+ flexmark-java-ext-youtube-embedded.noarch	Flexmark extension for YouTube links
+ flexmark-java-ext-zzzzzz.noarch	Flexmark extension for zzzzzz
+ flexmark-java-html2md-converter.noarch	Flexmark HTML to Markdown extensible converter
+ flexmark-java-jira-converter.noarch	Convert flexmark AST to Jira formatted text
+ flexmark-java-osgi.noarch	Flexmark OSGi bundle
+ flexmark-java-test-util.noarch	Flexmark test utilities
+ flexmark-java-tree-iteration.noarch	Flexmark library for recursive tree iteration
+ flexmark-java-util.noarch	Flexmark utility classes
+ flexmark-java-util-ast.noarch	Flexmark AST utilities
+ flexmark-java-util-builder.noarch	Flexmark builder utilities
+ flexmark-java-util-collection.noarch	Flexmark collection utilities
+ flexmark-java-util-data.noarch	Flexmark data utilities
+ flexmark-java-util-dependency.noarch	Flexmark dependency utilities
+ flexmark-java-util-experimental.noarch	Flexmark experimental utilities
+ flexmark-java-util-format.noarch	Flexmark format utilities
+ flexmark-java-util-html.noarch	Flexmark HTML utilities
+ flexmark-java-util-misc.noarch	Flexmark miscellaneous utilities
+ flexmark-java-util-options.noarch	Flexmark options utilities
+ flexmark-java-util-sequence.noarch	Flexmark sequence utilities
+ flexmark-java-util-visitor.noarch	Flexmark visitor utilities
+ flexmark-java-youtrack-converter.noarch	Flexmark extension for YouTrack conversion
+ icedtea-web-javadoc.noarch	API documentation for IcedTea-Web
+ icu4j-javadoc.noarch	API documentation for icu4j
+ jacoco-javadoc.noarch	API documentation for jacoco
+ jakarta-json-javadoc.noarch	API documentation for jakarta-json
+ jakarta-saaj-javadoc.noarch	API documentation for jakarta-saaj
+ janino-javadoc.noarch	API documentation for janino
+ jansi1-javadoc.noarch	API documentation for jansi1
+ java-21-openjdk.x86_64	OpenJDK 21 Runtime Environment
+ java-21-openjdk-demo.x86_64	OpenJDK 21 Demos
+ java-21-openjdk-demo-fastdebug.x86_64	OpenJDK 21 Demos optimised with full debugging on
+ java-21-openjdk-demo-slowdebug.x86_64	OpenJDK 21 Demos unoptimised with full debugging on
+ java-21-openjdk-devel.x86_64	OpenJDK 21 Development Environment
+ java-21-openjdk-devel-fastdebug.x86_64	OpenJDK 21 Development Environment optimised with full debugging on
+ java-21-openjdk-devel-slowdebug.x86_64	OpenJDK 21 Development Environment unoptimised with full debugging on
+ java-21-openjdk-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless.x86_64	OpenJDK 21 Headless Runtime Environment
+ java-21-openjdk-headless-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-javadoc.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-javadoc-zip.x86_64	OpenJDK 21 API documentation compressed in a single archive
+ java-21-openjdk-jmods.x86_64	JMods for OpenJDK 21
+ java-21-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 21 optimised with full debugging on
+ java-21-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 21 unoptimised with full debugging on
+ java-21-openjdk-portable.x86_64	OpenJDK 21 Runtime Environment portable edition
+ java-21-openjdk-portable-devel.x86_64	OpenJDK 21 Development Environment portable edition
+ java-21-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-docs.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-portable-fastdebug.x86_64	OpenJDK 21 Runtime Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-misc.x86_64	OpenJDK 21 miscellany
+ java-21-openjdk-portable-slowdebug.x86_64	OpenJDK 21 Runtime Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-sources.x86_64	OpenJDK 21 full patched sources of portable JDK
+ java-21-openjdk-portable-static-libs.x86_64	OpenJDK 21 libraries for static linking - portable edition
+ java-21-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition optimised with full debugging on
+ java-21-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition unoptimised with full debugging on
+ java-21-openjdk-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-src.x86_64	OpenJDK 21 Source Bundle
+ java-21-openjdk-src-fastdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and optimisation
+ java-21-openjdk-src-slowdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and no optimisation
+ java-21-openjdk-static-libs.x86_64	OpenJDK 21 libraries for static linking
+ java-21-openjdk-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking optimised with full debugging on
+ java-21-openjdk-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking unoptimised with full debugging on
+ java-25-openjdk.x86_64	OpenJDK 25 Runtime Environment
+ java-25-openjdk-demo.x86_64	OpenJDK 25 Demos
+ java-25-openjdk-demo-fastdebug.x86_64	OpenJDK 25 Demos optimised with full debugging on
+ java-25-openjdk-demo-slowdebug.x86_64	OpenJDK 25 Demos unoptimised with full debugging on
+ java-25-openjdk-devel.x86_64	OpenJDK 25 Development Environment
+ java-25-openjdk-devel-fastdebug.x86_64	OpenJDK 25 Development Environment optimised with full debugging on
+ java-25-openjdk-devel-slowdebug.x86_64	OpenJDK 25 Development Environment unoptimised with full debugging on
+ java-25-openjdk-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-25-openjdk-headless.x86_64	OpenJDK 25 Headless Runtime Environment
+ java-25-openjdk-headless-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-25-openjdk-headless-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-25-openjdk-javadoc.x86_64	OpenJDK 25 API documentation
+ java-25-openjdk-javadoc-zip.x86_64	OpenJDK 25 API documentation compressed in a single archive
+ java-25-openjdk-jmods.x86_64	JMods for OpenJDK 25
+ java-25-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 25 optimised with full debugging on
+ java-25-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 25 unoptimised with full debugging on
+ java-25-openjdk-portable.x86_64	OpenJDK 25 Runtime Environment portable edition
+ java-25-openjdk-portable-devel.x86_64	OpenJDK 25 Development Environment portable edition
+ java-25-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 25 Runtime and Development Environment portable edition optimised with full debugging on
+ java-25-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 25 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-25-openjdk-portable-docs.x86_64	OpenJDK 25 API documentation
+ java-25-openjdk-portable-fastdebug.x86_64	OpenJDK 25 Runtime Environment portable edition optimised with full debugging on
+ java-25-openjdk-portable-misc.x86_64	OpenJDK 25 miscellany
+ java-25-openjdk-portable-slowdebug.x86_64	OpenJDK 25 Runtime Environment portable edition unoptimised with full debugging on
+ java-25-openjdk-portable-sources.x86_64	OpenJDK 25 full patched sources of portable JDK
+ java-25-openjdk-portable-static-libs.x86_64	OpenJDK 25 libraries for static linking - portable edition
+ java-25-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking - portable edition optimised with full debugging on
+ java-25-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking - portable edition unoptimised with full debugging on
+ java-25-openjdk-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-25-openjdk-src.x86_64	OpenJDK 25 Source Bundle
+ java-25-openjdk-src-fastdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and optimisation
+ java-25-openjdk-src-slowdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and no optimisation
+ java-25-openjdk-static-libs.x86_64	OpenJDK 25 libraries for static linking
+ java-25-openjdk-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking optimised with full debugging on
+ java-25-openjdk-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking unoptimised with full debugging on
+ java-jd-decompiler-core.noarch	Main library with decompiler
+ java-latest-openjdk.x86_64	OpenJDK 25 Runtime Environment
+ java-latest-openjdk-demo.x86_64	OpenJDK 25 Demos
+ java-latest-openjdk-demo-fastdebug.x86_64	OpenJDK 25 Demos optimised with full debugging on
+ java-latest-openjdk-demo-slowdebug.x86_64	OpenJDK 25 Demos unoptimised with full debugging on
+ java-latest-openjdk-devel.x86_64	OpenJDK 25 Development Environment
+ java-latest-openjdk-devel-fastdebug.x86_64	OpenJDK 25 Development Environment optimised with full debugging on
+ java-latest-openjdk-devel-slowdebug.x86_64	OpenJDK 25 Development Environment unoptimised with full debugging on
+ java-latest-openjdk-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-latest-openjdk-headless.x86_64	OpenJDK 25 Headless Runtime Environment
+ java-latest-openjdk-headless-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-latest-openjdk-headless-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-latest-openjdk-javadoc.x86_64	OpenJDK 25 API documentation
+ java-latest-openjdk-javadoc-zip.x86_64	OpenJDK 25 API documentation compressed in a single archive
+ java-latest-openjdk-jmods.x86_64	JMods for OpenJDK 25
+ java-latest-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 25 optimised with full debugging on
+ java-latest-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 25 unoptimised with full debugging on
+ java-latest-openjdk-portable.x86_64	OpenJDK 24 Runtime Environment portable edition
+ java-latest-openjdk-portable-devel.x86_64	OpenJDK 24 Development Environment portable edition
+ java-latest-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 24 Runtime and Development Environment portable edition optimised with full debugging on
+ java-latest-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 24 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-latest-openjdk-portable-docs.x86_64	OpenJDK 24 API documentation
+ java-latest-openjdk-portable-fastdebug.x86_64	OpenJDK 24 Runtime Environment portable edition optimised with full debugging on
+ java-latest-openjdk-portable-misc.x86_64	OpenJDK 24 miscellany
+ java-latest-openjdk-portable-slowdebug.x86_64	OpenJDK 24 Runtime Environment portable edition unoptimised with full debugging on
+ java-latest-openjdk-portable-sources.x86_64	OpenJDK 24 full patched sources of portable JDK
+ java-latest-openjdk-portable-static-libs.x86_64	OpenJDK 24 libraries for static linking - portable edition
+ java-latest-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 24 libraries for static linking - portable edition optimised with full debugging on
+ java-latest-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 24 libraries for static linking - portable edition unoptimised with full debugging on
+ java-latest-openjdk-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-latest-openjdk-src.x86_64	OpenJDK 25 Source Bundle
+ java-latest-openjdk-src-fastdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and optimisation
+ java-latest-openjdk-src-slowdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and no optimisation
+ java-latest-openjdk-static-libs.x86_64	OpenJDK 25 libraries for static linking
+ java-latest-openjdk-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking optimised with full debugging on
+ java-latest-openjdk-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking unoptimised with full debugging on
+ java-runtime-decompiler.noarch	Application for extraction and decompilation of JVM byte code
+ jchardet-javadoc.noarch	API documentation for jchardet
+ jdependency-javadoc.noarch	API documentation for jdependency
+ jetbrains-annotations-javadoc.noarch	API documentation for jetbrains-annotations
+ jfreechart-javadoc.noarch	API documentation for jfreechart
+ jline2-javadoc.noarch	API documentation for jline2
+ jmock-javadoc.noarch	API documentation for jmock
+ jol-javadoc.noarch	API documentation for jol
+ jsch-agent-proxy-javadoc.noarch	API documentation for jsch-agent-proxy
+ json_simple-javadoc.noarch	API documentation for json_simple
+ jtidy-javadoc.noarch	API documentation for jtidy
+ juniversalchardet-javadoc.noarch	API documentation for juniversalchardet
+ l10n-maven-plugin-javadoc.noarch	API documentation for l10n-maven-plugin
+ maven-archetype-javadoc.noarch	API documentation for maven-archetype
+ maven-clean-plugin-javadoc.noarch	API documentation for maven-clean-plugin
+ maven-doxia-javadoc.noarch	API documentation for maven-doxia
+ maven-reporting-api-javadoc.noarch	API documentation for maven-reporting-api
+ maven-reporting-impl-javadoc.noarch	API documentation for maven-reporting-impl
+ maven-shade-plugin-javadoc.noarch	API documentation for maven-shade-plugin
+ mojo-executor-javadoc.noarch	API documentation for mojo-executor
+ mxparser-javadoc.noarch	API documentation for mxparser
+ mysql-connector-java.noarch	Official JDBC driver for MySQL
+ options-javadoc.noarch	API documentation for options
+ pdftk-java.noarch	GCJ-free toolkit for manipulating PDF documents
+ plexus-i18n-javadoc.noarch	API documentation for plexus-i18n
+ plexus-velocity-javadoc.noarch	API documentation for plexus-velocity
+ plplot-java-devel.x86_64	Development files for using PLplot GNOME
+ protobuf-java-util.noarch	Utilities for Protocol Buffers
+ reflections-javadoc.noarch	API documentation for reflections
+ rhino-javadoc.noarch	API documentation for rhino
+ spec-version-maven-plugin-javadoc.noarch	API documentation for spec-version-maven-plugin
+ string-template-maven-plugin-javadoc.noarch	API documentation for string-template-maven-plugin
+ stringtemplate-javadoc.noarch	API documentation for stringtemplate
+ subversion-javahl.noarch	JNI bindings to the Subversion libraries
+ system-rules-javadoc.noarch	API documentation for system-rules
+ xbean-javadoc.noarch	API documentation for xbean
+ xmlpull-javadoc.noarch	API documentation for xmlpull
+ xmvn-connector-ivy-javadoc.noarch	API documentation for xmvn-connector-ivy
+ xstream-javadoc.noarch	API documentation for xstream
+Matched fields: summary
+ BareBonesBrowserLaunch.noarch	Simple library to launch a browser window from Java
+ CFR.noarch	CFR - Another Java Decompiler
+ CardManager.noarch	Java application to allows you to play any, especially collectible, card game
+ JUnitParams.noarch	Parameterized Java tests
+ R-DT.noarch	R Wrapper of the JavaScript Library 'DataTables'
+ R-V8.x86_64	Embedded JavaScript and WebAssembly Engine for R
+ R-core-devel.i686	Core files for development of R packages (no Java)
+ R-core-devel.x86_64	Core files for development of R packages (no Java)
+ R-jose.noarch	JavaScript Object Signing and Encryption
+ anjuta.x86_64	GNOME IDE for various programming languages (including C/C++, Python, Vala and JavaScript)
+ ant.noarch	Java build tool
+ aopalliance.noarch	Java/J2EE AOP standards
+ apache-commons-beanutils.noarch	Java utility methods for accessing and modifying the properties of arbitrary JavaBeans
+ apache-commons-cli.noarch	Command Line Interface Library for Java
+ apache-commons-collections.noarch	Provides new interfaces, implementations and utilities for Java Collections
+ apache-commons-collections4.noarch	Extension of the Java Collections Framework
+ apache-commons-compress.noarch	Java API for working with compressed files and archivers
+ apache-commons-digester.noarch	XML to Java object mapping module
+ apache-commons-exec.noarch	Java library to reliably execute external processes from within the JVM
+ apache-commons-lang3.noarch	Provides a host of helper utilities for the java.lang API
+ apache-commons-math.noarch	Java library of lightweight mathematics and statistics components
+ apache-commons-net.noarch	Internet protocol suite Java library
+ apache-ivy.noarch	Java-based dependency manager
+ apiguardian.noarch	API Guardian Java annotation
+ args4j.noarch	Java command line arguments parser
+ auto.noarch	Collection of source code generators for Java
+ batik.noarch	Scalable Vector Graphics for Java
+ beust-jcommander.noarch	Java framework for parsing command line parameters
+ bouncycastle.noarch	Bouncy Castle Cryptography APIs for Java
+ brazil.noarch	Extremely small footprint Java HTTP stack
+ bsh.noarch	Lightweight Scripting for Java
+ byaccj.x86_64	Parser Generator with Java Extension
+ byte-buddy.noarch	Runtime code generation for the Java virtual machine
+ byte-buddy-agent.noarch	Byte Buddy Java agent
+ byteman.noarch	Java agent-based bytecode injection tool
+ cglib.noarch	Code Generation Library for Java
+ cjose.i686	C library implementing the Javascript Object Signing and Encryption (JOSE)
+ cjose.x86_64	C library implementing the Javascript Object Signing and Encryption (JOSE)
+ cjs.x86_64	Javascript Bindings for Cinnamon
+ classloader-leak-test-framework.noarch	Detection and verification of Java ClassLoader leaks
+ classpathless-compiler.noarch	Tool for recompiling java sources with customizable class providers
+ clojure.noarch	A dynamic programming language that targets the Java Virtual Machine
+ cortado.noarch	Java media framework
+ dogtag-jss.x86_64	Java Security Services (JSS)
+ dogtag-jss-tests.x86_64	Java Security Services (JSS) Tests
+ dogtag-jss-tomcat.x86_64	Java Security Services (JSS) Connector for Tomcat
+ dogtag-jss-tools.x86_64	Java Security Services (JSS) Tools
+ dola.noarch	Declarative system for Java RPM packaging
+ dola-generator.noarch	RPM dependency generator for Java
+ dom4j.noarch	Open Source XML framework for Java
+ domtt.noarch	DOM Tooltip (aka domTT) is a Javascript widget
+ duktape.i686	Embeddable Javascript engine
+ duktape.x86_64	Embeddable Javascript engine
+ ecj.noarch	Eclipse Compiler for Java
+ enjarify.noarch	Translate Dalvik bytecode to equivalent Java bytecode
+ erlang-jinterface.x86_64	A library for accessing Java from Erlang
+ fernflower.noarch	JIdea's java decompiler
+ fishbowl.noarch	A collection of helper methods for dealing with exceptions in Java 8
+ flute.noarch	Java CSS parser using SAC
+ fontawesome-fonts-web.noarch	Iconic font set, JavaScript and SVG files
+ geos.i686	GEOS is a C++ port of the Java Topology Suite
+ geos.x86_64	GEOS is a C++ port of the Java Topology Suite
+ ghc-hjsmin.x86_64	Haskell implementation of a javascript minifier
+ ghc-language-ecmascript.x86_64	JavaScript parser and pretty-printer library
+ gjs.i686	Javascript Bindings for GNOME
+ gjs.x86_64	Javascript Bindings for GNOME
+ gnome-js-common.noarch	Common modules for GNOME JavaScript interpreters
+ golang-github-dvsekhvalnov-jose2go-devel.noarch	Go implementation of Javascript Object Signing and Encryption specification
+ golang-github-evanw-esbuild.x86_64	Fast JavaScript bundler and minifier
+ golang-github-evanw-esbuild-0.8.20-devel.noarch	Fast JavaScript bundler and minifier
+ golang-github-evanw-esbuild-devel.noarch	Fast JavaScript bundler and minifier
+ golang-github-magiconair-properties-devel.noarch	Java properties scanner for Go
+ golang-github-robertkrimen-otto-devel.noarch	JavaScript interpreter in Go
+ google-gson.noarch	Java lib for conversion of Java objects into JSON representation
+ google-guice.noarch	Lightweight dependency injection framework for Java 5 and above
+ guava.noarch	Google Core Libraries for Java
+ hibernate-jpa-2.0-api.noarch	Java Persistence 2.0 (JSR 317) API
+ httpcomponents-core.noarch	Set of low level Java HTTP transport components for HTTP services
+ icedtea-web.x86_64	Open Source implementation of JSR-56 better known as Java Web Start
+ icu4j.noarch	International Components for Unicode for Java
+ imagej.noarch	Image Processing and Analysis in Java
+ jFormatString.noarch	Java format string compile-time checker
+ jacoco.noarch	Java Code Coverage for Eclipse
+ jakarta-saaj.noarch	SOAP with Attachments API for Java
+ janino.noarch	Super-small, super-fast Java compiler
+ jansi.x86_64	Generate and interpret ANSI escape sequences in Java
+ jansi1.noarch	Generate and interpret ANSI escape sequences in Java
+ janus-plugins-duktape.x86_64	A simple bridge to JavaScript via Duktape for janus
+ japron.x86_64	Java interface to APRON
+ jaxen.noarch	An XPath engine written in Java
+ jblas.x86_64	Java bindings for BLAS
+ jboss-jaxrs-2.0-api.noarch	JAX-RS 2.0: The Java API for RESTful Web Services
+ jchardet.noarch	Java port of Mozilla's automatic character set detection algorithm
+ jctools.noarch	Java Concurrency Tools for the JVM
+ jcuber.noarch	CUBE reader for Java
+ jd-core.noarch	JD java decompiler library
+ jdeparser.noarch	Source generator library for Java
+ jdepend.noarch	Java Design Quality Metrics
+ jdependency.noarch	Class dependency analysis library for Java
+ jdom.noarch	Java alternative to DOM and SAX
+ jdom2.noarch	Java manipulation of XML made easy
+ jericho-html.noarch	Java library allowing analysis and manipulation of parts of an HTML document
+ jetty.noarch	Java Webserver and Servlet Container
+ jfreechart.noarch	A 2D chart library for Java applications (JavaFX, Swing or server-side)
+ jglobus-gram.noarch	Globus Java - Grid Resource Allocation and Management (GRAM)
+ jglobus-gridftp.noarch	Globus Java - GridFTP
+ jglobus-gss.noarch	Globus Java - GSS-API implementation for SSL with proxies
+ jglobus-io.noarch	Globus Java - IO
+ jglobus-jsse.noarch	Globus Java - SSL support
+ jglobus-myproxy.noarch	Globus Java - MyProxy
+ jglobus-parent.noarch	Globus Java - parent pom file
+ jglobus-ssl-proxies.noarch	Globus Java - SSL and proxy certificate support
+ jgoodies-forms.noarch	Framework to lay out and implement elegant Swing panels in Java
+ jigawatts.x86_64	Java CRIU helper
+ jline.x86_64	Java library for handling console input
+ jline2.noarch	Java library for handling console input
+ jmock.noarch	Java library for testing code with mock objects
+ jna.x86_64	Pure Java access to native libraries
+ jol-cli.noarch	Java Object Layout command line interface
+ jol-core.noarch	Java Object Layout core classes
+ jol-parent.noarch	Java Object Layout parent POM
+ jopt-simple.noarch	A Java command line parser
+ jorbis.noarch	Pure Java Ogg Vorbis Decoder
+ jorbis-player.noarch	Java applet for playing ogg-vorbis files from a browser
+ js-Locale-TextDomain-OO-Util.noarch	Lexical Utils for Locale::TextDomain::OO in JavaScript
+ js-backbone.noarch	Models, Views, Collections and Events for JavaScript applications
+ js-doxygen.noarch	Javascript files used by Doxygen
+ js-jquery.noarch	JavaScript DOM manipulation, event handling, and AJAX library
+ js-jsroot.noarch	JavaScript ROOT - Interactive numerical data analysis graphics
+ js-marked.noarch	Minified markdown parser for JavaScript built for speed
+ js-uglify.noarch	JavaScript parser, mangler/compressor and beautifier toolkit - core library
+ js-underscore.noarch	JavaScript's functional programming helper library
+ jsch.noarch	Pure Java implementation of SSH2
+ json-glib.i686	Library for JavaScript Object Notation format
+ json-glib.x86_64	Library for JavaScript Object Notation format
+ json_simple.noarch	Simple Java toolkit for JSON
+ jsoup.noarch	Java library for working with real-world HTML
+ jsr-305.noarch	Correctness annotations for Java code
+ jssc.x86_64	Java Simple Serial Connector
+ junit.noarch	Java regression test package
+ junit5.noarch	Java regression testing framework
+ juniversalchardet.noarch	Java character encoding detection
+ jurand.x86_64	A tool for manipulating Java symbols
+ jzlib.noarch	Re-implementation of zlib in pure Java
+ kf5-kjs.i686	KDE Frameworks 5 Tier 3 functional module with JavaScript interpreter
+ kf5-kjs.x86_64	KDE Frameworks 5 Tier 3 functional module with JavaScript interpreter
+ kojan-xml.noarch	Java library for modeling data in XML format
+ libjwt.i686	A Javascript Web Token library in C
+ libjwt.x86_64	A Javascript Web Token library in C
+ libreoffice-officebean.x86_64	JavaBean for LibreOffice Components
+ libreoffice-officebean-common.noarch	Common JavaBean for LibreOffice Components
+ libsvm-devel.i686	Development files for libsvm in C, C++ and Java
+ libsvm-devel.x86_64	Development files for libsvm in C, C++ and Java
+ log4j.noarch	Java logging package
+ lujavrite.x86_64	Lua library for calling Java code
+ mathjax.noarch	JavaScript library to render math in the browser
+ mathjax3.noarch	JavaScript library to render math in the browser
+ maven.noarch	Java project management and project comprehension tool
+ maven-plugin-annotations.noarch	Maven Plugin Java 5 Annotations
+ maven4.noarch	Java project management and project comprehension tool
+ mockito.noarch	Tasty mocking framework for unit tests in Java
+ moditect.noarch	Tooling for the Java Module System
+ mozilla-noscript.noarch	JavaScript white list extension for Mozilla Firefox
+ mozjs115.i686	SpiderMonkey JavaScript library
+ mozjs115.x86_64	SpiderMonkey JavaScript library
+ mozjs128.i686	SpiderMonkey JavaScript library
+ mozjs128.x86_64	SpiderMonkey JavaScript library
+ mozjs140.i686	SpiderMonkey JavaScript library
+ mozjs140.x86_64	SpiderMonkey JavaScript library
+ msv-xsdlib.noarch	Java implementation of W3C’s XML Schema Part 2
+ mujs.i686	An embeddable Javascript interpreter
+ mujs.x86_64	An embeddable Javascript interpreter
+ nodejs.i686	JavaScript runtime
+ nodejs.x86_64	JavaScript runtime
+ nodejs-antlr4.noarch	ANTLR runtime for JavaScript
+ nodejs-backbone.noarch	Models, Views, Collections, and Events for JavaScript applications (Nodejs module)
+ nodejs-devel.i686	JavaScript runtime - development headers
+ nodejs-devel.x86_64	JavaScript runtime - development headers
+ nodejs-marked.noarch	A markdown parser for JavaScript built for speed
+ nodejs-underscore.noarch	JavaScript's functional programming helper library
+ nodejs20.i686	JavaScript runtime
+ nodejs20.x86_64	JavaScript runtime
+ nodejs20-devel.i686	JavaScript runtime - development headers
+ nodejs20-devel.x86_64	JavaScript runtime - development headers
+ nodejs24.x86_64	JavaScript runtime
+ nodejs24-devel.x86_64	JavaScript runtime – development headers
+ nom-tam-fits.noarch	Java library for reading and writing FITS files
+ objectweb-asm.noarch	Java bytecode manipulation and analysis framework
+ objenesis.noarch	A library for instantiating Java objects
+ ocaml-atdj.x86_64	Java code generation for ATD
+ ongres-scram.noarch	Salted Challenge Response Authentication Mechanism (SCRAM) - Java Implementation
+ ongres-stringprep.noarch	RFC 3454 Preparation of Internationalized Strings in pure Java
+ openjdk-asmtools.noarch	Set of tools used to assemble / disassemble proper and improper Java .class files
+ openjdk-asmtools7.noarch	Set of tools used to assemble / disassemble proper and improper Java .class files for JDK version 11 and lesser
+ openjfx.x86_64	Rich client application platform for Java
+ osslsigncode.x86_64	OpenSSL based Authenticode signing for PE/MSI/Java CAB files
+ perl-Class-Inner.noarch	A perlish implementation of Java like inner classes
+ perl-Code-TidyAll-Plugin-JSBeautifier.noarch	Use JavaScript::Beautifier with tidyall
+ perl-File-PathList.noarch	Find a file within a set of paths (like @INC or Java classpaths)
+ perl-HTML-TreeBuilderX-ASP_NET.noarch	Scrape ASP.NET/VB.NET sites which utilize Javascript POST-backs
+ perl-JSON.noarch	Parse and convert to JSON (JavaScript Object Notation)
+ perl-Jemplate.noarch	JavaScript Templating with Template Toolkit
+ perl-Mojolicious-Plugin-AssetPack.noarch	Compress and convert CSS, Less, Sass, JavaScript and CoffeeScript files
+ php-oojs-oojs-ui.noarch	Object-Oriented JavaScript – User Interface
+ php-patchwork-jsqueeze.noarch	Efficient JavaScript minification
+ php-splitbrain-php-jsstrip.noarch	PHP-based JavaScript compressor
+ picocli.noarch	Java command line parser with both an annotations API and a programmatic API
+ pki-resteasy.noarch	Framework for RESTful Web services and Java applications
+ procyon.noarch	procyon java decompiler and other tools
+ procyon-decompiler.noarch	procyon-decompiler is a front-end for the Java decompiler
+ python-rjsmin-docs.x86_64	Javascript Minifier - docs
+ python3-XStatic-Angular-FileUpload.noarch	Angular-FileUpload JavaScript library (XStatic packaging standard)
+ python3-XStatic-DataTables.noarch	DataTables jquery javascript framework (XStatic packaging standard)
+ python3-django-compressor.noarch	Compresses linked and inline JavaScript or CSS into single cached files
+ python3-enjarify.noarch	Translate Dalvik bytecode to equivalent Java bytecode
+ python3-jsmin.noarch	JavaScript minifier
+ python3-mockito.noarch	Python spying framework inspired by Java's Mockito
+ python3-munch.noarch	A dot-accessible dictionary (a la JavaScript objects)
+ python3-pyjnius.x86_64	Dynamic access to Java classes from Python
+ python3-rjsmin.x86_64	Javascript Minifier
+ reflections.noarch	Java run-time meta-data analysis
+ rsyntaxtextarea.noarch	A syntax highlighting, code folding text editor for Java Swing applications
+ rubygem-ejs.noarch	EJS (Embedded JavaScript) template compiler
+ rubygem-execjs.noarch	Run JavaScript code from Ruby
+ rubygem-importmap-rails.noarch	Manage modern JavaScript in Rails without transpiling or bundling
+ rubygem-turbolinks-source.noarch	Turbolinks JavaScript assets
+ rust-josekit+default-devel.noarch	JOSE (Javascript Object Signing and Encryption) library for Rust
+ rust-josekit-devel.noarch	JOSE (Javascript Object Signing and Encryption) library for Rust
+ rust-lzma-rust2+crc-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+default-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+encoder-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+lzip-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+optimization-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+sha2-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+std-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2+xz-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-lzma-rust2-devel.noarch	LZMA / LZMA2 / LZIP / XZ compression ported from 'tukaani xz for java'
+ rust-moka+async-lock-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+default-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+event-listener-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+future-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+futures-util-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+log-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+logging-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+once_cell-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+quanta-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka+sync-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ rust-moka-devel.noarch	Fast and concurrent cache library inspired by Java Caffeine
+ sac.noarch	Java standard interface for CSS parser
+ sblim-cim-client.noarch	Java CIM Client library
+ sblim-cim-client2.noarch	Java CIM Client library
+ scannotation.noarch	A Java annotation scanner
+ slf4j.noarch	Simple Logging Facade for Java
+ slf4j2.noarch	Simple Logging Facade for Java
+ stringtemplate.noarch	A Java template engine
+ stringtemplate4.noarch	A Java template engine
+ system-rules.noarch	A collection of JUnit rules for testing code which uses java.lang.System
+ tagsoup.noarch	A SAX-compliant HTML parser written in Java
+ tesseract-langpack-jav.noarch	Javanese language data for tesseract-tessdata
+ testng.noarch	Java-based testing framework
+ texlive-documentation.noarch	Documentation support for C, Java and assembler code
+ texlive-ocgx.noarch	Use OCGs within a PDF document without JavaScript
+ texlive-texosquery.noarch	Cross-platform Java application to query OS information
+ tomcat-jsp-3.1-api.noarch	Apache Tomcat JavaServer Pages v3.1 API Implementation Classes
+ tomcat-servlet-6.0-api.noarch	Apache Tomcat Java Servlet v6.0 API Implementation Classes
+ treelayout.noarch	Efficient and customizable Tree Layout Algorithm in Java
+ trilead-ssh2.noarch	SSH-2 protocol implementation in pure Java
+ typescript.noarch	A language for application-scale JavaScript
+ uglify-js.noarch	JavaScript parser, mangler/compressor and beautifier toolkit
+ univocity-parsers.noarch	Collection of parsers for Java
+ v8-314.i686	JavaScript Engine
+ v8-314.x86_64	JavaScript Engine
+ vdr-live-data.noarch	Images, themes and JavaScript for vdr-live
+ vecmath1.2.noarch	Free version of vecmath from the Java3D 1.2 specification
+ velocity.noarch	Java-based template engine
+ wsdl4j.noarch	Web Services Description Language Toolkit for Java
+ xalan-j2.noarch	Java XSLT processor
+ xbean.noarch	Java plugin based web server
+ xerces-j2.noarch	Java XML parser
+ xmvn-generator.noarch	RPM dependency generator for Java
+ xstatic-angular-fileupload-common.noarch	Angular-FileUpload (XStatic packaging standard) JavaScript library
+ xstatic-datatables-common.noarch	DataTables jquery javascript framework (XStatic packaging standard)
+ xstream.noarch	Java XML serialization library
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf search jdk
+Updating and loading repositories:
+Repositories loaded.
+Matched fields: name, summary
+ ant-openjdk21.noarch	ant binding for openjdk21
+ ant-openjdk25.noarch	ant binding for openjdk25
+ commons-compiler-jdk.noarch	Commons Compiler JDK
+ java-21-openjdk.x86_64	OpenJDK 21 Runtime Environment
+ java-21-openjdk-demo.x86_64	OpenJDK 21 Demos
+ java-21-openjdk-demo-fastdebug.x86_64	OpenJDK 21 Demos optimised with full debugging on
+ java-21-openjdk-demo-slowdebug.x86_64	OpenJDK 21 Demos unoptimised with full debugging on
+ java-21-openjdk-devel.x86_64	OpenJDK 21 Development Environment
+ java-21-openjdk-devel-fastdebug.x86_64	OpenJDK 21 Development Environment optimised with full debugging on
+ java-21-openjdk-devel-slowdebug.x86_64	OpenJDK 21 Development Environment unoptimised with full debugging on
+ java-21-openjdk-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless.x86_64	OpenJDK 21 Headless Runtime Environment
+ java-21-openjdk-headless-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-javadoc.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-javadoc-zip.x86_64	OpenJDK 21 API documentation compressed in a single archive
+ java-21-openjdk-jmods.x86_64	JMods for OpenJDK 21
+ java-21-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 21 optimised with full debugging on
+ java-21-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 21 unoptimised with full debugging on
+ java-21-openjdk-portable.x86_64	OpenJDK 21 Runtime Environment portable edition
+ java-21-openjdk-portable-devel.x86_64	OpenJDK 21 Development Environment portable edition
+ java-21-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-docs.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-portable-fastdebug.x86_64	OpenJDK 21 Runtime Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-misc.x86_64	OpenJDK 21 miscellany
+ java-21-openjdk-portable-slowdebug.x86_64	OpenJDK 21 Runtime Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-sources.x86_64	OpenJDK 21 full patched sources of portable JDK
+ java-21-openjdk-portable-static-libs.x86_64	OpenJDK 21 libraries for static linking - portable edition
+ java-21-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition optimised with full debugging on
+ java-21-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition unoptimised with full debugging on
+ java-21-openjdk-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-src.x86_64	OpenJDK 21 Source Bundle
+ java-21-openjdk-src-fastdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and optimisation
+ java-21-openjdk-src-slowdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and no optimisation
+ java-21-openjdk-static-libs.x86_64	OpenJDK 21 libraries for static linking
+ java-21-openjdk-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking optimised with full debugging on
+ java-21-openjdk-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking unoptimised with full debugging on
+ java-25-openjdk.x86_64	OpenJDK 25 Runtime Environment
+ java-25-openjdk-demo.x86_64	OpenJDK 25 Demos
+ java-25-openjdk-demo-fastdebug.x86_64	OpenJDK 25 Demos optimised with full debugging on
+ java-25-openjdk-demo-slowdebug.x86_64	OpenJDK 25 Demos unoptimised with full debugging on
+ java-25-openjdk-devel.x86_64	OpenJDK 25 Development Environment
+ java-25-openjdk-devel-fastdebug.x86_64	OpenJDK 25 Development Environment optimised with full debugging on
+ java-25-openjdk-devel-slowdebug.x86_64	OpenJDK 25 Development Environment unoptimised with full debugging on
+ java-25-openjdk-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-25-openjdk-headless.x86_64	OpenJDK 25 Headless Runtime Environment
+ java-25-openjdk-headless-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-25-openjdk-headless-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-25-openjdk-javadoc.x86_64	OpenJDK 25 API documentation
+ java-25-openjdk-javadoc-zip.x86_64	OpenJDK 25 API documentation compressed in a single archive
+ java-25-openjdk-jmods.x86_64	JMods for OpenJDK 25
+ java-25-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 25 optimised with full debugging on
+ java-25-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 25 unoptimised with full debugging on
+ java-25-openjdk-portable.x86_64	OpenJDK 25 Runtime Environment portable edition
+ java-25-openjdk-portable-devel.x86_64	OpenJDK 25 Development Environment portable edition
+ java-25-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 25 Runtime and Development Environment portable edition optimised with full debugging on
+ java-25-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 25 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-25-openjdk-portable-docs.x86_64	OpenJDK 25 API documentation
+ java-25-openjdk-portable-fastdebug.x86_64	OpenJDK 25 Runtime Environment portable edition optimised with full debugging on
+ java-25-openjdk-portable-misc.x86_64	OpenJDK 25 miscellany
+ java-25-openjdk-portable-slowdebug.x86_64	OpenJDK 25 Runtime Environment portable edition unoptimised with full debugging on
+ java-25-openjdk-portable-sources.x86_64	OpenJDK 25 full patched sources of portable JDK
+ java-25-openjdk-portable-static-libs.x86_64	OpenJDK 25 libraries for static linking - portable edition
+ java-25-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking - portable edition optimised with full debugging on
+ java-25-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking - portable edition unoptimised with full debugging on
+ java-25-openjdk-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-25-openjdk-src.x86_64	OpenJDK 25 Source Bundle
+ java-25-openjdk-src-fastdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and optimisation
+ java-25-openjdk-src-slowdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and no optimisation
+ java-25-openjdk-static-libs.x86_64	OpenJDK 25 libraries for static linking
+ java-25-openjdk-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking optimised with full debugging on
+ java-25-openjdk-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking unoptimised with full debugging on
+ java-latest-openjdk.x86_64	OpenJDK 25 Runtime Environment
+ java-latest-openjdk-demo.x86_64	OpenJDK 25 Demos
+ java-latest-openjdk-demo-fastdebug.x86_64	OpenJDK 25 Demos optimised with full debugging on
+ java-latest-openjdk-demo-slowdebug.x86_64	OpenJDK 25 Demos unoptimised with full debugging on
+ java-latest-openjdk-devel.x86_64	OpenJDK 25 Development Environment
+ java-latest-openjdk-devel-fastdebug.x86_64	OpenJDK 25 Development Environment optimised with full debugging on
+ java-latest-openjdk-devel-slowdebug.x86_64	OpenJDK 25 Development Environment unoptimised with full debugging on
+ java-latest-openjdk-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-latest-openjdk-headless.x86_64	OpenJDK 25 Headless Runtime Environment
+ java-latest-openjdk-headless-fastdebug.x86_64	OpenJDK 25 Runtime Environment optimised with full debugging on
+ java-latest-openjdk-headless-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-latest-openjdk-javadoc.x86_64	OpenJDK 25 API documentation
+ java-latest-openjdk-javadoc-zip.x86_64	OpenJDK 25 API documentation compressed in a single archive
+ java-latest-openjdk-jmods.x86_64	JMods for OpenJDK 25
+ java-latest-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 25 optimised with full debugging on
+ java-latest-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 25 unoptimised with full debugging on
+ java-latest-openjdk-portable.x86_64	OpenJDK 24 Runtime Environment portable edition
+ java-latest-openjdk-portable-devel.x86_64	OpenJDK 24 Development Environment portable edition
+ java-latest-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 24 Runtime and Development Environment portable edition optimised with full debugging on
+ java-latest-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 24 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-latest-openjdk-portable-docs.x86_64	OpenJDK 24 API documentation
+ java-latest-openjdk-portable-fastdebug.x86_64	OpenJDK 24 Runtime Environment portable edition optimised with full debugging on
+ java-latest-openjdk-portable-misc.x86_64	OpenJDK 24 miscellany
+ java-latest-openjdk-portable-slowdebug.x86_64	OpenJDK 24 Runtime Environment portable edition unoptimised with full debugging on
+ java-latest-openjdk-portable-sources.x86_64	OpenJDK 24 full patched sources of portable JDK
+ java-latest-openjdk-portable-static-libs.x86_64	OpenJDK 24 libraries for static linking - portable edition
+ java-latest-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 24 libraries for static linking - portable edition optimised with full debugging on
+ java-latest-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 24 libraries for static linking - portable edition unoptimised with full debugging on
+ java-latest-openjdk-slowdebug.x86_64	OpenJDK 25 Runtime Environment unoptimised with full debugging on
+ java-latest-openjdk-src.x86_64	OpenJDK 25 Source Bundle
+ java-latest-openjdk-src-fastdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and optimisation
+ java-latest-openjdk-src-slowdebug.x86_64	OpenJDK 25 Source Bundle for packages with debugging on and no optimisation
+ java-latest-openjdk-static-libs.x86_64	OpenJDK 25 libraries for static linking
+ java-latest-openjdk-static-libs-fastdebug.x86_64	OpenJDK 25 libraries for static linking optimised with full debugging on
+ java-latest-openjdk-static-libs-slowdebug.x86_64	OpenJDK 25 libraries for static linking unoptimised with full debugging on
+ maven-openjdk21.noarch	maven binding for openjdk21
+ maven-openjdk25.noarch	maven binding for openjdk25
+ maven4-openjdk21.noarch	maven4 binding for openjdk21
+ maven4-openjdk25.noarch	maven4 binding for openjdk25
+ openjdk-asmtools-javadoc.noarch	Javadoc for openjdk-asmtools
+ openjdk-asmtools7.noarch	Set of tools used to assemble / disassemble proper and improper Java .class files for JDK version 11 and lesser
+ openjdk-asmtools7-javadoc.noarch	Javadoc for openjdk-asmtools7
+ slf4j-jdk14.noarch	SLF4J JDK14 Binding
+ slf4j2-jdk14.noarch	SLF4J JDK14 Binding
+ xmvn-toolchain-openjdk21.noarch	xmvn-minimal binding for openjdk21
+ xmvn-toolchain-openjdk25.noarch	xmvn-minimal binding for openjdk25
+ xmvn5-toolchain-openjdk21.noarch	xmvn5-minimal binding for openjdk21
+ xmvn5-toolchain-openjdk25.noarch	xmvn5-minimal binding for openjdk25
+Matched fields: name
+ dogtag-ldapjdk.noarch	LDAP SDK
+ dogtag-ldapjdk-javadoc.noarch	Javadoc for LDAP SDK
+ javapackages-local-openjdk21.noarch	Non-essential macros and scripts for Java packaging support
+ javapackages-local-openjdk25.noarch	Non-essential macros and scripts for Java packaging support
+ maven-local-openjdk21.noarch	Macros and scripts for Maven packaging support
+ maven-local-openjdk25.noarch	Macros and scripts for Maven packaging support
+ openjdk-asmtools.noarch	Set of tools used to assemble / disassemble proper and improper Java .class files
+ slf4j2-jdk-platform-logging.noarch	SLF4J Platform Logging Binding
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-21-openjdk
+Updating and loading repositories:
+Repositories loaded.
+Installed packages
+Name            : java-21-openjdk
+Epoch           : 1
+Version         : 21.0.9.0.10
+Release         : 1.fc43
+Architecture    : x86_64
+Installed size  : 991.4 KiB
+Source          : java-21-openjdk-21.0.9.0.10-1.fc43.src.rpm
+From repository : updates
+Summary         : OpenJDK 21 Runtime Environment
+URL             : http://openjdk.java.net/
+License         : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND
+                :  LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description     : The OpenJDK 21 runtime environment.
+Vendor          : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf search java-21
+Updating and loading repositories:
+Repositories loaded.
+Matched fields: name
+ java-21-openjdk.x86_64	OpenJDK 21 Runtime Environment
+ java-21-openjdk-demo.x86_64	OpenJDK 21 Demos
+ java-21-openjdk-demo-fastdebug.x86_64	OpenJDK 21 Demos optimised with full debugging on
+ java-21-openjdk-demo-slowdebug.x86_64	OpenJDK 21 Demos unoptimised with full debugging on
+ java-21-openjdk-devel.x86_64	OpenJDK 21 Development Environment
+ java-21-openjdk-devel-fastdebug.x86_64	OpenJDK 21 Development Environment optimised with full debugging on
+ java-21-openjdk-devel-slowdebug.x86_64	OpenJDK 21 Development Environment unoptimised with full debugging on
+ java-21-openjdk-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless.x86_64	OpenJDK 21 Headless Runtime Environment
+ java-21-openjdk-headless-fastdebug.x86_64	OpenJDK 21 Runtime Environment optimised with full debugging on
+ java-21-openjdk-headless-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-javadoc.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-javadoc-zip.x86_64	OpenJDK 21 API documentation compressed in a single archive
+ java-21-openjdk-jmods.x86_64	JMods for OpenJDK 21
+ java-21-openjdk-jmods-fastdebug.x86_64	JMods for OpenJDK 21 optimised with full debugging on
+ java-21-openjdk-jmods-slowdebug.x86_64	JMods for OpenJDK 21 unoptimised with full debugging on
+ java-21-openjdk-portable.x86_64	OpenJDK 21 Runtime Environment portable edition
+ java-21-openjdk-portable-devel.x86_64	OpenJDK 21 Development Environment portable edition
+ java-21-openjdk-portable-devel-fastdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-devel-slowdebug.x86_64	OpenJDK 21 Runtime and Development Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-docs.x86_64	OpenJDK 21 API documentation
+ java-21-openjdk-portable-fastdebug.x86_64	OpenJDK 21 Runtime Environment portable edition optimised with full debugging on
+ java-21-openjdk-portable-misc.x86_64	OpenJDK 21 miscellany
+ java-21-openjdk-portable-slowdebug.x86_64	OpenJDK 21 Runtime Environment portable edition unoptimised with full debugging on
+ java-21-openjdk-portable-sources.x86_64	OpenJDK 21 full patched sources of portable JDK
+ java-21-openjdk-portable-static-libs.x86_64	OpenJDK 21 libraries for static linking - portable edition
+ java-21-openjdk-portable-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition optimised with full debugging on
+ java-21-openjdk-portable-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking - portable edition unoptimised with full debugging on
+ java-21-openjdk-slowdebug.x86_64	OpenJDK 21 Runtime Environment unoptimised with full debugging on
+ java-21-openjdk-src.x86_64	OpenJDK 21 Source Bundle
+ java-21-openjdk-src-fastdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and optimisation
+ java-21-openjdk-src-slowdebug.x86_64	OpenJDK 21 Source Bundle for packages with debugging on and no optimisation
+ java-21-openjdk-static-libs.x86_64	OpenJDK 21 libraries for static linking
+ java-21-openjdk-static-libs-fastdebug.x86_64	OpenJDK 21 libraries for static linking optimised with full debugging on
+ java-21-openjdk-static-libs-slowdebug.x86_64	OpenJDK 21 libraries for static linking unoptimised with full debugging on
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ java --version
+openjdk 25.0.1 2025-10-21
+OpenJDK Runtime Environment (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8, mixed mode, sharing)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which java
+/usr/lib/jvm/java-25-openjdk/bin/java
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ javac --version
+javac 21.0.9
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-17-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+No matching packages to list
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-21-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Installed packages
+Name            : java-21-openjdk-devel
+Epoch           : 1
+Version         : 21.0.9.0.10
+Release         : 1.fc43
+Architecture    : x86_64
+Installed size  : 11.5 MiB
+Source          : java-21-openjdk-21.0.9.0.10-1.fc43.src.rpm
+From repository : updates
+Summary         : OpenJDK 21 Development Environment
+URL             : http://openjdk.java.net/
+License         : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND
+                :  LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description     : The OpenJDK 21 development tools.
+Vendor          : Fedora Project
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
 
 
@@ -11346,7 +12705,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 06:35:24 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 06:46:22 AM CST 2025
 Total Files Found: 67
 Files Exported: 67
 Files Skipped: 0 (binary or large files)

@@ -1518,3 +1518,153 @@ Every push to `master`, `main`, or `develop` will:
 This gives you always-fresh development builds!
 
 
+I hit an error again with java. 
+I think what you want is java-21-openjdk-devel 
+java-25-openjdk-devel and java-latest-openjdk-devel are also available. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Checking available Java versions...
+Available Java packages in Fedora repos:
+✓ Found available: java-21-openjdk-devel
+
+Step 2: Installing java-21-openjdk-devel...
+✓ java-21-openjdk-devel already installed
+
+Step 3: Locating JAVA_HOME...
+✓ JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+! jar tool not found in JAVA_HOME
+This might cause issues with Android builds
+
+Step 4: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 5: Setting up environment variables...
+✓ Found Android SDK at: /home/kushal/.android/sdk
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+✓ Building Android project...
+
+Restore complete (0.7s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 8 warning(s) (0.3s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$JAVA_HOME'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 8 warning(s) in 1.3s
+
+! Build had issues - see output above
+
+Common fixes:
+  1. Restart terminal and try again
+  2. Run: source ~/.android-env.sh
+  3. Check JAVA_HOME: echo $JAVA_HOME
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-25-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run: source ~/.android-env.sh
+Or restart your terminal.
+
+real	0m3.299s
+user	0m2.435s
+sys	0m0.633s
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ java --version
+openjdk 25.0.1 2025-10-21
+OpenJDK Runtime Environment (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8)
+OpenJDK 64-Bit Server VM (Red_Hat-25.0.1.0.8-1) (build 25.0.1+8, mixed mode, sharing)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which java
+/usr/lib/jvm/java-25-openjdk/bin/java
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ javac --version
+javac 21.0.9
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-17-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+No matching packages to list
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-21-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Installed packages
+Name            : java-21-openjdk-devel
+Epoch           : 1
+Version         : 21.0.9.0.10
+Release         : 1.fc43
+Architecture    : x86_64
+Installed size  : 11.5 MiB
+Source          : java-21-openjdk-21.0.9.0.10-1.fc43.src.rpm
+From repository : updates
+Summary         : OpenJDK 21 Development Environment
+URL             : http://openjdk.java.net/
+License         : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND
+                :  LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description     : The OpenJDK 21 development tools.
+Vendor          : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-25-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Available packages
+Name           : java-25-openjdk-devel
+Epoch          : 1
+Version        : 25.0.1.0.8
+Release        : 1.fc43
+Architecture   : x86_64
+Download size  : 6.1 MiB
+Installed size : 11.7 MiB
+Source         : java-25-openjdk-25.0.1.0.8-1.fc43.src.rpm
+Repository     : updates
+Summary        : OpenJDK 25 Development Environment
+URL            : http://openjdk.java.net/
+License        : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND 
+               : LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description    : The OpenJDK 25 development tools.
+Vendor         : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dnf info java-latest-openjdk-devel
+Updating and loading repositories:
+Repositories loaded.
+Available packages
+Name           : java-latest-openjdk-devel
+Epoch          : 1
+Version        : 25.0.1.0.8
+Release        : 0.1.fc43
+Architecture   : x86_64
+Download size  : 6.1 MiB
+Installed size : 11.7 MiB
+Source         : java-latest-openjdk-25.0.1.0.8-0.1.fc43.src.rpm
+Repository     : updates
+Summary        : OpenJDK 25 Development Environment
+URL            : http://openjdk.java.net/
+License        : Apache-1.1 AND Apache-2.0 AND LicenseRef-Callaway-BSD AND LicenseRef-Callaway-BSD-with-advertising AND GPL-1.0-or-later AND GPL-2.0-only AND LicenseRef-Callaway-GPLv2-with-exceptions AND IJG AND 
+               : LicenseRef-Callaway-LGPLv2+ AND LicenseRef-Callaway-MIT AND MPL-2.0 AND LicenseRef-Callaway-Public-Domain AND W3C AND Zlib AND ISC AND FTL AND LicenseRef-RSA
+Description    : The OpenJDK 25 development tools.
+Vendor         : Fedora Project
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+also I got the following error in CI action for all os
+
+Run dotnet restore
+  Determining projects to restore...
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To install these workloads, run the following command: dotnet workload restore [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: Process completed with exit code 1.
+
+please fix both the shell scripts and please do not hallucinate. thank you. 
+
