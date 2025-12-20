@@ -968,3 +968,153 @@ chmod +x export.sh
 
 
 
+Thank you. The export looks better. I have run it and uploaded the latest to `dump.txt`. 
+Two main issues right now: 
+1. the build/test fails
+2. we are using fluent assertions which is no longer free software
+please write a shell script that updates our code base so that
+1. the build/tests pass 
+2. we no longer have a dependency on fluent assertions or any other nuget package that requires payment. 
+while our software is free / open source / publicly available, 
+we should not use any package that requires payment for any purpose. 
+also please remove moq if we use it. I think the author added some garbage to moq some time back and now the community no longer trusts moq. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet restore; time dotnet build; time dotnet test;
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.725s
+user	0m0.828s
+sys	0m0.171s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs(17,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Desktop net10.0 succeeded (0.7s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build failed with 1 error(s) in 1.8s
+
+real	0m1.969s
+user	0m1.498s
+sys	0m0.335s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs(17,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.05]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.08]   Discovered:  MyDesktopApplication.UI.Tests
+     Warning:
+     The component "Fluent Assertions" is governed by the rules defined in the Xceed License Agreement and
+     the Xceed Fluent Assertions Community License. You may use Fluent Assertions free of charge for
+     non-commercial use only. An active subscription is required to use Fluent Assertions for commercial use.
+     Please contact Xceed Sales mailto:sales@xceed.com to acquire a subscription at a very low cost.
+     A paid commercial license supports the development and continued increasing support of
+     Fluent Assertions users under both commercial and community licenses. Help us
+     keep Fluent Assertions at the forefront of unit testing.
+     For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.UI.Tests
+     Warning:
+     The component "Fluent Assertions" is governed by the rules defined in the Xceed License Agreement and
+     the Xceed Fluent Assertions Community License. You may use Fluent Assertions free of charge for
+     non-commercial use only. An active subscription is required to use Fluent Assertions for commercial use.
+     Please contact Xceed Sales mailto:sales@xceed.com to acquire a subscription at a very low cost.
+     A paid commercial license supports the development and continued increasing support of
+     Fluent Assertions users under both commercial and community licenses. Help us
+     keep Fluent Assertions at the forefront of unit testing.
+     For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/
+[xUnit.net 00:00:00.15]   Finished:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.7s)
+
+Test summary: total: 16, failed: 0, succeeded: 16, skipped: 0, duration: 0.8s
+Build failed with 1 error(s) in 1.7s
+
+real	0m1.809s
+user	0m1.358s
+sys	0m0.348s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
+
+You're absolutely right! FluentAssertions was acquired by Xceed and is no longer truly free software - they added that license warning in version 8.x. And yes, Moq had the SponsorLink controversy. Let me create a script that:
+
+1. Removes FluentAssertions and replaces with plain xUnit assertions (which are perfectly good)
+2. Removes NSubstitute (we can use it - it's MIT licensed, but we're not using it anyway)
+3. Removes Moq if present
+4. Fixes the InMemoryDatabase issue (needs a package reference)
+5. Uses SQLite in-memory mode instead (more realistic anyway)Run the fix script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-tests.sh
+./fix-tests.sh
+```
+
+## Summary of Changes
+
+### Packages Removed
+
+| Package | Reason | Replacement |
+|---------|--------|-------------|
+| **FluentAssertions** | Xceed license - requires payment for commercial use | Plain xUnit assertions (`Assert.*`) |
+| **Moq** | SponsorLink controversy | NSubstitute (MIT) if mocking needed |
+
+### Packages Kept (all truly free)
+
+| Package | License | Purpose |
+|---------|---------|---------|
+| xUnit | Apache-2.0 | Test framework with built-in assertions |
+| NSubstitute | MIT | Mocking (kept in props, removed from projects for now) |
+| Bogus | MIT | Test data generation |
+| Testcontainers | MIT | Real database integration tests |
+
+### Build Fix
+
+The `UseInMemoryDatabase` error was because we were trying to use EF Core's InMemory provider without the package. Instead of adding that package, I switched to **SQLite in-memory mode** which is:
+- More realistic (actual SQL database)
+- Already included (we have `Microsoft.EntityFrameworkCore.Sqlite`)
+- Better for catching real-world issues
+
+### Test Changes
+
+All tests now use plain xUnit assertions like:
+```csharp
+// Before (FluentAssertions)
+todo.IsCompleted.Should().BeTrue();
+result.Should().HaveCount(3);
+
+// After (plain xUnit)
+Assert.True(todo.IsCompleted);
+Assert.Equal(3, result.Count);
+```
+
+The xUnit assertions are perfectly good and don't require any paid license!
+
+
+
+
+
+
+
