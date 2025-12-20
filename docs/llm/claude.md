@@ -1668,3 +1668,73 @@ Error: Process completed with exit code 1.
 
 please fix both the shell scripts and please do not hallucinate. thank you. 
 
+Now I see the issue clearly. The problem is:
+
+1. **Java 25 JRE is installed** (no `jar` tool - it's just the runtime)
+2. **Java 21 JDK is installed** but JAVA_HOME is pointing to Java 25
+3. The script is finding the wrong Java version
+
+Let me also search for the current GitHub Actions workflow:Now let me look at the actual dump.txt to see the current GitHub workflow files:Now I have a clear picture. There are two distinct issues:
+
+1. **Fedora Java issue**: The script is finding Java 25 JRE (no `jar` tool) instead of using the Java 21 JDK that's already installed
+2. **GitHub Actions issue**: The workflows need to install the Android workload before running `dotnet restore`
+
+Let me create the fixed scripts:Now I've created both scripts. Here's a summary of what was fixed:
+
+## Fixed Issues
+
+### 1. Fedora Java Issue (`setup-android-fedora.sh`)
+
+**Problem**: The script was setting `JAVA_HOME` to `/usr/lib/jvm/java-25-openjdk` which is the JRE (no `jar` tool), even though you have `java-21-openjdk-devel` installed.
+
+**Fix**: The new script:
+- Searches for JDK packages in priority order: java-21, java-25, java-latest
+- **Explicitly looks for directories containing `bin/jar`** (this is the key fix!)
+- Sets `JAVA_HOME` only to a directory that has the `jar` tool
+- Passes `-p:JavaSdkDirectory` to the build to override any environment issues
+
+### 2. GitHub Actions CI Error (`fix-github-actions.sh`)
+
+**Problem**: The CI workflow was running `dotnet restore` on the entire solution, which requires the Android workload.
+
+**Fix**: 
+- **CI workflow (`ci.yml`)**: Now restores/builds only desktop projects, skipping Android
+- **Build workflow (`build.yml`)**: Has a separate Android job that installs the workload first with `dotnet workload install android`
+- **Release workflow (`release.yml`)**: Same pattern - separate Android job with workload installation
+
+## To Apply the Fixes
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+
+# Fix Fedora Android setup
+chmod +x setup-android-fedora.sh
+./setup-android-fedora.sh
+
+# Fix GitHub Actions
+chmod +x fix-github-actions.sh
+./fix-github-actions.sh
+
+# Push to GitHub
+git add .
+git commit -m "Fix Java JDK detection and GitHub Actions Android workload"
+git push
+```
+
+## Key Changes Summary
+
+| Component | Old | New |
+|-----------|-----|-----|
+| **Fedora JAVA_HOME** | Found java-25-openjdk (JRE, no jar) | Finds first JDK with `bin/jar` |
+| **CI workflow** | `dotnet restore` on full solution | Restore only desktop + test projects |
+| **Build/Release** | No Android workload install | `dotnet workload install android` before Android build |
+| **actions/cache** | v4 | v5 |
+| **actions/setup-dotnet** | v4 | v5 |
+| **softprops/action-gh-release** | v1 | v2 |
+
+
+
+
+
+
+
