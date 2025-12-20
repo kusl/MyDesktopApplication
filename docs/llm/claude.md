@@ -142,3 +142,49 @@ For more information, run:
    dotnet new avalonia.mvvm -h
 
 For details on the exit code, refer to https://aka.ms/templating-exit-codes#127
+
+
+
+
+
+
+Good catch! The issue is that the **Avalonia templates** (version 11.3.10) don't yet support the `-f net10.0` flag - they only offer `net8.0` and `net9.0` as options. However, your .NET SDK is 10.0, and you can absolutely target `net10.0` - we just need to create the Avalonia project differently.
+
+Let me create an updated setup script that works around this limitation:Now, since you already have Core and Infrastructure created, let me give you a simpler approach. You can continue from where you are by just creating the remaining projects manually:**You don't need to start over!** Here's what to do:
+
+**Option 1: Quick fix - Run this from your project directory:**
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+
+# Create the Avalonia Desktop project with net9.0 (template workaround)
+dotnet new avalonia.mvvm -n "MyDesktopApplication.Desktop" -o "src/MyDesktopApplication.Desktop" -f net9.0
+
+# Add to solution
+dotnet sln MyDesktopApplication.slnx add "src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj"
+
+# Upgrade to net10.0 (sed works on Fedora)
+sed -i 's/<TargetFramework>net9.0<\/TargetFramework>/<TargetFramework>net10.0<\/TargetFramework>/g' \
+    "src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj"
+
+# Verify it changed
+grep TargetFramework src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+```
+
+**Option 2: Run the `continue-setup.sh` script** I created above (save it and run `bash continue-setup.sh`).
+
+**The workaround explained:**
+1. The Avalonia templates (v11.3.10) only support `net8.0` and `net9.0` as framework options
+2. We create the project targeting `net9.0`
+3. Then we use `sed` to replace `net9.0` with `net10.0` in the `.csproj` file
+4. Avalonia 11.3 works perfectly fine with .NET 10 - it's just the template that hasn't been updated
+
+Also, I noticed in your dump that `Directory.Build.props` has a typo in the filename (`DIrectory.Build.props` with capital I). You should rename it:
+
+```bash
+mv DIrectory.Build.props Directory.Build.props
+```
+
+
+
+
