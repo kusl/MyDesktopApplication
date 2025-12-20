@@ -191,4 +191,88 @@ Output file size: 0.01 MB
 real	0m0.126s
 user	0m0.042s
 sys	0m0.095s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ mv DIrectory.Build.props Directory.Build.props
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh continue-setup.sh 
+🔧 Continuing setup from current state...
+Creating Shared project...
+The template "Class Library" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj:
+Restore succeeded.
+
+
+Project `src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj` added to the solution.
+🎨 Creating Avalonia Desktop project...
+The template "Avalonia .NET MVVM App" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj:
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : error NU1008: The following PackageReference items cannot define a value for Version: Avalonia, Avalonia.Desktop, Avalonia.Themes.Fluent, Avalonia.Fonts.Inter, Avalonia.Diagnostics, CommunityToolkit.Mvvm. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Restore failed.
+Post action failed.
+Manual instructions: Run 'dotnet restore'
+
+
+Project `src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj` added to the solution.
+⬆️ Upgrading to net10.0...
+Creating Core.Tests...
+The template "xUnit Test Project" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj:
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Restore failed.
+Post action failed.
+Manual instructions: Run 'dotnet restore'
+
+
+Project `tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj` added to the solution.
+Creating Integration.Tests...
+The template "xUnit Test Project" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj:
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Restore failed.
+Post action failed.
+Manual instructions: Run 'dotnet restore'
+
+
+Project `tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj` added to the solution.
+Creating UI.Tests...
+The template "xUnit Test Project" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj:
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1008: The following PackageReference items cannot define a value for Version: coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio. Projects using Central Package Management must define a Version value on a PackageVersion item. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Restore failed.
+Post action failed.
+Manual instructions: Run 'dotnet restore'
+
+
+Project `tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj` added to the solution.
+
+✅ All projects created!
+
+📁 Current solution structure:
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <Project Path="src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj" />
+    <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+    <Project Path="src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj" />
+  </Folder>
+</Solution>
+
+🔧 Next: Run 'dotnet restore' then 'dotnet build'
+
+real	0m6.185s
+user	0m5.921s
+sys	0m0.917s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
