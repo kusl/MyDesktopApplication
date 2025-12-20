@@ -1,6 +1,5 @@
 version: 2
 updates:
-  # NuGet packages
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
@@ -14,13 +13,7 @@ updates:
       microsoft:
         patterns:
           - "Microsoft.*"
-      testing:
-        patterns:
-          - "xunit*"
-          - "coverlet*"
-          - "Testcontainers*"
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
