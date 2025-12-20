@@ -358,4 +358,293 @@ Build succeeded in 3.7s
 real	0m3.803s
 user	0m1.931s
 sys	0m0.389s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.02 MB
+
+real	0m0.283s
+user	0m0.099s
+sys	0m0.240s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-project.sh 
+==============================================
+  MyDesktopApplication Setup Script
+==============================================
+
+✓ Creating Directory.Build.props...
+✓ Creating Directory.Packages.props...
+✓ Updating project files for Central Package Management...
+✓ Creating appsettings.json...
+✓ Creating .gitignore...
+✓ Creating README.md...
+
+✓ Running dotnet restore...
+Restore complete (4.2s)
+
+Build succeeded in 4.3s
+✓ Restore successful!
+
+✓ Running dotnet build...
+  MyDesktopApplication.Desktop net10.0 failed with 9 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(32,29,32,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'NavigateToHomeCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 32, position 29.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(34,29,34,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'NavigateToSettingsCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 34, position 29.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(50,28,50,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'Counter' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 50, position 28.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(59,29,59,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IncrementCounterCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 59, position 29.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(65,29,65,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'LoadDataCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 65, position 29.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(66,29,66,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsBusy' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 66, position 29.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(73,30,73,30): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsBusy' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 73, position 30.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(77,33,77,33): Avalonia error AVLN2000: Unable to resolve property or method of name 'CurrentPage' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 77, position 33.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(91,28,91,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'Counter' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 91, position 28.
+  MyDesktopApplication.Core net10.0 succeeded (0.3s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+
+Build failed with 9 error(s) in 1.0s
+✗ Build failed. Check errors above.
+
+real	0m5.649s
+user	0m5.667s
+sys	0m1.769s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet restore
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build
+Restore complete (0.5s)
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.0s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+
+Build succeeded in 1.0s
+
+real	0m1.128s
+user	0m1.342s
+sys	0m0.364s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.02 MB
+
+real	0m0.277s
+user	0m0.115s
+sys	0m0.216s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet run --project src/MyDesktopApplication.Desktop
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(32,29,32,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'NavigateToHomeCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 32, position 29.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(34,29,34,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'NavigateToSettingsCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 34, position 29.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(50,28,50,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'Counter' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 50, position 28.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(59,29,59,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IncrementCounterCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 59, position 29.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(65,29,65,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'LoadDataCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 65, position 29.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(66,29,66,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsBusy' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 66, position 29.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(73,30,73,30): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsBusy' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 73, position 30.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(77,33,77,33): Avalonia error AVLN2000: Unable to resolve property or method of name 'CurrentPage' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 77, position 33.
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(91,28,91,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'Counter' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 91, position 28.
+
+The build failed. Fix the build errors and run again.
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.02 MB
+
+real	0m0.274s
+user	0m0.100s
+sys	0m0.225s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-all.sh 
+==============================================
+  MyDesktopApplication - Full Setup
+==============================================
+✓ Creating Directory.Build.props...
+✓ Creating Directory.Packages.props...
+✓ Updating src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj...
+✓ Updating src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj...
+✓ Updating src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj...
+✓ Updating src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj...
+✓ Updating tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj...
+✓ Updating tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj...
+✓ Updating tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj...
+✓ Updating src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs...
+✓ Updating src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs...
+✓ Updating src/MyDesktopApplication.Desktop/Views/MainWindow.axaml...
+✓ Updating src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs...
+✓ Updating src/MyDesktopApplication.Desktop/App.axaml...
+✓ Updating src/MyDesktopApplication.Desktop/App.axaml.cs...
+✓ Updating src/MyDesktopApplication.Desktop/Program.cs...
+✓ Updating src/MyDesktopApplication.Core/Class1.cs...
+✓ Updating src/MyDesktopApplication.Infrastructure/Class1.cs...
+✓ Updating src/MyDesktopApplication.Shared/Class1.cs...
+✓ Updating tests/MyDesktopApplication.Core.Tests/UnitTest1.cs...
+✓ Updating tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs...
+✓ Updating tests/MyDesktopApplication.UI.Tests/UnitTest1.cs...
+✓ Creating appsettings.json...
+✓ Creating .gitignore...
+✓ Creating README.md...
+
+✓ Running dotnet restore...
+Restore complete (0.6s)
+
+Build succeeded in 0.8s
+
+✓ Running dotnet build...
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.3s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.8s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build succeeded in 1.6s
+
+==============================================
+  Setup Complete!
+==============================================
+
+Run the application:
+  dotnet run --project src/MyDesktopApplication.Desktop
+
+Run tests:
+  dotnet test
+
+
+real	0m2.678s
+user	0m2.433s
+sys	0m0.576s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.03 MB
+
+real	0m0.281s
+user	0m0.113s
+sys	0m0.223s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

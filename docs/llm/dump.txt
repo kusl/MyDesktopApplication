@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 01:26:51 AM CST 2025
+Generated: Sat Dec 20 01:27:40 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -64,7 +64,7 @@ FILE CONTENTS:
 ================================================================================
 FILE: appsettings.json
 SIZE: 0.66 KB
-MODIFIED: 2025-12-20 01:20:24
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 {
@@ -100,12 +100,11 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: Directory.Build.props
-SIZE: 1.30 KB
-MODIFIED: 2025-12-20 01:20:24
+SIZE: 1.13 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project>
-  <!-- Shared build properties for all projects -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
@@ -117,8 +116,6 @@ MODIFIED: 2025-12-20 01:20:24
     <AnalysisLevel>latest</AnalysisLevel>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
-  <!-- Assembly and versioning -->
   <PropertyGroup>
     <Company>YourCompanyName</Company>
     <Authors>Your Name</Authors>
@@ -127,14 +124,10 @@ MODIFIED: 2025-12-20 01:20:24
     <VersionSuffix Condition="'$(Configuration)' == 'Debug'">dev</VersionSuffix>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-
-  <!-- Deterministic builds for reproducibility -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
-
-  <!-- Test project conventions -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -144,19 +137,15 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 4.04 KB
-MODIFIED: 2025-12-20 01:20:24
+SIZE: 3.78 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project>
-  <!-- Central Package Management - All package versions in one place -->
-  <!-- All packages are MIT/Apache-2.0 licensed and free for any use -->
-  
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
-
   <ItemGroup>
     <!-- Avalonia UI (MIT License) -->
     <PackageVersion Include="Avalonia" Version="11.3.0" />
@@ -167,11 +156,9 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.0" />
     <PackageVersion Include="Avalonia.Headless" Version="11.3.0" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.0" />
-
     <!-- MVVM (MIT License) -->
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveUI" Version="20.2.62" />
-
     <!-- Microsoft Extensions (MIT License) -->
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
@@ -181,31 +168,26 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
-
-    <!-- Logging - Serilog (Apache-2.0 License) -->
+    <!-- Logging - Serilog (Apache-2.0) -->
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
-
-    <!-- OpenTelemetry (Apache-2.0 License) -->
+    <!-- OpenTelemetry (Apache-2.0) -->
     <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
-
-    <!-- Database (Public Domain / PostgreSQL License) -->
+    <!-- Database -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.66" />
-
-    <!-- Validation (Apache-2.0 License) -->
+    <!-- Validation -->
     <PackageVersion Include="FluentValidation" Version="11.11.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-
-    <!-- Testing (MIT/Apache-2.0 License) -->
+    <!-- Testing -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
@@ -215,8 +197,7 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageVersion Include="Testcontainers" Version="4.3.0" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="4.3.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-
-    <!-- HTTP & Serialization (MIT License) -->
+    <!-- HTTP & Serialization -->
     <PackageVersion Include="System.Text.Json" Version="10.0.0" />
     <PackageVersion Include="Refit" Version="8.0.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
@@ -247,29 +228,38 @@ MODIFIED: 2025-12-20 01:03:20
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Class1.cs
-SIZE: 0.06 KB
-MODIFIED: 2025-12-20 00:50:18
+SIZE: 0.51 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Core;
+namespace MyDesktopApplication.Core;
 
-public class Class1
+/// <summary>
+/// Sample entity - replace with your domain entities
+/// </summary>
+public class TodoItem
 {
-
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Title { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public void MarkComplete() => IsCompleted = true;
+    public void MarkIncomplete() => IsCompleted = false;
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
 SIZE: 0.21 KB
-MODIFIED: 2025-12-20 01:20:24
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentValidation" />
   </ItemGroup>
@@ -278,13 +268,12 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.51 KB
-MODIFIED: 2025-12-20 01:03:15
+SIZE: 1.21 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
@@ -304,8 +293,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
@@ -318,22 +306,22 @@ public partial class App : Application
 
     private void DisableAvaloniaDataAnnotationValidation()
     {
-        // Get an array of plugins to remove
-        var dataValidationPluginsToRemove =
-            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+        var toRemove = BindingPlugins.DataValidators
+            .OfType<DataAnnotationsValidationPlugin>()
+            .ToArray();
 
-        // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
+        foreach (var plugin in toRemove)
         {
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
 }
 
+
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 0.83 KB
-MODIFIED: 2025-12-20 01:20:24
+SIZE: 0.82 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -344,12 +332,10 @@ MODIFIED: 2025-12-20 01:20:24
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
@@ -363,25 +349,21 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Program.cs
-SIZE: 0.69 KB
-MODIFIED: 2025-12-20 01:03:15
+SIZE: 0.39 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿using Avalonia;
+using Avalonia;
 using System;
 
 namespace MyDesktopApplication.Desktop;
 
 sealed class Program
 {
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args) => BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
 
-    // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
@@ -437,25 +419,88 @@ public class ViewLocator : IDataTemplate
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 0.18 KB
-MODIFIED: 2025-12-20 01:03:15
+SIZE: 1.49 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Desktop.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+
+namespace MyDesktopApplication.Desktop.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
+    [ObservableProperty]
+    private string _greeting = "Welcome to Avalonia with .NET 10!";
+
+    [ObservableProperty]
+    private int _counter;
+
+    [ObservableProperty]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private ViewModelBase? _currentPage;
+
+    [RelayCommand]
+    private void IncrementCounter()
+    {
+        Counter++;
+        Greeting = Counter switch
+        {
+            1 => "You clicked once!",
+            < 5 => $"You clicked {Counter} times",
+            < 10 => $"Wow, {Counter} clicks! Keep going!",
+            _ => $"Amazing! {Counter} clicks!"
+        };
+    }
+
+    [RelayCommand]
+    private async Task LoadDataAsync()
+    {
+        IsBusy = true;
+        // Simulate loading data
+        await Task.Delay(1000);
+        IsBusy = false;
+    }
+
+    [RelayCommand]
+    private void NavigateToHome()
+    {
+        CurrentPage = new HomeViewModel();
+    }
+
+    [RelayCommand]
+    private void NavigateToSettings()
+    {
+        CurrentPage = new SettingsViewModel();
+    }
+}
+
+public partial class HomeViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private string _title = "Home";
+}
+
+public partial class SettingsViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private string _title = "Settings";
+
+    [ObservableProperty]
+    private bool _darkMode;
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-SIZE: 0.16 KB
-MODIFIED: 2025-12-20 01:03:15
+SIZE: 0.15 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MyDesktopApplication.Desktop.ViewModels;
 
@@ -466,8 +511,8 @@ public abstract class ViewModelBase : ObservableObject
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-SIZE: 0.19 KB
-MODIFIED: 2025-12-20 01:03:15
+SIZE: 0.18 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 using Avalonia.Controls;
@@ -482,35 +527,37 @@ public partial class MainWindow : Window
     }
 }
 
+
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Class1.cs
-SIZE: 0.07 KB
-MODIFIED: 2025-12-20 00:50:19
+SIZE: 0.25 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Infrastructure;
+namespace MyDesktopApplication.Infrastructure;
 
-public class Class1
+/// <summary>
+/// Placeholder for infrastructure services (repositories, data access, etc.)
+/// </summary>
+public class PlaceholderService
 {
-
+    public string GetMessage() => "Infrastructure layer ready!";
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
 SIZE: 0.67 KB
-MODIFIED: 2025-12-20 01:20:24
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
@@ -524,33 +571,34 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/Class1.cs
-SIZE: 0.07 KB
-MODIFIED: 2025-12-20 01:03:14
+SIZE: 0.20 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Shared;
+namespace MyDesktopApplication.Shared;
 
-public class Class1
+/// <summary>
+/// Placeholder for shared DTOs, services, etc.
+/// </summary>
+public class PlaceholderDto
 {
-
+    public string Name { get; set; } = string.Empty;
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
 SIZE: 0.33 KB
-MODIFIED: 2025-12-20 01:20:24
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
@@ -559,8 +607,8 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-SIZE: 1.05 KB
-MODIFIED: 2025-12-20 01:20:24
+SIZE: 1.04 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -568,7 +616,6 @@ MODIFIED: 2025-12-20 01:20:24
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
@@ -584,11 +631,9 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="Bogus" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
@@ -597,18 +642,37 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
-SIZE: 0.12 KB
-MODIFIED: 2025-12-20 01:03:16
+SIZE: 0.62 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Core.Tests;
+namespace MyDesktopApplication.Core.Tests;
 
-public class UnitTest1
+public class TodoItemTests
 {
     [Fact]
-    public void Test1()
+    public void MarkComplete_SetsIsCompletedToTrue()
     {
+        // Arrange
+        var todo = new TodoItem { Title = "Test" };
+        
+        // Act
+        todo.MarkComplete();
+        
+        // Assert
+        Assert.True(todo.IsCompleted);
+    }
 
+    [Fact]
+    public void NewTodoItem_HasDefaultValues()
+    {
+        // Arrange & Act
+        var todo = new TodoItem();
+        
+        // Assert
+        Assert.NotEqual(Guid.Empty, todo.Id);
+        Assert.False(todo.IsCompleted);
+        Assert.Equal(string.Empty, todo.Title);
     }
 }
 
@@ -616,7 +680,7 @@ public class UnitTest1
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
 SIZE: 1.30 KB
-MODIFIED: 2025-12-20 01:20:24
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -624,7 +688,6 @@ MODIFIED: 2025-12-20 01:20:24
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
@@ -642,12 +705,10 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageReference Include="Testcontainers" />
     <PackageReference Include="Testcontainers.PostgreSql" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\..\src\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
@@ -656,26 +717,27 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
-SIZE: 0.13 KB
-MODIFIED: 2025-12-20 01:03:18
+SIZE: 0.21 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.Integration.Tests;
+namespace MyDesktopApplication.Integration.Tests;
 
-public class UnitTest1
+public class IntegrationTest1
 {
     [Fact]
-    public void Test1()
+    public void PlaceholderTest()
     {
-
+        // Placeholder for integration tests
+        Assert.True(true);
     }
 }
 
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 1.08 KB
-MODIFIED: 2025-12-20 01:20:24
+SIZE: 1.07 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -683,7 +745,6 @@ MODIFIED: 2025-12-20 01:20:24
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
@@ -699,11 +760,9 @@ MODIFIED: 2025-12-20 01:20:24
     <PackageReference Include="Avalonia.Headless" />
     <PackageReference Include="Avalonia.Headless.XUnit" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\MyDesktopApplication.Desktop\MyDesktopApplication.Desktop.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
@@ -712,24 +771,25 @@ MODIFIED: 2025-12-20 01:20:24
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
-SIZE: 0.12 KB
-MODIFIED: 2025-12-20 01:03:19
+SIZE: 0.21 KB
+MODIFIED: 2025-12-20 01:27:19
 ================================================================================
 
-﻿namespace MyDesktopApplication.UI.Tests;
+namespace MyDesktopApplication.UI.Tests;
 
-public class UnitTest1
+public class UITest1
 {
     [Fact]
-    public void Test1()
+    public void PlaceholderTest()
     {
-
+        // Placeholder for UI tests with Avalonia.Headless
+        Assert.True(true);
     }
 }
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 01:26:52 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 01:27:40 AM CST 2025
 Total Files Exported: 23
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
