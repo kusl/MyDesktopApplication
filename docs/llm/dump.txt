@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 02:33:22 AM CST 2025
+Generated: Sat Dec 20 02:35:38 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1676,7 +1676,7 @@ git push origin v1.0.0
 ================================================================================
 FILE: docs/llm/dump.txt
 SIZE: 75.09 KB
-MODIFIED: 2025-12-20 02:33:22
+MODIFIED: 2025-12-20 02:35:38
 ================================================================================
 
 [ERROR: Could not read file]
@@ -1684,8 +1684,8 @@ MODIFIED: 2025-12-20 02:33:22
 
 ================================================================================
 FILE: docs/llm/output.txt
-SIZE: 121.27 KB
-MODIFIED: 2025-12-20 02:30:49
+SIZE: 143.46 KB
+MODIFIED: 2025-12-20 02:33:32
 ================================================================================
 
 kushal@fedora:~$ cd ~/src/dotnet/MyDesktopApplication/
@@ -3778,6 +3778,396 @@ Garbage collecting for SDK feature band(s) 10.0.100...
 Successfully installed workload(s) android.
 
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-ci-and-add-android.sh 
+==============================================
+  Fix CI + Add Android Support
+==============================================
+
+✓ Fixing CI workflow...
+✓ Fixing Release workflow...
+✓ Fixing Nightly workflow...
+✓ Creating Android project structure...
+✓ Creating Android project file...
+✓ Creating MainActivity.cs...
+✓ Creating Android App.cs...
+✓ Creating Android App.axaml...
+✓ Creating Android MainView.axaml...
+✓ Creating Android MainView.axaml.cs...
+✓ Creating Android resources...
+✓ Creating shared ViewModels...
+✓ Updating Desktop ViewModels to inherit from Shared...
+✓ Adding Avalonia.Android to Directory.Packages.props...
+✓ Adding Android project to solution...
+Solution /home/kushal/src/dotnet/MyDesktopApplication/MyDesktopApplication.slnx already contains project src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.
+✓ Updating README...
+
+✓ Running dotnet restore (Desktop only)...
+Restore complete (5.9s)
+
+Build succeeded in 6.0s
+
+✓ Running dotnet build (Desktop only)...
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.7s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+
+Build succeeded in 4.3s
+
+✓ Running dotnet test...
+Restore complete (0.7s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.05]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.08]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.16]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:01.00]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.6s)
+
+Test summary: total: 35, failed: 0, succeeded: 35, skipped: 0, duration: 1.8s
+Build succeeded in 3.0s
+
+==============================================
+  Setup Complete!
+==============================================
+
+Changes made:
+  ✓ Fixed GitHub Actions for Windows PowerShell
+  ✓ Created Android project
+  ✓ Added shared ViewModels for code reuse
+  ✓ Updated workflows to build Android APK
+
+To build Android locally:
+  dotnet workload install android
+  dotnet build src/MyDesktopApplication.Android
+
+To create a release:
+  git add .
+  git commit -m 'Add Android support'
+  git push
+  git tag v1.0.0
+  git push origin v1.0.0
+
+
+real	0m14.200s
+user	0m10.130s
+sys	0m2.148s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): appsettings.json
+Processing (2/67): continue-setup.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): docs/llm/claude.md
+Processing (6/67): docs/llm/dump.txt
+Processing (7/67): docs/llm/output.txt
+Processing (8/67): docs/thoughts.md
+Processing (9/67): export.sh
+Processing (10/67): fix-all.sh
+Processing (11/67): fix-ci-and-add-android.sh
+Processing (12/67): fix-cpm.sh
+Processing (13/67): fix-tests.sh
+Processing (14/67): .gitattributes
+Processing (15/67): .github/dependabot.yml
+Processing (16/67): .github/workflows/ci.yml
+Processing (17/67): .github/workflows/mobile.yml
+Processing (18/67): .github/workflows/nightly.yml
+Processing (19/67): .github/workflows/release.yml
+Processing (20/67): .gitignore
+Processing (21/67): MyDesktopApplication.slnx
+Processing (22/67): README.md
+Processing (23/67): setup-all.sh
+Processing (24/67): setup-github-actions.sh
+Processing (25/67): setup-project.sh
+Processing (26/67): setup.sh
+Processing (27/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (28/67): src/MyDesktopApplication.Android/App.axaml
+Processing (29/67): src/MyDesktopApplication.Android/App.cs
+Processing (30/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (31/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (32/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (33/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (34/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (35/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (37/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (38/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (67/67): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    642.75 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.824s
+user	0m0.402s
+sys	0m0.589s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet workload install android
+
+Checking for updated workload version.
+Skipping NuGet package signature verification.
+No workload update found.
+Workload(s) 'android' are already installed.
+Pack Microsoft.Android.Sdk.Linux version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Sdk.Linux version 36.1.2...
+Pack Microsoft.Android.Sdk.Linux version 35.0.105 is already installed.
+Writing workload pack installation record for Microsoft.Android.Sdk.Linux version 35.0.105...
+Pack Microsoft.Android.Ref.36 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Ref.36 version 36.1.2...
+Pack Microsoft.Android.Runtime.36.android version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.36.android version 36.1.2...
+Pack Microsoft.Android.Runtime.Mono.36.android-arm version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.36.android-arm version 36.1.2...
+Pack Microsoft.Android.Runtime.Mono.36.android-arm64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.36.android-arm64 version 36.1.2...
+Pack Microsoft.Android.Runtime.Mono.36.android-x86 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.36.android-x86 version 36.1.2...
+Pack Microsoft.Android.Runtime.Mono.36.android-x64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.36.android-x64 version 36.1.2...
+Pack Microsoft.Android.Runtime.CoreCLR.36.android-arm64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.CoreCLR.36.android-arm64 version 36.1.2...
+Pack Microsoft.Android.Runtime.CoreCLR.36.android-x64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.CoreCLR.36.android-x64 version 36.1.2...
+Pack Microsoft.Android.Runtime.NativeAOT.36.android-arm64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.NativeAOT.36.android-arm64 version 36.1.2...
+Pack Microsoft.Android.Runtime.NativeAOT.36.android-x64 version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.NativeAOT.36.android-x64 version 36.1.2...
+Pack Microsoft.Android.Templates version 36.1.2 is already installed.
+Writing workload pack installation record for Microsoft.Android.Templates version 36.1.2...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x64 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x64 version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x86 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x86 version 9.0.11...
+Pack Microsoft.NET.Runtime.MonoAOTCompiler.Task version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoAOTCompiler.Task version 9.0.11...
+Pack Microsoft.NET.Runtime.MonoTargets.Sdk version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoTargets.Sdk version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 9.0.11 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 9.0.11...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x64 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x64 version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x86 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x86 version 10.0.1...
+Pack Microsoft.NET.Runtime.MonoAOTCompiler.Task version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoAOTCompiler.Task version 10.0.1...
+Pack Microsoft.NET.Runtime.MonoTargets.Sdk version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoTargets.Sdk version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 10.0.1...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 10.0.1 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 10.0.1...
+Garbage collecting for SDK feature band(s) 10.0.100...
+
+Successfully installed workload(s) .
+
+
+real	0m0.853s
+user	0m0.437s
+sys	0m0.067s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build src/MyDesktopApplication.Android
+Restore complete (0.6s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.0s)
+    /usr/lib64/dotnet/sdk/10.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets(281,5): error NETSDK1140: 
+      35 is not a valid TargetPlatformVersion for Android. Valid versions include:
+      36.0
+      36.1
+
+Build failed with 1 error(s) in 0.9s
+
+real	0m1.074s
+user	0m1.202s
+sys	0m0.215s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): appsettings.json
+Processing (2/67): continue-setup.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): docs/llm/claude.md
+Processing (6/67): docs/llm/dump.txt
+Processing (7/67): docs/llm/output.txt
+Processing (8/67): docs/thoughts.md
+Processing (9/67): export.sh
+Processing (10/67): fix-all.sh
+Processing (11/67): fix-ci-and-add-android.sh
+Processing (12/67): fix-cpm.sh
+Processing (13/67): fix-tests.sh
+Processing (14/67): .gitattributes
+Processing (15/67): .github/dependabot.yml
+Processing (16/67): .github/workflows/ci.yml
+Processing (17/67): .github/workflows/mobile.yml
+Processing (18/67): .github/workflows/nightly.yml
+Processing (19/67): .github/workflows/release.yml
+Processing (20/67): .gitignore
+Processing (21/67): MyDesktopApplication.slnx
+Processing (22/67): README.md
+Processing (23/67): setup-all.sh
+Processing (24/67): setup-github-actions.sh
+Processing (25/67): setup-project.sh
+Processing (26/67): setup.sh
+Processing (27/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (28/67): src/MyDesktopApplication.Android/App.axaml
+Processing (29/67): src/MyDesktopApplication.Android/App.cs
+Processing (30/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (31/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (32/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (33/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (34/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (35/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (37/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (38/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (67/67): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    642.75 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.755s
+user	0m0.350s
+sys	0m0.584s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
 
 
 ================================================================================
@@ -12630,7 +13020,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 02:33:23 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 02:35:39 AM CST 2025
 Total Files Found: 67
 Files Exported: 67
 Files Skipped: 0 (binary or large files)
