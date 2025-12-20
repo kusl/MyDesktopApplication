@@ -241,3 +241,51 @@ The templates created `.csproj` files with `Version` attributes, which conflicts
 Yes, I really like this method of using shell scripts instead of manually editing individual files. 
 Lets do more of that where we can 
 or use fewer files for less copy pasting. 
+I have the project files as I have them now in `dump.txt` can you please write a shell script that updates or creates the necessary files? 
+
+
+
+
+
+
+Great idea! Let me create a comprehensive shell script that will set up or fix all the necessary files in one go. I'll read from your `dump.txt` to understand the current state and create a script that handles everything.Now you can run everything with a single command:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x setup-project.sh
+./setup-project.sh
+```
+
+This script will:
+
+1. **Create/overwrite `Directory.Build.props`** - shared build settings
+2. **Create/overwrite `Directory.Packages.props`** - all package versions in one place
+3. **Update all `.csproj` files** - removes `Version` attributes for CPM compatibility
+4. **Create `appsettings.json`** - application configuration
+5. **Create `.gitignore`** - standard .NET ignores
+6. **Create `README.md`** - project documentation
+7. **Run `dotnet restore`** - download packages
+8. **Run `dotnet build`** - compile everything
+
+The script uses `cat > filename << 'EOF'` (heredoc) syntax which embeds all the file contents directly in the script - no separate files needed!
+
+**To run it:**
+```bash
+./setup-project.sh
+```
+
+If everything succeeds, you'll see "Setup Complete!" and can immediately run:
+```bash
+dotnet run --project src/MyDesktopApplication.Desktop
+```
+
+
+
+
+
+
+
+
+
+
+ c

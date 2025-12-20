@@ -3,18 +3,95 @@
         xmlns:vm="using:MyDesktopApplication.Desktop.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="MyDesktopApplication.Desktop">
+        Title="MyDesktopApplication"
+        Width="900" Height="650"
+        MinWidth="600" MinHeight="400"
+        WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SystemAccentColorLight2}" 
+                Padding="20,15">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="MyDesktopApplication" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           Foreground="White"/>
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            Spacing="10">
+                    <Button Content="Home" 
+                            Command="{Binding NavigateToHomeCommand}"/>
+                    <Button Content="Settings" 
+                            Command="{Binding NavigateToSettingsCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
+        <!-- Main Content -->
+        <Border Grid.Row="1" Padding="30">
+            <StackPanel Spacing="20" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                
+                <TextBlock Text="{Binding Greeting}" 
+                           FontSize="28" 
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="{Binding Counter, StringFormat='Counter: {0}'}" 
+                           FontSize="18"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemAccentColor}"/>
+
+                <StackPanel Orientation="Horizontal" 
+                            Spacing="15" 
+                            HorizontalAlignment="Center">
+                    <Button Content="Click Me!" 
+                            Command="{Binding IncrementCounterCommand}"
+                            Classes="accent"
+                            Padding="20,10"
+                            FontSize="16"/>
+                    
+                    <Button Content="Load Data" 
+                            Command="{Binding LoadDataCommand}"
+                            IsEnabled="{Binding !IsBusy}"
+                            Padding="20,10"
+                            FontSize="16"/>
+                </StackPanel>
+
+                <!-- Loading indicator -->
+                <ProgressBar IsIndeterminate="True" 
+                             IsVisible="{Binding IsBusy}"
+                             Width="200"/>
+
+                <!-- Current Page Content -->
+                <ContentControl Content="{Binding CurrentPage}" 
+                                Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" 
+                Background="{DynamicResource SystemChromeHighColor}" 
+                Padding="15,10">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="Built with Avalonia UI + .NET 10" 
+                           Opacity="0.7" 
+                           FontSize="12"/>
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding Counter, StringFormat='Clicks: {0}'}" 
+                           Opacity="0.7" 
+                           FontSize="12"/>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>
