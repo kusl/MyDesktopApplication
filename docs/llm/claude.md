@@ -592,4 +592,93 @@ Restore failed with 3 error(s) in 0.7s
 real	0m0.896s
 user	0m1.226s
 sys	0m0.251s
+When I look back, the original dotnet list packages did NOT list postgresql 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package --outdated
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Core` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package       Requested   Resolved   Latest
+   > FluentValidation      11.11.0     11.11.0    12.1.1
+
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest 
+   > Avalonia                    11.3.0      11.3.0     11.3.10
+   > Avalonia.Desktop            11.3.0      11.3.0     11.3.10
+   > Avalonia.Diagnostics        11.3.0      11.3.0     11.3.10
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0     11.3.10
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0     11.3.10
+
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.EntityFrameworkCore                 10.0.0      10.0.0     10.0.1
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.Configuration            10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.DependencyInjection      10.0.0      10.0.0     10.0.1
+
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest
+   > Bogus                          35.6.1      35.6.1     35.6.5
+   > FluentAssertions               8.0.1       8.0.1      8.8.0 
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                           Requested   Resolved   Latest
+   > Bogus                                     35.6.1      35.6.1     35.6.5
+   > FluentAssertions                          8.0.1       8.0.1      8.8.0 
+   > Microsoft.EntityFrameworkCore.Sqlite      10.0.0      10.0.0     10.0.1
+   > Microsoft.NET.Test.Sdk                    17.14.1     17.14.1    18.0.1
+   > Testcontainers                            4.3.0       4.3.0      4.9.0 
+   > Testcontainers.PostgreSql                 4.3.0       4.3.0      4.9.0 
+   > xunit.runner.visualstudio                 3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest 
+   > Avalonia.Headless              11.3.0      11.3.0     11.3.10
+   > Avalonia.Headless.XUnit        11.3.0      11.3.0     11.3.10
+   > FluentAssertions               8.0.1       8.0.1      8.8.0  
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1 
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5  
+
+
+real	0m3.319s
+user	0m2.612s
+sys	0m0.368s
+so I will revert this line
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+to this 
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+Thank you for including a backup file. that was very helpful. 
+after that one fix, 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package --outdated
+Restore complete (2.8s)
+
+Build succeeded in 2.9s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m4.076s
+user	0m4.251s
+sys	0m1.058s
 
