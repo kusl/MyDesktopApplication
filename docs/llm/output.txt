@@ -1062,4 +1062,102 @@ Output file size: 0.03 MB
 real	0m0.279s
 user	0m0.109s
 sys	0m0.225s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet run --project src/MyDesktopApplication.Desktop
+
+real	1m4.268s
+user	0m6.227s
+sys	0m0.908s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-all.sh 
+==============================================
+  Code Review Fixes
+==============================================
+
+✓ Updating Desktop project references...
+✓ Creating Core domain entities...
+✓ Creating Infrastructure data access layer...
+✓ Creating Shared DTOs...
+✓ Updating Desktop ViewModels...
+✓ Updating App.axaml.cs with DI...
+✓ Ensuring App.axaml exists...
+✓ Updating MainWindow.axaml...
+✓ Removing unused ViewLocator...
+✓ Updating unit tests...
+✓ Updating integration tests...
+✓ Updating UI tests...
+✓ Creating appsettings.json in Desktop project...
+✓ Updating export script...
+
+✓ Running dotnet restore...
+Restore complete (0.9s)
+
+Build succeeded in 1.0s
+
+✓ Running dotnet build...
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs(17,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Desktop net10.0 succeeded (0.8s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build failed with 1 error(s) in 2.0s
+
+! Build failed - check errors above
+
+real	0m3.299s
+user	0m2.670s
+sys	0m0.557s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 34 files to export
+Processing (1/34): appsettings.json
+Processing (2/34): Directory.Build.props
+Processing (3/34): Directory.Packages.props
+Processing (4/34): docs/llm/claude.md
+Processing (5/34): docs/thoughts.md
+Processing (6/34): MyDesktopApplication.slnx
+Processing (7/34): README.md
+Processing (8/34): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (9/34): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (10/34): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (11/34): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (12/34): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (13/34): src/MyDesktopApplication.Desktop/App.axaml
+Processing (14/34): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (15/34): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (16/34): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (17/34): src/MyDesktopApplication.Desktop/Program.cs
+Processing (18/34): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (19/34): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (20/34): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (21/34): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (22/34): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (23/34): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (24/34): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (25/34): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (26/34): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (27/34): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (28/34): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (29/34): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (30/34): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (31/34): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (32/34): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (33/34): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (34/34): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 34
+Output file size: .09 MB
+
+real	0m0.227s
+user	0m0.106s
+sys	0m0.172s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
