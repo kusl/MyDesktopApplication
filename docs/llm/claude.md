@@ -1302,7 +1302,7 @@ This allows code reuse between platforms!
 | Linux x64 | `.tar.gz` |
 | Linux ARM64 | `.tar.gz` |
 | macOS x64 | `.tar.gz` |
-| macOS ARM64 | `.tar.gz` |
+| macOS sARM64 | `.tar.gz` |
 | **Android** | `.apk` |
 
 ### To Test Locally
@@ -1328,3 +1328,19 @@ git push origin v1.0.0
 
 
 
+I want to take a quick detour to fix this issue. Preferably using only fedora dnf sources, can you write a shell script that addresses these android dependency needs for fedora? 
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build src/MyDesktopApplication.Android
+Restore complete (0.7s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 2 warning(s) (0.2s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): warning XA5300: An exception occurred while validating the Java SDK installation in '/usr/lib/jvm/java-25-openjdk' that was found while searching the paths from '$PATH'. Ensure that the Android section of the Visual Studio options has a valid Java SDK directory configured. To use a custom SDK path for a command line build, set the 'JavaSdkDirectory' MSBuild property to the custom path. Exception: Could not find required file `jar` within `/usr/lib/jvm/java-25-openjdk`; is this a valid JDK? (Parameter 'homePath')
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) and 2 warning(s) in 1.1s
+
+real	0m1.266s
+user	0m1.158s
+sys	0m0.191s
