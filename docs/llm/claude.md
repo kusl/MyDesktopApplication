@@ -1768,3 +1768,53 @@ can you please give me a shell script to update the code as needed. the code in 
 
 
 
+I see the issue now. You have `adb` and `fastboot` from Fedora's `android-tools` package, but that's just the command-line tools - you don't have the actual Android SDK with build-tools, platforms, etc. that .NET needs to build Android apps.
+
+The Fedora `android-tools` package only includes `adb` and `fastboot` - it does NOT include the full Android SDK (build-tools, platform-tools, platforms, etc.) that's required for building Android apps.
+
+Let me create a script that downloads and sets up the proper Android SDK:Now run the updated script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x setup-android-fedora.sh
+./setup-android-fedora.sh
+```
+
+## What This Script Does
+
+The problem was that Fedora's `android-tools` package only includes `adb` and `fastboot` - it does **NOT** include the full Android SDK that .NET needs.
+
+The new script:
+
+1. **Installs Java 21 JDK** (with the `jar` tool)
+2. **Downloads the official Android SDK command-line tools** from Google
+3. **Installs the actual SDK components** needed for building:
+   - `platform-tools` (adb, etc.)
+   - `build-tools;35.0.0` (aapt, d8, etc.)
+   - `platforms;android-35` (Android API 35)
+4. **Accepts all SDK licenses** automatically
+5. **Installs the .NET Android workload**
+6. **Creates environment file** (`~/.android-env.sh`)
+7. **Tests the build** with correct paths
+
+## What Was Missing
+
+| Component | Fedora `android-tools` | Full Android SDK (needed) |
+|-----------|----------------------|---------------------------|
+| `adb` | ✓ | ✓ |
+| `fastboot` | ✓ | ✓ |
+| `sdkmanager` | ✗ | ✓ |
+| `build-tools` | ✗ | ✓ |
+| `platforms/android-XX` | ✗ | ✓ |
+| `aapt`, `d8`, etc. | ✗ | ✓ |
+
+The .NET Android build needs the full SDK with build-tools and platform libraries, not just the command-line debugging tools.
+
+
+
+
+
+
+
+
+
