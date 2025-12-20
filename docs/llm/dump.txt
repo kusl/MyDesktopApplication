@@ -1,0 +1,282 @@
+===============================================================================
+PROJECT EXPORT
+Generated: Sat Dec 20 12:56:38 AM CST 2025
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+===============================================================================
+
+DIRECTORY STRUCTURE:
+===================
+
+/home/kushal/src/dotnet/MyDesktopApplication
+├── appsettings.json
+├── DIrectory.Build.props
+├── Directory.Packages.props
+├── export.sh
+├── .gitignore
+├── MyDesktopApplication.slnx
+├── README.md
+├── setup.sh
+├── src
+│   ├── MyDesktopApplication.Core
+│   │   ├── Class1.cs
+│   │   └── MyDesktopApplication.Core.csproj
+│   └── MyDesktopApplication.Infrastructure
+│       ├── Class1.cs
+│       └── MyDesktopApplication.Infrastructure.csproj
+└── tests
+
+
+FILE CONTENTS:
+==============
+
+================================================================================
+FILE: appsettings.json
+SIZE: 0.69 KB
+MODIFIED: 2025-12-20 00:53:16
+================================================================================
+
+{
+  "Application": {
+    "ApplicationName": "MyDesktopApplication",
+    "Theme": "Fluent"
+  },
+  "Database": {
+    "UsePostgreSql": false,
+    "PostgreSqlConnection": "Host=localhost;Database=myapp;Username=postgres;Password=postgres",
+    "SqliteFileName": "app.db"
+  },
+  "OpenTelemetry": {
+    "EnableConsoleExporter": true,
+    "OtlpEndpoint": null
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "Microsoft.EntityFrameworkCore": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo": [
+      { "Name": "Console" }
+    ],
+    "Enrich": ["FromLogContext", "WithMachineName", "WithEnvironmentName"]
+  }
+}
+
+
+================================================================================
+FILE: DIrectory.Build.props
+SIZE: 1.58 KB
+MODIFIED: 2025-12-20 00:52:17
+================================================================================
+
+<Project>
+  <!-- Shared build properties for all projects -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Assembly and versioning -->
+  <PropertyGroup>
+    <Company>YourCompanyName</Company>
+    <Authors>Your Name</Authors>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year)</Copyright>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(Configuration)' == 'Debug'">dev</VersionSuffix>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <!-- Deterministic builds for reproducibility -->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Source Link for debugging -->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Test project conventions -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+</Project>
+
+
+================================================================================
+FILE: Directory.Packages.props
+SIZE: 4.10 KB
+MODIFIED: 2025-12-20 00:52:51
+================================================================================
+
+<Project>
+  <!-- Central Package Management - All package versions in one place -->
+  <!-- All packages here are MIT/Apache-2.0 licensed and free for any use -->
+  
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Avalonia UI (MIT License) -->
+    <PackageVersion Include="Avalonia" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Headless" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.0" />
+
+    <!-- MVVM & Reactive (MIT License) -->
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="ReactiveUI" Version="20.2.62" />
+
+    <!-- Dependency Injection (MIT License) -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
+
+    <!-- Logging & OpenTelemetry (Apache-2.0 License) -->
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
+
+    <!-- Database - SQLite (Public Domain) & PostgreSQL (PostgreSQL License) -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageVersion Include="Dapper" Version="2.1.66" />
+
+    <!-- Validation (Apache-2.0 License) -->
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+
+    <!-- Testing (MIT/Apache-2.0 License) -->
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    <PackageVersion Include="FluentAssertions" Version="8.0.1" />
+    <PackageVersion Include="Bogus" Version="35.6.1" />
+    <PackageVersion Include="Testcontainers" Version="4.3.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.3.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="Verify.Xunit" Version="28.12.2" />
+
+    <!-- HTTP & Serialization (MIT License) -->
+    <PackageVersion Include="System.Text.Json" Version="10.0.0" />
+    <PackageVersion Include="Refit" Version="8.0.0" />
+    <PackageVersion Include="Polly" Version="8.5.2" />
+  </ItemGroup>
+</Project>
+
+
+================================================================================
+FILE: MyDesktopApplication.slnx
+SIZE: 0.25 KB
+MODIFIED: 2025-12-20 00:50:20
+================================================================================
+
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+  </Folder>
+</Solution>
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Core/Class1.cs
+SIZE: 0.06 KB
+MODIFIED: 2025-12-20 00:50:18
+================================================================================
+
+﻿namespace MyDesktopApplication.Core;
+
+public class Class1
+{
+
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+SIZE: 0.21 KB
+MODIFIED: 2025-12-20 00:50:18
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/Class1.cs
+SIZE: 0.07 KB
+MODIFIED: 2025-12-20 00:50:19
+================================================================================
+
+﻿namespace MyDesktopApplication.Infrastructure;
+
+public class Class1
+{
+
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+SIZE: 0.21 KB
+MODIFIED: 2025-12-20 00:50:19
+================================================================================
+
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+===============================================================================
+EXPORT COMPLETED: Sat Dec 20 12:56:39 AM CST 2025
+Total Files Exported: 8
+Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+===============================================================================

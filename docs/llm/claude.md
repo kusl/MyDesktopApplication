@@ -128,3 +128,15 @@ For your Fedora setup with Rider, I'd recommend installing the **AvaloniaRider**
 
 
 
+Thank you. I ran into a problem when running the setup script. 
+Project `src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj` added to the solution.
+Error: Invalid option(s):
+-f net10.0
+   'net10.0' is not a valid value for -f. The possible values are:
+      net8.0   - Target net8.0
+      net9.0   - Target net9.0
+
+For more information, run:
+   dotnet new avalonia.mvvm -h
+
+For details on the exit code, refer to https://aka.ms/templating-exit-codes#127

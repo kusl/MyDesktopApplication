@@ -1,0 +1,194 @@
+kushal@fedora:~$ cd ~/src/dotnet/MyDesktopApplication/
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet --info
+.NET SDK:
+ Version:           10.0.100
+ Commit:            b0f34d51fc
+ Workload version:  10.0.100-manifests.4eab3e0f
+ MSBuild version:   18.0.2+b0f34d51f
+
+Runtime Environment:
+ OS Name:     fedora
+ OS Version:  43
+ OS Platform: Linux
+ RID:         fedora.43-x64
+ Base Path:   /usr/lib64/dotnet/sdk/10.0.100/
+
+.NET workloads installed:
+There are no installed workloads to display.
+Configured to use workload sets when installing new manifests.
+No workload sets are installed. Run "dotnet workload restore" to install a workload set.
+
+Host:
+  Version:      10.0.0
+  Architecture: x64
+  Commit:       b0f34d51fc
+
+.NET SDKs installed:
+  10.0.100 [/usr/lib64/dotnet/sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 10.0.0 [/usr/lib64/dotnet/shared/Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 10.0.0 [/usr/lib64/dotnet/shared/Microsoft.NETCore.App]
+
+Other architectures found:
+  None
+
+Environment variables:
+  DOTNET_BUNDLE_EXTRACT_BASE_DIR           [/home/kushal/.cache/dotnet_bundle_extract]
+  DOTNET_ROOT                              [/usr/lib64/dotnet]
+
+global.json file:
+  Not found
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet new install Avalonia.Templates
+The following template packages will be installed:
+   Avalonia.Templates
+
+Success: Avalonia.Templates::11.3.10 installed the following templates:
+Template Name                        Short Name                 Language  Tags                                     
+-----------------------------------  -------------------------  --------  -----------------------------------------
+Avalonia .NET App                    avalonia.app               [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia .NET MVVM App               avalonia.mvvm              [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Cross Platform Application  avalonia.xplat             [C#],F#   Desktop/Xaml/Avalonia/Browser/Mobile     
+Avalonia Resource Dictionary         avalonia.resource                    Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Styles                      avalonia.styles                      Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia TemplatedControl            avalonia.templatedcontrol  [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia UserControl                 avalonia.usercontrol       [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Window                      avalonia.window            [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+
+The following templates might not work because their constraints are not met:
+Avalonia TemplatedControl (avalonia.templatedcontrol) C#(identity: Avalonia.TemplatedControl)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia UserControl (avalonia.usercontrol) C#(identity: Avalonia.UserControl)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Window (avalonia.window) C#(identity: Avalonia.Window)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia TemplatedControl (avalonia.templatedcontrol) F#(identity: Avalonia.TemplatedControl.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia UserControl (avalonia.usercontrol) F#(identity: Avalonia.UserControl.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Window (avalonia.window) F#(identity: Avalonia.Window.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Resource Dictionary (avalonia.resource)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Styles (avalonia.styles)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+
+real	0m1.124s
+user	0m0.652s
+sys	0m0.125s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup.sh
+🚀 Setting up MyDesktopApplication with .NET 10 and Avalonia UI...
+📦 Installing Avalonia templates...
+The following template packages will be installed:
+   Avalonia.Templates
+
+Avalonia.Templates (version 11.3.10) is already installed, it will be replaced with latest version.
+Avalonia.Templates::11.3.10 was successfully uninstalled.
+Success: Avalonia.Templates::11.3.10 installed the following templates:
+Template Name                        Short Name                 Language  Tags                                     
+-----------------------------------  -------------------------  --------  -----------------------------------------
+Avalonia .NET App                    avalonia.app               [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia .NET MVVM App               avalonia.mvvm              [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Cross Platform Application  avalonia.xplat             [C#],F#   Desktop/Xaml/Avalonia/Browser/Mobile     
+Avalonia Resource Dictionary         avalonia.resource                    Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Styles                      avalonia.styles                      Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia TemplatedControl            avalonia.templatedcontrol  [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia UserControl                 avalonia.usercontrol       [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+Avalonia Window                      avalonia.window            [C#],F#   Desktop/Xaml/Avalonia/Windows/Linux/macOS
+
+The following templates might not work because their constraints are not met:
+Avalonia TemplatedControl (avalonia.templatedcontrol) C#(identity: Avalonia.TemplatedControl)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia UserControl (avalonia.usercontrol) C#(identity: Avalonia.UserControl)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Window (avalonia.window) C#(identity: Avalonia.Window)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia TemplatedControl (avalonia.templatedcontrol) F#(identity: Avalonia.TemplatedControl.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia UserControl (avalonia.usercontrol) F#(identity: Avalonia.UserControl.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Window (avalonia.window) F#(identity: Avalonia.Window.FSharp)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Resource Dictionary (avalonia.resource)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+Avalonia Styles (avalonia.styles)
+   Project capabilities: No project was found at the path: /home/kushal/src/dotnet/MyDesktopApplication. This template can only be created inside the project.
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /home/kushal/src/dotnet/MyDesktopApplication/.git/
+📄 Creating SLNX solution file...
+The template "Solution File" was created successfully.
+
+🏗️ Creating project structure...
+The template "Class Library" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj:
+Restore succeeded.
+
+
+Project `src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj` added to the solution.
+The template "Class Library" was created successfully.
+
+Processing post-creation actions...
+Restoring /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj:
+Restore succeeded.
+
+
+Project `src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj` added to the solution.
+Error: Invalid option(s):
+-f net10.0
+   'net10.0' is not a valid value for -f. The possible values are:
+      net8.0   - Target net8.0
+      net9.0   - Target net9.0
+
+For more information, run:
+   dotnet new avalonia.mvvm -h
+
+For details on the exit code, refer to https://aka.ms/templating-exit-codes#127
+
+real	0m3.925s
+user	0m3.339s
+sys	0m0.540s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 8 files to export
+Processing (1/8): appsettings.json
+Processing (2/8): DIrectory.Build.props
+Processing (3/8): Directory.Packages.props
+Processing (4/8): MyDesktopApplication.slnx
+Processing (5/8): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/8): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/8): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (8/8): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 8
+Output file size: 0.01 MB
+
+real	0m0.126s
+user	0m0.042s
+sys	0m0.095s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
