@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 01:05:44 AM CST 2025
+Generated: Sat Dec 20 01:11:49 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -13,6 +13,7 @@ DIRECTORY STRUCTURE:
 ├── Directory.Build.props
 ├── Directory.Packages.props
 ├── export.sh
+├── fix-cpm.sh
 ├── .gitignore
 ├── MyDesktopApplication.slnx
 ├── README.md
@@ -336,8 +337,8 @@ public partial class App : Application
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.22 KB
-MODIFIED: 2025-12-20 01:03:16
+SIZE: 1.12 KB
+MODIFIED: 2025-12-20 01:10:36
 ================================================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
@@ -355,16 +356,16 @@ MODIFIED: 2025-12-20 01:03:16
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.10" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.10" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.10">
+    <PackageReference Include="Avalonia.Diagnostics">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
 </Project>
 
@@ -554,8 +555,8 @@ MODIFIED: 2025-12-20 01:03:14
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-SIZE: 0.60 KB
-MODIFIED: 2025-12-20 01:03:16
+SIZE: 0.54 KB
+MODIFIED: 2025-12-20 01:10:36
 ================================================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
@@ -568,10 +569,10 @@ MODIFIED: 2025-12-20 01:03:16
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
@@ -600,8 +601,8 @@ public class UnitTest1
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-SIZE: 0.60 KB
-MODIFIED: 2025-12-20 01:03:18
+SIZE: 0.54 KB
+MODIFIED: 2025-12-20 01:10:36
 ================================================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
@@ -614,10 +615,10 @@ MODIFIED: 2025-12-20 01:03:18
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
@@ -646,8 +647,8 @@ public class UnitTest1
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 0.60 KB
-MODIFIED: 2025-12-20 01:03:19
+SIZE: 0.54 KB
+MODIFIED: 2025-12-20 01:10:36
 ================================================================================
 
 ﻿<Project Sdk="Microsoft.NET.Sdk">
@@ -660,10 +661,10 @@ MODIFIED: 2025-12-20 01:03:19
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
@@ -691,7 +692,7 @@ public class UnitTest1
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 01:05:44 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 01:11:50 AM CST 2025
 Total Files Exported: 23
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

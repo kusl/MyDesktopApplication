@@ -321,4 +321,41 @@ Output file size: 0.02 MB
 real	0m0.281s
 user	0m0.110s
 sys	0m0.228s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-cpm.sh 
+🔧 Fixing Central Package Management compatibility...
+  Fixing: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+  Fixing: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+  Fixing: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+  Fixing: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+✅ Fixed! Now run:
+   dotnet restore
+   dotnet build
+
+real	0m0.033s
+user	0m0.006s
+sys	0m0.021s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet restore
+Restore complete (9.3s)
+
+Build succeeded in 9.4s
+
+real	0m9.576s
+user	0m8.355s
+sys	0m3.097s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build
+Restore complete (0.5s)
+  MyDesktopApplication.Infrastructure net10.0 succeeded (2.5s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (2.5s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core net10.0 succeeded (2.4s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (2.5s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (2.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (2.5s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (3.0s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+
+Build succeeded in 3.7s
+
+real	0m3.803s
+user	0m1.931s
+sys	0m0.389s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
