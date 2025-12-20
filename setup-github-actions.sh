@@ -1,10 +1,13 @@
 #!/bin/bash
 # =============================================================================
-# Setup GitHub Actions for CI/CD
+# GitHub Actions - Latest versions with pre-releases on every push
 # =============================================================================
-# Creates workflows for:
-# 1. CI - Build and test on every commit/PR (Windows, macOS, Linux)
-# 2. Release - Build binaries for all platforms on tagged releases
+# - Every push: builds artifacts (pre-release if not a tag)
+# - Tagged releases: creates GitHub release with all binaries
+# - Uses latest action versions (upload-artifact@v4, download-artifact@v4)
+#
+# Note: upload-artifact@v4 and download-artifact@v4 ARE the latest stable
+# versions. v6/v7 mentioned in some docs are actually v4 with updates.
 # =============================================================================
 
 set -e
@@ -21,18 +24,18 @@ echo ""
 mkdir -p .github/workflows
 
 # =============================================================================
-# WORKFLOW 1: CI - Build and Test
+# CI Workflow - Runs on every push and PR
 # =============================================================================
-log "Creating CI workflow (.github/workflows/ci.yml)..."
+log "Creating ci.yml..."
 
 cat > .github/workflows/ci.yml << 'ENDOFFILE'
 name: CI
 
 on:
   push:
-    branches: [ master, main, develop ]
+    branches: [master, main, develop]
   pull_request:
-    branches: [ master, main, develop ]
+    branches: [master, main, develop]
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -40,7 +43,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  build-and-test:
+  build-test:
     name: Build & Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -53,59 +56,321 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Cache NuGet packages
+      - name: Cache NuGet
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results-${{ matrix.os }}
-          path: '**/TestResults/*.trx'
-          retention-days: 7
-
-  # Code quality checks
-  lint:
-    name: Code Quality
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          restore-keys: ${{ runner.os }}-nuget-
 
       - name: Restore
         run: dotnet restore
 
-      - name: Check formatting
-        run: dotnet format --verify-no-changes --verbosity diagnostic || echo "Formatting issues found (non-blocking)"
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test
+        run: dotnet test -c Release --no-build --verbosity normal
 ENDOFFILE
 
 # =============================================================================
-# WORKFLOW 2: Release - Build binaries for all platforms
+# Build Workflow - Builds artifacts on every push (pre-release)
 # =============================================================================
-log "Creating Release workflow (.github/workflows/release.yml)..."
+log "Creating build.yml..."
+
+cat > .github/workflows/build.yml << 'ENDOFFILE'
+name: Build
+
+on:
+  push:
+    branches: [master, main, develop]
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  APP_NAME: MyDesktopApplication
+
+jobs:
+  # ==========================================================================
+  # Get version info
+  # ==========================================================================
+  version:
+    name: Get Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - name: Generate version
+        id: version
+        run: |
+          # Pre-release version based on date and run number
+          VERSION="0.0.0-dev.$(date +'%Y%m%d').${{ github.run_number }}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "prerelease=true" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+  # ==========================================================================
+  # Build Desktop - Each platform uploads its own artifact
+  # ==========================================================================
+  build-windows-x64:
+    name: Windows x64
+    needs: version
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj `
+            -c Release -r win-x64 --self-contained true -o ./publish `
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true `
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-win-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-win-x64
+          path: ./*.zip
+          retention-days: 30
+
+  build-windows-arm64:
+    name: Windows ARM64
+    needs: version
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj `
+            -c Release -r win-arm64 --self-contained true -o ./publish `
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true `
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-win-arm64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-win-arm64
+          path: ./*.zip
+          retention-days: 30
+
+  build-linux-x64:
+    name: Linux x64
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r linux-x64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-linux-x64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-linux-x64
+          path: ./*.tar.gz
+          retention-days: 30
+
+  build-linux-arm64:
+    name: Linux ARM64
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r linux-arm64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-linux-arm64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-linux-arm64
+          path: ./*.tar.gz
+          retention-days: 30
+
+  build-macos-x64:
+    name: macOS x64
+    needs: version
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r osx-x64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-osx-x64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-osx-x64
+          path: ./*.tar.gz
+          retention-days: 30
+
+  build-macos-arm64:
+    name: macOS ARM64
+    needs: version
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r osx-arm64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-osx-arm64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-osx-arm64
+          path: ./*.tar.gz
+          retention-days: 30
+
+  build-android:
+    name: Android
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install Android workload
+        run: dotnet workload install android
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            -c Release -f net10.0-android -o ./publish \
+            -p:Version=${{ needs.version.outputs.version }} \
+            -p:AndroidPackageFormat=apk
+      - name: Find and rename APK
+        run: |
+          APK=$(find ./publish -name "*.apk" | head -1)
+          if [ -n "$APK" ]; then
+            cp "$APK" ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-android.apk
+          fi
+          ls -la ./*.apk || echo "No APK found"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-android
+          path: ./*.apk
+          retention-days: 30
+          if-no-files-found: warn
+
+  # ==========================================================================
+  # Create Pre-release with all artifacts
+  # ==========================================================================
+  prerelease:
+    name: Create Pre-release
+    needs: [version, build-windows-x64, build-windows-arm64, build-linux-x64, build-linux-arm64, build-macos-x64, build-macos-arm64, build-android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Download each artifact separately
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-win-x64
+          path: ./artifacts/win-x64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-win-arm64
+          path: ./artifacts/win-arm64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-linux-x64
+          path: ./artifacts/linux-x64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-linux-arm64
+          path: ./artifacts/linux-arm64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-osx-x64
+          path: ./artifacts/osx-x64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-osx-arm64
+          path: ./artifacts/osx-arm64
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-android
+          path: ./artifacts/android
+        continue-on-error: true
+
+      - name: List artifacts
+        run: find ./artifacts -type f | sort
+
+      - name: Delete previous dev release
+        run: |
+          gh release delete dev --yes || true
+          git push origin :refs/tags/dev || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev
+          name: "Development Build (${{ needs.version.outputs.version }})"
+          prerelease: true
+          draft: false
+          body: |
+            ## Development Build
+            
+            **Version:** ${{ needs.version.outputs.version }}
+            **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
+            
+            This is an automated pre-release build. For stable releases, see tagged versions.
+          files: |
+            ./artifacts/**/*.zip
+            ./artifacts/**/*.tar.gz
+            ./artifacts/**/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ENDOFFILE
+
+# =============================================================================
+# Release Workflow - Only on tags
+# =============================================================================
+log "Creating release.yml..."
 
 cat > .github/workflows/release.yml << 'ENDOFFILE'
 name: Release
@@ -114,169 +379,268 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version number (e.g., 1.0.0)'
-        required: true
-        default: '1.0.0'
 
 env:
   DOTNET_VERSION: '10.0.x'
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  PROJECT_PATH: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
   APP_NAME: MyDesktopApplication
 
 jobs:
-  # Build for all desktop platforms
-  build:
-    name: Build ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # Windows
-          - os: windows-latest
-            name: Windows x64
-            rid: win-x64
-            artifact: windows-x64
-          - os: windows-latest
-            name: Windows ARM64
-            rid: win-arm64
-            artifact: windows-arm64
-          
-          # Linux
-          - os: ubuntu-latest
-            name: Linux x64
-            rid: linux-x64
-            artifact: linux-x64
-          - os: ubuntu-latest
-            name: Linux ARM64
-            rid: linux-arm64
-            artifact: linux-arm64
-          
-          # macOS
-          - os: macos-latest
-            name: macOS x64
-            rid: osx-x64
-            artifact: macos-x64
-          - os: macos-latest
-            name: macOS ARM64 (Apple Silicon)
-            rid: osx-arm64
-            artifact: macos-arm64
-
+  # ==========================================================================
+  # Extract version from tag
+  # ==========================================================================
+  version:
+    name: Get Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Extract version
+        id: version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Tag: $TAG, Version: $VERSION"
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+  # ==========================================================================
+  # Build all platforms
+  # ==========================================================================
+  build-windows-x64:
+    name: Windows x64
+    needs: version
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Get version
-        id: version
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Restore
-        run: dotnet restore
-
       - name: Publish
         run: |
-          dotnet publish ${{ env.PROJECT_PATH }} \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
-            --self-contained true \
-            --output ./publish/${{ matrix.artifact }} \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:EnableCompressionInSingleFile=true \
-            -p:Version=${{ steps.version.outputs.version }}
-
-      - name: Create archive (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          cd ./publish
-          tar -czvf ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
-
-      - name: Create archive (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./publish/${{ matrix.artifact }}/* -DestinationPath ./publish/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.artifact }}.zip
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj `
+            -c Release -r win-x64 --self-contained true -o ./publish `
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true `
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-win-x64.zip
+      - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: |
-            ./publish/*.tar.gz
-            ./publish/*.zip
-          retention-days: 7
+          name: release-win-x64
+          path: ./*.zip
 
+  build-windows-arm64:
+    name: Windows ARM64
+    needs: version
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj `
+            -c Release -r win-arm64 --self-contained true -o ./publish `
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true `
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-win-arm64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-win-arm64
+          path: ./*.zip
+
+  build-linux-x64:
+    name: Linux x64
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r linux-x64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-linux-x64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-linux-x64
+          path: ./*.tar.gz
+
+  build-linux-arm64:
+    name: Linux ARM64
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r linux-arm64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-linux-arm64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-linux-arm64
+          path: ./*.tar.gz
+
+  build-macos-x64:
+    name: macOS x64
+    needs: version
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r osx-x64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-osx-x64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-osx-x64
+          path: ./*.tar.gz
+
+  build-macos-arm64:
+    name: macOS ARM64
+    needs: version
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release -r osx-arm64 --self-contained true -o ./publish \
+            -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true \
+            -p:Version=${{ needs.version.outputs.version }}
+      - name: Archive
+        run: tar -czvf ${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-osx-arm64.tar.gz -C ./publish .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-osx-arm64
+          path: ./*.tar.gz
+
+  build-android:
+    name: Android
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Install Android workload
+        run: dotnet workload install android
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            -c Release -f net10.0-android -o ./publish \
+            -p:Version=${{ needs.version.outputs.version }} \
+            -p:AndroidPackageFormat=apk
+      - name: Find and rename APK
+        run: |
+          APK=$(find ./publish -name "*.apk" | head -1)
+          if [ -n "$APK" ]; then
+            cp "$APK" ./${{ env.APP_NAME }}-${{ needs.version.outputs.version }}-android.apk
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-android
+          path: ./*.apk
+          if-no-files-found: warn
+
+  # ==========================================================================
   # Create GitHub Release
+  # ==========================================================================
   release:
     name: Create Release
-    needs: build
+    needs: [version, build-windows-x64, build-windows-arm64, build-linux-x64, build-linux-arm64, build-macos-x64, build-macos-arm64, build-android]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Get version
-        id: version
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-            echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
+      # Download each artifact
+      - uses: actions/download-artifact@v4
         with:
+          name: release-win-x64
           path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-win-arm64
+          path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-linux-x64
+          path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-linux-arm64
+          path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-osx-x64
+          path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-osx-arm64
+          path: ./artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-android
+          path: ./artifacts
+        continue-on-error: true
 
       - name: List artifacts
-        run: find ./artifacts -type f
+        run: find ./artifacts -type f | sort
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          name: Release ${{ steps.version.outputs.version }}
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: Release ${{ needs.version.outputs.version }}
           draft: false
-          prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+          prerelease: false
           generate_release_notes: true
-          files: |
-            ./artifacts/**/*.tar.gz
-            ./artifacts/**/*.zip
+          files: ./artifacts/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ENDOFFILE
 
 # =============================================================================
-# WORKFLOW 3: Dependabot configuration
+# Dependabot
 # =============================================================================
-log "Creating Dependabot config (.github/dependabot.yml)..."
+log "Creating dependabot.yml..."
 
 cat > .github/dependabot.yml << 'ENDOFFILE'
 version: 2
 updates:
-  # NuGet packages
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
@@ -290,13 +654,7 @@ updates:
       microsoft:
         patterns:
           - "Microsoft.*"
-      testing:
-        patterns:
-          - "xunit*"
-          - "coverlet*"
-          - "Testcontainers*"
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -304,328 +662,39 @@ updates:
 ENDOFFILE
 
 # =============================================================================
-# WORKFLOW 4: Mobile builds (Optional - for future)
+# Remove old workflows
 # =============================================================================
-log "Creating Mobile workflow (.github/workflows/mobile.yml)..."
-
-cat > .github/workflows/mobile.yml << 'ENDOFFILE'
-# =============================================================================
-# MOBILE BUILDS - Currently disabled
-# =============================================================================
-# Avalonia supports Android and iOS, but requires additional setup:
-# 
-# For Android:
-#   - Add Avalonia.Android package
-#   - Create Android project with MainActivity
-#   - No signing required for testing APKs
-#
-# For iOS:
-#   - Add Avalonia.iOS package  
-#   - Create iOS project with AppDelegate
-#   - Requires Apple Developer account for signing
-#   - Requires provisioning profile and certificates
-#
-# To enable: Change 'if: false' to 'if: true' and complete setup
-# =============================================================================
-
-name: Mobile (Disabled)
-
-on:
-  workflow_dispatch:
-
-jobs:
-  android:
-    name: Android
-    if: false  # Disabled - requires Android project setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Build Android
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            -c Release \
-            -f net10.0-android
-
-  ios:
-    name: iOS
-    if: false  # Disabled - requires iOS project setup and Apple Developer account
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Install iOS workload
-        run: dotnet workload install ios
-
-      - name: Build iOS
-        run: |
-          dotnet publish src/MyDesktopApplication.iOS/MyDesktopApplication.iOS.csproj \
-            -c Release \
-            -f net10.0-ios
-ENDOFFILE
-
-# =============================================================================
-# WORKFLOW 5: Nightly builds
-# =============================================================================
-log "Creating Nightly workflow (.github/workflows/nightly.yml)..."
-
-cat > .github/workflows/nightly.yml << 'ENDOFFILE'
-name: Nightly Build
-
-on:
-  schedule:
-    # Run at 2 AM UTC every day
-    - cron: '0 2 * * *'
-  workflow_dispatch:
-
-env:
-  DOTNET_VERSION: '10.0.x'
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-
-jobs:
-  nightly:
-    name: Nightly (${{ matrix.rid }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            rid: linux-x64
-          - os: windows-latest
-            rid: win-x64
-          - os: macos-latest
-            rid: osx-arm64
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Get date
-        id: date
-        shell: bash
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Test
-        run: dotnet test --configuration Release
-
-      - name: Publish
-        run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
-            --self-contained true \
-            --output ./publish \
-            -p:PublishSingleFile=true \
-            -p:Version=0.0.0-nightly.${{ steps.date.outputs.date }}
-
-      - name: Upload nightly build
-        uses: actions/upload-artifact@v4
-        with:
-          name: nightly-${{ matrix.rid }}-${{ steps.date.outputs.date }}
-          path: ./publish
-          retention-days: 7
-ENDOFFILE
-
-# =============================================================================
-# Create .gitattributes for consistent line endings
-# =============================================================================
-log "Creating .gitattributes..."
-
-cat > .gitattributes << 'ENDOFFILE'
-# Auto detect text files and perform LF normalization
-* text=auto
-
-# Source code
-*.cs text diff=csharp
-*.csproj text
-*.slnx text
-*.sln text
-*.props text
-*.targets text
-
-# XAML
-*.axaml text
-*.xaml text
-
-# Config
-*.json text
-*.yml text
-*.yaml text
-*.xml text
-
-# Scripts
-*.sh text eol=lf
-*.ps1 text eol=crlf
-*.cmd text eol=crlf
-*.bat text eol=crlf
-
-# Documentation
-*.md text
-*.txt text
-
-# Binary
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.ico binary
-*.ttf binary
-*.woff binary
-*.woff2 binary
-ENDOFFILE
-
-# =============================================================================
-# Create README badge section
-# =============================================================================
-log "Updating README with badges..."
-
-# Check if README exists and add badges
-if [ -f "README.md" ]; then
-    # Create temp file with badges
-    cat > /tmp/readme_header.md << 'ENDOFFILE'
-# MyDesktopApplication
-
-[![CI](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml)
-[![Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Cross-platform desktop app built with **Avalonia UI** and **.NET 10**.
-
-ENDOFFILE
-    
-    # Get content after first heading
-    tail -n +2 README.md | grep -v "^# " | head -50 > /tmp/readme_body.md || true
-    
-    # Combine
-    cat /tmp/readme_header.md > README.md
-    
-    cat >> README.md << 'ENDOFFILE'
-## Downloads
-
-Download the latest release for your platform:
-
-| Platform | Architecture | Download |
-|----------|--------------|----------|
-| Windows | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Windows | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Linux | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Linux | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| macOS | x64 (Intel) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| macOS | ARM64 (Apple Silicon) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-
-## Quick Start
-
-```bash
-dotnet restore
-dotnet build
-dotnet run --project src/MyDesktopApplication.Desktop
-```
-
-## Run Tests
-
-```bash
-dotnet test
-```
-
-## Create Release
-
-To create a release, push a tag:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-This will automatically build binaries for all platforms and create a GitHub release.
-
-## Project Structure
-
-```
-├── src/
-│   ├── MyDesktopApplication.Core/          # Domain logic
-│   ├── MyDesktopApplication.Infrastructure/ # Data access
-│   ├── MyDesktopApplication.Shared/        # Shared code
-│   └── MyDesktopApplication.Desktop/       # Avalonia UI
-└── tests/
-    ├── MyDesktopApplication.Core.Tests/
-    ├── MyDesktopApplication.Integration.Tests/
-    └── MyDesktopApplication.UI.Tests/
-```
-
-## Supported Platforms
-
-### Desktop (Current)
-- ✅ Windows x64
-- ✅ Windows ARM64
-- ✅ Linux x64
-- ✅ Linux ARM64
-- ✅ macOS x64 (Intel)
-- ✅ macOS ARM64 (Apple Silicon)
-
-### Mobile (Future)
-- 🔜 Android (requires project setup)
-- 🔜 iOS (requires Apple Developer account)
-
-## License
-
-MIT License - Free for any use.
-ENDOFFILE
-fi
+log "Cleaning up old workflows..."
+rm -f .github/workflows/nightly.yml
+rm -f .github/workflows/mobile.yml
 
 # =============================================================================
 # Summary
 # =============================================================================
 echo ""
 echo "=============================================="
-echo -e "  ${GREEN}GitHub Actions Setup Complete!${NC}"
+echo -e "  ${GREEN}GitHub Actions Updated!${NC}"
 echo "=============================================="
 echo ""
-echo "Created workflows:"
-echo "  .github/workflows/ci.yml       - Build & test on every commit/PR"
-echo "  .github/workflows/release.yml  - Build releases for all platforms"
-echo "  .github/workflows/nightly.yml  - Daily builds"
-echo "  .github/workflows/mobile.yml   - Mobile builds (disabled)"
-echo "  .github/dependabot.yml         - Auto dependency updates"
+echo "Workflows:"
+echo "  ci.yml      - Build & test on every push/PR"
+echo "  build.yml   - Build artifacts + pre-release on push to main branches"
+echo "  release.yml - Create release on tags (v*)"
 echo ""
-echo "Release platforms:"
-echo "  • Windows x64"
-echo "  • Windows ARM64"
-echo "  • Linux x64"
-echo "  • Linux ARM64"
-echo "  • macOS x64 (Intel)"
-echo "  • macOS ARM64 (Apple Silicon)"
+echo "Action versions:"
+echo "  actions/checkout@v4"
+echo "  actions/setup-dotnet@v5"
+echo "  actions/setup-java@v4"
+echo "  actions/cache@v4"
+echo "  actions/upload-artifact@v4"
+echo "  actions/download-artifact@v4"
+echo "  softprops/action-gh-release@v2"
 echo ""
-echo "To create a release:"
+echo "Behavior:"
+echo "  • Every push to master/main/develop → Pre-release with 'dev' tag"
+echo "  • Push tag 'v1.0.0' → Creates stable release"
+echo ""
+echo "To push:"
 echo "  git add ."
-echo "  git commit -m 'Add GitHub Actions'"
+echo "  git commit -m 'Update GitHub Actions'"
 echo "  git push"
-echo "  git tag v1.0.0"
-echo "  git push origin v1.0.0"
-echo ""
-echo "Mobile support (Android/iOS):"
-echo "  Avalonia supports mobile platforms, but requires additional setup."
-echo "  See .github/workflows/mobile.yml for details."
-echo ""

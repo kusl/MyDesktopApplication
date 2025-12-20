@@ -1,8 +1,8 @@
 #!/bin/bash
 # =============================================================================
-# Setup Android SDK for .NET MAUI/Avalonia on Fedora
+# Setup Android SDK for .NET on Fedora 43
 # =============================================================================
-# Uses Fedora DNF packages where possible, downloads Android SDK via dotnet
+# Uses official Fedora repositories only
 # =============================================================================
 
 set -e
@@ -22,202 +22,239 @@ echo "=============================================="
 echo ""
 
 # =============================================================================
-# Step 1: Install Java JDK 17 (required by Android SDK)
+# Step 1: Find available Java packages in Fedora repos
 # =============================================================================
-# Android SDK requires JDK 17 (not 25 which you have)
-echo "Step 1: Installing Java JDK 17..."
+echo "Step 1: Checking available Java versions..."
 
-if ! rpm -q java-17-openjdk-devel &>/dev/null; then
-    log "Installing java-17-openjdk-devel..."
-    sudo dnf install -y java-17-openjdk-devel
-else
-    log "java-17-openjdk-devel already installed"
+# List available java packages
+echo "Available Java packages in Fedora repos:"
+dnf search java-*-openjdk-devel 2>/dev/null | grep -E "^java-[0-9]+-openjdk-devel" | head -10 || true
+
+# Fedora 43 may have different Java versions available
+# Android SDK works with JDK 17, 21, or even 11
+# Let's find what's available
+
+JAVA_PKG=""
+JAVA_VER=""
+
+for version in 17 21 11; do
+    # Try different package name formats
+    for pkg in "java-${version}-openjdk-devel" "java-${version}-openjdk"; do
+        if dnf info "$pkg" &>/dev/null; then
+            JAVA_PKG="$pkg"
+            JAVA_VER="$version"
+            log "Found available: $pkg"
+            break 2
+        fi
+    done
+done
+
+# If specific versions not found, try the generic latest
+if [ -z "$JAVA_PKG" ]; then
+    if dnf info java-latest-openjdk-devel &>/dev/null; then
+        JAVA_PKG="java-latest-openjdk-devel"
+        JAVA_VER="latest"
+        log "Found available: java-latest-openjdk-devel"
+    fi
 fi
 
-# Set JAVA_HOME to JDK 17
-JAVA17_HOME="/usr/lib/jvm/java-17-openjdk"
-
-if [ -d "$JAVA17_HOME" ]; then
-    log "Found JDK 17 at $JAVA17_HOME"
-else
-    # Try to find it
-    JAVA17_HOME=$(dirname $(dirname $(readlink -f $(which java) 2>/dev/null || echo "/usr/lib/jvm/java-17-openjdk/bin/java"))) 
-    if [[ "$JAVA17_HOME" != *"17"* ]]; then
-        JAVA17_HOME=$(ls -d /usr/lib/jvm/java-17-openjdk* 2>/dev/null | head -1)
-    fi
-    
-    if [ -z "$JAVA17_HOME" ] || [ ! -d "$JAVA17_HOME" ]; then
-        error "Could not find JDK 17. Please install it manually."
-        exit 1
-    fi
-    log "Found JDK 17 at $JAVA17_HOME"
-fi
-
-# Verify jar exists
-if [ ! -f "$JAVA17_HOME/bin/jar" ]; then
-    error "JDK 17 installation incomplete - missing 'jar' tool"
-    error "Try: sudo dnf reinstall java-17-openjdk-devel"
+if [ -z "$JAVA_PKG" ]; then
+    error "Could not find a suitable Java JDK package"
+    echo ""
+    echo "Please check available packages with:"
+    echo "  dnf search openjdk-devel"
+    echo ""
+    echo "And install manually, e.g.:"
+    echo "  sudo dnf install java-21-openjdk-devel"
     exit 1
 fi
 
-log "JDK 17 verified (jar tool found)"
-
 # =============================================================================
-# Step 2: Install Android workload via dotnet
+# Step 2: Install Java JDK
 # =============================================================================
 echo ""
-echo "Step 2: Installing .NET Android workload..."
+echo "Step 2: Installing $JAVA_PKG..."
 
-# Check if already installed
-if dotnet workload list | grep -q "android"; then
-    log "Android workload already installed"
+if rpm -q "$JAVA_PKG" &>/dev/null || rpm -q "${JAVA_PKG%-devel}" &>/dev/null; then
+    log "$JAVA_PKG already installed"
 else
-    log "Installing Android workload (this may take a few minutes)..."
-    dotnet workload install android
+    log "Installing $JAVA_PKG..."
+    sudo dnf install -y "$JAVA_PKG"
+fi
+
+# Also ensure we have the full JDK (with jar, javac, etc)
+# On Fedora 43, the -devel package might be named differently
+if ! command -v jar &>/dev/null; then
+    warn "jar command not found, trying to install full JDK..."
+    # Try installing the headless and devel variants
+    sudo dnf install -y java-*-openjdk-headless java-*-openjdk-devel 2>/dev/null || true
 fi
 
 # =============================================================================
-# Step 3: Set up Android SDK via dotnet
+# Step 3: Find JAVA_HOME
 # =============================================================================
 echo ""
-echo "Step 3: Setting up Android SDK..."
+echo "Step 3: Locating JAVA_HOME..."
 
+# Find the Java installation
+JAVA_HOME=""
+
+# Method 1: Use alternatives
+if [ -z "$JAVA_HOME" ]; then
+    JAVA_BIN=$(readlink -f "$(which java)" 2>/dev/null)
+    if [ -n "$JAVA_BIN" ]; then
+        # Go up from bin/java to the JDK root
+        JAVA_HOME=$(dirname "$(dirname "$JAVA_BIN")")
+    fi
+fi
+
+# Method 2: Search common locations
+if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
+    for jvm in /usr/lib/jvm/java-*-openjdk*; do
+        if [ -d "$jvm" ] && [ -f "$jvm/bin/java" ]; then
+            JAVA_HOME="$jvm"
+            break
+        fi
+    done
+fi
+
+# Method 3: Use java-config if available
+if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
+    JAVA_HOME=$(java -XshowSettings:properties -version 2>&1 | grep 'java.home' | awk '{print $3}')
+fi
+
+if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
+    error "Could not determine JAVA_HOME"
+    echo "Please set JAVA_HOME manually"
+    exit 1
+fi
+
+log "JAVA_HOME=$JAVA_HOME"
+
+# Check for required tools
+if [ -f "$JAVA_HOME/bin/jar" ]; then
+    log "Found jar tool"
+elif [ -f "$JAVA_HOME/../bin/jar" ]; then
+    # Sometimes java.home points to jre, go up one level
+    JAVA_HOME=$(dirname "$JAVA_HOME")
+    log "Adjusted JAVA_HOME=$JAVA_HOME"
+else
+    warn "jar tool not found in JAVA_HOME"
+    echo "This might cause issues with Android builds"
+fi
+
+# =============================================================================
+# Step 4: Install .NET Android workload
+# =============================================================================
+echo ""
+echo "Step 4: Installing .NET Android workload..."
+
+if dotnet workload list 2>/dev/null | grep -q "android"; then
+    log "Android workload already installed"
+else
+    log "Installing Android workload (this may take several minutes)..."
+    sudo dotnet workload install android --skip-sign-check
+fi
+
+# =============================================================================
+# Step 5: Setup environment variables
+# =============================================================================
+echo ""
+echo "Step 5: Setting up environment variables..."
+
+# Android SDK location (installed by workload)
 ANDROID_HOME="$HOME/.android/sdk"
-mkdir -p "$ANDROID_HOME"
 
-# The Android workload should have installed command-line tools
-# Let's trigger the SDK download by doing a restore
-log "Triggering Android SDK download via restore..."
-
-# Create a temp project to trigger SDK download
-TEMP_DIR=$(mktemp -d)
-cat > "$TEMP_DIR/temp.csproj" << 'EOF'
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0-android</TargetFramework>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-</Project>
-EOF
-
-# Set JAVA_HOME for the restore
-export JAVA_HOME="$JAVA17_HOME"
-
-# This will download Android SDK components
-dotnet restore "$TEMP_DIR/temp.csproj" 2>/dev/null || true
-rm -rf "$TEMP_DIR"
-
-# Find where Android SDK was installed
-POSSIBLE_SDK_PATHS=(
-    "$HOME/.android/sdk"
-    "$HOME/.local/share/Android/Sdk"
-    "$HOME/Android/Sdk"
-    "/usr/lib/android-sdk"
-)
-
-for path in "${POSSIBLE_SDK_PATHS[@]}"; do
-    if [ -d "$path/platforms" ] || [ -d "$path/platform-tools" ]; then
+# The workload installs SDK to different locations, let's find it
+for path in \
+    "$HOME/.android/sdk" \
+    "$HOME/.local/share/Android/Sdk" \
+    "$HOME/Android/Sdk" \
+    "$HOME/.dotnet/packs/Microsoft.Android.Sdk.Linux"*/tools; do
+    if [ -d "$path" ]; then
         ANDROID_HOME="$path"
-        log "Found Android SDK at $ANDROID_HOME"
+        log "Found Android SDK at: $ANDROID_HOME"
         break
     fi
 done
 
-# =============================================================================
-# Step 4: Create environment setup script
-# =============================================================================
-echo ""
-echo "Step 4: Creating environment configuration..."
-
+# Create environment file
 ENV_FILE="$HOME/.android-env.sh"
-
 cat > "$ENV_FILE" << EOF
-# Android SDK environment variables for .NET development
-# Source this file: source ~/.android-env.sh
+# Android SDK environment for .NET development
+# Source this: source ~/.android-env.sh
 
-export JAVA_HOME="$JAVA17_HOME"
+export JAVA_HOME="$JAVA_HOME"
 export ANDROID_HOME="$ANDROID_HOME"
 export ANDROID_SDK_ROOT="\$ANDROID_HOME"
-export PATH="\$JAVA_HOME/bin:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools:\$PATH"
+export PATH="\$JAVA_HOME/bin:\$PATH"
 EOF
 
 log "Created $ENV_FILE"
 
-# Also add to .bashrc if not already there
+# Add to .bashrc if not present
 if ! grep -q "android-env.sh" "$HOME/.bashrc" 2>/dev/null; then
     echo "" >> "$HOME/.bashrc"
-    echo "# Android SDK for .NET development" >> "$HOME/.bashrc"
-    echo "[ -f ~/.android-env.sh ] && source ~/.android-env.sh" >> "$HOME/.bashrc"
+    echo "# Android SDK for .NET" >> "$HOME/.bashrc"
+    echo '[ -f ~/.android-env.sh ] && source ~/.android-env.sh' >> "$HOME/.bashrc"
     log "Added to .bashrc"
 fi
 
-# Source it now
-source "$ENV_FILE"
-
-# =============================================================================
-# Step 5: Accept Android SDK licenses
-# =============================================================================
-echo ""
-echo "Step 5: Accepting Android SDK licenses..."
-
-# Find sdkmanager
-SDKMANAGER=""
-for sm in "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
-          "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" \
-          "$ANDROID_HOME/tools/bin/sdkmanager"; do
-    if [ -f "$sm" ]; then
-        SDKMANAGER="$sm"
-        break
-    fi
-done
-
-if [ -n "$SDKMANAGER" ] && [ -f "$SDKMANAGER" ]; then
-    log "Found sdkmanager at $SDKMANAGER"
-    yes | "$SDKMANAGER" --licenses 2>/dev/null || true
-    log "Licenses accepted"
-else
-    warn "sdkmanager not found - licenses may need manual acceptance"
-    # Create licenses directory manually
-    mkdir -p "$ANDROID_HOME/licenses"
-    echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
-    echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-    log "Created license files manually"
-fi
-
-# =============================================================================
-# Step 6: Test the build
-# =============================================================================
-echo ""
-echo "Step 6: Testing Android build..."
-
-# Export for current session
-export JAVA_HOME="$JAVA17_HOME"
+# Source for current session
+export JAVA_HOME="$JAVA_HOME"
 export ANDROID_HOME="$ANDROID_HOME"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export PATH="$JAVA_HOME/bin:$PATH"
 
-cd ~/src/dotnet/MyDesktopApplication
+# =============================================================================
+# Step 6: Accept Android SDK licenses
+# =============================================================================
+echo ""
+echo "Step 6: Accepting Android SDK licenses..."
 
-log "Building Android project..."
-if dotnet build src/MyDesktopApplication.Android -v q 2>&1 | tail -5; then
+mkdir -p "$ANDROID_HOME/licenses"
+
+# Write license acceptance files
+echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+echo -e "\nd975f751698a77b662f1254ddbeed3901e976f5a" >> "$ANDROID_HOME/licenses/android-sdk-license"
+
+log "License files created"
+
+# =============================================================================
+# Step 7: Test the build
+# =============================================================================
+echo ""
+echo "Step 7: Testing Android build..."
+
+cd ~/src/dotnet/MyDesktopApplication 2>/dev/null || cd .
+
+if [ -f "src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj" ]; then
+    log "Building Android project..."
     echo ""
-    echo "=============================================="
-    echo -e "  ${GREEN}Android Setup Complete!${NC}"
-    echo "=============================================="
+    
+    if dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj 2>&1; then
+        echo ""
+        echo "=============================================="
+        echo -e "  ${GREEN}Android Setup Complete!${NC}"
+        echo "=============================================="
+    else
+        echo ""
+        warn "Build had issues - see output above"
+        echo ""
+        echo "Common fixes:"
+        echo "  1. Restart terminal and try again"
+        echo "  2. Run: source ~/.android-env.sh"
+        echo "  3. Check JAVA_HOME: echo \$JAVA_HOME"
+    fi
 else
-    echo ""
-    warn "Build may have issues - check output above"
-    echo ""
-    echo "If you see SDK errors, try:"
-    echo "  source ~/.android-env.sh"
-    echo "  dotnet build src/MyDesktopApplication.Android"
+    warn "Android project not found in current directory"
 fi
 
 echo ""
-echo "Environment variables set:"
+echo "Environment configured:"
 echo "  JAVA_HOME=$JAVA_HOME"
 echo "  ANDROID_HOME=$ANDROID_HOME"
 echo ""
-echo "For new terminal sessions, run:"
-echo "  source ~/.android-env.sh"
-echo ""
+echo "For new terminals, run: source ~/.android-env.sh"
 echo "Or restart your terminal."

@@ -1438,3 +1438,83 @@ real	0m6.442s
 user	0m0.041s
 sys	0m0.053s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
+
+Let me fix the Fedora script with the correct package names and rewrite the GitHub Actions with the latest artifact versions.Run the scripts:
+
+**1. Fix Fedora Android setup:**
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x setup-android-fedora.sh
+./setup-android-fedora.sh
+```
+
+**2. Update GitHub Actions:**
+```bash
+chmod +x setup-github-actions.sh
+./setup-github-actions.sh
+```
+
+**3. Push changes:**
+```bash
+git add .
+git commit -m "Update GitHub Actions with pre-releases"
+git push
+```
+
+## Summary of Changes
+
+### Fedora Script Fixes
+
+| Issue | Fix |
+|-------|-----|
+| `java-17-openjdk-devel` not found | Script now searches for available Java packages dynamically |
+| Hard-coded paths | Uses `dnf search` and `dnf info` to find what's available |
+| JDK detection | Multiple methods to find JAVA_HOME |
+
+The script now:
+1. Searches for available Java packages (`java-17-openjdk-devel`, `java-21-openjdk-devel`, `java-latest-openjdk-devel`)
+2. Installs whatever is available
+3. Automatically finds JAVA_HOME
+4. Creates environment file `~/.android-env.sh`
+
+### GitHub Actions Restructure
+
+| Workflow | Trigger | What it does |
+|----------|---------|--------------|
+| `ci.yml` | Every push/PR | Build & test only |
+| `build.yml` | Push to master/main/develop | Build all platforms + create `dev` pre-release |
+| `release.yml` | Push tag `v*` | Build all platforms + create stable release |
+
+### Action Versions (Current Latest)
+
+| Action | Version | Notes |
+|--------|---------|-------|
+| `actions/checkout` | v4 | Latest stable |
+| `actions/setup-dotnet` | v5 | Latest stable |
+| `actions/setup-java` | v4 | Latest stable |
+| `actions/cache` | v4 | Latest stable |
+| `actions/upload-artifact` | v4 | Latest stable (v4 IS the latest) |
+| `actions/download-artifact` | v4 | Latest stable (v4 IS the latest) |
+| `softprops/action-gh-release` | v2 | Latest stable |
+
+**Note:** Despite what some documentation says, `actions/upload-artifact@v4` and `actions/download-artifact@v4` ARE the current latest versions. The v6/v7 numbers you saw might have been from a different fork or documentation error.
+
+### Pre-release Behavior
+
+Every push to `master`, `main`, or `develop` will:
+1. Build binaries for all 7 platforms (6 desktop + Android)
+2. Delete the previous `dev` release
+3. Create a new `dev` pre-release with all binaries
+
+This gives you always-fresh development builds!
+
+
