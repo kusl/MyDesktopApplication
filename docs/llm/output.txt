@@ -1932,4 +1932,99 @@ File types included:
 real	0m0.777s
 user	0m0.383s
 sys	0m0.574s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Installing Java 21 JDK...
+Available Java JDK packages:
+✓ Using: java-21-openjdk-devel
+✓ java-21-openjdk-devel already installed
+
+Step 2: Finding JAVA_HOME with jar tool...
+✓ Found jar at: /usr/lib/jvm/java-21-openjdk/bin/jar
+✓ JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+
+Step 3: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 4: Finding Android SDK...
+✓ ANDROID_HOME=/home/kushal/.android/sdk
+
+Step 5: Creating environment file...
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+Building: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+Restore complete (0.5s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.1s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) in 0.9s
+
+! Build had issues - see output above
+
+Try running:
+  source ~/.android-env.sh
+  dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+==============================================
+  Setup Complete!
+==============================================
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run:
+  source ~/.android-env.sh
+
+Or add to ~/.bashrc:
+  echo 'source ~/.android-env.sh' >> ~/.bashrc
+
+
+real	0m1.678s
+user	0m1.374s
+sys	0m0.304s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which adb
+/usr/bin/adb
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which fastboot
+/usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ls -lah
+total 260K
+drwxr-xr-x. 1 kushal kushal  732 Dec 20 06:20 .
+drwxr-xr-x. 1 kushal kushal   94 Dec 20 00:31 ..
+-rw-r--r--. 1 kushal kushal  673 Dec 20 01:27 appsettings.json
+-rw-r--r--. 1 kushal kushal 2.2K Dec 20 01:02 continue-setup.sh
+-rw-r--r--. 1 kushal kushal 1.2K Dec 20 01:27 Directory.Build.props
+-rw-r--r--. 1 kushal kushal 4.1K Dec 20 02:30 Directory.Packages.props
+-rw-r--r--. 1 kushal kushal 3.8K Dec 20 01:37 Directory.Packages.props.bak
+drwxr-xr-x. 1 kushal kushal   28 Dec 20 00:47 docs
+-rwxr-xr-x. 1 kushal kushal 8.5K Dec 20 01:56 export.sh
+-rwxr-xr-x. 1 kushal kushal 2.9K Dec 20 01:56 export.sh.bak
+-rw-r--r--. 1 kushal kushal  45K Dec 20 01:51 fix-all.sh
+-rw-r--r--. 1 kushal kushal  37K Dec 20 02:26 fix-ci-and-add-android.sh
+-rw-r--r--. 1 kushal kushal 1.2K Dec 20 01:28 fix-cpm.sh
+-rw-r--r--. 1 kushal kushal  27K Dec 20 02:04 fix-tests.sh
+drwxr-xr-x. 1 kushal kushal  146 Dec 20 06:56 .git
+-rw-r--r--. 1 kushal kushal  501 Dec 20 02:16 .gitattributes
+drwxr-xr-x. 1 kushal kushal   46 Dec 20 02:16 .github
+-rw-r--r--. 1 kushal kushal  109 Dec 20 01:27 .gitignore
+-rw-r--r--. 1 kushal kushal  873 Dec 20 02:30 MyDesktopApplication.slnx
+-rw-r--r--. 1 kushal kushal 2.7K Dec 20 02:30 README.md
+-rw-r--r--. 1 kushal kushal  28K Dec 20 01:26 setup-all.sh
+-rw-r--r--. 1 kushal kushal 5.6K Dec 20 06:51 setup-android-fedora.sh
+-rw-r--r--. 1 kushal kushal  15K Dec 20 06:51 setup-github-actions.sh
+-rw-r--r--. 1 kushal kushal  18K Dec 20 01:18 setup-project.sh
+-rw-r--r--. 1 kushal kushal 3.7K Dec 20 01:01 setup.sh
+drwxr-xr-x. 1 kushal kushal  286 Dec 20 02:28 src
+drwxr-xr-x. 1 kushal kushal  196 Dec 20 01:03 tests
+-rw-r--r--. 1 kushal kushal 6.6K Dec 20 01:37 update-packages.sh
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time git push origin --all --verbose
