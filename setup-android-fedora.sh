@@ -116,11 +116,11 @@ echo ""
 echo "Step 6: Installing Android SDK components..."
 echo "This may take a few minutes..."
 
-# Install platform-tools, build-tools, and platform (API 35 is current stable)
+# Install platform-tools, build-tools, and platform (API 36 is current stable)
 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
     "platform-tools" \
-    "build-tools;35.0.0" \
-    "platforms;android-35" \
+    "build-tools;36.0.0" \
+    "platforms;android-36" \
     2>&1 | grep -E "(Installing|Done|Warning|Error)" || true
 
 echo "✓ SDK components installed"
@@ -175,14 +175,14 @@ else
     echo "  ✗ sdkmanager NOT found"
 fi
 
-if [ -d "$ANDROID_HOME/platforms/android-35" ]; then
-    echo "  ✓ Android platform 35 installed"
+if [ -d "$ANDROID_HOME/platforms/android-36" ]; then
+    echo "  ✓ Android platform 36 installed"
 else
-    echo "  ! Android platform 35 not found (will be downloaded during build)"
+    echo "  ! Android platform 36 not found (will be downloaded during build)"
 fi
 
-if [ -d "$ANDROID_HOME/build-tools/35.0.0" ]; then
-    echo "  ✓ Build tools 35.0.0 installed"
+if [ -d "$ANDROID_HOME/build-tools/36.0.0" ]; then
+    echo "  ✓ Build tools 36.0.0 installed"
 else
     echo "  ! Build tools not found (will be downloaded during build)"
 fi
