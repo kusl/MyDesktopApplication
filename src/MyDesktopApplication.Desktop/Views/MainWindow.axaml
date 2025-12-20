@@ -17,80 +17,74 @@
 
     <Grid RowDefinitions="Auto,*,Auto">
         <!-- Header -->
-        <Border Grid.Row="0" 
-                Background="{DynamicResource SystemAccentColorLight2}" 
-                Padding="20,15">
+        <Border Grid.Row="0" Background="#0078D4" Padding="20,15">
             <Grid ColumnDefinitions="*,Auto">
                 <TextBlock Text="MyDesktopApplication" 
-                           FontSize="24" 
-                           FontWeight="Bold"
-                           Foreground="White"/>
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
-                            Spacing="10">
-                    <Button Content="Home" 
-                            Command="{Binding NavigateToHomeCommand}"/>
-                    <Button Content="Settings" 
-                            Command="{Binding NavigateToSettingsCommand}"/>
+                           FontSize="24" FontWeight="Bold" Foreground="White"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                    <Button Content="Home" Command="{Binding NavigateToHomeCommand}"/>
+                    <Button Content="Settings" Command="{Binding NavigateToSettingsCommand}"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Main Content -->
-        <Border Grid.Row="1" Padding="30">
-            <StackPanel Spacing="20" 
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center">
+        <ScrollViewer Grid.Row="1" Padding="30">
+            <StackPanel Spacing="20" MaxWidth="600" HorizontalAlignment="Center">
                 
-                <TextBlock Text="{Binding Greeting}" 
-                           FontSize="28" 
-                           FontWeight="SemiBold"
+                <!-- Greeting & Counter -->
+                <TextBlock Text="{Binding Greeting}" FontSize="24" FontWeight="SemiBold"
                            HorizontalAlignment="Center"/>
-
                 <TextBlock Text="{Binding Counter, StringFormat='Counter: {0}'}" 
-                           FontSize="18"
-                           HorizontalAlignment="Center"
-                           Foreground="{DynamicResource SystemAccentColor}"/>
-
-                <StackPanel Orientation="Horizontal" 
-                            Spacing="15" 
-                            HorizontalAlignment="Center">
-                    <Button Content="Click Me!" 
-                            Command="{Binding IncrementCounterCommand}"
-                            Classes="accent"
-                            Padding="20,10"
-                            FontSize="16"/>
-                    
-                    <Button Content="Load Data" 
-                            Command="{Binding LoadDataCommand}"
-                            IsEnabled="{Binding !IsBusy}"
-                            Padding="20,10"
-                            FontSize="16"/>
+                           FontSize="16" HorizontalAlignment="Center" Foreground="#0078D4"/>
+                
+                <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                    <Button Content="Click Me!" Command="{Binding IncrementCounterCommand}"
+                            Classes="accent" Padding="15,8"/>
+                    <Button Content="Refresh" Command="{Binding LoadDataCommand}"
+                            IsEnabled="{Binding !IsBusy}" Padding="15,8"/>
                 </StackPanel>
 
-                <!-- Loading indicator -->
-                <ProgressBar IsIndeterminate="True" 
-                             IsVisible="{Binding IsBusy}"
-                             Width="200"/>
+                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" Width="200"/>
 
-                <!-- Current Page Content -->
-                <ContentControl Content="{Binding CurrentPage}" 
-                                Margin="0,20,0,0"/>
+                <Separator Margin="0,10"/>
+
+                <!-- Todo Section -->
+                <TextBlock Text="Todo List" FontSize="18" FontWeight="SemiBold"/>
+                
+                <!-- Add Todo -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBox Grid.Column="0" Text="{Binding NewTodoTitle}" 
+                             Watermark="Enter a new todo..." Margin="0,0,10,0"/>
+                    <Button Grid.Column="1" Content="Add" Command="{Binding AddTodoCommand}"/>
+                </Grid>
+
+                <!-- Todo List -->
+                <ItemsControl ItemsSource="{Binding TodoItems}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,5" Padding="10" CornerRadius="4" Background="#F5F5F5">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Title}" 
+                                               VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Current Page -->
+                <ContentControl Content="{Binding CurrentPage}" Margin="0,20,0,0"/>
             </StackPanel>
-        </Border>
+        </ScrollViewer>
 
         <!-- Footer -->
-        <Border Grid.Row="2" 
-                Background="{DynamicResource SystemChromeHighColor}" 
-                Padding="15,10">
+        <Border Grid.Row="2" Background="#F0F0F0" Padding="15,10">
             <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Text="Built with Avalonia UI + .NET 10" 
-                           Opacity="0.7" 
-                           FontSize="12"/>
-                <TextBlock Grid.Column="1" 
-                           Text="{Binding Counter, StringFormat='Clicks: {0}'}" 
-                           Opacity="0.7" 
-                           FontSize="12"/>
+                <TextBlock Text="Built with Avalonia UI + .NET 10" Opacity="0.6" FontSize="12"/>
+                <TextBlock Grid.Column="1" Text="{Binding Counter, StringFormat='Clicks: {0}'}" 
+                           Opacity="0.6" FontSize="12"/>
             </Grid>
         </Border>
     </Grid>

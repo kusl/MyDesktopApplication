@@ -1,11 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace MyDesktopApplication.Desktop.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly ITodoRepository? _todoRepository;
+
     [ObservableProperty]
     private string _greeting = "Welcome to Avalonia with .NET 10!";
 
@@ -13,10 +17,26 @@ public partial class MainWindowViewModel : ViewModelBase
     private int _counter;
 
     [ObservableProperty]
-    private bool _isBusy;
+    private ViewModelBase? _currentPage;
 
     [ObservableProperty]
-    private ViewModelBase? _currentPage;
+    private ObservableCollection<TodoItem> _todoItems = [];
+
+    [ObservableProperty]
+    private string _newTodoTitle = string.Empty;
+
+    // Constructor with DI (for runtime)
+    public MainWindowViewModel(ITodoRepository todoRepository)
+    {
+        _todoRepository = todoRepository;
+        _ = LoadTodosAsync();
+    }
+
+    // Parameterless constructor (for design-time and simple usage)
+    public MainWindowViewModel()
+    {
+        _todoRepository = null;
+    }
 
     [RelayCommand]
     private void IncrementCounter()
@@ -35,9 +55,45 @@ public partial class MainWindowViewModel : ViewModelBase
     private async Task LoadDataAsync()
     {
         IsBusy = true;
-        // Simulate loading data
-        await Task.Delay(1000);
-        IsBusy = false;
+        ClearError();
+        try
+        {
+            await LoadTodosAsync();
+        }
+        catch (Exception ex)
+        {
+            SetError($"Failed to load data: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task AddTodoAsync()
+    {
+        if (string.IsNullOrWhiteSpace(NewTodoTitle) || _todoRepository is null)
+            return;
+
+        var todo = new TodoItem { Title = NewTodoTitle.Trim() };
+        await _todoRepository.AddAsync(todo);
+        TodoItems.Add(todo);
+        NewTodoTitle = string.Empty;
+    }
+
+    [RelayCommand]
+    private async Task ToggleTodoAsync(TodoItem? todo)
+    {
+        if (todo is null || _todoRepository is null)
+            return;
+
+        if (todo.IsCompleted)
+            todo.MarkIncomplete();
+        else
+            todo.MarkComplete();
+
+        await _todoRepository.UpdateAsync(todo);
     }
 
     [RelayCommand]
@@ -51,12 +107,23 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         CurrentPage = new SettingsViewModel();
     }
+
+    private async Task LoadTodosAsync()
+    {
+        if (_todoRepository is null) return;
+        
+        var todos = await _todoRepository.GetAllAsync();
+        TodoItems = new ObservableCollection<TodoItem>(todos);
+    }
 }
 
 public partial class HomeViewModel : ViewModelBase
 {
     [ObservableProperty]
     private string _title = "Home";
+
+    [ObservableProperty]
+    private string _message = "Welcome to the home page!";
 }
 
 public partial class SettingsViewModel : ViewModelBase
@@ -66,4 +133,7 @@ public partial class SettingsViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _darkMode;
+
+    [ObservableProperty]
+    private string _version = "1.0.0";
 }
