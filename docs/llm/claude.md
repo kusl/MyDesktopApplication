@@ -1329,7 +1329,6 @@ git push origin v1.0.0
 
 
 I want to take a quick detour to fix this issue. Preferably using only fedora dnf sources, can you write a shell script that addresses these android dependency needs for fedora? 
-
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build src/MyDesktopApplication.Android
 Restore complete (0.7s)
   MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 2 warning(s) (0.2s)
@@ -1338,9 +1337,10 @@ Restore complete (0.7s)
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
       The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
       To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
-
-Build failed with 1 error(s) and 2 warning(s) in 1.1s
-
+Build failed with 1 errteor(s) and 2 warning(s) in 1.1s
 real	0m1.266s
 user	0m1.158s
 sys	0m0.191s
+also please write another shell script to update our github actions 
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+I have updated the code in `dump.txt` please do NOT hallucinate. 
