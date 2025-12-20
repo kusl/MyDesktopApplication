@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sat Dec 20 06:56:05 AM CST 2025
+Generated: Sat Dec 20 07:03:39 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -337,8 +337,8 @@ MODIFIED: 2025-12-20 02:30:20
 
 ================================================================================
 FILE: docs/llm/claude.md
-SIZE: 83.61 KB
-MODIFIED: 2025-12-20 06:51:28
+SIZE: 86.74 KB
+MODIFIED: 2025-12-20 07:03:02
 ================================================================================
 
 I am using an Acer Swift Go 14 with AMD Ryzen 8845HS processor running Fedora Linux. How do I get started writing an Avalonia UI application? 
@@ -2081,12 +2081,92 @@ git push
 
 
 
+As you can see in `build.txt` and `output.txt` I have installed android tools and now I get this error 
+Restore complete (0.4s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.0s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+Build failed with 1 error(s) in 0.8s
+! Build had issues - see output above
+I believe this is the information you need 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which fastboot
+/usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which adb
+/usr/bin/adb
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ adb --version
+Android Debug Bridge version 1.0.41
+Version 35.0.2-android-tools
+Installed as /usr/bin/adb
+Running on Linux 6.17.12-300.fc43.x86_64 (x86_64)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ fastboot --version
+fastboot version 35.0.2-android-tools
+Installed as /usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+can you please give me a shell script to update the code as needed. the code in `dump.txt` is up to date. 
+
+
+
+
+
+
+
+I see the issue now. You have `adb` and `fastboot` from Fedora's `android-tools` package, but that's just the command-line tools - you don't have the actual Android SDK with build-tools, platforms, etc. that .NET needs to build Android apps.
+
+The Fedora `android-tools` package only includes `adb` and `fastboot` - it does NOT include the full Android SDK (build-tools, platform-tools, platforms, etc.) that's required for building Android apps.
+
+Let me create a script that downloads and sets up the proper Android SDK:Now run the updated script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x setup-android-fedora.sh
+./setup-android-fedora.sh
+```
+
+## What This Script Does
+
+The problem was that Fedora's `android-tools` package only includes `adb` and `fastboot` - it does **NOT** include the full Android SDK that .NET needs.
+
+The new script:
+
+1. **Installs Java 21 JDK** (with the `jar` tool)
+2. **Downloads the official Android SDK command-line tools** from Google
+3. **Installs the actual SDK components** needed for building:
+   - `platform-tools` (adb, etc.)
+   - `build-tools;35.0.0` (aapt, d8, etc.)
+   - `platforms;android-35` (Android API 35)
+4. **Accepts all SDK licenses** automatically
+5. **Installs the .NET Android workload**
+6. **Creates environment file** (`~/.android-env.sh`)
+7. **Tests the build** with correct paths
+
+## What Was Missing
+
+| Component | Fedora `android-tools` | Full Android SDK (needed) |
+|-----------|----------------------|---------------------------|
+| `adb` | ✓ | ✓ |
+| `fastboot` | ✓ | ✓ |
+| `sdkmanager` | ✗ | ✓ |
+| `build-tools` | ✗ | ✓ |
+| `platforms/android-XX` | ✗ | ✓ |
+| `aapt`, `d8`, etc. | ✗ | ✓ |
+
+The .NET Android build needs the full SDK with build-tools and platform libraries, not just the command-line debugging tools.
+
+
+
+
+
+
+
+
+
 
 
 ================================================================================
 FILE: docs/llm/dump.txt
-SIZE: 97.08 KB
-MODIFIED: 2025-12-20 06:56:05
+SIZE: 100.21 KB
+MODIFIED: 2025-12-20 07:03:39
 ================================================================================
 
 [ERROR: Could not read file]
@@ -2094,8 +2174,8 @@ MODIFIED: 2025-12-20 06:56:05
 
 ================================================================================
 FILE: docs/llm/output.txt
-SIZE: 106.76 KB
-MODIFIED: 2025-12-20 06:53:50
+SIZE: 121.53 KB
+MODIFIED: 2025-12-20 06:58:31
 ================================================================================
 
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd ~/src/dotnet/MyDesktopApplication/
@@ -3804,7 +3884,330 @@ File types included:
 real	0m0.770s
 user	0m0.384s
 sys	0m0.568s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Installing Java 21 JDK...
+Available Java JDK packages:
+✓ Using: java-21-openjdk-devel
+✓ java-21-openjdk-devel already installed
+
+Step 2: Finding JAVA_HOME with jar tool...
+✓ Found jar at: /usr/lib/jvm/java-21-openjdk/bin/jar
+✓ JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+
+Step 3: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 4: Finding Android SDK...
+✓ ANDROID_HOME=/home/kushal/.android/sdk
+
+Step 5: Creating environment file...
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+Building: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+Restore complete (0.7s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.1s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) in 1.2s
+
+! Build had issues - see output above
+
+Try running:
+  source ~/.android-env.sh
+  dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+==============================================
+  Setup Complete!
+==============================================
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run:
+  source ~/.android-env.sh
+
+Or add to ~/.bashrc:
+  echo 'source ~/.android-env.sh' >> ~/.bashrc
+
+
+real	0m1.912s
+user	0m1.361s
+sys	0m0.346s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sudo dnf info android-tools
+[sudo] password for kushal: 
+Updating and loading repositories:
+Repositories loaded.
+Available packages
+Name           : android-tools
+Epoch          : 1
+Version        : 35.0.2
+Release        : 10.fc43
+Architecture   : x86_64
+Download size  : 2.0 MiB
+Installed size : 6.0 MiB
+Source         : android-tools-35.0.2-10.fc43.src.rpm
+Repository     : fedora
+Summary        : Android platform tools(adb, fastboot)
+URL            : http://developer.android.com/guide/developing/tools/
+License        : Apache-2.0 AND (Apache-2.0 AND LicenseRef-Callaway-BSD)
+Description    : 
+               : The Android Debug Bridge (ADB) is used to:
+               : 
+               : - keep track of all Android devices and emulators instances
+               :   connected to or running on a given host developer machine
+               : 
+               : - implement various control commands (e.g. "adb shell", "adb pull", etc.)
+               :   for the benefit of clients (command-line users, or helper programs like
+               :   DDMS). These commands are what is called a 'service' in ADB.
+               : 
+               : Fastboot is used to manipulate the flash partitions of the Android phone.
+               : It can also boot the phone using a kernel image or root filesystem image
+               : which reside on the host machine rather than in the phone flash.
+               : In order to use it, it is important to understand the flash partition
+               : layout for the phone.
+               : The fastboot program works in conjunction with firmware on the phone
+               : to read and write the flash partitions. It needs the same USB device
+               : setup between the host and the target phone as adb.
+Vendor         : Fedora Project
+
+real	0m5.968s
+user	0m0.035s
+sys	0m0.045s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sudo dnf install android-tools
+Updating and loading repositories:
+Repositories loaded.
+Package                                                                 Arch             Version                                                                  Repository                                    Size
+Installing:
+ android-tools                                                          x86_64           1:35.0.2-10.fc43                                                         fedora                                     6.0 MiB
+
+Transaction Summary:
+ Installing:         1 package
+
+Total size of inbound packages is 2 MiB. Need to download 2 MiB.
+After this operation, 6 MiB extra will be used (install 6 MiB, remove 0 B).
+Is this ok [y/N]: y
+[1/1] android-tools-1:35.0.2-10.fc43.x86_64                                                                                                                                 100% |   3.3 MiB/s |   2.0 MiB |  00m01s
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[1/1] Total                                                                                                                                                                 100% |   2.0 MiB/s |   2.0 MiB |  00m01s
+Running transaction
+[1/3] Verify package files                                                                                                                                                  100% | 142.0   B/s |   1.0   B |  00m00s
+[2/3] Prepare transaction                                                                                                                                                   100% |   6.0   B/s |   1.0   B |  00m00s
+[3/3] Installing android-tools-1:35.0.2-10.fc43.x86_64                                                                                                                      100% |  19.5 MiB/s |   6.0 MiB |  00m00s
+Complete!
+
+real	0m7.555s
+user	0m0.005s
+sys	0m0.015s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): appsettings.json
+Processing (2/67): continue-setup.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): docs/llm/claude.md
+Processing (6/67): docs/llm/dump.txt
+Processing (7/67): docs/llm/output.txt
+Processing (8/67): docs/thoughts.md
+Processing (9/67): export.sh
+Processing (10/67): fix-all.sh
+Processing (11/67): fix-ci-and-add-android.sh
+Processing (12/67): fix-cpm.sh
+Processing (13/67): fix-tests.sh
+Processing (14/67): .gitattributes
+Processing (15/67): .github/dependabot.yml
+Processing (16/67): .github/workflows/build.yml
+Processing (17/67): .github/workflows/ci.yml
+Processing (18/67): .github/workflows/release.yml
+Processing (19/67): .gitignore
+Processing (20/67): MyDesktopApplication.slnx
+Processing (21/67): README.md
+Processing (22/67): setup-all.sh
+Processing (23/67): setup-android-fedora.sh
+Processing (24/67): setup-github-actions.sh
+Processing (25/67): setup-project.sh
+Processing (26/67): setup.sh
+Processing (27/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (28/67): src/MyDesktopApplication.Android/App.axaml
+Processing (29/67): src/MyDesktopApplication.Android/App.cs
+Processing (30/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (31/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (32/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (33/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (34/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (35/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (37/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (38/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (67/67): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    654.10 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.777s
+user	0m0.383s
+sys	0m0.574s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh setup-android-fedora.sh
+==============================================
+  Android SDK Setup for Fedora
+==============================================
+
+Step 1: Installing Java 21 JDK...
+Available Java JDK packages:
+✓ Using: java-21-openjdk-devel
+✓ java-21-openjdk-devel already installed
+
+Step 2: Finding JAVA_HOME with jar tool...
+✓ Found jar at: /usr/lib/jvm/java-21-openjdk/bin/jar
+✓ JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+
+Step 3: Installing .NET Android workload...
+✓ Android workload already installed
+
+Step 4: Finding Android SDK...
+✓ ANDROID_HOME=/home/kushal/.android/sdk
+
+Step 5: Creating environment file...
+✓ Created /home/kushal/.android-env.sh
+
+Step 6: Accepting Android SDK licenses...
+✓ License files created
+
+Step 7: Testing Android build...
+Building: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+Restore complete (0.5s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.1s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(58,5): error XA5300: 
+      The Android SDK directory could not be found. Install the Android SDK by following the instructions at: https://aka.ms/dotnet-android-install-sdk
+      To use a custom SDK path for a command line build, set the 'AndroidSdkDirectory' MSBuild property to the custom path.
+
+Build failed with 1 error(s) in 0.9s
+
+! Build had issues - see output above
+
+Try running:
+  source ~/.android-env.sh
+  dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+==============================================
+  Setup Complete!
+==============================================
+
+Environment configured:
+  JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+For new terminals, run:
+  source ~/.android-env.sh
+
+Or add to ~/.bashrc:
+  echo 'source ~/.android-env.sh' >> ~/.bashrc
+
+
+real	0m1.678s
+user	0m1.374s
+sys	0m0.304s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which adb
+/usr/bin/adb
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ which fastboot
+/usr/bin/fastboot
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ls -lah
+total 260K
+drwxr-xr-x. 1 kushal kushal  732 Dec 20 06:20 .
+drwxr-xr-x. 1 kushal kushal   94 Dec 20 00:31 ..
+-rw-r--r--. 1 kushal kushal  673 Dec 20 01:27 appsettings.json
+-rw-r--r--. 1 kushal kushal 2.2K Dec 20 01:02 continue-setup.sh
+-rw-r--r--. 1 kushal kushal 1.2K Dec 20 01:27 Directory.Build.props
+-rw-r--r--. 1 kushal kushal 4.1K Dec 20 02:30 Directory.Packages.props
+-rw-r--r--. 1 kushal kushal 3.8K Dec 20 01:37 Directory.Packages.props.bak
+drwxr-xr-x. 1 kushal kushal   28 Dec 20 00:47 docs
+-rwxr-xr-x. 1 kushal kushal 8.5K Dec 20 01:56 export.sh
+-rwxr-xr-x. 1 kushal kushal 2.9K Dec 20 01:56 export.sh.bak
+-rw-r--r--. 1 kushal kushal  45K Dec 20 01:51 fix-all.sh
+-rw-r--r--. 1 kushal kushal  37K Dec 20 02:26 fix-ci-and-add-android.sh
+-rw-r--r--. 1 kushal kushal 1.2K Dec 20 01:28 fix-cpm.sh
+-rw-r--r--. 1 kushal kushal  27K Dec 20 02:04 fix-tests.sh
+drwxr-xr-x. 1 kushal kushal  146 Dec 20 06:56 .git
+-rw-r--r--. 1 kushal kushal  501 Dec 20 02:16 .gitattributes
+drwxr-xr-x. 1 kushal kushal   46 Dec 20 02:16 .github
+-rw-r--r--. 1 kushal kushal  109 Dec 20 01:27 .gitignore
+-rw-r--r--. 1 kushal kushal  873 Dec 20 02:30 MyDesktopApplication.slnx
+-rw-r--r--. 1 kushal kushal 2.7K Dec 20 02:30 README.md
+-rw-r--r--. 1 kushal kushal  28K Dec 20 01:26 setup-all.sh
+-rw-r--r--. 1 kushal kushal 5.6K Dec 20 06:51 setup-android-fedora.sh
+-rw-r--r--. 1 kushal kushal  15K Dec 20 06:51 setup-github-actions.sh
+-rw-r--r--. 1 kushal kushal  18K Dec 20 01:18 setup-project.sh
+-rw-r--r--. 1 kushal kushal 3.7K Dec 20 01:01 setup.sh
+drwxr-xr-x. 1 kushal kushal  286 Dec 20 02:28 src
+drwxr-xr-x. 1 kushal kushal  196 Dec 20 01:03 tests
+-rw-r--r--. 1 kushal kushal 6.6K Dec 20 01:37 update-packages.sh
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time git push origin --all --verbose
 
 
 ================================================================================
@@ -8998,8 +9401,8 @@ echo ""
 
 ================================================================================
 FILE: setup-android-fedora.sh
-SIZE: 5.58 KB
-MODIFIED: 2025-12-20 06:51:52
+SIZE: 6.33 KB
+MODIFIED: 2025-12-20 07:03:20
 ================================================================================
 
 #!/bin/bash
@@ -9010,28 +9413,28 @@ echo "  Android SDK Setup for Fedora"
 echo "=============================================="
 echo ""
 
-# Step 1: Install Java 21 JDK (the -devel package includes jar tool)
-echo "Step 1: Installing Java 21 JDK..."
-echo "Available Java JDK packages:"
+# Configuration
+ANDROID_SDK_ROOT="$HOME/.android/sdk"
+CMDLINE_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
 
-# Check what's available
-if dnf info java-21-openjdk-devel &>/dev/null; then
-    JAVA_PKG="java-21-openjdk-devel"
-    JAVA_DIR="java-21-openjdk"
-elif dnf info java-25-openjdk-devel &>/dev/null; then
-    JAVA_PKG="java-25-openjdk-devel"
-    JAVA_DIR="java-25-openjdk"
-elif dnf info java-latest-openjdk-devel &>/dev/null; then
-    JAVA_PKG="java-latest-openjdk-devel"
-    JAVA_DIR="java-latest-openjdk"
-else
-    echo "✗ No suitable Java JDK found in Fedora repos"
+# Step 1: Install Java 21 JDK
+echo "Step 1: Installing Java 21 JDK..."
+
+JAVA_PKG=""
+for pkg in java-21-openjdk-devel java-25-openjdk-devel java-latest-openjdk-devel; do
+    if dnf info "$pkg" &>/dev/null; then
+        JAVA_PKG="$pkg"
+        break
+    fi
+done
+
+if [ -z "$JAVA_PKG" ]; then
+    echo "✗ No suitable Java JDK found"
     exit 1
 fi
 
 echo "✓ Using: $JAVA_PKG"
 
-# Install if not already installed
 if ! rpm -q "$JAVA_PKG" &>/dev/null; then
     echo "Installing $JAVA_PKG..."
     sudo dnf install -y "$JAVA_PKG"
@@ -9039,83 +9442,110 @@ else
     echo "✓ $JAVA_PKG already installed"
 fi
 
-# Step 2: Find the correct JAVA_HOME with jar tool
+# Step 2: Find JAVA_HOME with jar tool
 echo ""
-echo "Step 2: Finding JAVA_HOME with jar tool..."
+echo "Step 2: Finding JAVA_HOME..."
 
-# Priority order: java-21-openjdk, then java-25-openjdk, then java-latest-openjdk
 JAVA_HOME=""
-for jvm_dir in /usr/lib/jvm/java-21-openjdk /usr/lib/jvm/java-25-openjdk /usr/lib/jvm/java-latest-openjdk; do
-    if [ -f "$jvm_dir/bin/jar" ]; then
-        JAVA_HOME="$jvm_dir"
-        echo "✓ Found jar at: $jvm_dir/bin/jar"
+for jvm in /usr/lib/jvm/java-21-openjdk /usr/lib/jvm/java-25-openjdk /usr/lib/jvm/java-latest-openjdk; do
+    if [ -f "$jvm/bin/jar" ]; then
+        JAVA_HOME="$jvm"
         break
     fi
 done
 
 if [ -z "$JAVA_HOME" ]; then
-    # Fallback: search all JVMs
-    for jvm in /usr/lib/jvm/java-*-openjdk; do
-        if [ -f "$jvm/bin/jar" ]; then
-            JAVA_HOME="$jvm"
-            echo "✓ Found jar at: $jvm/bin/jar"
-            break
-        fi
-    done
-fi
-
-if [ -z "$JAVA_HOME" ]; then
-    echo "✗ Could not find a JDK with jar tool"
-    echo "  You need to install a JDK package (not JRE)"
-    echo "  Try: sudo dnf install java-21-openjdk-devel"
+    echo "✗ Could not find JDK with jar tool"
     exit 1
 fi
 
 echo "✓ JAVA_HOME=$JAVA_HOME"
+export JAVA_HOME
+export PATH="$JAVA_HOME/bin:$PATH"
 
-# Verify jar exists
-if [ ! -f "$JAVA_HOME/bin/jar" ]; then
-    echo "✗ jar not found at $JAVA_HOME/bin/jar"
-    exit 1
+# Step 3: Install required tools
+echo ""
+echo "Step 3: Installing required tools..."
+sudo dnf install -y unzip wget curl
+
+# Step 4: Download and install Android SDK command-line tools
+echo ""
+echo "Step 4: Setting up Android SDK..."
+
+mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+
+# Check if cmdline-tools already exists
+if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+    echo "Downloading Android command-line tools..."
+    
+    TEMP_DIR=$(mktemp -d)
+    cd "$TEMP_DIR"
+    
+    wget -q --show-progress "$CMDLINE_TOOLS_URL" -O cmdline-tools.zip
+    unzip -q cmdline-tools.zip
+    
+    # The zip extracts to 'cmdline-tools', we need to move it to 'latest'
+    rm -rf "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+    mv cmdline-tools "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+    
+    cd -
+    rm -rf "$TEMP_DIR"
+    
+    echo "✓ Command-line tools installed"
+else
+    echo "✓ Command-line tools already installed"
 fi
 
-# Step 3: Install .NET Android workload
+# Step 5: Set up environment
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
+export ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT"
+export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+
+# Step 6: Accept licenses
 echo ""
-echo "Step 3: Installing .NET Android workload..."
+echo "Step 5: Accepting Android SDK licenses..."
+
+# Create license directory
+mkdir -p "$ANDROID_HOME/licenses"
+
+# Accept licenses non-interactively
+yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses 2>/dev/null || true
+
+# Also create license files directly (backup method)
+echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+echo "84831b9409646a918e30573bab4c9c91346d8abd" >> "$ANDROID_HOME/licenses/android-sdk-license"
+echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
+
+echo "✓ Licenses accepted"
+
+# Step 7: Install required SDK components
+echo ""
+echo "Step 6: Installing Android SDK components..."
+echo "This may take a few minutes..."
+
+# Install platform-tools, build-tools, and platform (API 35 is current stable)
+"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+    "platform-tools" \
+    "build-tools;35.0.0" \
+    "platforms;android-35" \
+    2>&1 | grep -E "(Installing|Done|Warning|Error)" || true
+
+echo "✓ SDK components installed"
+
+# Step 8: Install .NET Android workload
+echo ""
+echo "Step 7: Installing .NET Android workload..."
+
 if dotnet workload list 2>/dev/null | grep -q "android"; then
     echo "✓ Android workload already installed"
 else
-    echo "Installing android workload..."
     dotnet workload install android
+    echo "✓ Android workload installed"
 fi
 
-# Step 4: Find Android SDK
+# Step 9: Create environment file
 echo ""
-echo "Step 4: Finding Android SDK..."
-
-# The Android workload installs SDK to ~/.android/sdk or uses ANDROID_HOME
-ANDROID_SDK=""
-if [ -d "$HOME/.android/sdk" ]; then
-    ANDROID_SDK="$HOME/.android/sdk"
-elif [ -d "$HOME/Android/Sdk" ]; then
-    ANDROID_SDK="$HOME/Android/Sdk"
-elif [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ]; then
-    ANDROID_SDK="$ANDROID_HOME"
-fi
-
-# If no SDK found, let .NET handle it (it auto-downloads during build)
-if [ -z "$ANDROID_SDK" ]; then
-    echo "! Android SDK not found in standard locations"
-    echo "  .NET will download it automatically during first build"
-    ANDROID_SDK="$HOME/.android/sdk"
-    mkdir -p "$ANDROID_SDK"
-fi
-
-echo "✓ ANDROID_HOME=$ANDROID_SDK"
-
-# Step 5: Create environment file
-echo ""
-echo "Step 5: Creating environment file..."
+echo "Step 8: Creating environment file..."
 
 ENV_FILE="$HOME/.android-env.sh"
 cat > "$ENV_FILE" << EOF
@@ -9123,62 +9553,73 @@ cat > "$ENV_FILE" << EOF
 # Source this file: source ~/.android-env.sh
 
 export JAVA_HOME="$JAVA_HOME"
-export ANDROID_HOME="$ANDROID_SDK"
-export ANDROID_SDK_ROOT="$ANDROID_SDK"
+export ANDROID_HOME="$ANDROID_HOME"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export PATH="\$JAVA_HOME/bin:\$ANDROID_HOME/cmdline-tools/latest/bin:\$ANDROID_HOME/platform-tools:\$PATH"
 EOF
 
 echo "✓ Created $ENV_FILE"
 
-# Source it now
-export JAVA_HOME="$JAVA_HOME"
-export ANDROID_HOME="$ANDROID_SDK"
-export ANDROID_SDK_ROOT="$ANDROID_SDK"
-export PATH="$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+# Source environment for current session
+source "$ENV_FILE"
 
-# Step 6: Accept licenses
+# Step 10: Verify installation
 echo ""
-echo "Step 6: Accepting Android SDK licenses..."
+echo "Step 9: Verifying installation..."
 
-LICENSE_DIR="$ANDROID_SDK/licenses"
-mkdir -p "$LICENSE_DIR"
+echo "  JAVA_HOME: $JAVA_HOME"
+echo "  ANDROID_HOME: $ANDROID_HOME"
 
-# These are the standard license acceptance hashes
-echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$LICENSE_DIR/android-sdk-license"
-echo "84831b9409646a918e30573bab4c9c91346d8abd" >> "$LICENSE_DIR/android-sdk-license"
-echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "$LICENSE_DIR/android-sdk-license"
-echo "d975f751698a77b662f1254ddbeed3901e976f5a" > "$LICENSE_DIR/android-sdk-arm-dbt-license"
-
-echo "✓ License files created"
-
-# Step 7: Test build
-echo ""
-echo "Step 7: Testing Android build..."
-
-# Find Android project
-ANDROID_PROJ=""
-if [ -f "src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj" ]; then
-    ANDROID_PROJ="src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj"
+if [ -f "$JAVA_HOME/bin/jar" ]; then
+    echo "  ✓ jar tool found"
+else
+    echo "  ✗ jar tool NOT found"
 fi
 
-if [ -n "$ANDROID_PROJ" ]; then
+if [ -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+    echo "  ✓ sdkmanager found"
+else
+    echo "  ✗ sdkmanager NOT found"
+fi
+
+if [ -d "$ANDROID_HOME/platforms/android-35" ]; then
+    echo "  ✓ Android platform 35 installed"
+else
+    echo "  ! Android platform 35 not found (will be downloaded during build)"
+fi
+
+if [ -d "$ANDROID_HOME/build-tools/35.0.0" ]; then
+    echo "  ✓ Build tools 35.0.0 installed"
+else
+    echo "  ! Build tools not found (will be downloaded during build)"
+fi
+
+# Step 11: Test build
+echo ""
+echo "Step 10: Testing Android build..."
+
+ANDROID_PROJ="src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj"
+
+if [ -f "$ANDROID_PROJ" ]; then
     echo "Building: $ANDROID_PROJ"
     echo ""
     
-    # Build with explicit JavaSdkDirectory
-    if dotnet build "$ANDROID_PROJ" -p:JavaSdkDirectory="$JAVA_HOME" -p:AndroidSdkDirectory="$ANDROID_SDK" 2>&1; then
+    if dotnet build "$ANDROID_PROJ" \
+        -p:JavaSdkDirectory="$JAVA_HOME" \
+        -p:AndroidSdkDirectory="$ANDROID_HOME" \
+        2>&1; then
         echo ""
         echo "✓ Android build successful!"
     else
         echo ""
-        echo "! Build had issues - see output above"
+        echo "! Build failed - see errors above"
         echo ""
-        echo "Try running:"
-        echo "  source ~/.android-env.sh"
-        echo "  dotnet build $ANDROID_PROJ"
+        echo "Try these steps:"
+        echo "  1. source ~/.android-env.sh"
+        echo "  2. dotnet build $ANDROID_PROJ"
     fi
 else
-    echo "! No Android project found to test"
+    echo "! Android project not found at $ANDROID_PROJ"
 fi
 
 echo ""
@@ -9186,14 +9627,17 @@ echo "=============================================="
 echo "  Setup Complete!"
 echo "=============================================="
 echo ""
-echo "Environment configured:"
+echo "Environment:"
 echo "  JAVA_HOME=$JAVA_HOME"
-echo "  ANDROID_HOME=$ANDROID_SDK"
+echo "  ANDROID_HOME=$ANDROID_HOME"
+echo ""
+echo "SDK Components installed:"
+ls -d "$ANDROID_HOME/platforms"/* 2>/dev/null | xargs -n1 basename || echo "  (none yet)"
 echo ""
 echo "For new terminals, run:"
 echo "  source ~/.android-env.sh"
 echo ""
-echo "Or add to ~/.bashrc:"
+echo "Or add to ~/.bashrc permanently:"
 echo "  echo 'source ~/.android-env.sh' >> ~/.bashrc"
 echo ""
 
@@ -12672,7 +13116,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sat Dec 20 06:56:06 AM CST 2025
+EXPORT COMPLETED: Sat Dec 20 07:03:40 AM CST 2025
 Total Files Found: 67
 Files Exported: 67
 Files Skipped: 0 (binary or large files)
