@@ -13,7 +13,7 @@
     
     <!-- Android SDK versions -->
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
-    <TargetPlatformVersion>35</TargetPlatformVersion>
+    <TargetPlatformVersion>36.0</TargetPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
