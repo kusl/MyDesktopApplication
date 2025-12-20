@@ -691,4 +691,218 @@ Output file size: 0.03 MB
 real	0m0.280s
 user	0m0.110s
 sys	0m0.225s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet test
+Restore complete (0.7s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.0)
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (0.7s)
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.7s)
+
+Test summary: total: 4, failed: 0, succeeded: 4, skipped: 0, duration: 0.8s
+Build succeeded in 2.0s
+
+real	0m2.182s
+user	0m1.785s
+sys	0m0.346s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet outdated
+Could not execute because the specified command or file was not found.
+Possible reasons for this include:
+  * You misspelled a built-in dotnet command.
+  * You intended to execute a .NET program, but dotnet-outdated does not exist.
+  * You intended to run a global tool, but a dotnet-prefixed executable with this name could not be found on the PATH.
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: 
+   Top-level Package       Requested   Resolved
+   > FluentValidation      11.11.0     11.11.0 
+
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package             Requested   Resolved
+   > Avalonia                    11.3.0      11.3.0  
+   > Avalonia.Desktop            11.3.0      11.3.0  
+   > Avalonia.Diagnostics        11.3.0      11.3.0  
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0  
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0  
+   > CommunityToolkit.Mvvm       8.4.0       8.4.0   
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Dapper                                        2.1.66      2.1.66  
+   > Microsoft.EntityFrameworkCore                 10.0.0      10.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.0      10.0.0  
+   > Microsoft.Extensions.Configuration            10.0.0      10.0.0  
+   > Microsoft.Extensions.DependencyInjection      10.0.0      10.0.0  
+   > Npgsql.EntityFrameworkCore.PostgreSQL         10.0.0      10.0.0  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.0       8.4.0   
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > Bogus                          35.6.1      35.6.1  
+   > coverlet.collector             6.0.4       6.0.4   
+   > FluentAssertions               8.0.1       8.0.1   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > NSubstitute                    5.3.0       5.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.4       3.1.4   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                           Requested   Resolved
+   > Bogus                                     35.6.1      35.6.1  
+   > coverlet.collector                        6.0.4       6.0.4   
+   > FluentAssertions                          8.0.1       8.0.1   
+   > Microsoft.EntityFrameworkCore.Sqlite      10.0.0      10.0.0  
+   > Microsoft.NET.Test.Sdk                    17.14.1     17.14.1 
+   > Testcontainers                            4.3.0       4.3.0   
+   > Testcontainers.PostgreSql                 4.3.0       4.3.0   
+   > xunit                                     2.9.3       2.9.3   
+   > xunit.runner.visualstudio                 3.1.4       3.1.4   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > Avalonia.Headless              11.3.0      11.3.0  
+   > Avalonia.Headless.XUnit        11.3.0      11.3.0  
+   > coverlet.collector             6.0.4       6.0.4   
+   > FluentAssertions               8.0.1       8.0.1   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.4       3.1.4   
+
+
+real	0m1.481s
+user	0m1.531s
+sys	0m0.274s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package --outdated
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Core` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package       Requested   Resolved   Latest
+   > FluentValidation      11.11.0     11.11.0    12.1.1
+
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest 
+   > Avalonia                    11.3.0      11.3.0     11.3.10
+   > Avalonia.Desktop            11.3.0      11.3.0     11.3.10
+   > Avalonia.Diagnostics        11.3.0      11.3.0     11.3.10
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0     11.3.10
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0     11.3.10
+
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.EntityFrameworkCore                 10.0.0      10.0.0     10.0.1
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.Configuration            10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.DependencyInjection      10.0.0      10.0.0     10.0.1
+
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest
+   > Bogus                          35.6.1      35.6.1     35.6.5
+   > FluentAssertions               8.0.1       8.0.1      8.8.0 
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                           Requested   Resolved   Latest
+   > Bogus                                     35.6.1      35.6.1     35.6.5
+   > FluentAssertions                          8.0.1       8.0.1      8.8.0 
+   > Microsoft.EntityFrameworkCore.Sqlite      10.0.0      10.0.0     10.0.1
+   > Microsoft.NET.Test.Sdk                    17.14.1     17.14.1    18.0.1
+   > Testcontainers                            4.3.0       4.3.0      4.9.0 
+   > Testcontainers.PostgreSql                 4.3.0       4.3.0      4.9.0 
+   > xunit.runner.visualstudio                 3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest 
+   > Avalonia.Headless              11.3.0      11.3.0     11.3.10
+   > Avalonia.Headless.XUnit        11.3.0      11.3.0     11.3.10
+   > FluentAssertions               8.0.1       8.0.1      8.8.0  
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1 
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5  
+
+
+real	0m3.319s
+user	0m2.612s
+sys	0m0.368s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh export.sh 
+Starting project export...
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File: docs/llm/dump.txt
+Generating directory structure...
+Collecting files...
+Found 23 files to export
+Processing (1/23): appsettings.json
+Processing (2/23): Directory.Build.props
+Processing (3/23): Directory.Packages.props
+Processing (4/23): MyDesktopApplication.slnx
+Processing (5/23): src/MyDesktopApplication.Core/Class1.cs
+Processing (6/23): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (7/23): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (8/23): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (9/23): src/MyDesktopApplication.Desktop/Program.cs
+Processing (10/23): src/MyDesktopApplication.Desktop/ViewLocator.cs
+Processing (11/23): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (12/23): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (13/23): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (14/23): src/MyDesktopApplication.Infrastructure/Class1.cs
+Processing (15/23): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (16/23): src/MyDesktopApplication.Shared/Class1.cs
+Processing (17/23): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (18/23): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (19/23): tests/MyDesktopApplication.Core.Tests/UnitTest1.cs
+Processing (20/23): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (21/23): tests/MyDesktopApplication.Integration.Tests/UnitTest1.cs
+Processing (22/23): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (23/23): tests/MyDesktopApplication.UI.Tests/UnitTest1.cs
+
+Export completed successfully!
+Output file: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
+Total files exported: 23
+Output file size: 0.03 MB
+
+real	0m0.284s
+user	0m0.099s
+sys	0m0.243s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

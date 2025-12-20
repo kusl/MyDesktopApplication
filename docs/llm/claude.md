@@ -358,3 +358,142 @@ The key fix is that `MainWindowViewModel.cs` now has all the properties and comm
 
 
 
+Can you please write a script that updates all dependencies to their latest versions? Here is what dotnet list packages says 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: 
+   Top-level Package       Requested   Resolved
+   > FluentValidation      11.11.0     11.11.0 
+
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package             Requested   Resolved
+   > Avalonia                    11.3.0      11.3.0  
+   > Avalonia.Desktop            11.3.0      11.3.0  
+   > Avalonia.Diagnostics        11.3.0      11.3.0  
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0  
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0  
+   > CommunityToolkit.Mvvm       8.4.0       8.4.0   
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Dapper                                        2.1.66      2.1.66  
+   > Microsoft.EntityFrameworkCore                 10.0.0      10.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.0      10.0.0  
+   > Microsoft.Extensions.Configuration            10.0.0      10.0.0  
+   > Microsoft.Extensions.DependencyInjection      10.0.0      10.0.0  
+   > Npgsql.EntityFrameworkCore.PostgreSQL         10.0.0      10.0.0  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.0       8.4.0   
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > Bogus                          35.6.1      35.6.1  
+   > coverlet.collector             6.0.4       6.0.4   
+   > FluentAssertions               8.0.1       8.0.1   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > NSubstitute                    5.3.0       5.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.4       3.1.4   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                           Requested   Resolved
+   > Bogus                                     35.6.1      35.6.1  
+   > coverlet.collector                        6.0.4       6.0.4   
+   > FluentAssertions                          8.0.1       8.0.1   
+   > Microsoft.EntityFrameworkCore.Sqlite      10.0.0      10.0.0  
+   > Microsoft.NET.Test.Sdk                    17.14.1     17.14.1 
+   > Testcontainers                            4.3.0       4.3.0   
+   > Testcontainers.PostgreSql                 4.3.0       4.3.0   
+   > xunit                                     2.9.3       2.9.3   
+   > xunit.runner.visualstudio                 3.1.4       3.1.4   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > Avalonia.Headless              11.3.0      11.3.0  
+   > Avalonia.Headless.XUnit        11.3.0      11.3.0  
+   > coverlet.collector             6.0.4       6.0.4   
+   > FluentAssertions               8.0.1       8.0.1   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.4       3.1.4   
+
+
+real	0m1.481s
+user	0m1.531s
+sys	0m0.274s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet list package --outdated
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Core` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package       Requested   Resolved   Latest
+   > FluentValidation      11.11.0     11.11.0    12.1.1
+
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest 
+   > Avalonia                    11.3.0      11.3.0     11.3.10
+   > Avalonia.Desktop            11.3.0      11.3.0     11.3.10
+   > Avalonia.Diagnostics        11.3.0      11.3.0     11.3.10
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0     11.3.10
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0     11.3.10
+
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.EntityFrameworkCore                 10.0.0      10.0.0     10.0.1
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.Configuration            10.0.0      10.0.0     10.0.1
+   > Microsoft.Extensions.DependencyInjection      10.0.0      10.0.0     10.0.1
+
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest
+   > Bogus                          35.6.1      35.6.1     35.6.5
+   > FluentAssertions               8.0.1       8.0.1      8.8.0 
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                           Requested   Resolved   Latest
+   > Bogus                                     35.6.1      35.6.1     35.6.5
+   > FluentAssertions                          8.0.1       8.0.1      8.8.0 
+   > Microsoft.EntityFrameworkCore.Sqlite      10.0.0      10.0.0     10.0.1
+   > Microsoft.NET.Test.Sdk                    17.14.1     17.14.1    18.0.1
+   > Testcontainers                            4.3.0       4.3.0      4.9.0 
+   > Testcontainers.PostgreSql                 4.3.0       4.3.0      4.9.0 
+   > xunit.runner.visualstudio                 3.1.4       3.1.4      3.1.5 
+
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                Requested   Resolved   Latest 
+   > Avalonia.Headless              11.3.0      11.3.0     11.3.10
+   > Avalonia.Headless.XUnit        11.3.0      11.3.0     11.3.10
+   > FluentAssertions               8.0.1       8.0.1      8.8.0  
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1    18.0.1 
+   > xunit.runner.visualstudio      3.1.4       3.1.4      3.1.5  
+
+
+real	0m3.319s
+user	0m2.612s
+sys	0m0.368s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
