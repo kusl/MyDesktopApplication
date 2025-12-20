@@ -225,7 +225,7 @@ Copy the content from the artifacts I created above to replace these files:
 3. `tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj`
 4. `tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj`
 
-Also update `Directory.Packages.props` with the new version (I updated the test SDK versions to match what the templates created: `17.14.1` and `3.1.4`).
+Also update `Directory.Packagnges.props` with the new version (I updated the test SDK versions to match what the templates created: `17.14.1` and `3.1.4`).
 
 ---
 
@@ -238,3 +238,6 @@ When you have `<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentra
 The templates created `.csproj` files with `Version` attributes, which conflicts with CPM. The fix is simply removing those `Version` attributes from the project files.
 
 
+Yes, I really like this method of using shell scripts instead of manually editing individual files. 
+Lets do more of that where we can 
+or use fewer files for less copy pasting. 
