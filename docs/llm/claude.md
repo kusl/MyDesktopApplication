@@ -1818,3 +1818,41 @@ The .NET Android build needs the full SDK with build-tools and platform librarie
 
 
 
+Getting closer. Please fix this as well. 
+Restore complete (0.4s)
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.1s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Tooling.targets(88,5): error XA5207: 
+      Could not find android.jar for API level 36. This means the Android SDK platform for API level 36 is not installed; it was expected to be in `/home/kushal/.android/sdk/platforms/android-36/android.jar`.
+      You can install the missing API level by running `dotnet build -t:InstallAndroidDependencies -f net10.0-android "-p:AndroidSdkDirectory=/home/kushal/.android/sdk"`, or change the project to target an API ve
+      rsion that is installed.
+      See https://aka.ms/xa5207 for more details.
+
+Build failed with 1 error(s) in 0.8s
+
+! Build failed - see errors above
+
+Try these steps:
+  1. source ~/.android-env.sh
+  2. dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+==============================================
+  Setup Complete!
+==============================================
+
+Environment:
+  JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+  ANDROID_HOME=/home/kushal/.android/sdk
+
+SDK Components installed:
+android-35
+
+For new terminals, run:
+  source ~/.android-env.sh
+
+Or add to ~/.bashrc permanently:
+  echo 'source ~/.android-env.sh' >> ~/.bashrc
+
+
+real	0m26.357s
+user	0m13.752s
+sys	0m2.497s
