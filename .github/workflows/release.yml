@@ -15,47 +15,34 @@ env:
   DOTNET_VERSION: '10.0.x'
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  PROJECT_PATH: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
   APP_NAME: MyDesktopApplication
 
 jobs:
-  # Build for all desktop platforms
-  build:
-    name: Build ${{ matrix.name }}
+  build-desktop:
+    name: Desktop - ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          # Windows
           - os: windows-latest
             name: Windows x64
             rid: win-x64
-            artifact: windows-x64
           - os: windows-latest
             name: Windows ARM64
             rid: win-arm64
-            artifact: windows-arm64
-          
-          # Linux
           - os: ubuntu-latest
             name: Linux x64
             rid: linux-x64
-            artifact: linux-x64
           - os: ubuntu-latest
             name: Linux ARM64
             rid: linux-arm64
-            artifact: linux-arm64
-          
-          # macOS
           - os: macos-latest
             name: macOS x64
             rid: osx-x64
-            artifact: macos-x64
           - os: macos-latest
-            name: macOS ARM64 (Apple Silicon)
+            name: macOS ARM64
             rid: osx-arm64
-            artifact: macos-arm64
 
     steps:
       - name: Checkout
@@ -80,12 +67,13 @@ jobs:
         run: dotnet restore
 
       - name: Publish
+        shell: bash
         run: |
-          dotnet publish ${{ env.PROJECT_PATH }} \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release \
+            -r ${{ matrix.rid }} \
             --self-contained true \
-            --output ./publish/${{ matrix.artifact }} \
+            -o ./publish/${{ matrix.rid }} \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:EnableCompressionInSingleFile=true \
@@ -93,29 +81,84 @@ jobs:
 
       - name: Create archive (Unix)
         if: runner.os != 'Windows'
+        shell: bash
         run: |
           cd ./publish
-          tar -czvf ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+          tar -czvf ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.rid }}.tar.gz ${{ matrix.rid }}
 
       - name: Create archive (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path ./publish/${{ matrix.artifact }}/* -DestinationPath ./publish/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.artifact }}.zip
+          Compress-Archive -Path ./publish/${{ matrix.rid }}/* -DestinationPath ./publish/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-${{ matrix.rid }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
+          name: desktop-${{ matrix.rid }}
           path: |
             ./publish/*.tar.gz
             ./publish/*.zip
           retention-days: 7
 
-  # Create GitHub Release
+  build-android:
+    name: Android
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Get version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Restore
+        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+      - name: Build Android APK
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            -c Release \
+            -f net10.0-android \
+            -o ./publish/android \
+            -p:Version=${{ steps.version.outputs.version }}
+
+      - name: Rename APK
+        run: |
+          mv ./publish/android/*.apk ./publish/android/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-android.apk || true
+          ls -la ./publish/android/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: ./publish/android/*.apk
+          retention-days: 7
+
   release:
     name: Create Release
-    needs: build
+    needs: [build-desktop, build-android]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -154,5 +197,6 @@ jobs:
           files: |
             ./artifacts/**/*.tar.gz
             ./artifacts/**/*.zip
+            ./artifacts/**/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

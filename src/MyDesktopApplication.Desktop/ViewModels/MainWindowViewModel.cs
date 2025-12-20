@@ -3,9 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
 using MyDesktopApplication.Core.Interfaces;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace MyDesktopApplication.Desktop.ViewModels;
 
+/// <summary>
+/// Desktop MainWindow ViewModel - extends shared MainViewModel with desktop-specific features
+/// </summary>
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly ITodoRepository? _todoRepository;
@@ -32,7 +36,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _ = LoadTodosAsync();
     }
 
-    // Parameterless constructor (for design-time and simple usage)
+    // Parameterless constructor (for design-time and testing)
     public MainWindowViewModel()
     {
         _todoRepository = null;
@@ -55,14 +59,9 @@ public partial class MainWindowViewModel : ViewModelBase
     private async Task LoadDataAsync()
     {
         IsBusy = true;
-        ClearError();
         try
         {
             await LoadTodosAsync();
-        }
-        catch (Exception ex)
-        {
-            SetError($"Failed to load data: {ex.Message}");
         }
         finally
         {
@@ -73,11 +72,14 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task AddTodoAsync()
     {
-        if (string.IsNullOrWhiteSpace(NewTodoTitle) || _todoRepository is null)
+        if (string.IsNullOrWhiteSpace(NewTodoTitle))
             return;
 
         var todo = new TodoItem { Title = NewTodoTitle.Trim() };
-        await _todoRepository.AddAsync(todo);
+        
+        if (_todoRepository is not null)
+            await _todoRepository.AddAsync(todo);
+        
         TodoItems.Add(todo);
         NewTodoTitle = string.Empty;
     }
@@ -85,7 +87,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task ToggleTodoAsync(TodoItem? todo)
     {
-        if (todo is null || _todoRepository is null)
+        if (todo is null)
             return;
 
         if (todo.IsCompleted)
@@ -93,7 +95,8 @@ public partial class MainWindowViewModel : ViewModelBase
         else
             todo.MarkComplete();
 
-        await _todoRepository.UpdateAsync(todo);
+        if (_todoRepository is not null)
+            await _todoRepository.UpdateAsync(todo);
     }
 
     [RelayCommand]

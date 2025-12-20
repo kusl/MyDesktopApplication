@@ -2,7 +2,6 @@ name: Nightly Build
 
 on:
   schedule:
-    # Run at 2 AM UTC every day
     - cron: '0 2 * * *'
   workflow_dispatch:
 
@@ -47,12 +46,13 @@ jobs:
         run: dotnet test --configuration Release
 
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
+            -c Release \
+            -r ${{ matrix.rid }} \
             --self-contained true \
-            --output ./publish \
+            -o ./publish \
             -p:PublishSingleFile=true \
             -p:Version=0.0.0-nightly.${{ steps.date.outputs.date }}
 

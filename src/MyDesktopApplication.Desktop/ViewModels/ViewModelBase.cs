@@ -1,18 +1,11 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+// Desktop-specific ViewModelBase - inherits from Shared
+// This allows Desktop to add platform-specific functionality if needed
 
 namespace MyDesktopApplication.Desktop.ViewModels;
 
 /// <summary>
-/// Base class for all ViewModels
+/// Desktop-specific base class - inherits shared functionality
 /// </summary>
-public abstract partial class ViewModelBase : ObservableObject
+public abstract class ViewModelBase : Shared.ViewModels.ViewModelBase
 {
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
-    private string? _errorMessage;
-
-    protected void ClearError() => ErrorMessage = null;
-    protected void SetError(string message) => ErrorMessage = message;
 }

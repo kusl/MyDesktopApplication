@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj" />
     <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
     <Project Path="src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj" />
     <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />

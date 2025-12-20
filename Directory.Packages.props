@@ -1,13 +1,6 @@
 <Project>
   <!-- Central Package Management - All package versions in one place -->
-  <!-- ================================================================ -->
-  <!-- LICENSE POLICY: Only packages with truly free licenses allowed   -->
-  <!-- Allowed: MIT, Apache-2.0, BSD, Public Domain, PostgreSQL License -->
-  <!-- NOT Allowed: Packages requiring payment for any use              -->
-  <!-- ================================================================ -->
-  <!-- Removed: FluentAssertions (Xceed license - requires payment)     -->
-  <!-- Removed: Moq (SponsorLink controversy)                           -->
-  <!-- ================================================================ -->
+  <!-- LICENSE POLICY: Only truly free packages (MIT, Apache-2.0, BSD, Public Domain) -->
   
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -18,6 +11,7 @@
     <!-- Avalonia UI (MIT License) -->
     <PackageVersion Include="Avalonia" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.10" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10" />
@@ -63,8 +57,6 @@
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
 
     <!-- Testing (MIT / Apache-2.0 License) -->
-    <!-- Using plain xUnit assertions - no FluentAssertions (Xceed license) -->
-    <!-- No Moq (SponsorLink controversy) - use NSubstitute if mocking needed -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
