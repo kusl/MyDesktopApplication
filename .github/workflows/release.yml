@@ -62,7 +62,7 @@ jobs:
         run: tar -czvf MyDesktopApplication-${{ matrix.artifact }}.tar.gz -C ./publish/${{ matrix.artifact }} .
       
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-${{ matrix.artifact }}
           path: |
@@ -111,7 +111,7 @@ jobs:
           fi
       
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-android
           path: MyDesktopApplication-android.apk
