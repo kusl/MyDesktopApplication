@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 10:20:12 AM CST 2025
+Generated: Sun Dec 21 10:23:15 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -104,6 +104,7 @@ DIRECTORY STRUCTURE:
 ├── fix-all.sh
 ├── fix-android-build.sh
 ├── fix-android-code.sh
+├── fix-android-namespace.sh
 ├── fix-ci-and-add-android.sh
 ├── fix-cpm.sh
 ├── fix-tests.sh
@@ -2684,6 +2685,91 @@ echo ""
 echo "=============================================="
 echo "  Done!"
 echo "=============================================="
+
+
+================================================================================
+FILE: fix-android-namespace.sh
+SIZE: 1.74 KB
+MODIFIED: 2025-12-21 10:22:47
+================================================================================
+
+#!/bin/bash
+set -e
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "Fixing Android namespace conflicts..."
+
+# Fix App.cs - use fully qualified Avalonia.Application
+cat > src/MyDesktopApplication.Android/App.cs << 'CS'
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using MyDesktopApplication.Android.Views;
+
+namespace MyDesktopApplication.Android;
+
+public class App : Avalonia.Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            singleViewPlatform.MainView = new MainView();
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+CS
+
+echo "✓ Fixed App.cs"
+
+# Fix MainView.axaml.cs - use fully qualified Avalonia.Controls.Button
+cat > src/MyDesktopApplication.Android/Views/MainView.axaml.cs << 'CS'
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+
+namespace MyDesktopApplication.Android.Views;
+
+public partial class MainView : UserControl
+{
+    private int _counter;
+    private Avalonia.Controls.Button? _counterButton;
+
+    public MainView()
+    {
+        InitializeComponent();
+        _counterButton = this.FindControl<Avalonia.Controls.Button>("CounterButton");
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void OnCounterClick(object? sender, RoutedEventArgs e)
+    {
+        _counter++;
+        if (_counterButton != null)
+        {
+            _counterButton.Content = $"Click Me: {_counter}";
+        }
+    }
+}
+CS
+
+echo "✓ Fixed MainView.axaml.cs"
+
+# Test build
+echo ""
+echo "Testing build..."
+./build-android.sh
 
 
 ================================================================================
@@ -7627,18 +7713,17 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.cs
-SIZE: .57 KB
-MODIFIED: 2025-12-21 10:17:25
+SIZE: .56 KB
+MODIFIED: 2025-12-21 10:23:03
 ================================================================================
 
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using MyDesktopApplication.Android.Views;
 
 namespace MyDesktopApplication.Android;
 
-public class App : Application
+public class App : Avalonia.Application
 {
     public override void Initialize()
     {
@@ -7810,8 +7895,8 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-SIZE: .66 KB
-MODIFIED: 2025-12-21 10:17:25
+SIZE: .70 KB
+MODIFIED: 2025-12-21 10:23:03
 ================================================================================
 
 using Avalonia.Controls;
@@ -7823,12 +7908,12 @@ namespace MyDesktopApplication.Android.Views;
 public partial class MainView : UserControl
 {
     private int _counter;
-    private Button? _counterButton;
+    private Avalonia.Controls.Button? _counterButton;
 
     public MainView()
     {
         InitializeComponent();
-        _counterButton = this.FindControl<Button>("CounterButton");
+        _counterButton = this.FindControl<Avalonia.Controls.Button>("CounterButton");
     }
 
     private void InitializeComponent()
@@ -9911,9 +9996,9 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 10:20:13 AM CST 2025
-Total Files Found: 70
-Files Exported: 70
+EXPORT COMPLETED: Sun Dec 21 10:23:15 AM CST 2025
+Total Files Found: 71
+Files Exported: 71
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

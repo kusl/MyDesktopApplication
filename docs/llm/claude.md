@@ -2198,3 +2198,44 @@ sys	0m0.323s
 
 
 
+Good progress! Now we're getting actual compilation errors instead of hanging. These are namespace conflicts between Android and Avalonia. Let me fix the source files:Run it:
+
+```bash
+chmod +x fix-android-namespace.sh
+./fix-android-namespace.sh
+```
+
+The fixes are:
+1. **App.cs**: Changed `Application` to `Avalonia.Application` (fully qualified)
+2. **MainView.axaml.cs**: Changed `Button` to `Avalonia.Controls.Button` (fully qualified)
+
+This resolves the ambiguity between Android SDK types and Avalonia types that share the same names.
+
+
+
+
+
+
+
+
+this is progress. 
+now I get this error 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-android-namespace.sh 
+Fixing Android namespace conflicts...
+✓ Fixed App.cs
+✓ Fixed MainView.axaml.cs
+
+Testing build...
+Building Android project...
+
+Restore complete (0.4s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MainActivity.cs(19,14): error CS1061: 'AppBuilder' does not contain a definition for 'WithInterFont' and no accessible extension method 'WithInterFont' accepting a first argument of type 'AppBuilder' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 1 error(s) in 1.5s
+
+real	0m1.643s
+user	0m1.144s
+sys	0m0.266s

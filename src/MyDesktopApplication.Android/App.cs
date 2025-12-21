@@ -1,11 +1,10 @@
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using MyDesktopApplication.Android.Views;
 
 namespace MyDesktopApplication.Android;
 
-public class App : Application
+public class App : Avalonia.Application
 {
     public override void Initialize()
     {

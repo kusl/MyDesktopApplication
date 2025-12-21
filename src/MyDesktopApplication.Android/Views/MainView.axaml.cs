@@ -7,12 +7,12 @@ namespace MyDesktopApplication.Android.Views;
 public partial class MainView : UserControl
 {
     private int _counter;
-    private Button? _counterButton;
+    private Avalonia.Controls.Button? _counterButton;
 
     public MainView()
     {
         InitializeComponent();
-        _counterButton = this.FindControl<Button>("CounterButton");
+        _counterButton = this.FindControl<Avalonia.Controls.Button>("CounterButton");
     }
 
     private void InitializeComponent()
