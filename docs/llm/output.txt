@@ -691,4 +691,125 @@ File types included:
 real	0m0.783s
 user	0m0.382s
 sys	0m0.586s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh build-android.sh 
+Building Android project...
+
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android failed with 3 error(s) (1.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(8,20): error CS0104: 'Application' is an ambiguous reference between 'Android.App.Application' and 'Avalonia.Application'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(10,13): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MainActivity.cs(14,14): error CS0311: The type 'MyDesktopApplication.Android.App' cannot be used as type parameter 'TApp' in the generic type or method 'AvaloniaMainActivity<TApp>'. There is no implicit reference conversion from 'MyDesktopApplication.Android.App' to 'Avalonia.Application'.
+
+Build failed with 3 error(s) in 2.4s
+
+real	0m2.623s
+user	0m1.779s
+sys	0m0.323s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 70 files to export
+
+Processing (1/70): appsettings.json
+Processing (2/70): build-android.sh
+Processing (3/70): build-desktop.sh
+Processing (4/70): continue-setup.sh
+Processing (5/70): Directory.Build.props
+Processing (6/70): Directory.Packages.props
+Processing (7/70): export.sh
+Processing (8/70): fix-all.sh
+Processing (9/70): fix-android-build.sh
+Processing (10/70): fix-android-code.sh
+Processing (11/70): fix-ci-and-add-android.sh
+Processing (12/70): fix-cpm.sh
+Processing (13/70): fix-tests.sh
+Processing (14/70): .gitattributes
+Processing (15/70): .github/dependabot.yml
+Processing (16/70): .github/workflows/build.yml
+Processing (17/70): .github/workflows/ci.yml
+Processing (18/70): .github/workflows/release.yml
+Processing (19/70): .gitignore
+Processing (20/70): MyDesktopApplication.Desktop.slnx
+Processing (21/70): MyDesktopApplication.slnx
+Processing (22/70): README.md
+Processing (23/70): run-tests.sh
+Processing (24/70): setup-all.sh
+Processing (25/70): setup-android-fedora.sh
+Processing (26/70): setup-github-actions.sh
+Processing (27/70): setup-project.sh
+Processing (28/70): setup.sh
+Processing (29/70): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (30/70): src/MyDesktopApplication.Android/App.axaml
+Processing (31/70): src/MyDesktopApplication.Android/App.cs
+Processing (32/70): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (33/70): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (34/70): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (35/70): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (36/70): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (37/70): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (38/70): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (39/70): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (40/70): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (41/70): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (42/70): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (43/70): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (44/70): src/MyDesktopApplication.Desktop/App.axaml
+Processing (45/70): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (46/70): src/MyDesktopApplication.Desktop/app.manifest
+Processing (47/70): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (48/70): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (49/70): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (50/70): src/MyDesktopApplication.Desktop/Program.cs
+Processing (51/70): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (52/70): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (53/70): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (54/70): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (55/70): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (56/70): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (57/70): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (58/70): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (59/70): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (60/70): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (61/70): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (62/70): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (63/70): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (64/70): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (65/70): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/70): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/70): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/70): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/70): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (70/70): update-packages.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 70
+Files skipped:  0
+Output size:    482.40 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.795s
+user	0m0.387s
+sys	0m0.597s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
