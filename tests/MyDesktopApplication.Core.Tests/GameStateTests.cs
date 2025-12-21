@@ -1,47 +1,48 @@
-using MyDesktopApplication.Core.Entities;
+using Xunit;
 using Shouldly;
+using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Core.Tests;
 
 public class GameStateTests
 {
     [Fact]
-    public void RecordCorrectAnswer_ShouldIncrementScoresAndStreak()
+    public void RecordAnswer_Correct_ShouldIncrementScoresAndStreak()
     {
         var state = new GameState { UserId = "test" };
         
-        state.RecordCorrectAnswer();
+        state.RecordAnswer(true);
         
         state.CurrentScore.ShouldBe(1);
         state.HighScore.ShouldBe(1);
         state.CurrentStreak.ShouldBe(1);
         state.BestStreak.ShouldBe(1);
-        state.TotalCorrect.ShouldBe(1);
-        state.TotalAnswered.ShouldBe(1);
+        state.CorrectAnswers.ShouldBe(1);
+        state.TotalQuestions.ShouldBe(1);
     }
 
     [Fact]
-    public void RecordWrongAnswer_ShouldResetCurrentScoreAndStreak()
+    public void RecordAnswer_Wrong_ShouldResetCurrentScoreAndStreak()
     {
         var state = new GameState { UserId = "test" };
-        state.RecordCorrectAnswer();
-        state.RecordCorrectAnswer();
+        state.RecordAnswer(true);
+        state.RecordAnswer(true);
         
-        state.RecordWrongAnswer();
+        state.RecordAnswer(false);
         
         state.CurrentScore.ShouldBe(0);
         state.CurrentStreak.ShouldBe(0);
-        state.HighScore.ShouldBe(2); // Should preserve high score
-        state.BestStreak.ShouldBe(2); // Should preserve best streak
+        state.HighScore.ShouldBe(2);
+        state.BestStreak.ShouldBe(2);
     }
 
     [Fact]
     public void Reset_ShouldKeepHighScoreAndBestStreak()
     {
         var state = new GameState { UserId = "test" };
-        state.RecordCorrectAnswer();
-        state.RecordCorrectAnswer();
-        state.RecordCorrectAnswer();
+        state.RecordAnswer(true);
+        state.RecordAnswer(true);
+        state.RecordAnswer(true);
         
         state.Reset();
         
@@ -52,14 +53,14 @@ public class GameStateTests
     }
 
     [Fact]
-    public void AccuracyPercentage_ShouldCalculateCorrectly()
+    public void Accuracy_ShouldCalculateCorrectly()
     {
         var state = new GameState { UserId = "test" };
-        state.RecordCorrectAnswer();
-        state.RecordCorrectAnswer();
-        state.RecordWrongAnswer();
-        state.RecordCorrectAnswer();
+        state.RecordAnswer(true);
+        state.RecordAnswer(true);
+        state.RecordAnswer(false);
+        state.RecordAnswer(true);
         
-        state.AccuracyPercentage.ShouldBe(75.0);
+        state.Accuracy.ShouldBe(75.0);
     }
 }

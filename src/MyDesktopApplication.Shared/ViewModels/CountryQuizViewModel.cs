@@ -2,229 +2,172 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
+/// <summary>
+/// ViewModel for the Country Quiz game.
+/// </summary>
 public partial class CountryQuizViewModel : ViewModelBase
 {
-    private readonly IGameStateRepository _repository;
     private readonly Random _random = new();
-    private GameState? _gameState;
+    private Country? _country1;
+    private Country? _country2;
     private Country? _correctCountry;
     
     [ObservableProperty]
-    private string _questionText = "Loading...";
-    
+    private GameState _gameState = new();
+
     [ObservableProperty]
-    private Country? _country1;
-    
+    private QuestionType _currentQuestionType = QuestionType.Population;
+
     [ObservableProperty]
-    private Country? _country2;
-    
+    private string _questionText = "";
+
     [ObservableProperty]
-    private string _scoreText = "0/0";
-    
+    private string _country1Name = "";
+
     [ObservableProperty]
-    private string _streakText = "";
-    
+    private string _country2Name = "";
+
     [ObservableProperty]
-    private string _bestStreakText = "";
-    
+    private string _country1Flag = "";
+
     [ObservableProperty]
-    private string _accuracyText = "";
-    
+    private string _country2Flag = "";
+
     [ObservableProperty]
-    private string _resultMessage = "";
-    
-    [ObservableProperty]
-    private bool _hasAnswered;
-    
-    [ObservableProperty]
-    private bool _isCorrectAnswer;
-    
-    [ObservableProperty]
-    private int _selectedCountry; // 0 = none, 1 = country1, 2 = country2
-    
+    private string _feedbackMessage = "";
+
     [ObservableProperty]
     private string _country1Value = "";
-    
+
     [ObservableProperty]
     private string _country2Value = "";
-    
+
     [ObservableProperty]
-    private QuestionType _selectedQuestionType = QuestionType.Population;
-    
-    public ObservableCollection<QuestionType> QuestionTypes { get; } = new(Enum.GetValues<QuestionType>());
-    
-    public CountryQuizViewModel(IGameStateRepository repository)
+    private bool _showValues;
+
+    [ObservableProperty]
+    private bool _isCorrect;
+
+    [ObservableProperty]
+    private string _motivationalMessage = "";
+
+    [ObservableProperty]
+    private string _statsText = "";
+
+    public ObservableCollection<QuestionType> QuestionTypes { get; } = new(
+        Enum.GetValues<QuestionType>()
+    );
+
+    public CountryQuizViewModel()
     {
-        _repository = repository;
+        GenerateNewQuestion();
+        UpdateStats();
     }
-    
-    public async Task InitializeAsync()
+
+    partial void OnCurrentQuestionTypeChanged(QuestionType value)
     {
-        IsBusy = true;
-        try
-        {
-            _gameState = await _repository.GetOrCreateAsync();
-            
-            if (Enum.TryParse<QuestionType>(_gameState.SelectedQuestionType, out var qt))
-            {
-                SelectedQuestionType = qt;
-            }
-            
-            UpdateScoreDisplay();
-            await NextRoundAsync();
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+        GameState.SelectedQuestionType = (int)value;
+        GenerateNewQuestion();
     }
-    
-    partial void OnSelectedQuestionTypeChanged(QuestionType value)
-    {
-        if (_gameState != null)
-        {
-            _gameState.SelectedQuestionType = value.ToString();
-            _ = SaveAndNextRoundAsync();
-        }
-    }
-    
-    private async Task SaveAndNextRoundAsync()
-    {
-        if (_gameState != null)
-        {
-            await _repository.SaveAsync(_gameState);
-        }
-        await NextRoundAsync();
-    }
-    
-    private (Country, Country)? GetRandomPair()
-    {
-        var valid = CountryData.Countries
-            .Where(c => SelectedQuestionType.GetValue(c) != null)
-            .ToList();
-        
-        if (valid.Count < 2) return null;
-        
-        for (int i = 0; i < 100; i++)
-        {
-            var c1 = valid[_random.Next(valid.Count)];
-            var c2 = valid[_random.Next(valid.Count)];
-            var v1 = SelectedQuestionType.GetValue(c1);
-            var v2 = SelectedQuestionType.GetValue(c2);
-            
-            // Ensure different countries AND different values (no ties)
-            if (c1.Name != c2.Name && v1 != null && v2 != null && Math.Abs(v1.Value - v2.Value) > 0.001)
-            {
-                return (c1, c2);
-            }
-        }
-        return null;
-    }
-    
+
     [RelayCommand]
-    private async Task NextRoundAsync()
+    private void SelectCountry1()
     {
-        HasAnswered = false;
-        SelectedCountry = 0;
-        ResultMessage = "";
-        Country1Value = "";
-        Country2Value = "";
+        CheckAnswer(_country1);
+    }
+
+    [RelayCommand]
+    private void SelectCountry2()
+    {
+        CheckAnswer(_country2);
+    }
+
+    [RelayCommand]
+    private void NextQuestion()
+    {
+        ShowValues = false;
+        GenerateNewQuestion();
+    }
+
+    [RelayCommand]
+    private void ResetGame()
+    {
+        GameState.Reset();
+        ShowValues = false;
+        FeedbackMessage = "";
+        MotivationalMessage = MotivationalMessages.GetResetMessage();
+        UpdateStats();
+        GenerateNewQuestion();
+    }
+
+    private void GenerateNewQuestion()
+    {
+        var countries = CountryData.Countries;
         
-        var pair = GetRandomPair();
-        if (pair == null)
+        // Pick two different random countries
+        var index1 = _random.Next(countries.Count);
+        var index2 = _random.Next(countries.Count);
+        while (index2 == index1)
         {
-            QuestionText = "Not enough data for this question type.";
+            index2 = _random.Next(countries.Count);
+        }
+
+        _country1 = countries[index1];
+        _country2 = countries[index2];
+
+        Country1Name = _country1.Name;
+        Country2Name = _country2.Name;
+        Country1Flag = _country1.Flag;
+        Country2Flag = _country2.Flag;
+
+        // Determine correct answer
+        var value1 = CurrentQuestionType.GetValue(_country1);
+        var value2 = CurrentQuestionType.GetValue(_country2);
+        _correctCountry = value1 > value2 ? _country1 : _country2;
+
+        QuestionText = CurrentQuestionType.GetQuestion();
+        
+        // Prepare values for reveal
+        Country1Value = CurrentQuestionType.FormatValue(value1);
+        Country2Value = CurrentQuestionType.FormatValue(value2);
+    }
+
+    private void CheckAnswer(Country? selectedCountry)
+    {
+        if (selectedCountry == null || _correctCountry == null)
             return;
+
+        IsCorrect = selectedCountry == _correctCountry;
+        GameState.RecordAnswer(IsCorrect);
+        ShowValues = true;
+
+        if (IsCorrect)
+        {
+            FeedbackMessage = "✓ Correct!";
+            MotivationalMessage = MotivationalMessages.GetCorrectMessage(GameState.CurrentStreak);
         }
-        
-        (Country1, Country2) = pair.Value;
-        QuestionText = SelectedQuestionType.GetQuestion();
-        
-        var v1 = SelectedQuestionType.GetValue(Country1!);
-        var v2 = SelectedQuestionType.GetValue(Country2!);
-        _correctCountry = v1 > v2 ? Country1 : Country2;
+        else
+        {
+            FeedbackMessage = $"✗ Wrong! It was {_correctCountry.Name}";
+            MotivationalMessage = MotivationalMessages.GetIncorrectMessage();
+        }
+
+        UpdateStats();
     }
-    
-    [RelayCommand]
-    private async Task SelectCountryAsync(int countryNumber)
+
+    private void UpdateStats()
     {
-        if (HasAnswered || _gameState == null || _correctCountry == null) return;
-        
-        HasAnswered = true;
-        SelectedCountry = countryNumber;
-        
-        var selectedCountry = countryNumber == 1 ? Country1 : Country2;
-        var isCorrect = selectedCountry?.Name == _correctCountry.Name;
-        IsCorrectAnswer = isCorrect;
-        
-        // Record answer
-        var wasNewBest = _gameState.CurrentStreak == _gameState.BestStreak && isCorrect;
-        _gameState.RecordAnswer(isCorrect);
-        var isNewBest = _gameState.CurrentStreak == _gameState.BestStreak && _gameState.CurrentStreak > 1;
-        
-        // Show values
-        if (Country1 != null)
-        {
-            var v1 = SelectedQuestionType.GetValue(Country1);
-            Country1Value = v1.HasValue ? SelectedQuestionType.FormatValue(v1.Value) : "N/A";
-        }
-        if (Country2 != null)
-        {
-            var v2 = SelectedQuestionType.GetValue(Country2);
-            Country2Value = v2.HasValue ? SelectedQuestionType.FormatValue(v2.Value) : "N/A";
-        }
-        
-        // Build result message
-        var message = isCorrect 
-            ? MotivationalMessages.GetCorrectMessage()
-            : MotivationalMessages.GetIncorrectMessage();
-        
-        if (isCorrect && isNewBest && !wasNewBest && _gameState.CurrentStreak >= 3)
-        {
-            message += "\n" + MotivationalMessages.GetNewBestMessage(_gameState.BestStreak);
-        }
-        else if (isCorrect && _gameState.CurrentStreak >= 3)
-        {
-            var streakMsg = MotivationalMessages.GetStreakMessage(_gameState.CurrentStreak);
-            if (!string.IsNullOrEmpty(streakMsg))
-            {
-                message += "\n" + streakMsg;
-            }
-        }
-        
-        ResultMessage = message;
-        UpdateScoreDisplay();
-        
-        await _repository.SaveAsync(_gameState);
-    }
-    
-    [RelayCommand]
-    private async Task ResetGameAsync()
-    {
-        if (_gameState == null) return;
-        
-        _gameState.Reset();
-        await _repository.SaveAsync(_gameState);
-        
-        ResultMessage = MotivationalMessages.GetResetMessage();
-        UpdateScoreDisplay();
-        await NextRoundAsync();
-    }
-    
-    private void UpdateScoreDisplay()
-    {
-        if (_gameState == null) return;
-        
-        ScoreText = $"{_gameState.CorrectAnswers}/{_gameState.TotalQuestions}";
-        StreakText = _gameState.CurrentStreak > 0 ? $"🔥 {_gameState.CurrentStreak}" : "";
-        BestStreakText = _gameState.BestStreak > 0 ? $"⭐ Best: {_gameState.BestStreak}" : "";
-        AccuracyText = _gameState.TotalQuestions > 0 
-            ? $"{_gameState.Accuracy}% {MotivationalMessages.GetAccuracyComment(_gameState.Accuracy)}"
-            : "";
+        var accuracy = GameState.TotalQuestions > 0 
+            ? (double)GameState.CorrectAnswers / GameState.TotalQuestions * 100 
+            : 0;
+            
+        StatsText = $"Score: {GameState.CurrentScore} | " +
+                   $"High: {GameState.HighScore} | " +
+                   $"Streak: {GameState.CurrentStreak} (Best: {GameState.BestStreak}) | " +
+                   $"Accuracy: {accuracy:F1}%";
     }
 }

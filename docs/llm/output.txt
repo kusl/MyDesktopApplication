@@ -10026,4 +10026,43 @@ File types included:
 real	0m0.805s
 user	0m0.389s
 sys	0m0.607s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh repair-project.sh 
+==============================================
+  Repair Project - Fix All Compiler Errors
+==============================================
+
+[Step 1/8] Killing stuck build processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+  ✓ Processes cleaned
+[Step 2/8] Cleaning build artifacts...
+  ✓ Build artifacts cleaned
+[Step 3/8] Fixing GameState entity...
+  ✓ GameState entity fixed with all required properties
+[Step 4/8] Fixing QuestionType with extension methods...
+  ✓ QuestionType fixed with GetValue and FormatValue
+[Step 5/8] Ensuring Country class exists...
+  ✓ Country class verified
+[Step 6/8] Fixing GameStateRepository...
+  ✓ GameStateRepository fixed
+[Step 7/8] Fixing CountryQuizViewModel...
+  ✓ CountryQuizViewModel fixed
+[Step 8/8] Fixing test files...
+  ✓ All test files fixed with proper using directives
+
+==============================================
+  Building and Verifying
+==============================================
+Restoring packages...
+Restore complete (1.0s)
+
+Build succeeded in 1.1s
+
+Building solution...
+
+real	0m5.855s
+user	0m3.030s
+sys	0m0.803s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;

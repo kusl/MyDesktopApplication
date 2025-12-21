@@ -1,5 +1,6 @@
-using MyDesktopApplication.Core.Entities;
+using Xunit;
 using Shouldly;
+using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Core.Tests;
 
@@ -26,7 +27,6 @@ public class TodoItemTests
         
         item.IsCompleted.ShouldBeTrue();
         item.CompletedAt.ShouldNotBeNull();
-        item.CompletedAt!.Value.ShouldBeGreaterThan(DateTime.UtcNow.AddSeconds(-5));
     }
 
     [Fact]

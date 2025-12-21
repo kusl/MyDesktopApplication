@@ -1,3 +1,5 @@
+using MyDesktopApplication.Core.Entities;
+
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
@@ -15,6 +17,9 @@ public enum QuestionType
     LifeExpectancy = 7
 }
 
+/// <summary>
+/// Extension methods for QuestionType used by CountryQuizViewModel
+/// </summary>
 public static class QuestionTypeExtensions
 {
     public static string GetDisplayName(this QuestionType type) => type switch
@@ -42,4 +47,60 @@ public static class QuestionTypeExtensions
         QuestionType.LifeExpectancy => "Which country has higher life expectancy?",
         _ => "Which country is greater?"
     };
+
+    /// <summary>
+    /// Get the value for a specific question type from a Country object.
+    /// Used by CountryQuizViewModel for comparisons.
+    /// </summary>
+    public static double GetValue(this QuestionType type, Country country) => type switch
+    {
+        QuestionType.Population => country.Population,
+        QuestionType.Area => country.Area,
+        QuestionType.GdpTotal => country.GdpTotal,
+        QuestionType.GdpPerCapita => country.GdpPerCapita,
+        QuestionType.PopulationDensity => country.PopulationDensity,
+        QuestionType.LiteracyRate => country.LiteracyRate,
+        QuestionType.Hdi => country.Hdi,
+        QuestionType.LifeExpectancy => country.LifeExpectancy,
+        _ => 0
+    };
+
+    /// <summary>
+    /// Format a value for display based on question type.
+    /// Used by CountryQuizViewModel for showing results.
+    /// </summary>
+    public static string FormatValue(this QuestionType type, double value) => type switch
+    {
+        QuestionType.Population => FormatLargeNumber(value),
+        QuestionType.Area => $"{value:N0} km²",
+        QuestionType.GdpTotal => FormatCurrency(value),
+        QuestionType.GdpPerCapita => $"${value:N0}",
+        QuestionType.PopulationDensity => $"{value:N1}/km²",
+        QuestionType.LiteracyRate => $"{value:N1}%",
+        QuestionType.Hdi => $"{value:N3}",
+        QuestionType.LifeExpectancy => $"{value:N1} years",
+        _ => value.ToString("N0")
+    };
+
+    private static string FormatLargeNumber(double value)
+    {
+        if (value >= 1_000_000_000)
+            return $"{value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000)
+            return $"{value / 1_000_000:N2}M";
+        if (value >= 1_000)
+            return $"{value / 1_000:N1}K";
+        return value.ToString("N0");
+    }
+
+    private static string FormatCurrency(double value)
+    {
+        if (value >= 1_000_000_000_000)
+            return $"${value / 1_000_000_000_000:N2}T";
+        if (value >= 1_000_000_000)
+            return $"${value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000)
+            return $"${value / 1_000_000:N2}M";
+        return $"${value:N0}";
+    }
 }
