@@ -1,12 +1,40 @@
-[Bb]in/
-[Oo]bj/
+# Build outputs
+bin/
+obj/
+out/
+
+# IDE
 .vs/
 .vscode/
 .idea/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Test results
 TestResults/
-*.db
-*.log
+coverage/
+*.coverage
+*.coveragexml
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Local settings
+appsettings.local.json
 appsettings.*.local.json
+
+# LLM export (optional - uncomment to ignore)
+# docs/llm/
