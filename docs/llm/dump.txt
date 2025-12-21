@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 10:23:15 AM CST 2025
+Generated: Sun Dec 21 10:25:46 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -104,6 +104,7 @@ DIRECTORY STRUCTURE:
 ├── fix-all.sh
 ├── fix-android-build.sh
 ├── fix-android-code.sh
+├── fix-android-font.sh
 ├── fix-android-namespace.sh
 ├── fix-ci-and-add-android.sh
 ├── fix-cpm.sh
@@ -2685,6 +2686,52 @@ echo ""
 echo "=============================================="
 echo "  Done!"
 echo "=============================================="
+
+
+================================================================================
+FILE: fix-android-font.sh
+SIZE: .88 KB
+MODIFIED: 2025-12-21 10:25:02
+================================================================================
+
+#!/bin/bash
+set -e
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "Fixing MainActivity.cs..."
+
+# Fix MainActivity.cs - remove WithInterFont() call
+cat > src/MyDesktopApplication.Android/MainActivity.cs << 'CS'
+using Android.App;
+using Android.Content.PM;
+using Avalonia;
+using Avalonia.Android;
+
+namespace MyDesktopApplication.Android;
+
+[Activity(
+    Label = "MyDesktopApplication",
+    Theme = "@style/MyTheme.NoActionBar",
+    Icon = "@drawable/icon",
+    MainLauncher = true,
+    ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
+public class MainActivity : AvaloniaMainActivity<App>
+{
+    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
+    {
+        return base.CustomizeAppBuilder(builder)
+            .LogToTrace();
+    }
+}
+CS
+
+echo "✓ Fixed MainActivity.cs"
+
+# Test build
+echo ""
+echo "Testing build..."
+./build-android.sh
 
 
 ================================================================================
@@ -7745,7 +7792,7 @@ public class App : Avalonia.Application
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MainActivity.cs
 SIZE: .58 KB
-MODIFIED: 2025-12-21 10:17:25
+MODIFIED: 2025-12-21 10:25:16
 ================================================================================
 
 using Android.App;
@@ -7766,7 +7813,7 @@ public class MainActivity : AvaloniaMainActivity<App>
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
         return base.CustomizeAppBuilder(builder)
-            .WithInterFont();
+            .LogToTrace();
     }
 }
 
@@ -9996,9 +10043,9 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 10:23:15 AM CST 2025
-Total Files Found: 71
-Files Exported: 71
+EXPORT COMPLETED: Sun Dec 21 10:25:47 AM CST 2025
+Total Files Found: 72
+Files Exported: 72
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

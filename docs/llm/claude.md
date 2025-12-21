@@ -2239,3 +2239,41 @@ Build failed with 1 error(s) in 1.5s
 real	0m1.643s
 user	0m1.144s
 sys	0m0.266s
+
+
+
+
+
+
+
+
+
+One more fix - the `WithInterFont()` extension method requires the `Avalonia.Fonts.Inter` package. Let's either add it or remove the call:```bash
+chmod +x fix-android-font.sh
+./fix-android-font.sh
+```
+
+This removes the `WithInterFont()` call and replaces it with `LogToTrace()` which is a standard Avalonia method. The Inter font package isn't needed for the app to work.
+
+
+
+
+and now this 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-android-font.sh 
+Fixing MainActivity.cs...
+✓ Fixed MainActivity.cs
+
+Testing build...
+Building Android project...
+
+Restore complete (0.4s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.6s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml(5,10,5,10): Avalonia error AVLN2000: Unable to resolve type FluentTheme from namespace https://github.com/avaloniaui Line 5, position 10.
+
+Build failed with 1 error(s) in 1.6s
+
+real	0m1.759s
+user	0m1.226s
+sys	0m0.254s

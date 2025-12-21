@@ -1,3 +1,12 @@
+#!/bin/bash
+set -e
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "Fixing MainActivity.cs..."
+
+# Fix MainActivity.cs - remove WithInterFont() call
+cat > src/MyDesktopApplication.Android/MainActivity.cs << 'CS'
 using Android.App;
 using Android.Content.PM;
 using Avalonia;
@@ -19,3 +28,11 @@ public class MainActivity : AvaloniaMainActivity<App>
             .LogToTrace();
     }
 }
+CS
+
+echo "✓ Fixed MainActivity.cs"
+
+# Test build
+echo ""
+echo "Testing build..."
+./build-android.sh
