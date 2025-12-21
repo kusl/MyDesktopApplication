@@ -3424,3 +3424,39 @@ sys	0m0.548s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
 ```
 I have updated the dump.txt and output.txt in the project files. 
+
+
+
+
+To make your prompt concise and efficient for RAG (Retrieval Augmented Generation), you should remove the large code blocks and logs that are already in your `dump.txt` and `output.txt`. Instead, use specific references.
+
+Here is a highly efficient version of that prompt:
+
+---
+
+**Subject: Fixing Build Hang and EF Migration Errors**
+
+I have updated the project with the latest `dump.txt` and `output.txt`.
+
+**Recent Changes:**
+
+* **Code:** Manually added `Priority` property to `TodoItem.cs` and updated `TodoRepository.cs`.
+* **Tests:** Updated `TodoItemTests.cs` to fix the `Id` assertion failure; `dotnet test` now passes (see `output.txt`).
+* **Tools:** Installed `dotnet-ef` globally and added `Microsoft.EntityFrameworkCore.Design` to the Desktop project.
+
+**Current Blockers:**
+
+1. **Infinite Build:** The build is still hanging/taking 40+ minutes (log snippet in `output.txt`). This issue has returned; please check for recursive loops or file locks.
+2. **Migration Error:** When running `dotnet ef migrations add`, I get: *"Unable to resolve service for type DbContextOptions... while attempting to activate AppDbContext."*
+
+**Request:**
+Analyze the updated files to determine why the build is hanging and provide a fix for the `AppDbContext` activation error so I can run the migration.
+
+---
+
+### Why this is better:
+
+1. **Massive Token Savings:** You’ve cut out roughly 2,000–3,000 tokens of redundant code and logs. This directly saves your usage limit.
+2. **Contextual Accuracy:** By telling Claude exactly what changed and that the tools are now installed, it won't waste time suggesting you install `dotnet-ef` again.
+3. **RAG Optimization:** Clear headers like "Recent Changes" and "Current Blockers" help the model's retrieval tool find the relevant sections of your large `dump.txt` and `output.txt` files much faster.
+4. **No Duplicate Work:** Since you told Claude the tests now pass, it won't try to debug code that you've already fixed.
