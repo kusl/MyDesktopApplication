@@ -2428,4 +2428,53 @@ Bump actions/upload-artifact from 4 to 6
 Bump actions/download-artifact from 4 to 7
 
 
+Now I have all the information needed. Let me create the comprehensive update script:```bash
+chmod +x update-github-actions.sh
+./update-github-actions.sh
+```
+
+Then commit and push:
+
+```bash
+git add .github/
+rm update-github-actions.sh
+git commit -m "Update GitHub Actions to latest versions
+
+- actions/checkout: v4 → v6
+- actions/setup-java: v4 → v5  
+- actions/upload-artifact: v4 → v6
+- actions/download-artifact: v4 → v7
+- actions/setup-dotnet: v4 → v5
+- actions/cache: v4 → v5
+- softprops/action-gh-release: v1 → v2
+
+Breaking changes addressed:
+- upload-artifact/download-artifact v6/v7 use Node.js 24
+- Artifacts are now immutable, using pattern + merge-multiple for downloads
+- setup-java v5 requires distribution parameter"
+git push
+```
+
+## Summary of Changes
+
+| Action | Old | New | Breaking Changes Addressed |
+|--------|-----|-----|---------------------------|
+| `actions/checkout` | v4 | v6 | None - drop-in replacement |
+| `actions/setup-dotnet` | v4 | v5 | None - drop-in replacement |
+| `actions/setup-java` | v4 | v5 | Added required `distribution: 'temurin'` parameter |
+| `actions/cache` | v4 | v5 | None - drop-in replacement |
+| `actions/upload-artifact` | v4 | v6 | Now runs on Node.js 24, requires runner v2.327.1+ |
+| `actions/download-artifact` | v4 | v7 | Now runs on Node.js 24, uses `merge-multiple: false` for separate artifact directories |
+| `softprops/action-gh-release` | v1 | v2 | None - drop-in replacement |
+
+## Workflow Behavior
+
+- **ci.yml**: Runs on every push/PR - just builds and tests, no artifacts
+- **build.yml**: Runs on push to main branches - creates a `dev` pre-release with all platform binaries
+- **release.yml**: Runs on git tags (`v*`) - creates stable releases
+
+
+
+
+
 
