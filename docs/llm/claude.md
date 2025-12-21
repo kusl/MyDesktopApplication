@@ -3918,3 +3918,83 @@ Write a single, comprehensive Bash script (`init-project.sh`) that consolidates 
 * Ensure the script is idempotent (can be run multiple times safely).
 * The script must end by performing a full `dotnet build` on the single solution to verify the unified state.
 
+Now I have a comprehensive understanding of the project. Let me create the `init-project.sh` script that:
+1. Unifies the solution to a single SLNX
+2. Replaces FluentAssertions with Shouldly
+3. Uses only free/open-source packages
+4. Creates a robust migration script
+5. Updates GitHub Actions to the latest versions
+6. Cleans up redundant scriptsI've created a comprehensive `init-project.sh` script that accomplishes everything you specified. Here's what it does:
+
+## What the Script Does
+
+### 1. Unified Solution Management
+- Deletes `MyDesktopApplication.Desktop.slnx`
+- Creates a single `MyDesktopApplication.slnx` with all 8 projects
+- Removes **26 redundant shell scripts** (keeps only `export.sh`)
+
+### 2. Free/Open-Source Package Enforcement
+
+| Removed | Reason | Replacement |
+|---------|--------|-------------|
+| FluentAssertions | Commercial license (companies >$1M revenue) | **Shouldly** (BSD-3-Clause) |
+| Moq | SponsorLink controversy | **NSubstitute** (BSD-3-Clause) |
+| Avalonia.ReactiveUI | Deprecated | Not needed (using CommunityToolkit.Mvvm) |
+
+### 3. Source Code Fixes
+- `TodoItem.cs`: Added `CompletedAt` and `Priority` properties
+- `ViewModelBase.cs`: Added `ClearError()` and `SetError()` methods
+- All test files: Converted to Shouldly syntax
+
+### 4. GitHub Actions (Latest Versions)
+
+| Action | Version | Notes |
+|--------|---------|-------|
+| actions/checkout | **v6** | Latest |
+| actions/setup-dotnet | **v5** | Latest |
+| actions/setup-java | **v5** | Added `distribution: 'temurin'` |
+| actions/cache | **v5** | Latest |
+| actions/upload-artifact | **v6** | Node.js 24, immutable artifacts |
+| actions/download-artifact | **v7** | Node.js 24, `merge-multiple: false` |
+| softprops/action-gh-release | **v2** | Latest |
+
+### 5. Workflow Behavior
+- **ci.yml**: Builds & tests on every push/PR (desktop only, no Android workload needed)
+- **build.yml**: Creates `dev` pre-release on push to main branches
+- **release.yml**: Creates stable release on git tags (`v*`)
+
+### 6. Migration Script
+- Robust `migrate.sh` with multiple commands
+- Uses Infrastructure project + Desktop startup project
+
+## To Run
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x init-project.sh
+./init-project.sh
+```
+
+Then commit and push:
+
+```bash
+git add -A
+git commit -m "Unify project: single solution, free packages, latest GitHub Actions
+
+- Consolidated to single MyDesktopApplication.slnx
+- Replaced FluentAssertions with Shouldly (BSD-3-Clause)
+- Replaced Moq with NSubstitute (BSD-3-Clause)
+- Removed deprecated Avalonia.ReactiveUI
+- Updated all GitHub Actions to latest versions
+- Created robust migrate.sh script
+- Removed 26 redundant shell scripts"
+
+git push
+git tag v1.0.3
+git push --tags
+```
+
+
+
+
+
