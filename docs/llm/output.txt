@@ -8172,4 +8172,33 @@ To apply the migration, run:
 real	0m2.158s
 user	0m2.258s
 sys	0m0.382s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet ef database update --project src/MyDesktopApplication.Infrastructure --startup-project src/MyDesktopApplication.Desktop
+Build started...
+Build failed. Use dotnet build to see the errors.
+
+real	0m2.297s
+user	0m2.280s
+sys	0m0.390s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build
+MSBUILD : error MSB1011: Specify which project or solution file to use because this folder contains more than one project or solution file.
+
+real	0m0.101s
+user	0m0.090s
+sys	0m0.025s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh build-desktop.sh 
+Building desktop projects...
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+
+Build failed with 3 error(s) in 0.9s
+
+real	0m1.035s
+user	0m1.171s
+sys	0m0.280s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
