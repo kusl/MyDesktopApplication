@@ -3366,3 +3366,61 @@ user	0m0.064s
 sys	0m0.027s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
 ```
+I have rebooted the computer since but I wanted to show you that the test passes after my latest change 
+```bash
+Build succeeded in 0.7s
+
+real	0m0.821s
+user	0m0.953s
+sys	0m0.213s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.4s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.6s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 227.8s
+
+real	3m47.925s
+user	0m5.805s
+sys	0m2.555s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.67]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+
+Test summary: total: 21, failed: 0, succeeded: 21, skipped: 0, duration: 1.4s
+Build succeeded in 2.9s
+
+real	0m3.093s
+user	0m2.216s
+sys	0m0.548s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+```
+I have updated the dump.txt and output.txt in the project files. 

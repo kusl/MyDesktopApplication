@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 01:06:30 PM CST 2025
+Generated: Sun Dec 21 01:59:38 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -4834,8 +4834,8 @@ public class QuestionTypeTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-SIZE: .92 KB
-MODIFIED: 2025-12-21 12:48:54
+SIZE: .95 KB
+MODIFIED: 2025-12-21 13:57:13
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -4853,7 +4853,8 @@ public class TodoItemTests
         
         todo.Title.ShouldBe("Test");
         todo.IsCompleted.ShouldBeFalse();
-        todo.Id.ShouldBe(Guid.Empty);
+        todo.Priority.ShouldBe(0);
+        todo.Id.ShouldNotBe(Guid.Empty);
     }
     
     [Fact]
@@ -5086,7 +5087,7 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 01:06:31 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 01:59:39 PM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
