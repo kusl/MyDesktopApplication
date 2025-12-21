@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 05:14:43 PM CST 2025
+Generated: Sun Dec 21 05:15:49 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -4103,29 +4103,27 @@ public partial class MainView : UserControl
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/Country.cs
-SIZE: .70 KB
-MODIFIED: 2025-12-21 16:51:26
+SIZE: .65 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Country data model with statistics for the quiz game.
+/// Represents a country with statistical data for the quiz game.
 /// </summary>
 public class Country
 {
-    public required string Name { get; init; }
     public required string Code { get; init; }
-    public required string Continent { get; init; }
-    public required string Flag { get; init; }
-    
-    // Statistics
-    public double Population { get; init; }
+    public required string Name { get; init; }
+    public string? Iso2 { get; init; }
+    public string? Continent { get; init; }
+    public long Population { get; init; }
     public double Area { get; init; }
-    public double GdpTotal { get; init; }
+    public double Gdp { get; init; }
     public double GdpPerCapita { get; init; }
-    public double PopulationDensity { get; init; }
-    public double LiteracyRate { get; init; }
+    public double Density { get; init; }
+    public double Literacy { get; init; }
     public double Hdi { get; init; }
     public double LifeExpectancy { get; init; }
 }
@@ -4152,116 +4150,55 @@ public abstract class EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/GameState.cs
-SIZE: 2.94 KB
-MODIFIED: 2025-12-21 16:51:26
+SIZE: 1.29 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Game state for tracking quiz progress and scores.
-/// Used by CountryQuizViewModel for persistent game data.
+/// Represents the persistent game state for a user.
 /// </summary>
 public class GameState : EntityBase
 {
-    // UserId is NOT required - use default value to avoid CS9035 error
     public string UserId { get; set; } = "default";
-    
-    // Score tracking
-    public int CurrentScore { get; set; }
-    public int HighScore { get; set; }
+    public int Score { get; set; }
     public int CurrentStreak { get; set; }
     public int BestStreak { get; set; }
-    
-    // Statistics used by CountryQuizViewModel
-    public int CorrectAnswers { get; set; }
-    public int TotalQuestions { get; set; }
-    public int TotalCorrect { get; set; }
     public int TotalAnswered { get; set; }
+    public int TotalCorrect { get; set; }
+    public string SelectedQuestionType { get; set; } = "Population";
     
-    // Question type selection
-    public int SelectedQuestionType { get; set; }
-    public DateTime? LastPlayedAt { get; set; }
-
-    /// <summary>
-    /// Accuracy as a percentage (0-100).
-    /// Used by CountryQuizViewModel for stats display.
-    /// </summary>
-    public double Accuracy => TotalQuestions > 0 
-        ? (double)CorrectAnswers / TotalQuestions * 100 
-        : 0;
-
-    /// <summary>
-    /// Alternative accuracy calculation for compatibility.
-    /// </summary>
-    public double AccuracyPercentage => Accuracy;
-
-    /// <summary>
-    /// Record an answer - used by CountryQuizViewModel.
-    /// </summary>
+    // Calculated properties
+    public int TotalQuestions => TotalAnswered;
+    public int CorrectAnswers => TotalCorrect;
+    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered : 0;
+    public double AccuracyPercentage => Accuracy * 100;
+    
     public void RecordAnswer(bool isCorrect)
     {
-        TotalQuestions++;
         TotalAnswered++;
-        
         if (isCorrect)
         {
-            CorrectAnswers++;
             TotalCorrect++;
-            CurrentScore++;
+            Score++;
             CurrentStreak++;
-            
-            if (CurrentScore > HighScore)
-                HighScore = CurrentScore;
-            
             if (CurrentStreak > BestStreak)
                 BestStreak = CurrentStreak;
         }
         else
         {
-            CurrentScore = 0;
             CurrentStreak = 0;
         }
-        
-        LastPlayedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
     }
-
-    /// <summary>
-    /// Record a correct answer - convenience method.
-    /// </summary>
-    public void RecordCorrectAnswer() => RecordAnswer(true);
-
-    /// <summary>
-    /// Record a wrong answer - convenience method.
-    /// </summary>
-    public void RecordWrongAnswer() => RecordAnswer(false);
-
-    /// <summary>
-    /// Reset current game but preserve high scores.
-    /// </summary>
+    
     public void Reset()
     {
-        CurrentScore = 0;
+        Score = 0;
         CurrentStreak = 0;
-        // Keep HighScore, BestStreak, CorrectAnswers, TotalQuestions for stats
-        UpdatedAt = DateTime.UtcNow;
-    }
-
-    /// <summary>
-    /// Full reset including statistics.
-    /// </summary>
-    public void FullReset()
-    {
-        CurrentScore = 0;
-        CurrentStreak = 0;
-        HighScore = 0;
-        BestStreak = 0;
-        CorrectAnswers = 0;
-        TotalQuestions = 0;
-        TotalCorrect = 0;
         TotalAnswered = 0;
-        UpdatedAt = DateTime.UtcNow;
+        TotalCorrect = 0;
+        // Preserve BestStreak and SelectedQuestionType
     }
 }
 
@@ -4418,18 +4355,23 @@ public class TodoItem : EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-SIZE: .26 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: .51 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Core.Interfaces;
 
+/// <summary>
+/// Repository interface for game state persistence.
+/// </summary>
 public interface IGameStateRepository
 {
-    Task<GameState> GetOrCreateAsync(CancellationToken ct = default);
-    Task SaveAsync(GameState state, CancellationToken ct = default);
+    Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default);
+    Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default);
+    Task SaveAsync(GameState gameState, CancellationToken ct = default);
+    Task ResetAsync(string userId, CancellationToken ct = default);
 }
 
 
@@ -5484,8 +5426,8 @@ public partial class MainWindow : Window
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-SIZE: 2.00 KB
-MODIFIED: 2025-12-21 16:41:27
+SIZE: 1.42 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -5494,7 +5436,7 @@ using MyDesktopApplication.Core.Entities;
 namespace MyDesktopApplication.Infrastructure.Data;
 
 /// <summary>
-/// Application database context for Entity Framework Core
+/// Entity Framework Core database context for the application.
 /// </summary>
 public class AppDbContext : DbContext
 {
@@ -5502,9 +5444,7 @@ public class AppDbContext : DbContext
     {
     }
 
-    /// <summary>
-    /// Design-time factory constructor for EF migrations
-    /// </summary>
+    // Required for design-time migrations
     public AppDbContext() : base(new DbContextOptionsBuilder<AppDbContext>()
         .UseSqlite("Data Source=app.db")
         .Options)
@@ -5518,30 +5458,21 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // TodoItem configuration
         modelBuilder.Entity<TodoItem>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.Property(e => e.Priority).HasDefaultValue(0);
             entity.HasIndex(e => e.IsCompleted);
             entity.HasIndex(e => e.DueDate);
         });
 
-        // GameState configuration
         modelBuilder.Entity<GameState>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.UserId).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.CurrentScore).HasDefaultValue(0);
-            entity.Property(e => e.HighScore).HasDefaultValue(0);
-            entity.Property(e => e.CurrentStreak).HasDefaultValue(0);
-            entity.Property(e => e.BestStreak).HasDefaultValue(0);
-            entity.Property(e => e.TotalCorrect).HasDefaultValue(0);
-            entity.Property(e => e.TotalAnswered).HasDefaultValue(0);
-            entity.Property(e => e.SelectedQuestionType).HasDefaultValue(0);
             entity.HasIndex(e => e.UserId).IsUnique();
+            entity.Property(e => e.SelectedQuestionType).HasMaxLength(50);
         });
     }
 }
@@ -5657,8 +5588,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-SIZE: 1.73 KB
-MODIFIED: 2025-12-21 16:51:26
+SIZE: 2.59 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -5669,54 +5600,82 @@ using MyDesktopApplication.Infrastructure.Data;
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
 /// <summary>
-/// Repository for GameState persistence
+/// Repository for persisting game state to the database.
 /// </summary>
-public class GameStateRepository : Repository<GameState>, IGameStateRepository
+public class GameStateRepository : IGameStateRepository
 {
-    public GameStateRepository(AppDbContext context) : base(context)
+    private readonly AppDbContext _context;
+
+    public GameStateRepository(AppDbContext context)
     {
+        _context = context;
     }
 
     public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
     {
-        return await Context.GameStates
+        return await _context.GameStates
             .AsNoTracking()
             .FirstOrDefaultAsync(g => g.UserId == userId, ct);
     }
 
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
-        var existing = await Context.GameStates
+        var existing = await _context.GameStates
             .FirstOrDefaultAsync(g => g.UserId == userId, ct);
-            
+        
         if (existing != null)
             return existing;
 
-        // Create new - UserId now has default value so no CS9035 error
         var newState = new GameState
         {
             UserId = userId,
-            CurrentScore = 0,
-            HighScore = 0,
+            Score = 0,
             CurrentStreak = 0,
             BestStreak = 0,
-            CorrectAnswers = 0,
-            TotalQuestions = 0,
-            TotalCorrect = 0,
             TotalAnswered = 0,
-            SelectedQuestionType = 0
+            TotalCorrect = 0,
+            SelectedQuestionType = "Population"
         };
-
-        await Context.GameStates.AddAsync(newState, ct);
-        await Context.SaveChangesAsync(ct);
         
+        _context.GameStates.Add(newState);
+        await _context.SaveChangesAsync(ct);
         return newState;
     }
 
-    public async Task UpdateGameStateAsync(GameState gameState, CancellationToken ct = default)
+    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
     {
-        Context.GameStates.Update(gameState);
-        await Context.SaveChangesAsync(ct);
+        var existing = await _context.GameStates
+            .FirstOrDefaultAsync(g => g.UserId == gameState.UserId, ct);
+        
+        if (existing == null)
+        {
+            _context.GameStates.Add(gameState);
+        }
+        else
+        {
+            existing.Score = gameState.Score;
+            existing.CurrentStreak = gameState.CurrentStreak;
+            existing.BestStreak = gameState.BestStreak;
+            existing.TotalAnswered = gameState.TotalAnswered;
+            existing.TotalCorrect = gameState.TotalCorrect;
+            existing.SelectedQuestionType = gameState.SelectedQuestionType;
+            existing.UpdatedAt = DateTime.UtcNow;
+        }
+        
+        await _context.SaveChangesAsync(ct);
+    }
+
+    public async Task ResetAsync(string userId, CancellationToken ct = default)
+    {
+        var state = await _context.GameStates
+            .FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        
+        if (state != null)
+        {
+            state.Reset();
+            state.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync(ct);
+        }
     }
 }
 
@@ -5828,8 +5787,8 @@ public class TodoRepository : Repository<TodoItem>, ITodoRepository
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/Data/CountryData.cs
-SIZE: 8.57 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: 16.61 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -5837,112 +5796,95 @@ using MyDesktopApplication.Core.Entities;
 namespace MyDesktopApplication.Shared.Data;
 
 /// <summary>
-/// Static country data from World Bank, UN, IMF, and UNDP (2023/2024 estimates).
+/// Static country data for the quiz game.
+/// Data sources: World Bank, UN, IMF, UNDP (2023/2024 estimates).
 /// </summary>
 public static class CountryData
 {
-    private static Country C(string name, string iso2, string flag, string cont,
-        long? area, long? pop, long? gdp, int? gdpPc, double? density,
-        double? literacy, double? hdi, double? lifeExp) => new()
+    public static IReadOnlyList<Country> Countries { get; } = new List<Country>
     {
-        Name = name, Iso2 = iso2, Flag = flag, Continent = cont,
-        Area = area, Population = pop, Gdp = gdp, GdpPerCapita = gdpPc,
-        Density = density, Literacy = literacy, Hdi = hdi, LifeExpectancy = lifeExp
-    };
-
-    public static IReadOnlyList<Country> Countries { get; } = new[]
-    {
-        // AFRICA
-        C("Algeria","DZ","🇩🇿","Africa",2381741,45400000,239900,5284,19.1,81.4,0.745,76.4),
-        C("Angola","AO","🇦🇴","Africa",1246700,36000000,92124,2560,28.9,72.0,0.595,62.0),
-        C("Botswana","BW","🇧🇼","Africa",581730,2600000,19396,7460,4.5,88.9,0.708,61.1),
-        C("Cameroon","CM","🇨🇲","Africa",475442,28600000,48455,1694,60.2,77.1,0.587,61.0),
-        C("DR Congo","CD","🇨🇩","Africa",2344858,102300000,66380,649,43.6,80.0,0.479,60.7),
-        C("Egypt","EG","🇪🇬","Africa",1001450,105000000,387086,3686,104.9,73.1,0.728,70.2),
-        C("Ethiopia","ET","🇪🇹","Africa",1104300,126500000,163698,1294,114.6,51.8,0.492,65.0),
-        C("Ghana","GH","🇬🇭","Africa",238533,34100000,76370,2240,143.0,79.0,0.602,63.8),
-        C("Kenya","KE","🇰🇪","Africa",580367,55100000,113420,2058,95.0,82.6,0.575,61.4),
-        C("Morocco","MA","🇲🇦","Africa",446550,37500000,141109,3764,84.0,75.9,0.698,74.0),
-        C("Nigeria","NG","🇳🇬","Africa",923768,223800000,472620,2112,242.3,62.0,0.548,52.7),
-        C("South Africa","ZA","🇿🇦","Africa",1221037,60400000,399015,6607,49.5,95.0,0.713,62.3),
-        C("Tanzania","TZ","🇹🇿","Africa",947300,65500000,79162,1209,69.2,78.1,0.532,66.2),
-        C("Tunisia","TN","🇹🇳","Africa",163610,12400000,46840,3778,75.8,79.7,0.732,73.8),
-        C("Uganda","UG","🇺🇬","Africa",241038,48600000,45561,937,201.6,79.0,0.525,62.7),
+        // Africa
+        new() { Code = "NGA", Name = "Nigeria", Iso2 = "NG", Continent = "Africa", Population = 223800000, Area = 923769, Gdp = 477000000000, GdpPerCapita = 2131, Density = 242, Literacy = 62, Hdi = 0.539, LifeExpectancy = 53.9 },
+        new() { Code = "ETH", Name = "Ethiopia", Iso2 = "ET", Continent = "Africa", Population = 126500000, Area = 1104300, Gdp = 156000000000, GdpPerCapita = 1233, Density = 115, Literacy = 52, Hdi = 0.498, LifeExpectancy = 67.8 },
+        new() { Code = "EGY", Name = "Egypt", Iso2 = "EG", Continent = "Africa", Population = 105000000, Area = 1002450, Gdp = 476700000000, GdpPerCapita = 4538, Density = 105, Literacy = 71, Hdi = 0.731, LifeExpectancy = 72.1 },
+        new() { Code = "ZAF", Name = "South Africa", Iso2 = "ZA", Continent = "Africa", Population = 60000000, Area = 1219090, Gdp = 405000000000, GdpPerCapita = 6750, Density = 49, Literacy = 95, Hdi = 0.713, LifeExpectancy = 65.3 },
+        new() { Code = "KEN", Name = "Kenya", Iso2 = "KE", Continent = "Africa", Population = 54000000, Area = 580367, Gdp = 113400000000, GdpPerCapita = 2100, Density = 93, Literacy = 82, Hdi = 0.575, LifeExpectancy = 67.5 },
+        new() { Code = "MAR", Name = "Morocco", Iso2 = "MA", Continent = "Africa", Population = 37500000, Area = 446550, Gdp = 142900000000, GdpPerCapita = 3810, Density = 84, Literacy = 74, Hdi = 0.683, LifeExpectancy = 77.4 },
+        new() { Code = "GHA", Name = "Ghana", Iso2 = "GH", Continent = "Africa", Population = 33500000, Area = 238535, Gdp = 77590000000, GdpPerCapita = 2316, Density = 140, Literacy = 79, Hdi = 0.632, LifeExpectancy = 64.9 },
         
-        // ASIA
-        C("Bangladesh","BD","🇧🇩","Asia",147570,172000000,460201,2676,1166.0,74.9,0.670,72.4),
-        C("China","CN","🇨🇳","Asia",9596960,1412000000,17963171,12720,147.0,97.5,0.788,78.2),
-        C("India","IN","🇮🇳","Asia",3287263,1428000000,3737000,2617,434.0,74.4,0.644,67.2),
-        C("Indonesia","ID","🇮🇩","Asia",1904569,277500000,1417387,5108,145.7,96.0,0.713,67.6),
-        C("Iran","IR","🇮🇷","Asia",1648195,89200000,388000,4351,54.1,88.7,0.774,73.9),
-        C("Iraq","IQ","🇮🇶","Asia",438317,44500000,267900,6021,101.5,85.6,0.686,70.4),
-        C("Israel","IL","🇮🇱","Asia",20770,9750000,525000,53853,470.0,97.8,0.915,82.6),
-        C("Japan","JP","🇯🇵","Asia",377975,124500000,4230862,33960,329.6,99.0,0.920,84.8),
-        C("Malaysia","MY","🇲🇾","Asia",330803,34300000,430895,12563,103.7,95.9,0.807,74.9),
-        C("Pakistan","PK","🇵🇰","Asia",881912,240500000,376493,1565,272.8,58.0,0.544,66.1),
-        C("Philippines","PH","🇵🇭","Asia",300000,117300000,435667,3715,391.0,96.3,0.710,69.3),
-        C("Saudi Arabia","SA","🇸🇦","Asia",2149690,36400000,1069437,29386,16.9,97.6,0.875,76.9),
-        C("Singapore","SG","🇸🇬","Asia",733,5920000,515548,87088,8075.0,97.5,0.949,84.1),
-        C("South Korea","KR","🇰🇷","Asia",100210,51780000,1721909,33268,517.0,99.0,0.929,83.7),
-        C("Thailand","TH","🇹🇭","Asia",513120,71800000,514945,7172,140.0,94.1,0.803,79.3),
-        C("Turkey","TR","🇹🇷","Asia",783562,85800000,1029303,12001,109.4,96.7,0.838,76.0),
-        C("UAE","AE","🇦🇪","Asia",83600,9440000,507532,53757,112.9,98.0,0.937,78.7),
-        C("Vietnam","VN","🇻🇳","Asia",331212,99500000,449900,4522,300.5,95.8,0.726,73.6),
+        // Asia
+        new() { Code = "CHN", Name = "China", Iso2 = "CN", Continent = "Asia", Population = 1411750000, Area = 9596961, Gdp = 17963000000000, GdpPerCapita = 12720, Density = 147, Literacy = 97, Hdi = 0.768, LifeExpectancy = 78.2 },
+        new() { Code = "IND", Name = "India", Iso2 = "IN", Continent = "Asia", Population = 1428630000, Area = 3287263, Gdp = 3730000000000, GdpPerCapita = 2612, Density = 435, Literacy = 77, Hdi = 0.644, LifeExpectancy = 70.4 },
+        new() { Code = "IDN", Name = "Indonesia", Iso2 = "ID", Continent = "Asia", Population = 277500000, Area = 1904569, Gdp = 1319000000000, GdpPerCapita = 4752, Density = 146, Literacy = 96, Hdi = 0.713, LifeExpectancy = 72.3 },
+        new() { Code = "PAK", Name = "Pakistan", Iso2 = "PK", Continent = "Asia", Population = 235800000, Area = 881913, Gdp = 376500000000, GdpPerCapita = 1597, Density = 267, Literacy = 59, Hdi = 0.544, LifeExpectancy = 67.3 },
+        new() { Code = "BGD", Name = "Bangladesh", Iso2 = "BD", Continent = "Asia", Population = 172000000, Area = 147570, Gdp = 460200000000, GdpPerCapita = 2676, Density = 1166, Literacy = 75, Hdi = 0.661, LifeExpectancy = 73.4 },
+        new() { Code = "JPN", Name = "Japan", Iso2 = "JP", Continent = "Asia", Population = 124500000, Area = 377975, Gdp = 4231000000000, GdpPerCapita = 33973, Density = 329, Literacy = 99, Hdi = 0.920, LifeExpectancy = 84.6 },
+        new() { Code = "PHL", Name = "Philippines", Iso2 = "PH", Continent = "Asia", Population = 115600000, Area = 300000, Gdp = 404300000000, GdpPerCapita = 3498, Density = 385, Literacy = 98, Hdi = 0.699, LifeExpectancy = 72.1 },
+        new() { Code = "VNM", Name = "Vietnam", Iso2 = "VN", Continent = "Asia", Population = 100000000, Area = 331212, Gdp = 449000000000, GdpPerCapita = 4490, Density = 302, Literacy = 96, Hdi = 0.726, LifeExpectancy = 75.8 },
+        new() { Code = "TUR", Name = "Turkey", Iso2 = "TR", Continent = "Asia", Population = 85300000, Area = 783356, Gdp = 905500000000, GdpPerCapita = 10618, Density = 109, Literacy = 97, Hdi = 0.838, LifeExpectancy = 78.6 },
+        new() { Code = "IRN", Name = "Iran", Iso2 = "IR", Continent = "Asia", Population = 87900000, Area = 1648195, Gdp = 388500000000, GdpPerCapita = 4420, Density = 53, Literacy = 88, Hdi = 0.774, LifeExpectancy = 77.3 },
+        new() { Code = "THA", Name = "Thailand", Iso2 = "TH", Continent = "Asia", Population = 71800000, Area = 513120, Gdp = 495300000000, GdpPerCapita = 6900, Density = 140, Literacy = 94, Hdi = 0.800, LifeExpectancy = 79.3 },
+        new() { Code = "MMR", Name = "Myanmar", Iso2 = "MM", Continent = "Asia", Population = 54200000, Area = 676578, Gdp = 59400000000, GdpPerCapita = 1096, Density = 80, Literacy = 90, Hdi = 0.585, LifeExpectancy = 69.1 },
+        new() { Code = "KOR", Name = "South Korea", Iso2 = "KR", Continent = "Asia", Population = 51700000, Area = 100210, Gdp = 1665000000000, GdpPerCapita = 32220, Density = 516, Literacy = 99, Hdi = 0.925, LifeExpectancy = 83.7 },
+        new() { Code = "MYS", Name = "Malaysia", Iso2 = "MY", Continent = "Asia", Population = 33940000, Area = 330803, Gdp = 407000000000, GdpPerCapita = 11993, Density = 103, Literacy = 95, Hdi = 0.803, LifeExpectancy = 76.9 },
+        new() { Code = "SAU", Name = "Saudi Arabia", Iso2 = "SA", Continent = "Asia", Population = 36400000, Area = 2149690, Gdp = 1069000000000, GdpPerCapita = 29369, Density = 17, Literacy = 98, Hdi = 0.875, LifeExpectancy = 76.9 },
+        new() { Code = "NPL", Name = "Nepal", Iso2 = "NP", Continent = "Asia", Population = 30900000, Area = 147181, Gdp = 40830000000, GdpPerCapita = 1321, Density = 210, Literacy = 68, Hdi = 0.602, LifeExpectancy = 71.7 },
+        new() { Code = "ARE", Name = "United Arab Emirates", Iso2 = "AE", Continent = "Asia", Population = 9440000, Area = 83600, Gdp = 498000000000, GdpPerCapita = 52757, Density = 113, Literacy = 98, Hdi = 0.911, LifeExpectancy = 78.7 },
+        new() { Code = "ISR", Name = "Israel", Iso2 = "IL", Continent = "Asia", Population = 9730000, Area = 20770, Gdp = 525000000000, GdpPerCapita = 53969, Density = 468, Literacy = 98, Hdi = 0.915, LifeExpectancy = 83.5 },
+        new() { Code = "SGP", Name = "Singapore", Iso2 = "SG", Continent = "Asia", Population = 5450000, Area = 733, Gdp = 501400000000, GdpPerCapita = 91990, Density = 7438, Literacy = 97, Hdi = 0.939, LifeExpectancy = 84.1 },
         
-        // EUROPE
-        C("Austria","AT","🇦🇹","Europe",83879,9100000,515795,56681,108.5,99.0,0.926,81.6),
-        C("Belgium","BE","🇧🇪","Europe",30528,11700000,624248,53378,383.4,99.0,0.942,81.9),
-        C("Czech Republic","CZ","🇨🇿","Europe",78867,10500000,330483,31474,133.1,99.0,0.895,79.4),
-        C("Denmark","DK","🇩🇰","Europe",43094,5900000,404198,68508,137.0,99.0,0.952,81.4),
-        C("Finland","FI","🇫🇮","Europe",338424,5500000,305689,55580,16.3,99.0,0.942,82.0),
-        C("France","FR","🇫🇷","Europe",643801,68000000,2923489,43000,105.7,99.0,0.910,82.5),
-        C("Germany","DE","🇩🇪","Europe",357022,84400000,4456081,52824,236.4,99.0,0.950,81.7),
-        C("Greece","GR","🇬🇷","Europe",131957,10400000,218015,20963,78.8,97.9,0.893,80.1),
-        C("Hungary","HU","🇭🇺","Europe",93028,9600000,188505,19636,103.2,99.4,0.851,74.5),
-        C("Ireland","IE","🇮🇪","Europe",70273,5200000,533680,102618,74.0,99.0,0.950,82.0),
-        C("Italy","IT","🇮🇹","Europe",301340,59000000,2186082,37046,195.8,99.2,0.906,83.5),
-        C("Netherlands","NL","🇳🇱","Europe",41543,17700000,1092748,61725,426.1,99.0,0.946,82.0),
-        C("Norway","NO","🇳🇴","Europe",323802,5500000,579267,105321,17.0,99.0,0.966,83.2),
-        C("Poland","PL","🇵🇱","Europe",312685,37600000,811229,21578,120.3,99.8,0.881,76.5),
-        C("Portugal","PT","🇵🇹","Europe",92212,10400000,287080,27608,112.8,96.1,0.874,81.1),
-        C("Romania","RO","🇷🇴","Europe",238391,19000000,348902,18370,79.7,99.1,0.827,74.2),
-        C("Russia","RU","🇷🇺","Europe",17098242,144000000,2062649,14323,8.4,99.7,0.821,69.4),
-        C("Spain","ES","🇪🇸","Europe",505990,47800000,1580690,33072,94.5,98.6,0.911,83.3),
-        C("Sweden","SE","🇸🇪","Europe",450295,10500000,593267,56497,23.3,99.0,0.952,83.0),
-        C("Switzerland","CH","🇨🇭","Europe",41284,8800000,884940,100578,213.1,99.0,0.967,84.0),
-        C("Ukraine","UA","🇺🇦","Europe",603550,37000000,160500,4339,61.3,99.8,0.773,69.0),
-        C("United Kingdom","GB","🇬🇧","Europe",242495,67500000,3332059,49384,278.4,99.0,0.940,80.7),
+        // Europe
+        new() { Code = "RUS", Name = "Russia", Iso2 = "RU", Continent = "Europe", Population = 144400000, Area = 17098242, Gdp = 2240000000000, GdpPerCapita = 15512, Density = 8, Literacy = 100, Hdi = 0.822, LifeExpectancy = 73.2 },
+        new() { Code = "DEU", Name = "Germany", Iso2 = "DE", Continent = "Europe", Population = 83200000, Area = 357022, Gdp = 4259000000000, GdpPerCapita = 51203, Density = 233, Literacy = 99, Hdi = 0.942, LifeExpectancy = 81.9 },
+        new() { Code = "GBR", Name = "United Kingdom", Iso2 = "GB", Continent = "Europe", Population = 67000000, Area = 242495, Gdp = 3070000000000, GdpPerCapita = 45820, Density = 276, Literacy = 99, Hdi = 0.929, LifeExpectancy = 82.0 },
+        new() { Code = "FRA", Name = "France", Iso2 = "FR", Continent = "Europe", Population = 67750000, Area = 643801, Gdp = 2937000000000, GdpPerCapita = 43343, Density = 105, Literacy = 99, Hdi = 0.903, LifeExpectancy = 83.0 },
+        new() { Code = "ITA", Name = "Italy", Iso2 = "IT", Continent = "Europe", Population = 58900000, Area = 301340, Gdp = 2107000000000, GdpPerCapita = 35776, Density = 196, Literacy = 99, Hdi = 0.895, LifeExpectancy = 84.0 },
+        new() { Code = "ESP", Name = "Spain", Iso2 = "ES", Continent = "Europe", Population = 47420000, Area = 505990, Gdp = 1492000000000, GdpPerCapita = 31468, Density = 94, Literacy = 98, Hdi = 0.905, LifeExpectancy = 84.4 },
+        new() { Code = "UKR", Name = "Ukraine", Iso2 = "UA", Continent = "Europe", Population = 37000000, Area = 603550, Gdp = 160500000000, GdpPerCapita = 4338, Density = 61, Literacy = 100, Hdi = 0.773, LifeExpectancy = 73.6 },
+        new() { Code = "POL", Name = "Poland", Iso2 = "PL", Continent = "Europe", Population = 37700000, Area = 312696, Gdp = 688200000000, GdpPerCapita = 18258, Density = 121, Literacy = 99, Hdi = 0.876, LifeExpectancy = 78.8 },
+        new() { Code = "ROU", Name = "Romania", Iso2 = "RO", Continent = "Europe", Population = 19050000, Area = 238397, Gdp = 312800000000, GdpPerCapita = 16422, Density = 80, Literacy = 99, Hdi = 0.821, LifeExpectancy = 76.6 },
+        new() { Code = "NLD", Name = "Netherlands", Iso2 = "NL", Continent = "Europe", Population = 17590000, Area = 41543, Gdp = 1009000000000, GdpPerCapita = 57371, Density = 423, Literacy = 99, Hdi = 0.946, LifeExpectancy = 82.8 },
+        new() { Code = "BEL", Name = "Belgium", Iso2 = "BE", Continent = "Europe", Population = 11590000, Area = 30528, Gdp = 578200000000, GdpPerCapita = 49887, Density = 380, Literacy = 99, Hdi = 0.937, LifeExpectancy = 82.2 },
+        new() { Code = "GRC", Name = "Greece", Iso2 = "GR", Continent = "Europe", Population = 10360000, Area = 131957, Gdp = 218000000000, GdpPerCapita = 21044, Density = 79, Literacy = 98, Hdi = 0.887, LifeExpectancy = 82.2 },
+        new() { Code = "CZE", Name = "Czechia", Iso2 = "CZ", Continent = "Europe", Population = 10510000, Area = 78867, Gdp = 290900000000, GdpPerCapita = 27683, Density = 133, Literacy = 99, Hdi = 0.889, LifeExpectancy = 79.9 },
+        new() { Code = "PRT", Name = "Portugal", Iso2 = "PT", Continent = "Europe", Population = 10330000, Area = 92212, Gdp = 255850000000, GdpPerCapita = 24775, Density = 112, Literacy = 96, Hdi = 0.866, LifeExpectancy = 82.7 },
+        new() { Code = "SWE", Name = "Sweden", Iso2 = "SE", Continent = "Europe", Population = 10540000, Area = 450295, Gdp = 585940000000, GdpPerCapita = 55603, Density = 23, Literacy = 99, Hdi = 0.947, LifeExpectancy = 83.3 },
+        new() { Code = "HUN", Name = "Hungary", Iso2 = "HU", Continent = "Europe", Population = 9600000, Area = 93028, Gdp = 188500000000, GdpPerCapita = 19635, Density = 103, Literacy = 99, Hdi = 0.846, LifeExpectancy = 77.0 },
+        new() { Code = "AUT", Name = "Austria", Iso2 = "AT", Continent = "Europe", Population = 9040000, Area = 83871, Gdp = 471400000000, GdpPerCapita = 52152, Density = 108, Literacy = 99, Hdi = 0.916, LifeExpectancy = 82.0 },
+        new() { Code = "CHE", Name = "Switzerland", Iso2 = "CH", Continent = "Europe", Population = 8770000, Area = 41285, Gdp = 884940000000, GdpPerCapita = 100916, Density = 212, Literacy = 99, Hdi = 0.962, LifeExpectancy = 84.4 },
+        new() { Code = "BGR", Name = "Bulgaria", Iso2 = "BG", Continent = "Europe", Population = 6870000, Area = 110879, Gdp = 89040000000, GdpPerCapita = 12960, Density = 62, Literacy = 98, Hdi = 0.795, LifeExpectancy = 75.1 },
+        new() { Code = "DNK", Name = "Denmark", Iso2 = "DK", Continent = "Europe", Population = 5910000, Area = 43094, Gdp = 395400000000, GdpPerCapita = 66914, Density = 137, Literacy = 99, Hdi = 0.948, LifeExpectancy = 81.6 },
+        new() { Code = "FIN", Name = "Finland", Iso2 = "FI", Continent = "Europe", Population = 5540000, Area = 338145, Gdp = 300190000000, GdpPerCapita = 54188, Density = 16, Literacy = 99, Hdi = 0.940, LifeExpectancy = 82.2 },
+        new() { Code = "NOR", Name = "Norway", Iso2 = "NO", Continent = "Europe", Population = 5470000, Area = 323802, Gdp = 485510000000, GdpPerCapita = 88783, Density = 17, Literacy = 99, Hdi = 0.961, LifeExpectancy = 83.2 },
+        new() { Code = "IRL", Name = "Ireland", Iso2 = "IE", Continent = "Europe", Population = 5130000, Area = 70273, Gdp = 504180000000, GdpPerCapita = 98268, Density = 73, Literacy = 99, Hdi = 0.945, LifeExpectancy = 82.8 },
         
-        // NORTH AMERICA
-        C("Canada","CA","🇨🇦","N. America",9984670,40100000,2139840,53385,4.0,99.0,0.935,82.7),
-        C("Costa Rica","CR","🇨🇷","N. America",51100,5200000,68379,13150,101.8,97.9,0.806,77.0),
-        C("Cuba","CU","🇨🇺","N. America",109884,11100000,107352,9671,101.0,99.8,0.783,73.7),
-        C("Dominican Rep.","DO","🇩🇴","N. America",48671,11300000,113642,10057,232.2,95.0,0.768,72.6),
-        C("Guatemala","GT","🇬🇹","N. America",108889,17600000,95003,5398,161.7,83.3,0.627,69.2),
-        C("Haiti","HT","🇭🇹","N. America",27750,11700000,21178,1810,421.6,61.7,0.552,64.0),
-        C("Honduras","HN","🇭🇳","N. America",112492,10400000,31717,3050,92.5,87.2,0.624,70.1),
-        C("Jamaica","JM","🇯🇲","N. America",10991,2800000,17099,6107,254.8,88.7,0.709,70.5),
-        C("Mexico","MX","🇲🇽","N. America",1964375,128900000,1811468,14056,65.6,95.4,0.781,75.0),
-        C("Panama","PA","🇵🇦","N. America",75420,4400000,76523,17391,58.3,95.7,0.820,76.2),
-        C("USA","US","🇺🇸","N. America",9833517,335000000,27360935,81695,34.1,99.0,0.927,77.5),
+        // North America
+        new() { Code = "USA", Name = "United States", Iso2 = "US", Continent = "North America", Population = 331900000, Area = 9833517, Gdp = 27360000000000, GdpPerCapita = 82422, Density = 34, Literacy = 99, Hdi = 0.921, LifeExpectancy = 79.1 },
+        new() { Code = "MEX", Name = "Mexico", Iso2 = "MX", Continent = "North America", Population = 128900000, Area = 1964375, Gdp = 1811000000000, GdpPerCapita = 14050, Density = 66, Literacy = 95, Hdi = 0.758, LifeExpectancy = 75.0 },
+        new() { Code = "CAN", Name = "Canada", Iso2 = "CA", Continent = "North America", Population = 40100000, Area = 9984670, Gdp = 2139000000000, GdpPerCapita = 53340, Density = 4, Literacy = 99, Hdi = 0.936, LifeExpectancy = 82.7 },
+        new() { Code = "GTM", Name = "Guatemala", Iso2 = "GT", Continent = "North America", Population = 18090000, Area = 108889, Gdp = 95000000000, GdpPerCapita = 5251, Density = 166, Literacy = 83, Hdi = 0.627, LifeExpectancy = 74.3 },
+        new() { Code = "CUB", Name = "Cuba", Iso2 = "CU", Continent = "North America", Population = 11100000, Area = 109884, Gdp = 107400000000, GdpPerCapita = 9676, Density = 101, Literacy = 100, Hdi = 0.764, LifeExpectancy = 79.2 },
+        new() { Code = "DOM", Name = "Dominican Republic", Iso2 = "DO", Continent = "North America", Population = 11230000, Area = 48671, Gdp = 113640000000, GdpPerCapita = 10119, Density = 231, Literacy = 95, Hdi = 0.767, LifeExpectancy = 74.1 },
+        new() { Code = "HND", Name = "Honduras", Iso2 = "HN", Continent = "North America", Population = 10280000, Area = 112492, Gdp = 31720000000, GdpPerCapita = 3086, Density = 91, Literacy = 89, Hdi = 0.621, LifeExpectancy = 75.3 },
+        new() { Code = "HTI", Name = "Haiti", Iso2 = "HT", Continent = "North America", Population = 11720000, Area = 27750, Gdp = 19710000000, GdpPerCapita = 1682, Density = 422, Literacy = 62, Hdi = 0.535, LifeExpectancy = 64.9 },
         
-        // SOUTH AMERICA
-        C("Argentina","AR","🇦🇷","S. America",2780400,46300000,641131,13846,16.7,99.0,0.849,76.6),
-        C("Bolivia","BO","🇧🇴","S. America",1098581,12400000,44315,3574,11.3,94.5,0.692,63.6),
-        C("Brazil","BR","🇧🇷","S. America",8515767,216400000,2173668,10047,25.4,93.5,0.760,72.8),
-        C("Chile","CL","🇨🇱","S. America",756102,19500000,335533,17206,25.8,97.0,0.860,78.9),
-        C("Colombia","CO","🇨🇴","S. America",1138910,52000000,363835,6997,45.7,95.6,0.758,72.8),
-        C("Ecuador","EC","🇪🇨","S. America",283561,18000000,118845,6603,63.5,94.5,0.765,74.3),
-        C("Paraguay","PY","🇵🇾","S. America",406752,6800000,42956,6317,16.7,94.7,0.717,70.3),
-        C("Peru","PE","🇵🇪","S. America",1285216,34000000,267603,7869,26.4,94.5,0.762,73.7),
-        C("Uruguay","UY","🇺🇾","S. America",176215,3400000,77241,22718,19.3,98.8,0.830,77.7),
-        C("Venezuela","VE","🇻🇪","S. America",916445,28400000,92200,3246,31.0,97.1,0.691,72.1),
+        // South America
+        new() { Code = "BRA", Name = "Brazil", Iso2 = "BR", Continent = "South America", Population = 214300000, Area = 8515767, Gdp = 2126000000000, GdpPerCapita = 9921, Density = 25, Literacy = 93, Hdi = 0.760, LifeExpectancy = 76.4 },
+        new() { Code = "COL", Name = "Colombia", Iso2 = "CO", Continent = "South America", Population = 51870000, Area = 1141748, Gdp = 363500000000, GdpPerCapita = 7007, Density = 45, Literacy = 95, Hdi = 0.752, LifeExpectancy = 77.3 },
+        new() { Code = "ARG", Name = "Argentina", Iso2 = "AR", Continent = "South America", Population = 45810000, Area = 2780400, Gdp = 641100000000, GdpPerCapita = 13996, Density = 16, Literacy = 99, Hdi = 0.842, LifeExpectancy = 77.1 },
+        new() { Code = "PER", Name = "Peru", Iso2 = "PE", Continent = "South America", Population = 34050000, Area = 1285216, Gdp = 267600000000, GdpPerCapita = 7859, Density = 26, Literacy = 95, Hdi = 0.762, LifeExpectancy = 77.4 },
+        new() { Code = "VEN", Name = "Venezuela", Iso2 = "VE", Continent = "South America", Population = 28400000, Area = 916445, Gdp = 92100000000, GdpPerCapita = 3243, Density = 31, Literacy = 97, Hdi = 0.691, LifeExpectancy = 72.1 },
+        new() { Code = "CHL", Name = "Chile", Iso2 = "CL", Continent = "South America", Population = 19490000, Area = 756102, Gdp = 335500000000, GdpPerCapita = 17218, Density = 26, Literacy = 97, Hdi = 0.855, LifeExpectancy = 80.7 },
+        new() { Code = "ECU", Name = "Ecuador", Iso2 = "EC", Continent = "South America", Population = 18190000, Area = 256369, Gdp = 118850000000, GdpPerCapita = 6534, Density = 71, Literacy = 94, Hdi = 0.765, LifeExpectancy = 77.9 },
+        new() { Code = "BOL", Name = "Bolivia", Iso2 = "BO", Continent = "South America", Population = 12080000, Area = 1098581, Gdp = 44010000000, GdpPerCapita = 3644, Density = 11, Literacy = 94, Hdi = 0.692, LifeExpectancy = 72.1 },
+        new() { Code = "PRY", Name = "Paraguay", Iso2 = "PY", Continent = "South America", Population = 6780000, Area = 406752, Gdp = 42000000000, GdpPerCapita = 6195, Density = 17, Literacy = 95, Hdi = 0.717, LifeExpectancy = 74.5 },
+        new() { Code = "URY", Name = "Uruguay", Iso2 = "UY", Continent = "South America", Population = 3420000, Area = 176215, Gdp = 71180000000, GdpPerCapita = 20813, Density = 19, Literacy = 99, Hdi = 0.830, LifeExpectancy = 78.4 },
         
-        // OCEANIA
-        C("Australia","AU","🇦🇺","Oceania",7692024,26500000,1687713,63688,3.4,99.0,0.946,84.5),
-        C("Fiji","FJ","🇫🇯","Oceania",18274,930000,5314,5714,50.9,99.1,0.729,67.4),
-        C("New Zealand","NZ","🇳🇿","Oceania",270467,5200000,251969,48455,19.2,99.0,0.939,82.5),
-        C("Papua New Guinea","PG","🇵🇬","Oceania",462840,10300000,30624,2973,22.3,64.2,0.558,64.5),
+        // Oceania
+        new() { Code = "AUS", Name = "Australia", Iso2 = "AU", Continent = "Oceania", Population = 26440000, Area = 7692024, Gdp = 1675000000000, GdpPerCapita = 63360, Density = 3, Literacy = 99, Hdi = 0.951, LifeExpectancy = 84.5 },
+        new() { Code = "PNG", Name = "Papua New Guinea", Iso2 = "PG", Continent = "Oceania", Population = 10140000, Area = 462840, Gdp = 30600000000, GdpPerCapita = 3018, Density = 22, Literacy = 65, Hdi = 0.558, LifeExpectancy = 65.4 },
+        new() { Code = "NZL", Name = "New Zealand", Iso2 = "NZ", Continent = "Oceania", Population = 5120000, Area = 268021, Gdp = 247700000000, GdpPerCapita = 48379, Density = 19, Literacy = 99, Hdi = 0.937, LifeExpectancy = 82.5 },
+        new() { Code = "FJI", Name = "Fiji", Iso2 = "FJ", Continent = "Oceania", Population = 930000, Area = 18274, Gdp = 5310000000, GdpPerCapita = 5710, Density = 51, Literacy = 99, Hdi = 0.730, LifeExpectancy = 67.4 },
     };
 }
 
@@ -6102,14 +6044,15 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 4.54 KB
-MODIFIED: 2025-12-21 16:51:26
+SIZE: 7.22 KB
+MODIFIED: 2025-12-21 17:15:21
 ================================================================================
 
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
@@ -6117,166 +6060,216 @@ namespace MyDesktopApplication.Shared.ViewModels;
 /// <summary>
 /// ViewModel for the Country Quiz game.
 /// </summary>
-public partial class CountryQuizViewModel : ViewModelBase
+public partial class CountryQuizViewModel : ObservableObject
 {
+    private readonly IGameStateRepository? _gameStateRepository;
     private readonly Random _random = new();
     private Country? _country1;
     private Country? _country2;
-    private Country? _correctCountry;
-    
-    [ObservableProperty]
     private GameState _gameState = new();
+    private string _selectedQuestionType = "Population";
+    
+    [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _country1Name = "";
+    [ObservableProperty] private string _country2Name = "";
+    [ObservableProperty] private string _resultMessage = "";
+    [ObservableProperty] private string _motivationalMessage = "";
+    [ObservableProperty] private bool _showResult;
+    [ObservableProperty] private bool _isCorrect;
+    [ObservableProperty] private int _score;
+    [ObservableProperty] private int _streak;
+    [ObservableProperty] private int _bestStreak;
+    [ObservableProperty] private double _accuracy;
+    [ObservableProperty] private string _country1Value = "";
+    [ObservableProperty] private string _country2Value = "";
 
-    [ObservableProperty]
-    private QuestionType _currentQuestionType = QuestionType.Population;
-
-    [ObservableProperty]
-    private string _questionText = "";
-
-    [ObservableProperty]
-    private string _country1Name = "";
-
-    [ObservableProperty]
-    private string _country2Name = "";
-
-    [ObservableProperty]
-    private string _country1Flag = "";
-
-    [ObservableProperty]
-    private string _country2Flag = "";
-
-    [ObservableProperty]
-    private string _feedbackMessage = "";
-
-    [ObservableProperty]
-    private string _country1Value = "";
-
-    [ObservableProperty]
-    private string _country2Value = "";
-
-    [ObservableProperty]
-    private bool _showValues;
-
-    [ObservableProperty]
-    private bool _isCorrect;
-
-    [ObservableProperty]
-    private string _motivationalMessage = "";
-
-    [ObservableProperty]
-    private string _statsText = "";
-
-    public ObservableCollection<QuestionType> QuestionTypes { get; } = new(
-        Enum.GetValues<QuestionType>()
-    );
-
-    public CountryQuizViewModel()
+    public ObservableCollection<string> QuestionTypes { get; } = new()
     {
-        GenerateNewQuestion();
-        UpdateStats();
+        "Population", "Area", "GDP", "GDP per Capita", 
+        "Density", "Literacy", "HDI", "Life Expectancy"
+    };
+
+    public string SelectedQuestionType
+    {
+        get => _selectedQuestionType;
+        set
+        {
+            if (SetProperty(ref _selectedQuestionType, value))
+            {
+                GenerateNewQuestion();
+            }
+        }
     }
 
-    partial void OnCurrentQuestionTypeChanged(QuestionType value)
+    public CountryQuizViewModel() : this(null) { }
+
+    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
     {
-        GameState.SelectedQuestionType = (int)value;
-        GenerateNewQuestion();
+        _gameStateRepository = gameStateRepository;
+        _ = InitializeAsync();
     }
 
-    [RelayCommand]
-    private void SelectCountry1()
+    private async Task InitializeAsync()
     {
-        CheckAnswer(_country1);
-    }
-
-    [RelayCommand]
-    private void SelectCountry2()
-    {
-        CheckAnswer(_country2);
-    }
-
-    [RelayCommand]
-    private void NextQuestion()
-    {
-        ShowValues = false;
-        GenerateNewQuestion();
-    }
-
-    [RelayCommand]
-    private void ResetGame()
-    {
-        GameState.Reset();
-        ShowValues = false;
-        FeedbackMessage = "";
-        MotivationalMessage = MotivationalMessages.GetResetMessage();
-        UpdateStats();
+        if (_gameStateRepository != null)
+        {
+            _gameState = await _gameStateRepository.GetOrCreateAsync("default");
+            UpdateScoreDisplay();
+        }
         GenerateNewQuestion();
     }
 
     private void GenerateNewQuestion()
     {
-        var countries = CountryData.Countries;
-        
-        // Pick two different random countries
-        var index1 = _random.Next(countries.Count);
-        var index2 = _random.Next(countries.Count);
-        while (index2 == index1)
-        {
-            index2 = _random.Next(countries.Count);
-        }
+        var countries = CountryData.Countries.ToList();
+        var idx1 = _random.Next(countries.Count);
+        int idx2;
+        do { idx2 = _random.Next(countries.Count); } while (idx2 == idx1);
 
-        _country1 = countries[index1];
-        _country2 = countries[index2];
+        _country1 = countries[idx1];
+        _country2 = countries[idx2];
 
         Country1Name = _country1.Name;
         Country2Name = _country2.Name;
-        Country1Flag = _country1.Flag;
-        Country2Flag = _country2.Flag;
-
-        // Determine correct answer
-        var value1 = CurrentQuestionType.GetValue(_country1);
-        var value2 = CurrentQuestionType.GetValue(_country2);
-        _correctCountry = value1 > value2 ? _country1 : _country2;
-
-        QuestionText = CurrentQuestionType.GetQuestion();
-        
-        // Prepare values for reveal
-        Country1Value = CurrentQuestionType.FormatValue(value1);
-        Country2Value = CurrentQuestionType.FormatValue(value2);
+        QuestionText = GetQuestionText();
+        ShowResult = false;
+        ResultMessage = "";
+        MotivationalMessage = "";
+        Country1Value = "";
+        Country2Value = "";
     }
 
-    private void CheckAnswer(Country? selectedCountry)
+    private string GetQuestionText() => SelectedQuestionType switch
     {
-        if (selectedCountry == null || _correctCountry == null)
-            return;
+        "Population" => "Which country has a higher population?",
+        "Area" => "Which country is larger by area?",
+        "GDP" => "Which country has a higher GDP?",
+        "GDP per Capita" => "Which country has a higher GDP per capita?",
+        "Density" => "Which country has a higher population density?",
+        "Literacy" => "Which country has a higher literacy rate?",
+        "HDI" => "Which country has a higher Human Development Index?",
+        "Life Expectancy" => "Which country has a higher life expectancy?",
+        _ => "Which country has a higher population?"
+    };
 
-        IsCorrect = selectedCountry == _correctCountry;
-        GameState.RecordAnswer(IsCorrect);
-        ShowValues = true;
+    private double GetValue(Country country) => SelectedQuestionType switch
+    {
+        "Population" => country.Population,
+        "Area" => country.Area,
+        "GDP" => country.Gdp,
+        "GDP per Capita" => country.GdpPerCapita,
+        "Density" => country.Density,
+        "Literacy" => country.Literacy,
+        "HDI" => country.Hdi,
+        "Life Expectancy" => country.LifeExpectancy,
+        _ => country.Population
+    };
+
+    private string FormatValue(double value) => SelectedQuestionType switch
+    {
+        "Population" => value >= 1_000_000_000 ? $"{value / 1_000_000_000:F2}B" :
+                        value >= 1_000_000 ? $"{value / 1_000_000:F1}M" :
+                        value >= 1_000 ? $"{value / 1_000:F1}K" : $"{value:N0}",
+        "Area" => $"{value:N0} km²",
+        "GDP" => value >= 1_000_000_000_000 ? $"${value / 1_000_000_000_000:F2}T" :
+                 value >= 1_000_000_000 ? $"${value / 1_000_000_000:F1}B" : $"${value / 1_000_000:F0}M",
+        "GDP per Capita" => $"${value:N0}",
+        "Density" => $"{value:N1}/km²",
+        "Literacy" => $"{value:F1}%",
+        "HDI" => $"{value:F3}",
+        "Life Expectancy" => $"{value:F1} years",
+        _ => value.ToString("N0")
+    };
+
+    [RelayCommand]
+    private async Task SelectCountry1Async()
+    {
+        await ProcessAnswerAsync(1);
+    }
+
+    [RelayCommand]
+    private async Task SelectCountry2Async()
+    {
+        await ProcessAnswerAsync(2);
+    }
+
+    private async Task ProcessAnswerAsync(int selection)
+    {
+        if (_country1 == null || _country2 == null || ShowResult) return;
+
+        var val1 = GetValue(_country1);
+        var val2 = GetValue(_country2);
+        var correct = val1 > val2 ? 1 : 2;
+
+        IsCorrect = selection == correct;
+        _gameState.RecordAnswer(IsCorrect);
+
+        Country1Value = FormatValue(val1);
+        Country2Value = FormatValue(val2);
 
         if (IsCorrect)
         {
-            FeedbackMessage = "✓ Correct!";
-            MotivationalMessage = MotivationalMessages.GetCorrectMessage(GameState.CurrentStreak);
+            ResultMessage = "✓ Correct!";
+            MotivationalMessage = GetCorrectMessage(_gameState.CurrentStreak, _gameState.BestStreak);
         }
         else
         {
-            FeedbackMessage = $"✗ Wrong! It was {_correctCountry.Name}";
-            MotivationalMessage = MotivationalMessages.GetIncorrectMessage();
+            ResultMessage = "✗ Incorrect";
+            MotivationalMessage = GetIncorrectMessage();
         }
 
-        UpdateStats();
+        ShowResult = true;
+        UpdateScoreDisplay();
+
+        if (_gameStateRepository != null)
+        {
+            await _gameStateRepository.SaveAsync(_gameState);
+        }
     }
 
-    private void UpdateStats()
+    private string GetCorrectMessage(int streak, int bestStreak)
     {
-        var accuracy = GameState.TotalQuestions > 0 
-            ? (double)GameState.CorrectAnswers / GameState.TotalQuestions * 100 
-            : 0;
-            
-        StatsText = $"Score: {GameState.CurrentScore} | " +
-                   $"High: {GameState.HighScore} | " +
-                   $"Streak: {GameState.CurrentStreak} (Best: {GameState.BestStreak}) | " +
-                   $"Accuracy: {accuracy:F1}%";
+        if (streak == bestStreak && streak > 1)
+            return $"🏆 NEW RECORD! {streak} in a row!";
+        if (streak >= 10) return $"🔥🔥🔥 UNSTOPPABLE! {streak} streak!";
+        if (streak >= 5) return $"🔥🔥 On fire! {streak} in a row!";
+        if (streak >= 3) return $"🔥 Hot streak! {streak} correct!";
+        return new[] { "Great job!", "Well done!", "You got it!", "Excellent!", "Nice one!" }[_random.Next(5)];
+    }
+
+    private string GetIncorrectMessage()
+    {
+        return new[] { 
+            "Keep trying!", "You'll get the next one!", 
+            "Learning every day!", "Don't give up!", "Almost had it!" 
+        }[_random.Next(5)];
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        Score = _gameState.Score;
+        Streak = _gameState.CurrentStreak;
+        BestStreak = _gameState.BestStreak;
+        Accuracy = _gameState.AccuracyPercentage;
+    }
+
+    [RelayCommand]
+    private void NextQuestion()
+    {
+        GenerateNewQuestion();
+    }
+
+    [RelayCommand]
+    private async Task ResetAsync()
+    {
+        _gameState.Reset();
+        UpdateScoreDisplay();
+        GenerateNewQuestion();
+
+        if (_gameStateRepository != null)
+        {
+            await _gameStateRepository.SaveAsync(_gameState);
+        }
     }
 }
 
@@ -6864,7 +6857,7 @@ MODIFIED: 2025-12-21 16:41:27
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 05:14:44 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 05:15:50 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)
