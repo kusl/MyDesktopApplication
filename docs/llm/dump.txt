@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 10:06:49 AM CST 2025
+Generated: Sun Dec 21 10:07:59 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -10,11 +10,7 @@ DIRECTORY STRUCTURE:
 .
 ├── docs
 │   ├── llm
-│   │   ├── android-build.log
-│   │   ├── android-build.txt
 │   │   ├── claude.md
-│   │   ├── diagnostic-android-build.log
-│   │   ├── diagnostic-android-build.txt
 │   │   ├── dump.txt
 │   │   └── output.txt
 │   └── thoughts.md
@@ -9387,7 +9383,7 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 10:06:50 AM CST 2025
+EXPORT COMPLETED: Sun Dec 21 10:08:00 AM CST 2025
 Total Files Found: 64
 Files Exported: 64
 Files Skipped: 0 (binary or large files)
