@@ -6,28 +6,33 @@ using MyDesktopApplication.Infrastructure.Repositories;
 
 namespace MyDesktopApplication.Infrastructure;
 
-/// <summary>
-/// Dependency injection extensions for Infrastructure layer
-/// </summary>
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services, 
-        string? connectionString = null)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string? dbPath = null)
     {
-        // Use SQLite by default with a local file
-        var dbPath = connectionString ?? Path.Combine(
+        var path = dbPath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "MyDesktopApplication", "app.db");
+            "CountryQuiz",
+            "countryquiz.db");
         
-        Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-
+        var directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+        
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite($"Data Source={dbPath}"));
-
-        services.AddScoped<ITodoRepository, TodoRepository>();
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
+            options.UseSqlite($"Data Source={path}"));
+        
+        services.AddScoped<IGameStateRepository, GameStateRepository>();
+        
         return services;
+    }
+    
+    public static async Task InitializeDatabaseAsync(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await context.Database.EnsureCreatedAsync();
     }
 }

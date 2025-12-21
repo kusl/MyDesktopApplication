@@ -4,11 +4,10 @@ using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
 using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Shared.Data;
-using MyDesktopApplication.Shared.ViewModels;
 
-namespace MyDesktopApplication.Desktop.ViewModels;
+namespace MyDesktopApplication.Shared.ViewModels;
 
-public partial class MainWindowViewModel : ViewModelBase
+public partial class CountryQuizViewModel : ViewModelBase
 {
     private readonly IGameStateRepository _repository;
     private readonly Random _random = new();
@@ -46,7 +45,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _isCorrectAnswer;
     
     [ObservableProperty]
-    private int _selectedCountry;
+    private int _selectedCountry; // 0 = none, 1 = country1, 2 = country2
     
     [ObservableProperty]
     private string _country1Value = "";
@@ -57,41 +56,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private QuestionType _selectedQuestionType = QuestionType.Population;
     
-    // Computed properties for UI styling
-    public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
-    public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
-    public bool IsCountry2Correct => HasAnswered && SelectedCountry == 2 && IsCorrectAnswer;
-    public bool IsCountry2Wrong => HasAnswered && SelectedCountry == 2 && !IsCorrectAnswer;
-    
     public ObservableCollection<QuestionType> QuestionTypes { get; } = new(Enum.GetValues<QuestionType>());
     
-    public MainWindowViewModel(IGameStateRepository repository)
+    public CountryQuizViewModel(IGameStateRepository repository)
     {
         _repository = repository;
-    }
-    
-    partial void OnHasAnsweredChanged(bool value)
-    {
-        OnPropertyChanged(nameof(IsCountry1Correct));
-        OnPropertyChanged(nameof(IsCountry1Wrong));
-        OnPropertyChanged(nameof(IsCountry2Correct));
-        OnPropertyChanged(nameof(IsCountry2Wrong));
-    }
-    
-    partial void OnSelectedCountryChanged(int value)
-    {
-        OnPropertyChanged(nameof(IsCountry1Correct));
-        OnPropertyChanged(nameof(IsCountry1Wrong));
-        OnPropertyChanged(nameof(IsCountry2Correct));
-        OnPropertyChanged(nameof(IsCountry2Wrong));
-    }
-    
-    partial void OnIsCorrectAnswerChanged(bool value)
-    {
-        OnPropertyChanged(nameof(IsCountry1Correct));
-        OnPropertyChanged(nameof(IsCountry1Wrong));
-        OnPropertyChanged(nameof(IsCountry2Correct));
-        OnPropertyChanged(nameof(IsCountry2Wrong));
     }
     
     public async Task InitializeAsync()
@@ -117,7 +86,7 @@ public partial class MainWindowViewModel : ViewModelBase
     
     partial void OnSelectedQuestionTypeChanged(QuestionType value)
     {
-        if (_gameState != null && !IsBusy)
+        if (_gameState != null)
         {
             _gameState.SelectedQuestionType = value.ToString();
             _ = SaveAndNextRoundAsync();
@@ -148,6 +117,7 @@ public partial class MainWindowViewModel : ViewModelBase
             var v1 = SelectedQuestionType.GetValue(c1);
             var v2 = SelectedQuestionType.GetValue(c2);
             
+            // Ensure different countries AND different values (no ties)
             if (c1.Name != c2.Name && v1 != null && v2 != null && Math.Abs(v1.Value - v2.Value) > 0.001)
             {
                 return (c1, c2);
@@ -181,9 +151,8 @@ public partial class MainWindowViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private async Task SelectCountryAsync(string countryNumberStr)
+    private async Task SelectCountryAsync(int countryNumber)
     {
-        if (!int.TryParse(countryNumberStr, out var countryNumber)) return;
         if (HasAnswered || _gameState == null || _correctCountry == null) return;
         
         HasAnswered = true;
@@ -193,10 +162,12 @@ public partial class MainWindowViewModel : ViewModelBase
         var isCorrect = selectedCountry?.Name == _correctCountry.Name;
         IsCorrectAnswer = isCorrect;
         
+        // Record answer
         var wasNewBest = _gameState.CurrentStreak == _gameState.BestStreak && isCorrect;
         _gameState.RecordAnswer(isCorrect);
         var isNewBest = _gameState.CurrentStreak == _gameState.BestStreak && _gameState.CurrentStreak > 1;
         
+        // Show values
         if (Country1 != null)
         {
             var v1 = SelectedQuestionType.GetValue(Country1);
@@ -208,6 +179,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Country2Value = v2.HasValue ? SelectedQuestionType.FormatValue(v2.Value) : "N/A";
         }
         
+        // Build result message
         var message = isCorrect 
             ? MotivationalMessages.GetCorrectMessage()
             : MotivationalMessages.GetIncorrectMessage();
@@ -219,11 +191,15 @@ public partial class MainWindowViewModel : ViewModelBase
         else if (isCorrect && _gameState.CurrentStreak >= 3)
         {
             var streakMsg = MotivationalMessages.GetStreakMessage(_gameState.CurrentStreak);
-            if (!string.IsNullOrEmpty(streakMsg)) message += "\n" + streakMsg;
+            if (!string.IsNullOrEmpty(streakMsg))
+            {
+                message += "\n" + streakMsg;
+            }
         }
         
         ResultMessage = message;
         UpdateScoreDisplay();
+        
         await _repository.SaveAsync(_gameState);
     }
     

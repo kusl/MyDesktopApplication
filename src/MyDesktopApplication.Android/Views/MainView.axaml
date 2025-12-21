@@ -1,21 +1,133 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="MyDesktopApplication.Android.Views.MainView">
-    <StackPanel Margin="20" Spacing="20" VerticalAlignment="Center">
-        <TextBlock Text="MyDesktopApplication"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center" />
-        
-        <TextBlock Text="Running on Android!"
-                   FontSize="18"
-                   HorizontalAlignment="Center"
-                   Foreground="Gray" />
-        
-        <Button x:Name="CounterButton"
-                Content="Click Me: 0"
-                HorizontalAlignment="Center"
-                Padding="20,10"
-                Click="OnCounterClick" />
-    </StackPanel>
+             xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
+             xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+             xmlns:core="using:MyDesktopApplication.Core.Entities"
+             x:Class="MyDesktopApplication.Android.Views.MainView"
+             x:DataType="vm:CountryQuizViewModel"
+             Background="#0f172a">
+    
+    <UserControl.Resources>
+        <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
+    </UserControl.Resources>
+    
+    <UserControl.Styles>
+        <Style Selector="Button.country-card">
+            <Setter Property="Background" Value="#1e293b"/>
+            <Setter Property="BorderBrush" Value="#374151"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.country-card:pointerover">
+            <Setter Property="Background" Value="#334155"/>
+        </Style>
+        <Style Selector="Button.correct">
+            <Setter Property="Background" Value="#14532d"/>
+            <Setter Property="BorderBrush" Value="#22c55e"/>
+        </Style>
+        <Style Selector="Button.wrong">
+            <Setter Property="Background" Value="#7f1d1d"/>
+            <Setter Property="BorderBrush" Value="#ef4444"/>
+        </Style>
+    </UserControl.Styles>
+    
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" Margin="12">
+            
+            <!-- Title -->
+            <TextBlock Grid.Row="0" Text="🌍 Country Quiz" 
+                       FontSize="24" FontWeight="Bold" Foreground="White"
+                       HorizontalAlignment="Center" Margin="0,8,0,12"/>
+            
+            <!-- Controls -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                <ComboBox ItemsSource="{Binding QuestionTypes}"
+                          SelectedItem="{Binding SelectedQuestionType}"
+                          Background="#1e293b" Foreground="White">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="core:QuestionType">
+                            <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Grid.Column="1" Content="Reset" 
+                        Command="{Binding ResetGameCommand}"
+                        Background="#dc2626" Foreground="White"
+                        Padding="10,6" Margin="8,0,0,0"/>
+            </Grid>
+            
+            <!-- Score -->
+            <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,0,0,8">
+                <TextBlock Foreground="White" FontSize="14" Margin="0,0,12,0">
+                    <Run Text="Score: "/><Run Text="{Binding ScoreText}" FontWeight="Bold"/>
+                </TextBlock>
+                <TextBlock Text="{Binding StreakText}" Foreground="#f97316" FontWeight="Bold"/>
+                <TextBlock Text="{Binding BestStreakText}" Foreground="#fbbf24" Margin="12,0,0,0"/>
+            </WrapPanel>
+            
+            <!-- Accuracy -->
+            <TextBlock Grid.Row="3" Text="{Binding AccuracyText}"
+                       Foreground="#94a3b8" FontSize="12"
+                       HorizontalAlignment="Center" Margin="0,0,0,12"
+                       IsVisible="{Binding AccuracyText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+            
+            <!-- Question and Cards -->
+            <StackPanel Grid.Row="4" Spacing="12">
+                <TextBlock Text="{Binding QuestionText}" Foreground="White"
+                           FontSize="16" FontWeight="SemiBold"
+                           TextWrapping="Wrap" TextAlignment="Center"/>
+                
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <Button Grid.Column="0" Classes="country-card"
+                            Command="{Binding SelectCountryCommand}" CommandParameter="1"
+                            IsEnabled="{Binding !HasAnswered}">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="{Binding Country1.Flag}" FontSize="40" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Country1.Name}" Foreground="White"
+                                       FontSize="12" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country1Value}" Foreground="#22c55e"
+                                       FontSize="11" HorizontalAlignment="Center"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Border Grid.Column="1" Background="#3b82f6" CornerRadius="16"
+                            Padding="8,4" VerticalAlignment="Center" Margin="6,0">
+                        <TextBlock Text="VS" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </Border>
+                    
+                    <Button Grid.Column="2" Classes="country-card"
+                            Command="{Binding SelectCountryCommand}" CommandParameter="2"
+                            IsEnabled="{Binding !HasAnswered}">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="{Binding Country2.Flag}" FontSize="40" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Country2.Name}" Foreground="White"
+                                       FontSize="12" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country2Value}" Foreground="#22c55e"
+                                       FontSize="11" HorizontalAlignment="Center"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+            
+            <!-- Result -->
+            <Border Grid.Row="5" Background="#1e293b" CornerRadius="8"
+                    Padding="12" Margin="0,12,0,0"
+                    IsVisible="{Binding HasAnswered}">
+                <TextBlock Text="{Binding ResultMessage}" Foreground="White"
+                           FontSize="14" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Border>
+            
+            <!-- Next -->
+            <Button Grid.Row="6" Content="Next →"
+                    Command="{Binding NextRoundCommand}"
+                    Background="#3b82f6" Foreground="White"
+                    FontSize="14" FontWeight="SemiBold"
+                    Padding="20,10" HorizontalAlignment="Center"
+                    Margin="0,12,0,8" IsVisible="{Binding HasAnswered}"/>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
