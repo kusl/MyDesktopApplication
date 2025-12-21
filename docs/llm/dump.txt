@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 11:19:53 AM CST 2025
+Generated: Sun Dec 21 11:21:07 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -335,8 +335,8 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 4.07 KB
-MODIFIED: 2025-12-20 02:30:20
+SIZE: 4.15 KB
+MODIFIED: 2025-12-21 11:20:44
 ================================================================================
 
 <Project>
@@ -411,6 +411,7 @@ MODIFIED: 2025-12-20 02:30:20
     <PackageVersion Include="System.Text.Json" Version="10.0.1" />
     <PackageVersion Include="Refit" Version="8.0.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
+    <PackageVersion Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.3" />
   </ItemGroup>
 </Project>
 
@@ -1547,8 +1548,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 1.45 KB
-MODIFIED: 2025-12-21 10:26:59
+SIZE: 1.54 KB
+MODIFIED: 2025-12-21 11:20:44
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -1582,6 +1583,9 @@ MODIFIED: 2025-12-21 10:26:59
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" />
   </ItemGroup>
 </Project>
 
@@ -1621,16 +1625,18 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Resources/values/styles.xml
-SIZE: .34 KB
-MODIFIED: 2025-12-21 10:17:25
+SIZE: .40 KB
+MODIFIED: 2025-12-21 11:20:44
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+    <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
-    <style name="MyTheme.NoActionBar" parent="@android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/background_light</item>
+    <style name="MyTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
 
@@ -4196,7 +4202,7 @@ echo "  git push"
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 11:19:54 AM CST 2025
+EXPORT COMPLETED: Sun Dec 21 11:21:08 AM CST 2025
 Total Files Found: 55
 Files Exported: 55
 Files Skipped: 0 (binary or large files)
