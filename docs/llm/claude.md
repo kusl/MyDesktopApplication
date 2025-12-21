@@ -3708,3 +3708,213 @@ The script also:
 
 
 
+Fluent Assertions has recently undergone a major licensing change. Whether it is "free" or "open source" now depends entirely on which **version** you use and **how** you use it.
+
+### 1. Is it free of cost?
+
+* **Version 8.0 and newer:** * **Free** for non-commercial use, personal projects, and open-source projects.
+* **Paid ($129.95+ per developer/year)** for commercial (for-profit) use. If you use it at work for a company, you are likely required to pay.
+
+
+* **Version 7.x and older:** * **Free for everyone**, including commercial users. The maintainers have stated that Version 7 will remain free indefinitely and continue to receive critical bug fixes.
+
+### 2. Is it Open Source?
+
+* **Version 7.x:** Yes. It is licensed under the **Apache 2.0** license, which is a standard, permissive open-source license.
+* **Version 8.0+:** Technically, it is now **"Source-Available"** rather than strictly "Open Source." It uses the **Xceed Community License**, which places restrictions on commercial use. Because of these restrictions, it no longer meets the strict [Open Source Definition](https://opensource.org/osd) (which requires that a license not discriminate against fields of endeavor, such as commercial use).
+
+### Summary Table
+
+| Version | Use Case | Cost | License |
+| --- | --- | --- | --- |
+| **7.x** | Any (Commercial or Personal) | **Free** | Apache 2.0 |
+| **8.0+** | Non-Commercial / OSS | **Free** | Xceed Community |
+| **8.0+** | Commercial / Corporate | **Paid** (~$130/dev/year) | Xceed Commercial |
+
+### Recommendations
+
+* **If you want to stay free:** You should "pin" your project to the latest **7.x** version (e.g., `<PackageReference Include="FluentAssertions" Version="[7.0.0, 8.0.0)" />`) to avoid accidental upgrades that would trigger the need for a paid license.
+* **If you want a modern free alternative:** Many developers are moving to **[Shouldly](https://www.google.com/search?q=https://shouldly.io/)** (which remains free and open source) or **[Awesome Assertions](https://github.com/meenzen/AwesomeAssertions)** (a community fork of the last free version of Fluent Assertions).
+
+
+
+Establishing your intent: You want to consolidate your Avalonia project into a single, high-performance cross-platform codebase that strictly adheres to "free of cost" principles (no paid NuGet packages, including those free only for non-commercial use) and modern .NET standards (e.g., `.slnx`, `Directory.Build.props`). You explicitly want to remove the silos between Desktop and Android teams, ensuring everyone shares the same build and testing experience, even if it introduces friction (like slower builds) that forces collective problem-solving.
+
+### 1. Updated `dependabot.yml`
+
+Following your directive to avoid paid-for-commercial-use packages, **Fluent Assertions** (Version 8+) and **Moq** (due to past telemetry controversies/sponsorship) are removed. **Shouldly** and **NSubstitute** are retained as they remain fully open source (MIT/BSD).
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      avalonia:
+        patterns:
+          - "Avalonia*"
+      microsoft:
+        patterns:
+          - "Microsoft.*"
+      testing:
+        patterns:
+          - "xunit*"
+          - "Shouldly*" # Use Shouldly instead of Fluent Assertions
+          - "NSubstitute*"
+          - "Bogus"
+          - "coverlet*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+```
+
+### 2. Consolidated Consolidation Script (`fix-properly.sh`)
+
+This script executes your "no silos" mandate: it deletes the separate desktop solution, removes "band-aid" scripts, and creates a unified migration/build workflow.
+
+```bash
+#!/bin/bash
+set -e
+
+echo "=== UN-SILOING THE PROJECT ==="
+
+# 1. Remove siloed solution and scripts
+rm -f MyDesktopApplication.Desktop.slnx
+rm -f build-desktop.sh build-android.sh fix-android-build.sh
+
+# 2. Update Directory.Packages.props to remove non-free packages
+# Ensuring we use Shouldly instead of FluentAssertions
+cat > Directory.Packages.props << 'EOF'
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.10.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+  </ItemGroup>
+</Project>
+EOF
+
+# 3. Create a unified migration script
+cat > migrate.sh << 'EOF'
+#!/bin/bash
+# Unified Migration: Everyone uses the Desktop app as the runner
+if [ -z "$1" ]; then
+    echo "Usage: ./migrate.sh <MigrationName>"
+    exit 1
+fi
+
+dotnet ef migrations add "$1" \
+    --project src/MyDesktopApplication.Infrastructure \
+    --startup-project src/MyDesktopApplication.Desktop \
+    --output-dir Data/Migrations
+
+echo "Applying to SQLite (Local Dev)..."
+dotnet ef database update --project src/MyDesktopApplication.Infrastructure --startup-project src/MyDesktopApplication.Desktop
+EOF
+chmod +x migrate.sh
+
+# 4. Final Build Attempt (The "suffering" starts here - everyone builds everything)
+echo "Running unified build..."
+pkill -f aapt2 || true
+dotnet build MyDesktopApplication.slnx
+
+```
+
+### 3. Key Technical Adjustments
+
+* 
+**Package Replacement:** Your `tests/MyDesktopApplication.UI.Tests.csproj` already correctly uses **Shouldly**. Any remaining references to `FluentAssertions` in other `.csproj` files or code should be replaced with `Shouldly` to ensure the project remains "Free of Cost" for all uses.
+
+
+* 
+**The `.slnx` File:** Your project already has a unified `MyDesktopApplication.slnx`. By deleting `MyDesktopApplication.Desktop.slnx`, you force the IDE to load both the Desktop and Android projects simultaneously.
+
+
+* 
+**Infrastructure:** Your migration logic already uses the correct `Infrastructure` project for the context and `Desktop` for the startup. This is sustainable as it works for both SQLite (local) and PostgreSQL (production).
+
+
+
+
+
+
+To ensure Claude writes a script that strictly adheres to your architecture and "free of cost" philosophy, use the following instructions. These are designed to be clear, concise, and focused on long-term sustainability.
+
+---
+
+### Instructions for Claude
+
+**Context:**
+I am building a high-performance, cross-platform Avalonia UI application using the latest .NET technologies (e.g., `.slnx`, `Directory.Build.props`, Central Package Management). The project must be "Free of Cost"—strictly avoiding any NuGet packages with paid tiers or restrictive commercial licenses (e.g., **Fluent Assertions 8+**, **Moq**). We prioritize a "One Team, One Build" philosophy where Android and Desktop development are unified, even if it forces us to fix build performance issues collectively rather than siloing them.
+
+**Task:**
+Write a single, comprehensive Bash script (`init-project.sh`) that consolidates the project structure and establishes a sustainable workflow.
+
+**The script must perform the following actions:**
+
+1. **Unified Solution Management:**
+* Delete `MyDesktopApplication.Desktop.slnx`.
+* Ensure `MyDesktopApplication.slnx` remains the **only** entry point, containing all projects (Android, Desktop, Core, Infrastructure, Shared, and Tests).
+
+
+* Remove all "silo" scripts: `build-desktop.sh`, `build-android.sh`, `fix-android-build.sh`, and `fix-tests.sh`.
+
+
+
+
+2. **Strict "Free of Cost" Package Enforcement:**
+* Update `Directory.Packages.props` to use only permissive open-source packages (MIT/Apache/BSD).
+* 
+**Mandatory:** Replace `FluentAssertions` with `Shouldly`.
+
+
+* **Mandatory:** Ensure `NSubstitute`, `Bogus`, and `xunit` are used for testing.
+* **Mandatory:** Include OpenTelemetry packages for logging and metrics.
+
+
+3. **Correct Migration Workflow:**
+* Create a robust `migrate.sh` script.
+* It must use `src/MyDesktopApplication.Infrastructure` as the target project and `src/MyDesktopApplication.Desktop` as the startup project.
+
+
+* It should support adding a migration and automatically applying it to the local SQLite database.
+
+
+4. **Optimized, Non-Siloed Build Environment:**
+* Update `Directory.Build.props` to include global build optimizations (e.g., disabling `aapt2` daemon if it hangs, ensuring `net10.0` target consistency).
+* Add a pre-build "housekeeping" step to the main script that kills lingering compiler processes (`pkill -f aapt2`, `pkill -f VBCSCompiler`) to prevent the build hangs seen in current logs.
+
+
+
+
+5. **Cleanliness:**
+* Delete all other redundant fix/setup scripts to leave the repository clean and manageable for a cross-functional team.
+
+
+
+**Output Requirements:**
+
+* Produce only the shell script code.
+* Ensure the script is idempotent (can be run multiple times safely).
+* The script must end by performing a full `dotnet build` on the single solution to verify the unified state.
+
