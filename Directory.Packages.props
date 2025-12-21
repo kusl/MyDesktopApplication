@@ -30,7 +30,7 @@
     <!-- =========================================================== -->
     <!-- Dependency Injection - MIT License -->
     <!-- =========================================================== -->
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     
     <!-- =========================================================== -->
     <!-- Validation - Apache-2.0 License -->
