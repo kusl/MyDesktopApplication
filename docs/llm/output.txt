@@ -6156,3 +6156,50 @@ real	0m0.969s
 user	0m1.205s
 sys	0m0.247s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh cleanup-and-rebuild.sh 
+==============================================
+  Project Cleanup and Rebuild
+==============================================
+
+[1/7] Removing unnecessary shell scripts...
+  Removed: cleanup-project.sh
+  Removed: convert-to-country-quiz.sh
+  Removed: fix-android-theme-crash.sh
+  Removed: fix-avalonia-version.sh
+  Removed: update-github-actions.sh
+  ✓ Kept: export.sh (useful for LLM context)
+
+[2/7] Creating clean Directory.Packages.props...
+  ✓ Created Directory.Packages.props
+    - Removed: FluentAssertions (commercial license)
+    - Removed: Moq (compromised package)
+    - Removed: Avalonia.ReactiveUI (deprecated)
+    - Added: Shouldly (BSD-3-Clause, free)
+    - Added: NSubstitute (BSD-3-Clause, free)
+
+[3/7] Updating project files...
+  ✓ Updated all 7 project files
+
+[4/7] Creating unified SLNX solution...
+  ✓ Created MyDesktopApplication.slnx
+
+[5/7] Updating test files to use Shouldly...
+  ✓ Updated all test files to use Shouldly + NSubstitute
+
+[6/7] Ensuring all entities exist...
+  ✓ Verified all entities and DbContext
+
+[7/7] Cleaning and rebuilding...
+  Restoring packages...
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+  Detected package downgrade: Microsoft.Extensions.DependencyInjection from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+   MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging 10.0.1 -> Microsoft.Extensions.DependencyInjection (>= 10.0.1) 
+   MyDesktopApplication.UI.Tests -> Microsoft.Extensions.DependencyInjection (>= 10.0.0)
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+  Detected package downgrade: Microsoft.Extensions.DependencyInjection from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+   MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Logging 10.0.1 -> Microsoft.Extensions.DependencyInjection (>= 10.0.1) 
+   MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.DependencyInjection (>= 10.0.0)
+
+real	0m2.355s
+user	0m2.486s
+sys	0m0.531s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

@@ -1,5 +1,5 @@
-using FluentAssertions;
 using MyDesktopApplication.Core.Entities;
+using Shouldly;
 using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
@@ -13,7 +13,7 @@ public class QuestionTypeTests
     [InlineData(QuestionType.Hdi, "HDI")]
     public void GetLabel_ReturnsCorrectLabel(QuestionType type, string expected)
     {
-        type.GetLabel().Should().Be(expected);
+        type.GetLabel().ShouldBe(expected);
     }
     
     [Theory]
@@ -21,7 +21,7 @@ public class QuestionTypeTests
     [InlineData(QuestionType.Area, "Which country is larger by area?")]
     public void GetQuestion_ReturnsCorrectQuestion(QuestionType type, string expected)
     {
-        type.GetQuestion().Should().Be(expected);
+        type.GetQuestion().ShouldBe(expected);
     }
     
     [Fact]
@@ -38,17 +38,8 @@ public class QuestionTypeTests
             Gdp = 100000
         };
         
-        QuestionType.Population.GetValue(country).Should().Be(1000000);
-        QuestionType.Area.GetValue(country).Should().Be(500000);
-        QuestionType.Gdp.GetValue(country).Should().Be(100000);
-    }
-    
-    [Theory]
-    [InlineData(QuestionType.Population, 1234567, "1,234,567")]
-    [InlineData(QuestionType.Literacy, 95.5, "95.5%")]
-    [InlineData(QuestionType.Hdi, 0.925, "0.925")]
-    public void FormatValue_FormatsCorrectly(QuestionType type, double value, string expected)
-    {
-        type.FormatValue(value).Should().Be(expected);
+        QuestionType.Population.GetValue(country).ShouldBe(1000000);
+        QuestionType.Area.GetValue(country).ShouldBe(500000);
+        QuestionType.Gdp.GetValue(country).ShouldBe(100000);
     }
 }

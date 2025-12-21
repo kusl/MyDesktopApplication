@@ -1,5 +1,5 @@
-using FluentAssertions;
 using MyDesktopApplication.Core.Entities;
+using Shouldly;
 using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
@@ -13,9 +13,9 @@ public class GameStateTests
         
         state.RecordAnswer(true);
         
-        state.CorrectAnswers.Should().Be(1);
-        state.TotalQuestions.Should().Be(1);
-        state.CurrentStreak.Should().Be(1);
+        state.CorrectAnswers.ShouldBe(1);
+        state.TotalQuestions.ShouldBe(1);
+        state.CurrentStreak.ShouldBe(1);
     }
     
     [Fact]
@@ -25,8 +25,8 @@ public class GameStateTests
         
         state.RecordAnswer(false);
         
-        state.CurrentStreak.Should().Be(0);
-        state.TotalQuestions.Should().Be(1);
+        state.CurrentStreak.ShouldBe(0);
+        state.TotalQuestions.ShouldBe(1);
     }
     
     [Fact]
@@ -36,8 +36,8 @@ public class GameStateTests
         
         state.RecordAnswer(true);
         
-        state.BestStreak.Should().Be(4);
-        state.CurrentStreak.Should().Be(4);
+        state.BestStreak.ShouldBe(4);
+        state.CurrentStreak.ShouldBe(4);
     }
     
     [Fact]
@@ -53,10 +53,10 @@ public class GameStateTests
         
         state.Reset();
         
-        state.CorrectAnswers.Should().Be(0);
-        state.TotalQuestions.Should().Be(0);
-        state.CurrentStreak.Should().Be(0);
-        state.BestStreak.Should().Be(8);
+        state.CorrectAnswers.ShouldBe(0);
+        state.TotalQuestions.ShouldBe(0);
+        state.CurrentStreak.ShouldBe(0);
+        state.BestStreak.ShouldBe(8);
     }
     
     [Fact]
@@ -64,7 +64,7 @@ public class GameStateTests
     {
         var state = new GameState { CorrectAnswers = 7, TotalQuestions = 10 };
         
-        state.Accuracy.Should().Be(70.0);
+        state.Accuracy.ShouldBe(70.0);
     }
     
     [Fact]
@@ -72,6 +72,6 @@ public class GameStateTests
     {
         var state = new GameState();
         
-        state.Accuracy.Should().Be(0);
+        state.Accuracy.ShouldBe(0);
     }
 }
