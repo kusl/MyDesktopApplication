@@ -6006,4 +6006,153 @@ Restore failed with 4 error(s) in 0.8s
 real	0m0.930s
 user	0m1.178s
 sys	0m0.207s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): cleanup-and-rebuild.sh
+Processing (2/69): cleanup-project.sh
+Processing (3/69): convert-to-country-quiz.sh
+Processing (4/69): Directory.Build.props
+Processing (5/69): Directory.Packages.props
+Processing (6/69): export.sh
+Processing (7/69): fix-android-theme-crash.sh
+Processing (8/69): fix-avalonia-version.sh
+Processing (9/69): .gitattributes
+Processing (10/69): .github/dependabot.yml
+Processing (11/69): .github/workflows/build.yml
+Processing (12/69): .github/workflows/ci.yml
+Processing (13/69): .github/workflows/release.yml
+Processing (14/69): .gitignore
+Processing (15/69): MyDesktopApplication.slnx
+Processing (16/69): README.md
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (51/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (54/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (56/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (57/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (58/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (65/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (67/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+Processing (69/69): update-github-actions.sh
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    448.06 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.801s
+user	0m0.374s
+sys	0m0.621s
+
+Build succeeded in 0.5s
+
+real	0m0.607s
+user	0m0.665s
+sys	0m0.141s
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Npgsql.EntityFrameworkCore.PostgreSQL, Dapper, Microsoft.Extensions.Configuration. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus, Testcontainers, Testcontainers.PostgreSql. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging 10.0.1 -> Microsoft.Extensions.DependencyInjection (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.DependencyInjection (>= 10.0.0)
+
+Restore failed with 4 error(s) in 0.8s
+
+real	0m0.936s
+user	0m1.171s
+sys	0m0.212s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus, Testcontainers, Testcontainers.PostgreSql. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Npgsql.EntityFrameworkCore.PostgreSQL, Dapper, Microsoft.Extensions.Configuration. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging 10.0.1 -> Microsoft.Extensions.DependencyInjection (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.DependencyInjection (>= 10.0.0)
+
+Restore failed with 4 error(s) in 0.8s
+
+real	0m0.969s
+user	0m1.213s
+sys	0m0.228s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Npgsql.EntityFrameworkCore.PostgreSQL, Dapper, Microsoft.Extensions.Configuration. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Bogus, Testcontainers, Testcontainers.PostgreSql. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging 10.0.1 -> Microsoft.Extensions.DependencyInjection (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.DependencyInjection (>= 10.0.0)
+
+Restore failed with 4 error(s) in 0.8s
+
+real	0m0.969s
+user	0m1.205s
+sys	0m0.247s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh cleanup-and-rebuild.sh 

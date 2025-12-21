@@ -3030,3 +3030,61 @@ chmod +x fix-avalonia-version.sh
 
 I ran the script and got an error as you can see in dump.txt and output.txt but more importantly I think there are fundamental errors. 
 You mentioned  `Avalonia.ReactiveUI` however, from nuget `This package has been deprecated as it is legacy and is no longer maintained. Suggested Alternatives ReactiveUI.Avalonia` we should not use packages that are deprecated. this is a green field project and we have no legacy to be mindful of. we should use the latest and greatest technology (within reason, of course, we prefer stable working code to the latest javascript whatever that only works in 0.0000998749% of web browsers or android devices). can you please review the whole code base and rewrite the whole project as necessary to remove all obsolete and deprecated packages using the latest recommended packages? please and thank you. as always I have updated the project files with the latest dump and output. 
+
+You're absolutely right - we should not use deprecated packages. Let me review the project and create a clean script that uses only current, maintained packages.Now I have a good understanding of the current state. Let me create a comprehensive cleanup and rebuild script that:
+
+1. Removes deprecated packages (FluentAssertions, Moq, Avalonia.ReactiveUI)
+2. Uses only free/open-source packages
+3. Consolidates everything into one SLNX solution
+4. Cleans up unnecessary shell scripts
+5. Fixes all build errorsRun this comprehensive cleanup script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x cleanup-and-rebuild.sh
+./cleanup-and-rebuild.sh
+```
+
+## What This Script Does
+
+**1. Removes Unnecessary Scripts**
+- Deletes 16 shell scripts that were created during troubleshooting
+- Keeps only `export.sh` (useful for LLM context)
+
+**2. Removes Deprecated/Paid Packages**
+
+| Removed | Reason | Replacement |
+|---------|--------|-------------|
+| FluentAssertions | Commercial license for companies >$1M revenue | **Shouldly** (BSD-3-Clause, 100% free) |
+| Moq | Compromised by author (SponsorLink controversy) | **NSubstitute** (BSD-3-Clause, 100% free) |
+| Avalonia.ReactiveUI | Deprecated, no longer maintained | Not needed (using CommunityToolkit.Mvvm) |
+
+**3. Creates Single SLNX Solution**
+- All 8 projects in one `MyDesktopApplication.slnx`
+- Organized in `/src/` and `/tests/` folders
+
+**4. Updates All Test Files**
+- Converts `FluentAssertions` syntax → `Shouldly` syntax
+- Converts `Moq` → `NSubstitute`
+
+**5. Cleans and Rebuilds**
+- Removes all bin/obj folders
+- Full restore and build
+- Runs all tests
+
+## Package License Summary
+
+All packages are now **100% free** under permissive licenses:
+
+| Package | License | Cost |
+|---------|---------|------|
+| Avalonia | MIT | Free |
+| CommunityToolkit.Mvvm | MIT | Free |
+| Entity Framework Core | MIT | Free |
+| FluentValidation | Apache-2.0 | Free |
+| xUnit | Apache-2.0 | Free |
+| Shouldly | BSD-3-Clause | Free |
+| NSubstitute | BSD-3-Clause | Free |
+| Bogus | MIT | Free |
+
+
