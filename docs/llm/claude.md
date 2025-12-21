@@ -4798,3 +4798,13 @@ The script will kill stuck processes, clean artifacts, fix all source files, res
 
 
 
+There are all sort of things wrong with this code base. 
+Please fix all the errors as identified in output.txt and use the code in dump.txt as your starting point. 
+Please generate a single script to fix all these issues. 
+Please harmonize property names. For example, it makes no sense to call something Gdp somewhere and GdpTotal somewhere else. 
+Please make sure the build works. Do not hallucinate. 
+Please keep in mind all our instructions. Do not introduce non-free (including paid for commercial only) nuget packages. 
+Do not try to sneak in "solutions" by deleting functionality or by siloing code into desktop only vs mobile only, properly fix errors. 
+Please write a single script to fix the issues. 
+Please make sure the script is idempotent, meaning it doesn't break things if you run it multiple times. 
+
