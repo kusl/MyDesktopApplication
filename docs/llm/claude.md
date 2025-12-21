@@ -2791,3 +2791,40 @@ Can you run that adb command and share what errors appear? Also, what Android ve
 OK I successfully connected the tablet to the computer using a USB cable and I authorized ADB. 
 The logs are too long though and I don't want to give you missing context. Can you please check `output.txt` for the full logs from adb? 
 and please write a full shell script to fix any defects if you have enough information to fix it or lets keep diagnosing if you don't 
+```
+12-21 12:12:21.015  2971 22237 I HoneySpace.SuggestedItemsFacade: DPS items : MyDesktopApplication, com.mycompany.mydesktopapplication/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-21 12:12:21.015  2971 22237 I HoneySpace.FilteredItemProvider: collect filtered items o, [PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0}), PK(p='dev.imranr.obtainium.fdroid', u=UserHandle{0}), PK(p='com.android.settings', u=UserHandle{0}), PK(p='org.mozilla.firefox', u=UserHandle{0}), PK(p='com.standardnotes', u=UserHandle{0}), PK(p='com.x8bit.bitwarden', u=UserHandle{0})]
+12-21 12:12:21.015  2971 22237 I HoneySpace.SuggestedItemsFacade: filteredItem : PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})
+12-21 12:12:21.015  2971 22237 I HoneySpace.SuggestedItemsFacade: item removed by filter - PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})
+12-21 12:12:21.021  2971 22240 I HoneySpace.FilteredItemProvider: collect filtered items o, [PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0}), PK(p='dev.imranr.obtainium.fdroid', u=UserHandle{0}), PK(p='com.android.settings', u=UserHandle{0}), PK(p='org.mozilla.firefox', u=UserHandle{0}), PK(p='com.standardnotes', u=UserHandle{0}), PK(p='com.x8bit.bitwarden', u=UserHandle{0})]
+12-21 12:12:21.156 22400 22400 E TransactionExecutor: tId:-253140853     LaunchActivityItem{activityToken=android.os.BinderProxy@34fff58,intent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.mycompany.mydesktopapplication/crc648a10417f6d1065e1.MainActivity bnds=[760,892][922,1063] },ident=215488831,info=ActivityInfo{b59c98a crc648a10417f6d1065e1.MainActivity},curConfig={1.15 310mcc260mnc [en_US] ldltr sw800dp w800dp h1280dp 240dpi xlrg port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1200, 1920) mAppBounds=Rect(0, 0 - 1200, 1920) mMaxBounds=Rect(0, 0 - 1200, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0 mStageConfig=undefined mEmbedActivityMode=undefined mPopOver=off mOverlappingWithCutout=false mCompatSandboxScale=-1.0 mDexTaskDockingState=none mFreeformTaskPinningState=unpinned} s.141 fontWeightAdjustment=0 ff=0 bf=0 bts=0 cst=1.0 nightDim=-1 desktop/d dm/n dc/d ?dcui themeSeq=0},overrideConfig={1.15 310mcc260mnc [en_US] ldltr sw800dp w800dp h1280dp 240dpi xlrg port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1200, 1920) mAppBounds=Rect(0, 0 - 1200, 1920) mMaxBounds=Rect(0, 0 - 1200, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0 mStageConfig=undefined mEmbedActivityMode=undefined mPopOver=off mOverlappingWithCutout=false mCompatSandboxScale=-1.0 mDexTaskDockingState=none mFreeformTaskPinningState=unpinned} s.2 fontWeightAdjustment=0 ff=0 bf=0 bts=0 cst=1.0 nightDim=-1 desktop/d dm/n dc/d ?dcui themeSeq=0},deviceId=0,referrer=com.sec.android.app.launcher,procState=7,state=null,persistentState=null,pendingResults=null,pendingNewIntents=null,sceneTransitionInfo=null,profilerInfo=null,assistToken=android.os.BinderProxy@ebd40df,shareableActivityToken=android.os.BinderProxy@bd2c12c,activityWindowInfo=ActivityWindowInfo{isEmbedded=false, taskBounds=Rect(0, 0 - 1200, 1920), taskFragmentBounds=Rect(0, 0 - 1200, 1920)}}
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: FATAL EXCEPTION: main
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: Process: com.mycompany.mydesktopapplication, PID: 22400
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: java.lang.RuntimeException: Unable to start activity ComponentInfo{com.mycompany.mydesktopapplication/crc648a10417f6d1065e1.MainActivity}: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: Caused by: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: 	at crc6431345fe65afe8d98.AvaloniaActivity.n_onCreate(Native Method)
+12-21 12:12:21.157 22400 22400 E AndroidRuntime: 	at crc6431345fe65afe8d98.AvaloniaActivity.onCreate(AvaloniaActivity.java:35)
+12-21 12:12:21.159 22400 22400 I MonoDroid: UNHANDLED EXCEPTION:
+12-21 12:12:21.162 22400 22400 I MonoDroid: Java.Lang.RuntimeException: Unable to start activity ComponentInfo{com.mycompany.mydesktopapplication/crc648a10417f6d1065e1.MainActivity}: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.162 22400 22400 I MonoDroid:  ---> Java.Lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.Android.AvaloniaActivity.set_Content(Object )
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.Android.SingleViewLifetime.set_MainView(Control )
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at MyDesktopApplication.Android.App.OnFrameworkInitializationCompleted()
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.AppBuilder.SetupUnsafe()
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.AppBuilder.Setup()
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.AppBuilder.SetupWithLifetime(IApplicationLifetime )
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.Android.AvaloniaMainActivity.InitializeAvaloniaView(Object )
+12-21 12:12:21.162 22400 22400 I MonoDroid:    at Avalonia.Android.AvaloniaActivity.OnCreate(Bundle )
+12-21 12:12:21.162 22400 22400 I MonoDroid:   --- End of managed Java.Lang.IllegalStateException stack trace ---
+12-21 12:12:21.162 22400 22400 I MonoDroid: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.162 22400 22400 I MonoDroid: 	at crc6431345fe65afe8d98.AvaloniaActivity.n_onCreate(Native Method)
+12-21 12:12:21.162 22400 22400 I MonoDroid: 	at crc6431345fe65afe8d98.AvaloniaActivity.onCreate(AvaloniaActivity.java:35)
+12-21 12:12:21.162 22400 22400 I MonoDroid:    Exception_EndOfInnerExceptionStack
+12-21 12:12:21.162 22400 22400 I MonoDroid:   --- End of managed Java.Lang.RuntimeException stack trace ---
+12-21 12:12:21.162 22400 22400 I MonoDroid: java.lang.RuntimeException: Unable to start activity ComponentInfo{com.mycompany.mydesktopapplication/crc648a10417f6d1065e1.MainActivity}: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.162 22400 22400 I MonoDroid: Caused by: java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.
+12-21 12:12:21.162 22400 22400 I MonoDroid: 	at crc6431345fe65afe8d98.AvaloniaActivity.n_onCreate(Native Method)
+12-21 12:12:21.162 22400 22400 I MonoDroid: 	at crc6431345fe65afe8d98.AvaloniaActivity.onCreate(AvaloniaActivity.java:35)
+12-21 12:12:21.164  1332  4655 D Debug   : low && ship && 3rdparty app crash, do not dump
+```
+
