@@ -35,7 +35,7 @@ public class QuestionTypeTests
             Flag = "🏳",
             Population = 1000000,
             Area = 50000,
-            GdpTotal = 100000000000,
+            Gdp = 100000000000,
             GdpPerCapita = 50000,
             PopulationDensity = 20,
             LiteracyRate = 99.5,
