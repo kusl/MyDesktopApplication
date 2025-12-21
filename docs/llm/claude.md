@@ -2178,3 +2178,23 @@ pkill -9 -f dotnet
 
 
 
+I ran it all and it looked good but now I get this 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh build-android.sh 
+Building Android project...
+
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android failed with 3 error(s) (1.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(8,20): error CS0104: 'Application' is an ambiguous reference between 'Android.App.Application' and 'Avalonia.Application'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(10,13): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MainActivity.cs(14,14): error CS0311: The type 'MyDesktopApplication.Android.App' cannot be used as type parameter 'TApp' in the generic type or method 'AvaloniaMainActivity<TApp>'. There is no implicit reference conversion from 'MyDesktopApplication.Android.App' to 'Avalonia.Application'.
+
+Build failed with 3 error(s) in 2.4s
+
+real	0m2.623s
+user	0m1.779s
+sys	0m0.323s
+
+
+
