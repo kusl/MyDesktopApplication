@@ -2828,3 +2828,33 @@ and please write a full shell script to fix any defects if you have enough infor
 12-21 12:12:21.164  1332  4655 D Debug   : low && ship && 3rdparty app crash, do not dump
 ```
 
+Found it! The error is clear:
+
+> **`java.lang.IllegalStateException: You need to use a Theme.AppCompat theme (or descendant) with this activity.`**
+
+The problem is in `styles.xml` - we're using `@android:style/Theme.Material.Light.NoActionBar` but Avalonia requires an **AppCompat** theme.```bash
+chmod +x fix-android-theme-crash.sh && ./fix-android-theme-crash.sh
+```
+
+Then rebuild and push:
+
+```bash
+dotnet build src/MyDesktopApplication.Android
+git add -A && git commit -m "Fix Android crash: use AppCompat theme" && git push && git tag -a v1.0.2 -m "Fix Android AppCompat theme crash" && git push origin v1.0.2
+```
+
+**The problem:** We used `@android:style/Theme.Material.Light.NoActionBar` but Avalonia's `AvaloniaActivity` inherits from `AppCompatActivity`, which **requires** an AppCompat theme.
+
+**The fix:** Changed to `Theme.AppCompat.Light.NoActionBar`.
+
+After the new APK is built, reinstall it on your tablet via Obtainium (it should detect the update) and the app should launch properly!
+
+
+
+
+
+
+
+
+
+
