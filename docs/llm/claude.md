@@ -3998,3 +3998,122 @@ git push --tags
 
 
 
+write a prompt to task claude to write a script that comprehensively fixes the following errors as well as any other errors that may come up 
+Build succeeded in 1.9s
+Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+Build failed with 3 error(s) in 3.7s
+✗ Build failed - check errors above
+real    0m6.229s
+user    0m3.881s
+sys    0m0.955s
+
+
+
+
+To ensure Claude fixes the specific compiler errors while also adhering to your strict architectural and licensing constraints, use the following prompt. It combines the technical debugging needs with your requirements for a "free-of-cost," unified codebase.
+
+---
+
+### **Prompt for Claude**
+
+**Context:**
+I am developing an Avalonia UI application using .NET 10. The project uses a single `.slnx` solution and Central Package Management. I have a build failure in the `Infrastructure` project due to a mismatch between my `AppDbContext` and `GameStateRepository`. I also need to enforce a "free-of-cost" policy (no paid NuGet packages) and remove project silos.
+
+**Task:**
+Write a robust Bash script (`fix-project-properly.sh`) that comprehensively fixes the current build errors and aligns the project with my architectural directives.
+
+**1. Fix Compiler Errors in `Infrastructure`:**
+
+* The build is failing because `GameStateRepository.cs` references `GameStates` on `AppDbContext`, but the definition is missing.
+* The script should use `sed` or a similar tool to ensure `src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs` contains the necessary `DbSet<GameState> GameStates { get; set; }` property.
+* Ensure all necessary `using` directives for `GameState` (likely from the `.Core` project) are present.
+
+**2. Enforce "Free of Cost" Licensing:**
+
+* **Remove FluentAssertions:** Scan all project files and the `Directory.Packages.props`. Remove any reference to `FluentAssertions` (due to the version 8+ license change).
+* **Standardize Testing:** Replace any removed assertions with `Shouldly`. Ensure `NSubstitute` and `xunit` are the only other testing dependencies.
+* **Update Central Package Management:** Ensure `Directory.Packages.props` is the single source of truth for versions.
+
+**3. Un-Silo and Consolidate:**
+
+* **Delete redundant files:** Remove `MyDesktopApplication.Desktop.slnx` and all siloed scripts (e.g., `build-desktop.sh`, `fix-android-build.sh`, etc.).
+* **Unified Build Prep:** The script must include a "cleanup" phase that runs `pkill -f aapt2` and `pkill -f VBCSCompiler` to prevent the environment hangs shown in my logs.
+
+**4. Proper Migration Logic:**
+
+* Create/Update a `migrate.sh` file that uses `src/MyDesktopApplication.Infrastructure` as the target and `src/MyDesktopApplication.Desktop` as the startup project.
+* It should facilitate adding migrations and updating the local SQLite/PostgreSQL database.
+
+**5. Verification:**
+
+* The script must finish by running a clean `dotnet build` on the primary `MyDesktopApplication.slnx` file.
+* If the build fails, the script should exit with an error code.
+
+**Constraint:**
+Do not provide a "band-aid" fix. If the build is slow or problematic for one platform (like Android), the fix must be applied to the unified solution so the whole team benefits from the resolution.
+
+---
+
+### Why this prompt is efficient:
+
+* **Targeted Debugging:** It explicitly identifies the file paths and missing property (`GameStates`) causing the failure.
+* **Policy Enforcement:** It forbids "free-for-non-commercial" packages like Fluent Assertions 8.0, protecting your "free of cost" requirement.
+* **Operational Health:** It addresses the hidden "hang" issues found in your `output.txt` by killing background compiler processes.
+* **Unified Logic:** It forces Claude to look at the project as a single entity rather than treating Android and Desktop as separate problems.
+
+
+
+
+
+
+
+
+
+
+### **Prompt for Claude**
+
+**Context:**
+I am developing an Avalonia UI application using .NET 10. The project uses a single `.slnx` solution and Central Package Management. I have a build failure in the `Infrastructure` project due to a mismatch between my `AppDbContext` and `GameStateRepository`. I also need to enforce a "free-of-cost" policy (no paid NuGet packages) and remove project silos.
+
+**Task:**
+Write a robust Bash script (`fix-project-properly.sh`) that comprehensively fixes the current build errors and aligns the project with my architectural directives.
+
+**1. Fix Compiler Errors in `Infrastructure`:**
+
+* The build is failing because `GameStateRepository.cs` references `GameStates` on `AppDbContext`, but the definition is missing.
+* The script should use `sed` or a similar tool to ensure `src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs` contains the necessary `DbSet<GameState> GameStates { get; set; }` property.
+* Ensure all necessary `using` directives for `GameState` (likely from the `.Core` project) are present.
+
+**2. Enforce "Free of Cost" Licensing:**
+
+* **Remove FluentAssertions:** Scan all project files and the `Directory.Packages.props`. Remove any reference to `FluentAssertions` (due to the version 8+ license change).
+* **Standardize Testing:** Replace any removed assertions with `Shouldly`. Ensure `NSubstitute` and `xunit` are the only other testing dependencies.
+* **Update Central Package Management:** Ensure `Directory.Packages.props` is the single source of truth for versions.
+
+**3. Un-Silo and Consolidate:**
+
+* **Delete redundant files:** Remove `MyDesktopApplication.Desktop.slnx` and all siloed scripts (e.g., `build-desktop.sh`, `fix-android-build.sh`, etc.).
+* **Unified Build Prep:** The script must include a "cleanup" phase that runs `pkill -f aapt2` and `pkill -f VBCSCompiler` to prevent the environment hangs shown in my logs.
+
+**4. Proper Migration Logic:**
+
+* Create/Update a `migrate.sh` file that uses `src/MyDesktopApplication.Infrastructure` as the target and `src/MyDesktopApplication.Desktop` as the startup project.
+* It should facilitate adding migrations and updating the local SQLite/PostgreSQL database.
+
+**5. Verification:**
+
+* The script must finish by running a clean `dotnet build` on the primary `MyDesktopApplication.slnx` file.
+* If the build fails, the script should exit with an error code.
+
+**Constraint:**
+Do not provide a "band-aid" fix. If the build is slow or problematic for one platform (like Android), the fix must be applied to the unified solution so the whole team benefits from the resolution.
+
+---

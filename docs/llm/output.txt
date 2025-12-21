@@ -8910,3 +8910,706 @@ real	0m6.229s
 user	0m3.881s
 sys	0m0.955s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+write a prompt to task claude to write a script that comprehensively fixes the following errors as well as any other errors that may come up 
+Build succeeded in 1.9s
+Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+Build failed with 3 error(s) in 3.7s
+✗ Build failed - check errors above
+real    0m6.229s
+user    0m3.881s
+sys    0m0.955s
+
+
+
+
+To ensure Claude fixes the specific compiler errors while also adhering to your strict architectural and licensing constraints, use the following prompt. It combines the technical debugging needs with your requirements for a "free-of-cost," unified codebase.
+
+---
+
+### **Prompt for Claude**
+
+**Context:**
+I am developing an Avalonia UI application using .NET 10. The project uses a single `.slnx` solution and Central Package Management. I have a build failure in the `Infrastructure` project due to a mismatch between my `AppDbContext` and `GameStateRepository`. I also need to enforce a "free-of-cost" policy (no paid NuGet packages) and remove project silos.
+
+**Task:**
+Write a robust Bash script (`fix-project-properly.sh`) that comprehensively fixes the current build errors and aligns the project with my architectural directives.
+
+**1. Fix Compiler Errors in `Infrastructure`:**
+
+* The build is failing because `GameStateRepository.cs` references `GameStates` on `AppDbContext`, but the definition is missing.
+* The script should use `sed` or a similar tool to ensure `src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs` contains the necessary `DbSet<GameState> GameStates { get; set; }` property.
+* Ensure all necessary `using` directives for `GameState` (likely from the `.Core` project) are present.
+
+**2. Enforce "Free of Cost" Licensing:**
+
+* **Remove FluentAssertions:** Scan all project files and the `Directory.Packages.props`. Remove any reference to `FluentAssertions` (due to the version 8+ license change).
+* **Standardize Testing:** Replace any removed assertions with `Shouldly`. Ensure `NSubstitute` and `xunit` are the only other testing dependencies.
+* **Update Central Package Management:** Ensure `Directory.Packages.props` is the single source of truth for versions.
+
+**3. Un-Silo and Consolidate:**
+
+* **Delete redundant files:** Remove `MyDesktopApplication.Desktop.slnx` and all siloed scripts (e.g., `build-desktop.sh`, `fix-android-build.sh`, etc.).
+* **Unified Build Prep:** The script must include a "cleanup" phase that runs `pkill -f aapt2` and `pkill -f VBCSCompiler` to prevent the environment hangs shown in my logs.
+
+**4. Proper Migration Logic:**
+
+* Create/Update a `migrate.sh` file that uses `src/MyDesktopApplication.Infrastructure` as the target and `src/MyDesktopApplication.Desktop` as the startup project.
+* It should facilitate adding migrations and updating the local SQLite/PostgreSQL database.
+
+**5. Verification:**
+
+* The script must finish by running a clean `dotnet build` on the primary `MyDesktopApplication.slnx` file.
+* If the build fails, the script should exit with an error code.
+
+**Constraint:**
+Do not provide a "band-aid" fix. If the build is slow or problematic for one platform (like Android), the fix must be applied to the unified solution so the whole team benefits from the resolution.
+
+---
+
+### Why this prompt is efficient:
+
+* **Targeted Debugging:** It explicitly identifies the file paths and missing property (`GameStates`) causing the failure.
+* **Policy Enforcement:** It forbids "free-for-non-commercial" packages like Fluent Assertions 8.0, protecting your "free of cost" requirement.
+* **Operational Health:** It addresses the hidden "hang" issues found in your `output.txt` by killing background compiler processes.
+* **Unified Logic:** It forces Claude to look at the project as a single entity rather than treating Android and Desktop as separate problems.
+
+
+
+
+
+
+
+
+
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 72 files to export
+
+Processing (1/72): add-migration.sh
+Processing (2/72): build-desktop.sh
+Processing (3/72): cleanup-and-rebuild.sh
+Processing (4/72): cleanup-and-standardize.sh
+Processing (5/72): Directory.Build.props
+Processing (6/72): Directory.Packages.props
+Processing (7/72): export.sh
+Processing (8/72): fix-build-and-migratons.sh
+Processing (9/72): fix-build-errors.sh
+Processing (10/72): .gitattributes
+Processing (11/72): .github/dependabot.yml
+Processing (12/72): .github/workflows/build.yml
+Processing (13/72): .github/workflows/ci.yml
+Processing (14/72): .github/workflows/release.yml
+Processing (15/72): .gitignore
+Processing (16/72): MyDesktopApplication.Desktop.slnx
+Processing (17/72): MyDesktopApplication.slnx
+Processing (18/72): README.md
+Processing (19/72): run-tests.sh
+Processing (20/72): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (21/72): src/MyDesktopApplication.Android/App.axaml
+Processing (22/72): src/MyDesktopApplication.Android/App.cs
+Processing (23/72): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (24/72): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (25/72): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (26/72): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (27/72): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (28/72): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (29/72): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (30/72): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (31/72): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (32/72): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (33/72): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (34/72): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (35/72): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (36/72): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (37/72): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (38/72): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (39/72): src/MyDesktopApplication.Desktop/App.axaml
+Processing (40/72): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (41/72): src/MyDesktopApplication.Desktop/app.manifest
+Processing (42/72): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (43/72): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (44/72): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (45/72): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (46/72): src/MyDesktopApplication.Desktop/Program.cs
+Processing (47/72): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (48/72): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (49/72): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (50/72): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (51/72): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (52/72): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (53/72): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/72): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/72): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (56/72): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (57/72): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (58/72): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (59/72): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (60/72): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (61/72): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (62/72): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (63/72): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (64/72): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (65/72): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (66/72): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (67/72): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (68/72): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (69/72): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (70/72): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (71/72): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (72/72): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 72
+Files skipped:  0
+Output size:    378.88 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.842s
+user	0m0.393s
+sys	0m0.648s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh cleanup-and-standardize.sh 
+==============================================
+  Cleanup and Standardize Project
+==============================================
+
+This script will:
+  1. Consolidate to single MyDesktopApplication.slnx
+  2. Kill stuck aapt2/VBCSCompiler processes
+  3. Update GitHub Actions to latest versions
+  4. Create robust add-migration.sh
+  5. Remove redundant fix-* scripts
+
+Step 1: Killing stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+✓ Processes cleaned
+
+Step 2: Consolidating solution files...
+✓ Removed MyDesktopApplication.Desktop.slnx
+
+Step 3: Creating unified MyDesktopApplication.slnx...
+✓ Created unified solution with all 8 projects
+
+Step 4: Updating Directory.Build.props...
+✓ Directory.Build.props updated with aapt2 fixes
+
+Step 5: Creating robust add-migration.sh...
+✓ Created robust add-migration.sh
+
+Step 6: Updating GitHub Actions to latest versions...
+✓ Created ci.yml
+✓ Created build.yml
+✓ Created release.yml
+✓ Updated dependabot.yml
+
+Step 7: Removing redundant scripts...
+  Removed: fix-build-errors.sh
+  Removed: fix-build-and-migratons.sh
+  Removed: build-desktop.sh
+  Removed: run-tests.sh
+  Removed: cleanup-and-rebuild.sh
+✓ Redundant scripts removed
+
+Essential scripts preserved:
+  - export.sh (LLM analysis)
+  - add-migration.sh (EF Core migrations)
+
+Step 8: Cleaning build artifacts...
+✓ Build artifacts cleaned
+
+Step 9: Testing build (Desktop only)...
+Restore complete (0.9s)
+
+Build succeeded in 1.2s
+Restore complete (0.4s)
+
+Build succeeded in 0.7s
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+
+real	0m6.797s
+user	0m4.314s
+sys	0m0.920s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 66 files to export
+
+Processing (1/66): add-migration.sh
+Processing (2/66): cleanup-and-standardize.sh
+Processing (3/66): Directory.Build.props
+Processing (4/66): Directory.Packages.props
+Processing (5/66): export.sh
+Processing (6/66): .gitattributes
+Processing (7/66): .github/dependabot.yml
+Processing (8/66): .github/workflows/build.yml
+Processing (9/66): .github/workflows/ci.yml
+Processing (10/66): .github/workflows/release.yml
+Processing (11/66): .gitignore
+Processing (12/66): MyDesktopApplication.slnx
+Processing (13/66): README.md
+Processing (14/66): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (15/66): src/MyDesktopApplication.Android/App.axaml
+Processing (16/66): src/MyDesktopApplication.Android/App.cs
+Processing (17/66): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (18/66): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (19/66): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (20/66): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (21/66): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (22/66): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (23/66): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (24/66): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (25/66): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (26/66): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (27/66): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (28/66): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (29/66): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (30/66): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (31/66): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (32/66): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (33/66): src/MyDesktopApplication.Desktop/App.axaml
+Processing (34/66): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (35/66): src/MyDesktopApplication.Desktop/app.manifest
+Processing (36/66): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (37/66): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (38/66): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (39/66): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (40/66): src/MyDesktopApplication.Desktop/Program.cs
+Processing (41/66): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (42/66): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (43/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (44/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (45/66): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (46/66): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (47/66): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (48/66): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (49/66): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (50/66): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (51/66): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (52/66): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (53/66): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (54/66): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (55/66): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (56/66): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (57/66): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (58/66): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (59/66): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (60/66): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (61/66): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (62/66): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/66): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/66): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/66): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/66): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 66
+Files skipped:  0
+Output size:    340.99 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.772s
+user	0m0.392s
+sys	0m0.558s
+
+Build succeeded in 0.4s
+
+real	0m0.583s
+user	0m0.667s
+sys	0m0.153s
+Restore complete (0.8s)
+
+Build succeeded in 0.9s
+
+real	0m1.062s
+user	0m1.401s
+sys	0m0.271s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 failed with 1 error(s) (0.0s)
+    /usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+  MyDesktopApplication.UI.Tests net10.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+  MyDesktopApplication.Android net10.0-android failed with 1 error(s) (0.2s)
+    /usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+
+Build failed with 6 error(s) in 1.4s
+
+real	0m1.548s
+user	0m1.621s
+sys	0m0.390s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 failed with 1 error(s) (0.0s)
+    /usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+  MyDesktopApplication.UI.Tests net10.0 failed with 1 error(s) (0.0s)
+    /usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+
+Test summary: total: 16, failed: 0, succeeded: 16, skipped: 0, duration: 0.8s
+Build failed with 5 error(s) in 1.8s
+
+real	0m1.940s
+user	0m1.468s
+sys	0m0.384s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): add-migration.sh
+Processing (2/67): cleanup-and-standardize.sh
+Processing (3/67): Directory.Build.props
+Processing (4/67): Directory.Packages.props
+Processing (5/67): export.sh
+Processing (6/67): .gitattributes
+Processing (7/67): .github/dependabot.yml
+Processing (8/67): .github/workflows/build.yml
+Processing (9/67): .github/workflows/ci.yml
+Processing (10/67): .github/workflows/release.yml
+Processing (11/67): .gitignore
+Processing (12/67): init-project.sh
+Processing (13/67): MyDesktopApplication.slnx
+Processing (14/67): README.md
+Processing (15/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (16/67): src/MyDesktopApplication.Android/App.axaml
+Processing (17/67): src/MyDesktopApplication.Android/App.cs
+Processing (18/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (19/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (20/67): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (21/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (22/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (23/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (24/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (25/67): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (26/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (27/67): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (28/67): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (29/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (30/67): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (31/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (32/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (33/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (34/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (35/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (37/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (38/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (39/67): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (40/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (42/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (44/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (45/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (46/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (47/67): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (48/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (49/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (50/67): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (51/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (53/67): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (54/67): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (55/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (56/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (57/67): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (58/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (60/67): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (63/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (65/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (67/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    379.64 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.791s
+user	0m0.370s
+sys	0m0.607s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh init-project.sh 
+==============================================
+  MyDesktopApplication: Project Initialization
+==============================================
+
+This script will:
+  1. Kill stuck build processes (aapt2, VBCSCompiler)
+  2. Remove redundant solution files and scripts
+  3. Create unified MyDesktopApplication.slnx
+  4. Update packages to free/open-source alternatives
+  5. Fix all source code issues
+  6. Update GitHub Actions to latest versions
+  7. Create robust migration script
+  8. Build and test everything
+
+[Step 1/8] Killing stuck build processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+  ✓ Processes cleaned
+[Step 2/8] Removing redundant scripts and files...
+  Removed: MyDesktopApplication.Desktop.slnx
+  Removed: cleanup-and-standardize.sh
+  Removed: root appsettings.json (duplicate)
+  ✓ Cleanup complete (export.sh preserved)
+[Step 3/8] Creating unified solution file...
+  ✓ Created unified MyDesktopApplication.slnx with all 8 projects
+[Step 4/8] Updating packages to free/open-source alternatives...
+  ✓ Updated Directory.Packages.props
+    - Removed: FluentAssertions (commercial license)
+    - Removed: Moq (compromised package)
+    - Removed: Avalonia.ReactiveUI (deprecated)
+    - Added: Shouldly (BSD-3-Clause, 100% free)
+    - Added: NSubstitute (BSD-3-Clause, 100% free)
+[Step 5/8] Updating build configuration...
+  ✓ Updated Directory.Build.props with aapt2 optimizations
+[Step 6/8] Fixing source code files...
+  ✓ Fixed TodoItem.cs (added CompletedAt, Priority)
+  ✓ Fixed ViewModelBase.cs (added ClearError/SetError)
+  ✓ Updated TodoItemTests.cs (using Shouldly)
+  ✓ Updated Core.Tests.csproj (using Shouldly)
+  ✓ Updated Integration.Tests.csproj (using Shouldly)
+  ✓ Updated UI.Tests.csproj (using Shouldly)
+[Step 7/8] Updating GitHub Actions to latest versions...
+  ✓ Created ci.yml (build & test on every push/PR)
+  ✓ Created build.yml (pre-releases on push to main)
+  ✓ Created release.yml (stable releases on git tags)
+  ✓ Updated dependabot.yml
+[Step 8/8] Creating migration script...
+  ✓ Created migrate.sh
+
+==============================================
+  Building and Testing
+==============================================
+Cleaning build artifacts...
+Restoring packages...
+Restore complete (1.7s)
+
+Build succeeded in 1.9s
+Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build failed with 3 error(s) in 3.7s
+✗ Build failed - check errors above
+
+real	0m6.229s
+user	0m3.881s
+sys	0m0.955s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ^C
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): add-migration.sh
+Processing (2/67): Directory.Build.props
+Processing (3/67): Directory.Packages.props
+Processing (4/67): export.sh
+Processing (5/67): .gitattributes
+Processing (6/67): .github/dependabot.yml
+Processing (7/67): .github/workflows/build.yml
+Processing (8/67): .github/workflows/ci.yml
+Processing (9/67): .github/workflows/release.yml
+Processing (10/67): .gitignore
+Processing (11/67): init-project.sh
+Processing (12/67): migrate.sh
+Processing (13/67): MyDesktopApplication.slnx
+Processing (14/67): README.md
+Processing (15/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (16/67): src/MyDesktopApplication.Android/App.axaml
+Processing (17/67): src/MyDesktopApplication.Android/App.cs
+Processing (18/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (19/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (20/67): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (21/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (22/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (23/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (24/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (25/67): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (26/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (27/67): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (28/67): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (29/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (30/67): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (31/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (32/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (33/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (34/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (35/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (37/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (38/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (39/67): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (40/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (42/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (44/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (45/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (46/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (47/67): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (48/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (49/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (50/67): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (51/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (53/67): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (54/67): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (55/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (56/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (57/67): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (58/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (60/67): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (63/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (65/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (67/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    358.29 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.790s
+user	0m0.377s
+sys	0m0.600s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
