@@ -3089,3 +3089,52 @@ All packages are now **100% free** under permissive licenses:
 
 
 this is amazing work. I have some new errors now. I have updated one package from 10.0.0 to 10.0.1 to fix an error. You can see the details in output.txt although It is not necessary. What I would like to do is for you to review the errors below and give me a script to fix themse correctly. The dump and output are uptodate so you can take a look at them if you would like. 
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 2 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(27,14): error CS1061: 'TodoItem' does not contain a definition for 'CompletedAt' and no accessible extension method 'CompletedAt' accepting a first argument of type 'TodoItem' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(38,14): error CS1061: 'TodoItem' does not contain a definition for 'CompletedAt' and no accessible extension method 'CompletedAt' accepting a first argument of type 'TodoItem' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) (0.6s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+
+Build failed with 4 error(s) in 3.4s
+
+real	0m3.546s
+user	0m1.691s
+sys	0m0.328s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 2 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(27,14): error CS1061: 'TodoItem' does not contain a definition for 'CompletedAt' and no accessible extension method 'CompletedAt' accepting a first argument of type 'TodoItem' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(38,14): error CS1061: 'TodoItem' does not contain a definition for 'CompletedAt' and no accessible extension method 'CompletedAt' accepting a first argument of type 'TodoItem' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.61]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 3, failed: 0, succeeded: 3, skipped: 0, duration: 1.2s
+Build failed with 4 error(s) in 2.0s
+
+real	0m2.160s
+user	0m1.398s
+sys	0m0.292s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
