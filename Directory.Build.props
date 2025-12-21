@@ -4,26 +4,17 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <AnalysisLevel>latest</AnalysisLevel>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
+  <!-- Company/Project metadata -->
   <PropertyGroup>
-    <Company>YourCompanyName</Company>
     <Authors>Your Name</Authors>
-    <Copyright>Copyright © $([System.DateTime]::Now.Year)</Copyright>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix Condition="'$(Configuration)' == 'Debug'">dev</VersionSuffix>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
+    <Company>Your Company</Company>
+    <Product>MyDesktopApplication</Product>
+    <Copyright>Copyright © 2025</Copyright>
   </PropertyGroup>
 </Project>

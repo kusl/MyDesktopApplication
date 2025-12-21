@@ -283,4 +283,67 @@ Build succeeded in 0.7s
 real	0m0.858s
 user	0m0.934s
 sys	0m0.195s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-android-build.sh 
+==============================================
+  Fixing Android Build Configuration
+==============================================
+
+Step 1: Cleaning up stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+✓ Processes cleaned
+
+Step 2: Cleaning build artifacts...
+✓ Build artifacts cleaned
+
+Step 3: Updating Directory.Build.props...
+✓ Directory.Build.props updated
+
+Step 4: Checking solution configuration...
+✓ Created desktop-only solution: MyDesktopApplication.Desktop.slnx
+
+Step 5: Updating Android project configuration...
+✓ Android csproj updated with aapt2 workarounds
+
+Step 6: Creating Android source files...
+✓ Android source files created
+
+Step 7: Creating Android resources...
+✓ Android resources created
+
+Step 8: Creating helper scripts...
+✓ Helper scripts created
+
+Step 9: Testing desktop build...
+✓ Desktop build succeeded!
+
+Step 10: Running tests...
+✓ All tests passed!
+
+==============================================
+  Setup Complete!
+==============================================
+
+Quick commands:
+  ./build-desktop.sh    - Build desktop projects (fast)
+  ./build-android.sh    - Build Android project
+  ./run-tests.sh        - Run all tests
+  dotnet run --project src/MyDesktopApplication.Desktop
+
+The Android build now uses:
+  - Single-threaded aapt2 (avoids daemon deadlocks)
+  - --no-crunch flag (faster resource compilation)
+  - Interpreted mode for debug builds (faster startup)
+
+If Android still hangs, try:
+  pkill -f aapt2 && ./build-android.sh
+
+
+real	0m8.563s
+user	0m4.132s
+sys	0m0.850s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+

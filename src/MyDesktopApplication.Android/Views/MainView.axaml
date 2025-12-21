@@ -1,26 +1,21 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="MyDesktopApplication.Android.Views.MainView">
-    
     <StackPanel Margin="20" Spacing="20" VerticalAlignment="Center">
-        <TextBlock Text="Welcome to Avalonia on Android!"
-                   FontSize="24"
+        <TextBlock Text="MyDesktopApplication"
+                   FontSize="28"
                    FontWeight="Bold"
                    HorizontalAlignment="Center" />
         
-        <TextBlock Text="This is a cross-platform .NET application."
-                   FontSize="16"
+        <TextBlock Text="Running on Android!"
+                   FontSize="18"
                    HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+                   Foreground="Gray" />
         
-        <Button Content="Click Me!"
+        <Button x:Name="CounterButton"
+                Content="Click Me: 0"
                 HorizontalAlignment="Center"
                 Padding="20,10"
-                Click="OnButtonClick" />
-        
-        <TextBlock x:Name="CounterText"
-                   Text="Counter: 0"
-                   FontSize="18"
-                   HorizontalAlignment="Center" />
+                Click="OnCounterClick" />
     </StackPanel>
 </UserControl>

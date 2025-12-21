@@ -1,20 +1,31 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
 
 namespace MyDesktopApplication.Android.Views;
 
 public partial class MainView : UserControl
 {
-    private int _counter = 0;
+    private int _counter;
+    private Button? _counterButton;
 
     public MainView()
     {
         InitializeComponent();
+        _counterButton = this.FindControl<Button>("CounterButton");
     }
 
-    private void OnButtonClick(object? sender, RoutedEventArgs e)
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void OnCounterClick(object? sender, RoutedEventArgs e)
     {
         _counter++;
-        CounterText.Text = $"Counter: {_counter}";
+        if (_counterButton != null)
+        {
+            _counterButton.Content = $"Click Me: {_counter}";
+        }
     }
 }

@@ -14,9 +14,9 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewLifetime.MainView = new MainView();
+            singleViewPlatform.MainView = new MainView();
         }
 
         base.OnFrameworkInitializationCompleted();

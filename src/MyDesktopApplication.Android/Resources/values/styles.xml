@@ -3,7 +3,6 @@
     <style name="MyTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
     </style>
     <style name="MyTheme.NoActionBar" parent="@android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/background_light</item>
     </style>
 </resources>
