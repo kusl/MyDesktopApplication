@@ -30,4 +30,7 @@
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" />
+  </ItemGroup>
 </Project>
