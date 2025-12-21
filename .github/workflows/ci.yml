@@ -13,46 +13,53 @@ env:
 
 jobs:
   build-and-test:
-    name: Build & Test (${{ matrix.os }})
+    name: Build & Test
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
+      
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
-      - name: Restore (Desktop only)
+      
+      - name: Kill stuck processes
+        if: runner.os != 'Windows'
         run: |
-          dotnet restore src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-          dotnet restore src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-          dotnet restore src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-          dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-          dotnet restore tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-      - name: Build
+          pkill -f aapt2 || true
+          pkill -f VBCSCompiler || true
+        shell: bash
+      
+      - name: Restore (Desktop projects only)
         run: |
-          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj --no-restore --configuration Release
-
+          dotnet restore src/MyDesktopApplication.Core
+          dotnet restore src/MyDesktopApplication.Infrastructure
+          dotnet restore src/MyDesktopApplication.Shared
+          dotnet restore src/MyDesktopApplication.Desktop
+          dotnet restore tests/MyDesktopApplication.Core.Tests
+          dotnet restore tests/MyDesktopApplication.Integration.Tests
+          dotnet restore tests/MyDesktopApplication.UI.Tests
+      
+      - name: Build (Desktop projects only)
+        run: |
+          dotnet build src/MyDesktopApplication.Desktop --no-restore -c Release
+          dotnet build tests/MyDesktopApplication.Core.Tests --no-restore -c Release
+          dotnet build tests/MyDesktopApplication.Integration.Tests --no-restore -c Release
+          dotnet build tests/MyDesktopApplication.UI.Tests --no-restore -c Release
+      
       - name: Test
-        run: |
-          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj --no-restore --configuration Release --verbosity normal
-          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj --no-restore --configuration Release --verbosity normal
-          dotnet test tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj --no-restore --configuration Release --verbosity normal
+        run: dotnet test tests/ --no-build -c Release --verbosity normal

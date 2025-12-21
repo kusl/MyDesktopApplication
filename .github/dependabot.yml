@@ -1,6 +1,5 @@
 version: 2
 updates:
-  # NuGet packages
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
@@ -10,17 +9,20 @@ updates:
       avalonia:
         patterns:
           - "Avalonia*"
+      microsoft:
+        patterns:
+          - "Microsoft.*"
       testing:
         patterns:
           - "xunit*"
+          - "FluentAssertions*"
           - "NSubstitute*"
-          - "Bogus*"
-      ef-core:
-        patterns:
-          - "Microsoft.EntityFrameworkCore*"
-          - "Npgsql*"
+          - "Bogus"
+          - "coverlet*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

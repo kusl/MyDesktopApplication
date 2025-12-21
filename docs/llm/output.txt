@@ -8505,6 +8505,71 @@ File types included:
 real	0m0.842s
 user	0m0.393s
 sys	0m0.648s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh cleanup-and-standardize.sh 
+==============================================
+  Cleanup and Standardize Project
+==============================================
+
+This script will:
+  1. Consolidate to single MyDesktopApplication.slnx
+  2. Kill stuck aapt2/VBCSCompiler processes
+  3. Update GitHub Actions to latest versions
+  4. Create robust add-migration.sh
+  5. Remove redundant fix-* scripts
+
+Step 1: Killing stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+✓ Processes cleaned
+
+Step 2: Consolidating solution files...
+✓ Removed MyDesktopApplication.Desktop.slnx
+
+Step 3: Creating unified MyDesktopApplication.slnx...
+✓ Created unified solution with all 8 projects
+
+Step 4: Updating Directory.Build.props...
+✓ Directory.Build.props updated with aapt2 fixes
+
+Step 5: Creating robust add-migration.sh...
+✓ Created robust add-migration.sh
+
+Step 6: Updating GitHub Actions to latest versions...
+✓ Created ci.yml
+✓ Created build.yml
+✓ Created release.yml
+✓ Updated dependabot.yml
+
+Step 7: Removing redundant scripts...
+  Removed: fix-build-errors.sh
+  Removed: fix-build-and-migratons.sh
+  Removed: build-desktop.sh
+  Removed: run-tests.sh
+  Removed: cleanup-and-rebuild.sh
+✓ Redundant scripts removed
+
+Essential scripts preserved:
+  - export.sh (LLM analysis)
+  - add-migration.sh (EF Core migrations)
+
+Step 8: Cleaning build artifacts...
+✓ Build artifacts cleaned
+
+Step 9: Testing build (Desktop only)...
+Restore complete (0.9s)
+
+Build succeeded in 1.2s
+Restore complete (0.4s)
+
+Build succeeded in 0.7s
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+/usr/lib64/dotnet/sdk/10.0.101/Microsoft.Common.CurrentVersion.targets(2137,5): error MSB4181: The "MSBuild" task returned false but did not log an error.
+
+real	0m6.797s
+user	0m4.314s
+sys	0m0.920s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
-
-

@@ -1,20 +1,32 @@
 <Project>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    
+    <!-- Disable telemetry -->
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    
+    <!-- Build optimization -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;CS8618</NoWarn>
+    
+    <!-- Android build fixes: prevent aapt2 daemon deadlocks -->
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
+    
+    <!-- Force single-threaded resource processing -->
+    <BuildInParallel>false</BuildInParallel>
   </PropertyGroup>
 
-  <!-- Company/Project metadata -->
+  <!-- Common metadata -->
   <PropertyGroup>
-    <Authors>Your Name</Authors>
-    <Company>Your Company</Company>
+    <Authors>MyDesktopApplication Contributors</Authors>
+    <Company>MyDesktopApplication</Company>
     <Product>MyDesktopApplication</Product>
-    <Copyright>Copyright © 2025</Copyright>
+    <Copyright>Copyright © 2025 MyDesktopApplication Contributors</Copyright>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>

@@ -3,6 +3,9 @@ name: Build
 on:
   push:
     branches: [master, main, develop]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -10,7 +13,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  # Desktop builds for all platforms
+  # Desktop builds
   build-desktop:
     name: Build Desktop (${{ matrix.rid }})
     runs-on: ${{ matrix.os }}
@@ -36,160 +39,155 @@ jobs:
           - os: macos-latest
             rid: osx-arm64
             artifact: MyDesktopApplication-osx-arm64
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
+      
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
+      
       - name: Publish
-        shell: bash
         run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            --output ./publish/${{ matrix.artifact }}
-
+          dotnet publish src/MyDesktopApplication.Desktop -c Release -r ${{ matrix.rid }} --self-contained -o publish/${{ matrix.artifact }}
+      
+      - name: Create archive (Windows)
+        if: startsWith(matrix.rid, 'win')
+        run: Compress-Archive -Path publish/${{ matrix.artifact }}/* -DestinationPath ${{ matrix.artifact }}.zip
+        shell: pwsh
+      
+      - name: Create archive (Linux/macOS)
+        if: "!startsWith(matrix.rid, 'win')"
+        run: tar -czvf ${{ matrix.artifact }}.tar.gz -C publish ${{ matrix.artifact }}
+        shell: bash
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact }}
-          path: ./publish/${{ matrix.artifact }}
+          path: |
+            ${{ matrix.artifact }}.zip
+            ${{ matrix.artifact }}.tar.gz
+          if-no-files-found: ignore
           retention-days: 7
 
   # Android build
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
+      
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
-
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
       - name: Install Android workload
         run: dotnet workload install android
-
+      
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-android-nuget-
-
-      - name: Build Android APK
+      
+      - name: Kill stuck processes
         run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            --output ./publish/android
-
-      - name: Upload Android artifact
+          pkill -f aapt2 || true
+          pkill -f VBCSCompiler || true
+      
+      - name: Build APK
+        run: |
+          dotnet publish src/MyDesktopApplication.Android -c Release -o publish/android \
+            -p:AndroidUseAapt2Daemon=false \
+            -p:BuildInParallel=false
+      
+      - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: MyDesktopApplication-android
-          path: ./publish/android/*.apk
-          retention-days: 7
+          path: publish/android/*.apk
           if-no-files-found: warn
+          retention-days: 7
 
-  # Create pre-release with all artifacts
-  pre-release:
+  # Create dev pre-release
+  create-prerelease:
     name: Create Pre-release
     needs: [build-desktop, build-android]
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
       - name: Download all artifacts
         uses: actions/download-artifact@v7
         with:
-          path: ./artifacts
+          path: artifacts
           merge-multiple: false
-
-      - name: Create archives
-        run: |
-          mkdir -p ./release
-          cd ./artifacts
-          
-          # Create zip for Windows
-          for dir in MyDesktopApplication-win-*; do
-            if [ -d "$dir" ]; then
-              zip -r "../release/${dir}.zip" "$dir"
-            fi
-          done
-          
-          # Create tar.gz for Linux/macOS
-          for dir in MyDesktopApplication-linux-* MyDesktopApplication-osx-*; do
-            if [ -d "$dir" ]; then
-              tar -czvf "../release/${dir}.tar.gz" "$dir"
-            fi
-          done
-          
-          # Copy Android APK
-          if [ -d "MyDesktopApplication-android" ]; then
-            cp MyDesktopApplication-android/*.apk ../release/ 2>/dev/null || true
-          fi
-
+      
+      - name: List artifacts
+        run: find artifacts -type f
+      
       - name: Delete existing dev release
-        run: |
-          gh release delete dev --yes || true
-          git push origin :refs/tags/dev || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create dev pre-release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const release = await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag: 'dev'
+              });
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id
+              });
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'tags/dev'
+              });
+            } catch (e) {
+              console.log('No existing dev release to delete');
+            }
+      
+      - name: Create dev release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: dev
           name: Development Build
-          prerelease: true
-          files: ./release/*
           body: |
-            ## 🚧 Development Build
+            🚧 **Development Build**
             
-            This is an automatically generated pre-release from the latest commit on `${{ github.ref_name }}`.
+            This is an automated pre-release build from the latest commit.
             
             **Commit:** ${{ github.sha }}
+            **Branch:** ${{ github.ref_name }}
             **Date:** ${{ github.event.head_commit.timestamp }}
-            
-            ### Downloads
-            - **Windows x64:** MyDesktopApplication-win-x64.zip
-            - **Windows ARM64:** MyDesktopApplication-win-arm64.zip
-            - **Linux x64:** MyDesktopApplication-linux-x64.tar.gz
-            - **Linux ARM64:** MyDesktopApplication-linux-arm64.tar.gz
-            - **macOS x64:** MyDesktopApplication-osx-x64.tar.gz
-            - **macOS ARM64:** MyDesktopApplication-osx-arm64.tar.gz
-            - **Android:** com.mycompany.mydesktopapplication.apk
-            
-            ⚠️ **This is a development build and may be unstable.**
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          files: |
+            artifacts/**/*.zip
+            artifacts/**/*.tar.gz
+            artifacts/**/*.apk
