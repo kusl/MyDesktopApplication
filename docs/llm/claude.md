@@ -3003,3 +3003,28 @@ sys	0m0.285s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
 
 Can you fix it? 
+
+
+
+
+
+The issue is that `Avalonia.ReactiveUI` version 11.3.10 doesn't exist yet (the latest is 11.3.9). I need to either remove the ReactiveUI dependency (we're using CommunityToolkit.Mvvm instead) or update the version.
+
+Let me create a quick fix script:Run this fix script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-avalonia-version.sh
+./fix-avalonia-version.sh
+```
+
+**The problem:** The previous script referenced `Avalonia.ReactiveUI` version 11.3.10 which doesn't exist yet (latest is 11.3.9). 
+
+**The fix:** 
+1. Removed `Avalonia.ReactiveUI` entirely - we don't need it since we're using `CommunityToolkit.Mvvm` for MVVM
+2. Updated all Avalonia packages to version 11.3.9 (the latest available)
+3. Updated all three affected `.csproj` files (Desktop, Android, UI.Tests)
+
+
+
+
