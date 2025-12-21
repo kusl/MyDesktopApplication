@@ -2418,3 +2418,14 @@ Your project is now clean with just the essentials:
 
 
 
+please give me a script that makes all necessary changes including code changes if necessary to accomplish the following in all github actons 
+yes, if there is a breaking change, please find out what needs to be done and do it 
+please make ALL the necessary changes in accordance with best practices 
+I have updated the dump and output files for this 
+Bump actions/checkout from 4 to 6
+Bump actions/setup-java from 4 to 5
+Bump actions/upload-artifact from 4 to 6
+Bump actions/download-artifact from 4 to 7
+
+
+
