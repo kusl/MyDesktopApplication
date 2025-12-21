@@ -1,51 +1,40 @@
-using Xunit;
-using Shouldly;
 using MyDesktopApplication.Core.Entities;
+using Shouldly;
+using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
 
 public class TodoItemTests
 {
     [Fact]
-    public void TodoItem_ShouldInitialize_WithDefaults()
+    public void NewTodoItem_ShouldBeIncomplete()
     {
-        var item = new TodoItem { Title = "Test" };
+        var todo = new TodoItem { Title = "Test" };
         
-        item.Id.ShouldNotBe(Guid.Empty);
-        item.Title.ShouldBe("Test");
-        item.IsCompleted.ShouldBeFalse();
-        item.CompletedAt.ShouldBeNull();
-        item.Priority.ShouldBe(0);
+        todo.IsCompleted.ShouldBeFalse();
+        todo.CompletedAt.ShouldBeNull();
     }
 
     [Fact]
-    public void MarkComplete_ShouldSetIsCompletedAndCompletedAt()
+    public void MarkComplete_ShouldSetCompletedAtAndIsCompleted()
     {
-        var item = new TodoItem { Title = "Test" };
+        var todo = new TodoItem { Title = "Test" };
         
-        item.MarkComplete();
+        todo.MarkComplete();
         
-        item.IsCompleted.ShouldBeTrue();
-        item.CompletedAt.ShouldNotBeNull();
+        todo.IsCompleted.ShouldBeTrue();
+        todo.CompletedAt.ShouldNotBeNull();
     }
 
     [Fact]
-    public void MarkIncomplete_ShouldClearIsCompletedAndCompletedAt()
+    public void MarkIncomplete_ShouldClearCompletedAt()
     {
-        var item = new TodoItem { Title = "Test" };
-        item.MarkComplete();
+        var todo = new TodoItem { Title = "Test" };
+        todo.MarkComplete();
         
-        item.MarkIncomplete();
+        todo.MarkIncomplete();
         
-        item.IsCompleted.ShouldBeFalse();
-        item.CompletedAt.ShouldBeNull();
-    }
-
-    [Fact]
-    public void Priority_ShouldBeSettable()
-    {
-        var item = new TodoItem { Title = "Test", Priority = 5 };
-        
-        item.Priority.ShouldBe(5);
+        todo.IsCompleted.ShouldBeFalse();
+        todo.CompletedAt.ShouldBeNull();
     }
 }

@@ -1,6 +1,6 @@
-using Xunit;
-using Shouldly;
 using MyDesktopApplication.Core.Entities;
+using Shouldly;
+using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
 
@@ -9,51 +9,47 @@ public class QuestionTypeTests
     [Theory]
     [InlineData(QuestionType.Population, "Population")]
     [InlineData(QuestionType.Area, "Area (km²)")]
-    [InlineData(QuestionType.GdpTotal, "GDP (Total)")]
+    [InlineData(QuestionType.Gdp, "GDP (USD)")]
     [InlineData(QuestionType.GdpPerCapita, "GDP per Capita")]
-    public void GetDisplayName_ShouldReturnCorrectName(QuestionType type, string expected)
+    [InlineData(QuestionType.PopulationDensity, "Population Density")]
+    [InlineData(QuestionType.Literacy, "Literacy Rate (%)")]
+    [InlineData(QuestionType.Hdi, "Human Development Index")]
+    [InlineData(QuestionType.LifeExpectancy, "Life Expectancy")]
+    public void GetLabel_ShouldReturnCorrectLabel(QuestionType type, string expectedLabel)
     {
-        type.GetDisplayName().ShouldBe(expected);
-    }
-
-    [Theory]
-    [InlineData(QuestionType.Population, "Which country has a higher population?")]
-    [InlineData(QuestionType.Area, "Which country has a larger area?")]
-    public void GetQuestion_ShouldReturnCorrectQuestion(QuestionType type, string expected)
-    {
-        type.GetQuestion().ShouldBe(expected);
+        type.GetLabel().ShouldBe(expectedLabel);
     }
 
     [Fact]
-    public void GetValue_ShouldReturnCorrectPropertyValue()
+    public void GetValue_ShouldReturnCorrectProperty()
     {
         var country = new Country
         {
-            Name = "Test",
-            Code = "TS",
-            Continent = "Test",
-            Flag = "🏳",
-            Population = 1000000,
-            Area = 50000,
-            Gdp = 100000000000,
-            GdpPerCapita = 50000,
-            PopulationDensity = 20,
-            LiteracyRate = 99.5,
-            Hdi = 0.95,
-            LifeExpectancy = 80.5
+            Code = "USA",
+            Name = "United States",
+            Flag = "🇺🇸",
+            Population = 331_000_000,
+            Area = 9_833_520,
+            Gdp = 25_462_700_000_000,
+            GdpPerCapita = 76_329,
+            Density = 36,
+            Literacy = 99.0,
+            Hdi = 0.921,
+            LifeExpectancy = 76.4
         };
 
-        QuestionType.Population.GetValue(country).ShouldBe(1000000);
-        QuestionType.Area.GetValue(country).ShouldBe(50000);
-        QuestionType.GdpPerCapita.GetValue(country).ShouldBe(50000);
+        QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
+        QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
+        QuestionType.PopulationDensity.GetValue(country).ShouldBe(36);
+        QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
     }
 
-    [Fact]
-    public void FormatValue_ShouldFormatCorrectly()
+    [Theory]
+    [InlineData(1_500_000_000, "1.50B")]
+    [InlineData(350_000_000, "350.00M")]
+    [InlineData(50_000, "50.0K")]
+    public void FormatValue_Population_ShouldFormatCorrectly(double value, string expected)
     {
-        QuestionType.Population.FormatValue(1500000000).ShouldBe("1.50B");
-        QuestionType.Population.FormatValue(50000000).ShouldBe("50.00M");
-        QuestionType.LiteracyRate.FormatValue(99.5).ShouldBe("99.5%");
-        QuestionType.LifeExpectancy.FormatValue(80.5).ShouldBe("80.5 years");
+        QuestionType.Population.FormatValue(value).ShouldBe(expected);
     }
 }

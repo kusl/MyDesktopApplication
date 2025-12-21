@@ -1,6 +1,5 @@
 using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
-using NSubstitute;
+using MyDesktopApplication.Desktop.ViewModels;
 using Shouldly;
 using Xunit;
 
@@ -9,40 +8,46 @@ namespace MyDesktopApplication.UI.Tests;
 public class MainWindowViewModelTests
 {
     [Fact]
-    public async Task GameState_InitializesFromRepository()
+    public void NewViewModel_ShouldHaveInitialState()
     {
-        // Arrange
-        var mockRepo = Substitute.For<IGameStateRepository>();
-        var gameState = new GameState 
-        { 
-            CorrectAnswers = 5, 
-            TotalQuestions = 10,
-            BestStreak = 3
-        };
-        mockRepo.GetOrCreateAsync(Arg.Any<CancellationToken>()).Returns(gameState);
-        
-        // Act - verify the mock works
-        var result = await mockRepo.GetOrCreateAsync();
-        
-        // Assert
-        result.ShouldNotBeNull();
-        result.CorrectAnswers.ShouldBe(5);
-        result.TotalQuestions.ShouldBe(10);
+        var vm = new MainWindowViewModel();
+
+        vm.Score.ShouldBe(0);
+        vm.HighScore.ShouldBe(0);
+        vm.Streak.ShouldBe(0);
+        vm.BestStreak.ShouldBe(0);
     }
-    
+
     [Fact]
-    public async Task SaveAsync_IsCalled_WhenAnswerRecorded()
+    public void QuestionTypes_ShouldContainAllTypes()
     {
-        // Arrange
-        var mockRepo = Substitute.For<IGameStateRepository>();
-        var gameState = new GameState();
-        mockRepo.GetOrCreateAsync(Arg.Any<CancellationToken>()).Returns(gameState);
+        var vm = new MainWindowViewModel();
+
+        vm.QuestionTypes.Count.ShouldBe(8);
+        vm.QuestionTypes.ShouldContain(QuestionType.Population);
+        vm.QuestionTypes.ShouldContain(QuestionType.Area);
+        vm.QuestionTypes.ShouldContain(QuestionType.Gdp);
+    }
+
+    [Fact]
+    public void GenerateNewQuestion_ShouldSetCountryNames()
+    {
+        var vm = new MainWindowViewModel();
         
-        // Act
-        gameState.RecordAnswer(true);
-        await mockRepo.SaveAsync(gameState);
-        
-        // Assert
-        await mockRepo.Received(1).SaveAsync(Arg.Any<GameState>(), Arg.Any<CancellationToken>());
+        // Wait briefly for initialization
+        Thread.Sleep(100);
+        vm.GenerateNewQuestionCommand.Execute(null);
+
+        vm.Country1Name.ShouldNotBeNullOrEmpty();
+        vm.Country2Name.ShouldNotBeNullOrEmpty();
+        vm.Country1Name.ShouldNotBe(vm.Country2Name);
+    }
+
+    [Fact]
+    public void SelectedQuestionType_DefaultsToPopulation()
+    {
+        var vm = new MainWindowViewModel();
+
+        vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
     }
 }

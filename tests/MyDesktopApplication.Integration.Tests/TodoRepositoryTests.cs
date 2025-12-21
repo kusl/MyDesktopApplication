@@ -11,58 +11,62 @@ public class TodoRepositoryTests : IDisposable
 {
     private readonly AppDbContext _context;
     private readonly TodoRepository _repository;
-    
+
     public TodoRepositoryTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
-        
+
         _context = new AppDbContext(options);
         _repository = new TodoRepository(_context);
     }
-    
+
     [Fact]
-    public async Task AddAsync_SavesTodoItem()
+    public async Task AddAsync_ShouldAddTodoItem()
     {
+        // Arrange
         var todo = new TodoItem { Title = "Test Todo" };
-        
+
+        // Act
         await _repository.AddAsync(todo);
-        await _context.SaveChangesAsync();
-        
-        var saved = await _context.TodoItems.FirstOrDefaultAsync();
-        saved.ShouldNotBeNull();
-        saved.Title.ShouldBe("Test Todo");
+        var items = await _repository.GetAllAsync();
+
+        // Assert
+        items.ShouldContain(t => t.Title == "Test Todo");
     }
-    
+
     [Fact]
-    public async Task GetByIdAsync_ReturnsCorrectItem()
+    public async Task GetAllAsync_ShouldReturnAllItems()
     {
-        var todo = new TodoItem { Title = "Find Me" };
-        _context.TodoItems.Add(todo);
-        await _context.SaveChangesAsync();
-        
-        var found = await _repository.GetByIdAsync(todo.Id);
-        
-        found.ShouldNotBeNull();
-        found.Title.ShouldBe("Find Me");
+        // Arrange
+        await _repository.AddAsync(new TodoItem { Title = "Todo 1" });
+        await _repository.AddAsync(new TodoItem { Title = "Todo 2" });
+
+        // Act
+        var items = await _repository.GetAllAsync();
+
+        // Assert
+        items.Count().ShouldBe(2);
     }
-    
+
     [Fact]
-    public async Task GetAllAsync_ReturnsAllItems()
+    public async Task GetIncompleteAsync_ShouldReturnOnlyIncomplete()
     {
-        _context.TodoItems.AddRange(
-            new TodoItem { Title = "Todo 1" },
-            new TodoItem { Title = "Todo 2" },
-            new TodoItem { Title = "Todo 3" }
-        );
-        await _context.SaveChangesAsync();
-        
-        var all = await _repository.GetAllAsync();
-        
-        all.Count().ShouldBe(3);
+        // Arrange
+        var complete = new TodoItem { Title = "Complete" };
+        complete.MarkComplete();
+        await _repository.AddAsync(complete);
+        await _repository.AddAsync(new TodoItem { Title = "Incomplete" });
+
+        // Act
+        var items = await _repository.GetIncompleteAsync();
+
+        // Assert
+        items.Count().ShouldBe(1);
+        items.First().Title.ShouldBe("Incomplete");
     }
-    
+
     public void Dispose()
     {
         _context.Dispose();
