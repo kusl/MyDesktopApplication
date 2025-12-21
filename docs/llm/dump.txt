@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 05:23:56 PM CST 2025
+Generated: Sun Dec 21 05:35:26 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -6537,7 +6537,7 @@ MODIFIED: 2025-12-21 16:51:26
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
 SIZE: 1.89 KB
-MODIFIED: 2025-12-21 16:51:26
+MODIFIED: 2025-12-21 17:24:51
 ================================================================================
 
 using Xunit;
@@ -6577,7 +6577,7 @@ public class QuestionTypeTests
             Flag = "🏳",
             Population = 1000000,
             Area = 50000,
-            GdpTotal = 100000000000,
+            Gdp = 100000000000,
             GdpPerCapita = 50000,
             PopulationDensity = 20,
             LiteracyRate = 99.5,
@@ -6857,7 +6857,7 @@ MODIFIED: 2025-12-21 16:41:27
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 05:23:57 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 05:35:26 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)
