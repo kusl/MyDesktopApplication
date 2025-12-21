@@ -12,17 +12,23 @@ updates:
       microsoft:
         patterns:
           - "Microsoft.*"
+      opentelemetry:
+        patterns:
+          - "OpenTelemetry*"
       testing:
         patterns:
           - "xunit*"
-          - "FluentAssertions*"
+          - "Shouldly*"
           - "NSubstitute*"
           - "Bogus"
           - "coverlet*"
+          - "Testcontainers*"
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
-
+      # Ignore FluentAssertions (commercial license)
+      - dependency-name: "FluentAssertions"
+      # Ignore Moq (compromised)
+      - dependency-name: "Moq"
+      
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -1,61 +1,83 @@
 <Project>
+  <!--
+    Central Package Management
+    All packages are 100% free under permissive licenses (MIT/Apache/BSD)
+    
+    REMOVED (not free for commercial use):
+      - FluentAssertions 8+ (commercial license for companies >$1M revenue)
+      - Moq (SponsorLink controversy, telemetry concerns)
+      
+    REMOVED (deprecated):
+      - Avalonia.ReactiveUI (deprecated, use CommunityToolkit.Mvvm instead)
+  -->
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
+  
   <ItemGroup>
-    <!-- =========================================================== -->
-    <!-- Avalonia UI - MIT License -->
-    <!-- =========================================================== -->
-    <PackageVersion Include="Avalonia" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Android" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.9" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.9" />
+    <!-- Avalonia UI Framework (MIT License) -->
+    <PackageVersion Include="Avalonia" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Headless" Version="11.3.0" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.0" />
     
-    <!-- =========================================================== -->
-    <!-- MVVM - MIT License -->
-    <!-- =========================================================== -->
+    <!-- MVVM Toolkit (MIT License) -->
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     
-    <!-- =========================================================== -->
-    <!-- Entity Framework Core - MIT License -->
-    <!-- =========================================================== -->
+    <!-- Entity Framework Core (MIT License) -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageVersion Include="Dapper" Version="2.1.35" />
     
-    <!-- =========================================================== -->
-    <!-- Dependency Injection - MIT License -->
-    <!-- =========================================================== -->
+    <!-- Configuration (MIT License) -->
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
     
-    <!-- =========================================================== -->
-    <!-- Validation - Apache-2.0 License -->
-    <!-- =========================================================== -->
+    <!-- Validation (Apache-2.0 License) -->
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     
-    <!-- =========================================================== -->
-    <!-- Testing - All MIT/Apache Licensed -->
-    <!-- =========================================================== -->
-    <!-- xUnit - Apache-2.0 -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <!-- OpenTelemetry (Apache-2.0 License) -->
+    <PackageVersion Include="OpenTelemetry" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Api" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
+    
+    <!-- Logging (Apache-2.0 License) -->
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+    
+    <!-- Testing - All Free/Open-Source -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     
-    <!-- NSubstitute - BSD-3-Clause (replaces Moq) -->
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    
-    <!-- Shouldly - BSD-3-Clause (replaces FluentAssertions) -->
+    <!-- Shouldly - BSD-3-Clause License (FREE replacement for FluentAssertions) -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     
-    <!-- Bogus - MIT License -->
-    <PackageVersion Include="Bogus" Version="35.6.2" />
+    <!-- NSubstitute - BSD-3-Clause License (FREE replacement for Moq) -->
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
     
-    <!-- Avalonia Testing - MIT -->
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.9" />
+    <!-- Bogus - MIT License (Fake data generation) -->
+    <PackageVersion Include="Bogus" Version="35.6.5" />
+    
+    <!-- Testcontainers - MIT License (Integration testing) -->
+    <PackageVersion Include="Testcontainers" Version="4.4.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.4.0" />
   </ItemGroup>
 </Project>

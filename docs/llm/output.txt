@@ -8833,4 +8833,80 @@ File types included:
 real	0m0.791s
 user	0m0.370s
 sys	0m0.607s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh init-project.sh 
+==============================================
+  MyDesktopApplication: Project Initialization
+==============================================
+
+This script will:
+  1. Kill stuck build processes (aapt2, VBCSCompiler)
+  2. Remove redundant solution files and scripts
+  3. Create unified MyDesktopApplication.slnx
+  4. Update packages to free/open-source alternatives
+  5. Fix all source code issues
+  6. Update GitHub Actions to latest versions
+  7. Create robust migration script
+  8. Build and test everything
+
+[Step 1/8] Killing stuck build processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+  ✓ Processes cleaned
+[Step 2/8] Removing redundant scripts and files...
+  Removed: MyDesktopApplication.Desktop.slnx
+  Removed: cleanup-and-standardize.sh
+  Removed: root appsettings.json (duplicate)
+  ✓ Cleanup complete (export.sh preserved)
+[Step 3/8] Creating unified solution file...
+  ✓ Created unified MyDesktopApplication.slnx with all 8 projects
+[Step 4/8] Updating packages to free/open-source alternatives...
+  ✓ Updated Directory.Packages.props
+    - Removed: FluentAssertions (commercial license)
+    - Removed: Moq (compromised package)
+    - Removed: Avalonia.ReactiveUI (deprecated)
+    - Added: Shouldly (BSD-3-Clause, 100% free)
+    - Added: NSubstitute (BSD-3-Clause, 100% free)
+[Step 5/8] Updating build configuration...
+  ✓ Updated Directory.Build.props with aapt2 optimizations
+[Step 6/8] Fixing source code files...
+  ✓ Fixed TodoItem.cs (added CompletedAt, Priority)
+  ✓ Fixed ViewModelBase.cs (added ClearError/SetError)
+  ✓ Updated TodoItemTests.cs (using Shouldly)
+  ✓ Updated Core.Tests.csproj (using Shouldly)
+  ✓ Updated Integration.Tests.csproj (using Shouldly)
+  ✓ Updated UI.Tests.csproj (using Shouldly)
+[Step 7/8] Updating GitHub Actions to latest versions...
+  ✓ Created ci.yml (build & test on every push/PR)
+  ✓ Created build.yml (pre-releases on push to main)
+  ✓ Created release.yml (stable releases on git tags)
+  ✓ Updated dependabot.yml
+[Step 8/8] Creating migration script...
+  ✓ Created migrate.sh
+
+==============================================
+  Building and Testing
+==============================================
+Cleaning build artifacts...
+Restoring packages...
+Restore complete (1.7s)
+
+Build succeeded in 1.9s
+Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 3 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(19,36): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(23,22): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(32,18): error CS1061: 'AppDbContext' does not contain a definition for 'GameStates' and no accessible extension method 'GameStates' accepting a first argument of type 'AppDbContext' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build failed with 3 error(s) in 3.7s
+✗ Build failed - check errors above
+
+real	0m6.229s
+user	0m3.881s
+sys	0m0.955s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

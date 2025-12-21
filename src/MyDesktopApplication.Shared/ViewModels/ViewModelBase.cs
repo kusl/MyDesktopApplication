@@ -1,7 +1,11 @@
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
+/// <summary>
+/// Base class for all ViewModels with common functionality
+/// </summary>
 public abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
@@ -10,32 +14,47 @@ public abstract partial class ViewModelBase : ObservableObject
     [ObservableProperty]
     private string? _errorMessage;
     
+    [ObservableProperty]
+    private bool _hasError;
+    
     /// <summary>
-    /// Clears any error message.
+    /// Clears any error state
     /// </summary>
     protected void ClearError()
     {
         ErrorMessage = null;
+        HasError = false;
     }
     
     /// <summary>
-    /// Sets an error message.
+    /// Sets an error message
     /// </summary>
     protected void SetError(string message)
     {
         ErrorMessage = message;
+        HasError = true;
     }
     
     /// <summary>
-    /// Sets error from an exception.
+    /// Executes an async operation with busy state management
     /// </summary>
-    protected void SetError(Exception ex)
+    protected async Task ExecuteBusyAsync(Func<Task> operation)
     {
-        ErrorMessage = ex.Message;
+        if (IsBusy) return;
+        
+        try
+        {
+            IsBusy = true;
+            ClearError();
+            await operation();
+        }
+        catch (Exception ex)
+        {
+            SetError(ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
-    
-    /// <summary>
-    /// Returns true if there's an error message.
-    /// </summary>
-    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 }
