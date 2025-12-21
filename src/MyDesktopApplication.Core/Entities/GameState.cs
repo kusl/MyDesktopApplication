@@ -1,43 +1,54 @@
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Persisted game state for the Country Quiz.
+/// Game state for tracking quiz progress and scores
 /// </summary>
 public class GameState : EntityBase
 {
-    public int CorrectAnswers { get; set; }
-    public int TotalQuestions { get; set; }
+    public required string UserId { get; set; }
+    public int CurrentScore { get; set; }
+    public int HighScore { get; set; }
     public int CurrentStreak { get; set; }
     public int BestStreak { get; set; }
-    public string SelectedQuestionType { get; set; } = "Population";
-    
-    public double Accuracy => TotalQuestions > 0 
-        ? Math.Round((double)CorrectAnswers / TotalQuestions * 100, 1) 
-        : 0;
-    
+    public int TotalCorrect { get; set; }
+    public int TotalAnswered { get; set; }
+    public int SelectedQuestionType { get; set; }
+    public DateTime? LastPlayedAt { get; set; }
+
+    public void RecordCorrectAnswer()
+    {
+        CurrentScore++;
+        CurrentStreak++;
+        TotalCorrect++;
+        TotalAnswered++;
+        
+        if (CurrentScore > HighScore)
+            HighScore = CurrentScore;
+        
+        if (CurrentStreak > BestStreak)
+            BestStreak = CurrentStreak;
+        
+        LastPlayedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void RecordWrongAnswer()
+    {
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalAnswered++;
+        LastPlayedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void Reset()
     {
-        CorrectAnswers = 0;
-        TotalQuestions = 0;
+        CurrentScore = 0;
         CurrentStreak = 0;
-        // Note: BestStreak is preserved across resets
+        // Keep HighScore and BestStreak
+        UpdatedAt = DateTime.UtcNow;
     }
-    
-    public void RecordAnswer(bool isCorrect)
-    {
-        TotalQuestions++;
-        if (isCorrect)
-        {
-            CorrectAnswers++;
-            CurrentStreak++;
-            if (CurrentStreak > BestStreak)
-            {
-                BestStreak = CurrentStreak;
-            }
-        }
-        else
-        {
-            CurrentStreak = 0;
-        }
-    }
+
+    public double AccuracyPercentage => 
+        TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
 }

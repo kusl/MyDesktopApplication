@@ -2,101 +2,78 @@
 set -e
 
 # =============================================================================
-#  Database Migration Script
+# migrate.sh - Entity Framework Core Migration Helper
 # =============================================================================
-#
-#  Usage:
-#    ./migrate.sh <MigrationName>           # Add migration and apply
-#    ./migrate.sh <MigrationName> --add     # Add migration only
-#    ./migrate.sh --apply                   # Apply pending migrations
-#    ./migrate.sh --status                  # Show migration status
-#    ./migrate.sh --rollback                # Rollback last migration
-#
+# Usage:
+#   ./migrate.sh add <MigrationName>  - Add a new migration
+#   ./migrate.sh update               - Apply pending migrations
+#   ./migrate.sh remove               - Remove last migration
+#   ./migrate.sh list                 - List all migrations
+#   ./migrate.sh script               - Generate SQL script
 # =============================================================================
+
+PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$PROJECT_ROOT"
 
 INFRASTRUCTURE_PROJECT="src/MyDesktopApplication.Infrastructure"
 STARTUP_PROJECT="src/MyDesktopApplication.Desktop"
 MIGRATIONS_DIR="Data/Migrations"
 
-show_usage() {
-    echo "Usage: $0 <MigrationName> [options]"
-    echo ""
-    echo "Options:"
-    echo "  --add        Add migration only (don't apply)"
-    echo "  --apply      Apply pending migrations"
-    echo "  --status     Show migration status"
-    echo "  --rollback   Rollback last migration"
-    echo ""
-    echo "Examples:"
-    echo "  $0 InitialCreate           # Add and apply 'InitialCreate' migration"
-    echo "  $0 AddUserTable --add      # Add 'AddUserTable' migration only"
-    echo "  $0 --apply                 # Apply all pending migrations"
-}
-
-# Check if EF tools are installed
-if ! dotnet ef --version &>/dev/null; then
-    echo "Installing Entity Framework Core tools..."
+# Ensure dotnet-ef is installed
+if ! command -v dotnet-ef &> /dev/null; then
+    echo "Installing dotnet-ef tool..."
     dotnet tool install --global dotnet-ef
 fi
 
-case "${1:-}" in
-    --apply)
+case "$1" in
+    add)
+        if [ -z "$2" ]; then
+            echo "Usage: ./migrate.sh add <MigrationName>"
+            exit 1
+        fi
+        echo "Adding migration: $2"
+        dotnet ef migrations add "$2" \
+            --project "$INFRASTRUCTURE_PROJECT" \
+            --startup-project "$STARTUP_PROJECT" \
+            --output-dir "$MIGRATIONS_DIR"
+        echo "✓ Migration '$2' created"
+        ;;
+    update)
         echo "Applying pending migrations..."
         dotnet ef database update \
             --project "$INFRASTRUCTURE_PROJECT" \
             --startup-project "$STARTUP_PROJECT"
-        echo "✓ Migrations applied"
+        echo "✓ Database updated"
         ;;
-    --status)
-        echo "Migration status:"
+    remove)
+        echo "Removing last migration..."
+        dotnet ef migrations remove \
+            --project "$INFRASTRUCTURE_PROJECT" \
+            --startup-project "$STARTUP_PROJECT"
+        echo "✓ Last migration removed"
+        ;;
+    list)
+        echo "Listing migrations..."
         dotnet ef migrations list \
             --project "$INFRASTRUCTURE_PROJECT" \
             --startup-project "$STARTUP_PROJECT"
         ;;
-    --rollback)
-        echo "Rolling back last migration..."
-        # Get the previous migration
-        PREV=$(dotnet ef migrations list \
+    script)
+        echo "Generating SQL script..."
+        dotnet ef migrations script \
             --project "$INFRASTRUCTURE_PROJECT" \
             --startup-project "$STARTUP_PROJECT" \
-            --no-connect 2>/dev/null | tail -2 | head -1 | xargs)
-        if [ -n "$PREV" ] && [ "$PREV" != "(No migrations)" ]; then
-            dotnet ef database update "$PREV" \
-                --project "$INFRASTRUCTURE_PROJECT" \
-                --startup-project "$STARTUP_PROJECT"
-            echo "✓ Rolled back to: $PREV"
-        else
-            echo "No migrations to rollback"
-        fi
-        ;;
-    --help|-h)
-        show_usage
-        ;;
-    "")
-        show_usage
-        exit 1
+            --output "migrations.sql"
+        echo "✓ SQL script saved to migrations.sql"
         ;;
     *)
-        MIGRATION_NAME="$1"
-        ADD_ONLY=false
-        
-        if [ "${2:-}" == "--add" ]; then
-            ADD_ONLY=true
-        fi
-        
-        echo "Adding migration: $MIGRATION_NAME"
-        dotnet ef migrations add "$MIGRATION_NAME" \
-            --project "$INFRASTRUCTURE_PROJECT" \
-            --startup-project "$STARTUP_PROJECT" \
-            --output-dir "$MIGRATIONS_DIR"
-        echo "✓ Migration added: $MIGRATION_NAME"
-        
-        if [ "$ADD_ONLY" = false ]; then
-            echo "Applying migration to SQLite database..."
-            dotnet ef database update \
-                --project "$INFRASTRUCTURE_PROJECT" \
-                --startup-project "$STARTUP_PROJECT"
-            echo "✓ Migration applied"
-        fi
+        echo "Usage: ./migrate.sh <command>"
+        echo ""
+        echo "Commands:"
+        echo "  add <name>  - Add a new migration"
+        echo "  update      - Apply pending migrations"
+        echo "  remove      - Remove last migration"
+        echo "  list        - List all migrations"
+        echo "  script      - Generate SQL script"
         ;;
 esac

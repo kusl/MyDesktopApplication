@@ -1,50 +1,51 @@
 using MyDesktopApplication.Core.Entities;
 using Shouldly;
-using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
 
 public class TodoItemTests
 {
     [Fact]
-    public void MarkComplete_SetsIsCompletedTrue()
+    public void TodoItem_ShouldInitialize_WithDefaults()
     {
-        // Arrange
-        var todo = new TodoItem { Title = "Test Todo" };
+        var item = new TodoItem { Title = "Test" };
         
-        // Act
-        todo.MarkComplete();
-        
-        // Assert
-        todo.IsCompleted.ShouldBeTrue();
-        todo.CompletedAt.ShouldNotBeNull();
+        item.Id.ShouldNotBe(Guid.Empty);
+        item.Title.ShouldBe("Test");
+        item.IsCompleted.ShouldBeFalse();
+        item.CompletedAt.ShouldBeNull();
+        item.Priority.ShouldBe(0);
     }
-    
+
     [Fact]
-    public void MarkIncomplete_SetsIsCompletedFalse()
+    public void MarkComplete_ShouldSetIsCompletedAndCompletedAt()
     {
-        // Arrange
-        var todo = new TodoItem { Title = "Test Todo" };
-        todo.MarkComplete();
+        var item = new TodoItem { Title = "Test" };
         
-        // Act
-        todo.MarkIncomplete();
+        item.MarkComplete();
         
-        // Assert
-        todo.IsCompleted.ShouldBeFalse();
-        todo.CompletedAt.ShouldBeNull();
+        item.IsCompleted.ShouldBeTrue();
+        item.CompletedAt.ShouldNotBeNull();
+        item.CompletedAt!.Value.ShouldBeGreaterThan(DateTime.UtcNow.AddSeconds(-5));
     }
-    
+
     [Fact]
-    public void NewTodoItem_HasDefaultValues()
+    public void MarkIncomplete_ShouldClearIsCompletedAndCompletedAt()
     {
-        // Arrange & Act
-        var todo = new TodoItem { Title = "Test" };
+        var item = new TodoItem { Title = "Test" };
+        item.MarkComplete();
         
-        // Assert
-        todo.IsCompleted.ShouldBeFalse();
-        todo.CompletedAt.ShouldBeNull();
-        todo.Priority.ShouldBe(0);
-        todo.DueDate.ShouldBeNull();
+        item.MarkIncomplete();
+        
+        item.IsCompleted.ShouldBeFalse();
+        item.CompletedAt.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Priority_ShouldBeSettable()
+    {
+        var item = new TodoItem { Title = "Test", Priority = 5 };
+        
+        item.Priority.ShouldBe(5);
     }
 }

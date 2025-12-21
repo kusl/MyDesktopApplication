@@ -1,77 +1,65 @@
 using MyDesktopApplication.Core.Entities;
 using Shouldly;
-using Xunit;
 
 namespace MyDesktopApplication.Core.Tests;
 
 public class GameStateTests
 {
     [Fact]
-    public void RecordAnswer_CorrectAnswer_IncrementsScoreAndStreak()
+    public void RecordCorrectAnswer_ShouldIncrementScoresAndStreak()
     {
-        var state = new GameState();
+        var state = new GameState { UserId = "test" };
         
-        state.RecordAnswer(true);
+        state.RecordCorrectAnswer();
         
-        state.CorrectAnswers.ShouldBe(1);
-        state.TotalQuestions.ShouldBe(1);
+        state.CurrentScore.ShouldBe(1);
+        state.HighScore.ShouldBe(1);
         state.CurrentStreak.ShouldBe(1);
+        state.BestStreak.ShouldBe(1);
+        state.TotalCorrect.ShouldBe(1);
+        state.TotalAnswered.ShouldBe(1);
     }
-    
+
     [Fact]
-    public void RecordAnswer_IncorrectAnswer_ResetsStreak()
+    public void RecordWrongAnswer_ShouldResetCurrentScoreAndStreak()
     {
-        var state = new GameState { CurrentStreak = 5 };
+        var state = new GameState { UserId = "test" };
+        state.RecordCorrectAnswer();
+        state.RecordCorrectAnswer();
         
-        state.RecordAnswer(false);
+        state.RecordWrongAnswer();
         
+        state.CurrentScore.ShouldBe(0);
         state.CurrentStreak.ShouldBe(0);
-        state.TotalQuestions.ShouldBe(1);
+        state.HighScore.ShouldBe(2); // Should preserve high score
+        state.BestStreak.ShouldBe(2); // Should preserve best streak
     }
-    
+
     [Fact]
-    public void RecordAnswer_NewBestStreak_UpdatesBestStreak()
+    public void Reset_ShouldKeepHighScoreAndBestStreak()
     {
-        var state = new GameState { BestStreak = 3, CurrentStreak = 3 };
-        
-        state.RecordAnswer(true);
-        
-        state.BestStreak.ShouldBe(4);
-        state.CurrentStreak.ShouldBe(4);
-    }
-    
-    [Fact]
-    public void Reset_PreservesBestStreak()
-    {
-        var state = new GameState 
-        { 
-            CorrectAnswers = 10, 
-            TotalQuestions = 15, 
-            CurrentStreak = 5, 
-            BestStreak = 8 
-        };
+        var state = new GameState { UserId = "test" };
+        state.RecordCorrectAnswer();
+        state.RecordCorrectAnswer();
+        state.RecordCorrectAnswer();
         
         state.Reset();
         
-        state.CorrectAnswers.ShouldBe(0);
-        state.TotalQuestions.ShouldBe(0);
+        state.CurrentScore.ShouldBe(0);
         state.CurrentStreak.ShouldBe(0);
-        state.BestStreak.ShouldBe(8);
+        state.HighScore.ShouldBe(3);
+        state.BestStreak.ShouldBe(3);
     }
-    
+
     [Fact]
-    public void Accuracy_CalculatesCorrectly()
+    public void AccuracyPercentage_ShouldCalculateCorrectly()
     {
-        var state = new GameState { CorrectAnswers = 7, TotalQuestions = 10 };
+        var state = new GameState { UserId = "test" };
+        state.RecordCorrectAnswer();
+        state.RecordCorrectAnswer();
+        state.RecordWrongAnswer();
+        state.RecordCorrectAnswer();
         
-        state.Accuracy.ShouldBe(70.0);
-    }
-    
-    [Fact]
-    public void Accuracy_NoQuestions_ReturnsZero()
-    {
-        var state = new GameState();
-        
-        state.Accuracy.ShouldBe(0);
+        state.AccuracyPercentage.ShouldBe(75.0);
     }
 }

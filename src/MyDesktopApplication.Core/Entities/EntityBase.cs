@@ -1,7 +1,7 @@
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Base class for all domain entities
+/// Base class for all entities with common properties
 /// </summary>
 public abstract class EntityBase
 {
