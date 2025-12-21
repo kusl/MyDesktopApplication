@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 12:50:58 PM CST 2025
+Generated: Sun Dec 21 12:57:16 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -109,6 +109,7 @@ DIRECTORY STRUCTURE:
 ├── cleanup-and-rebuild.sh
 ├── Directory.Build.props
 ├── Directory.Packages.props
+├── Directory.Packages.props.2025-12-21-12-53-54.bak
 ├── Directory.Packages.props.bak
 ├── export.sh
 ├── export.sh.bak
@@ -951,7 +952,7 @@ MODIFIED: 2025-12-21 10:17:25
 ================================================================================
 FILE: Directory.Packages.props
 SIZE: 3.08 KB
-MODIFIED: 2025-12-21 12:48:54
+MODIFIED: 2025-12-21 12:56:20
 ================================================================================
 
 <Project>
@@ -986,7 +987,7 @@ MODIFIED: 2025-12-21 12:48:54
     <!-- =========================================================== -->
     <!-- Dependency Injection - MIT License -->
     <!-- =========================================================== -->
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     
     <!-- =========================================================== -->
     <!-- Validation - Apache-2.0 License -->
@@ -4960,7 +4961,7 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 12:50:58 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 12:57:16 PM CST 2025
 Total Files Found: 64
 Files Exported: 64
 Files Skipped: 0 (binary or large files)

@@ -3088,3 +3088,4 @@ All packages are now **100% free** under permissive licenses:
 | Bogus | MIT | Free |
 
 
+this is amazing work. I have some new errors now. I have updated one package from 10.0.0 to 10.0.1 to fix an error. You can see the details in output.txt although It is not necessary. What I would like to do is for you to review the errors below and give me a script to fix themse correctly. The dump and output are uptodate so you can take a look at them if you would like. 
