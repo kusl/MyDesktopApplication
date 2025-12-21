@@ -3138,3 +3138,23 @@ kushal@fedora:~/src/dotnet/MyDesktopApplication$
 
 
 
+I can see the issues clearly:
+
+1. **TodoItem.cs** is missing the `CompletedAt` property (the cleanup script may have created a different version than expected)
+2. **MainViewModel.cs** references `ClearError` and `SetError` methods that don't exist in the base class
+
+Let me create a fix script:Run the fix:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-build-errors.sh
+./fix-build-errors.sh
+```
+
+**The issues:**
+
+1. **TodoItem.cs** - The `CompletedAt` property was missing. The test expected it to exist but the entity didn't have it.
+
+2. **ViewModelBase.cs** - The `MainViewModel` was calling `ClearError()` and `SetError()` helper methods that didn't exist in the base class. I've added them as protected methods.
+
+
