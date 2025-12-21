@@ -3526,4 +3526,18 @@ Build succeeded in 2.4s
 real	0m2.583s
 user	0m1.689s
 sys	0m0.370s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build src/MyDesktopApplication.Android
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded (1.9s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+
+Build succeeded in 3.3s
+
+real	0m3.444s
+user	0m2.424s
+sys	0m0.333s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git add -A && git commit -m "Fix Android crash: use AppCompat theme" && git push && git tag -a v1.0.2 -m "Fix Android AppCompat theme crash" && git push origin v1.0.2
+
