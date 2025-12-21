@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 02:24:24 PM CST 2025
+Generated: Sun Dec 21 02:38:25 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3146,8 +3146,8 @@ public class SelectedToBorderConverter : IMultiValueConverter
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.25 KB
-MODIFIED: 2025-12-21 12:48:54
+SIZE: 1.48 KB
+MODIFIED: 2025-12-21 14:28:11
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -3172,6 +3172,10 @@ MODIFIED: 2025-12-21 12:48:54
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="Avalonia.Diagnostics" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
@@ -5087,7 +5091,7 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 02:24:25 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 02:38:26 PM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
