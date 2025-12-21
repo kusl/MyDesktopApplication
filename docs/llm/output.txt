@@ -1,107 +1,3 @@
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    419.64 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.742s
-user	0m0.409s
-sys	0m0.488s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
 ==============================================
   Project Export for LLM Analysis
@@ -203,24 +99,24 @@ File types included:
   • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
 
 
-real	0m0.804s
-user	0m0.419s
-sys	0m0.568s
+real	0m0.825s
+user	0m0.405s
+sys	0m0.613s
 
 Build succeeded in 0.9s
 
-real	0m1.056s
-user	0m0.853s
+real	0m1.071s
+user	0m0.842s
 sys	0m0.209s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.848s
-user	0m0.958s
-sys	0m0.211s
+real	0m0.865s
+user	0m0.978s
+sys	0m0.205s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.3s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
@@ -232,8 +128,8 @@ Restore complete (0.6s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
+  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.3s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
   MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.5s)
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Converters/Converters.cs(13,46): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
@@ -249,25 +145,25 @@ Restore complete (0.6s)
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
 Attempting to cancel the build...
 
-Build failed with 18 error(s) and 3 warning(s) in 36.0s
+Build failed with 18 error(s) and 3 warning(s) in 185.8s
 
-real	0m36.182s
-user	0m3.802s
-sys	0m0.929s
+real	3m5.963s
+user	0m4.854s
+sys	0m1.742s
 Restore complete (0.8s)
   MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(33,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(35,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(35,13): error CS0117: 'Country' does not contain a definition for 'Flag'
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(40,13): error CS0117: 'Country' does not contain a definition for 'PopulationDensity'
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,13): error CS0117: 'Country' does not contain a definition for 'LiteracyRate'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
   MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
   MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.4s)
@@ -283,404 +179,9 @@ Restore complete (0.8s)
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
 
-Build failed with 18 error(s) and 3 warning(s) in 1.9s
+Build failed with 18 error(s) and 3 warning(s) in 1.8s
 
-real	0m2.055s
-user	0m1.829s
-sys	0m0.500s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    419.64 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.742s
-user	0m0.409s
-sys	0m0.488s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    419.64 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.804s
-user	0m0.419s
-sys	0m0.568s
-
-Build succeeded in 0.9s
-
-real	0m1.056s
-user	0m0.853s
-sys	0m0.209s
-Restore complete (0.6s)
-
-Build succeeded in 0.7s
-
-real	0m0.848s
-user	0m0.958s
-sys	0m0.211s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.3s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(35,13): error CS0117: 'Country' does not contain a definition for 'Flag'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(40,13): error CS0117: 'Country' does not contain a definition for 'PopulationDensity'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,13): error CS0117: 'Country' does not contain a definition for 'LiteracyRate'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(33,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(35,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.5s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Converters/Converters.cs(13,46): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(102,44): error CS7036: There is no argument given that corresponds to the required parameter 'userId' of 'IGameStateRepository.GetOrCreateAsync(string, CancellationToken)'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,90): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(139,25): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,53): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,39): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-Attempting to cancel the build...
-
-Build failed with 18 error(s) and 3 warning(s) in 36.0s
-
-real	0m36.182s
-user	0m3.802s
-sys	0m0.929s
-Restore complete (0.8s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(33,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(35,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(35,13): error CS0117: 'Country' does not contain a definition for 'Flag'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(40,13): error CS0117: 'Country' does not contain a definition for 'PopulationDensity'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,13): error CS0117: 'Country' does not contain a definition for 'LiteracyRate'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.4s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Converters/Converters.cs(13,46): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(102,44): error CS7036: There is no argument given that corresponds to the required parameter 'userId' of 'IGameStateRepository.GetOrCreateAsync(string, CancellationToken)'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,90): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(139,25): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,53): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,39): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-
-Build failed with 18 error(s) and 3 warning(s) in 1.9s
-
-real	0m2.055s
-user	0m1.829s
-sys	0m0.500s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    419.64 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.844s
-user	0m0.387s
-sys	0m0.615s
+real	0m1.959s
+user	0m1.587s
+sys	0m0.507s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
