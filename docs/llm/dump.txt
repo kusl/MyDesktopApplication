@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 10:25:46 AM CST 2025
+Generated: Sun Dec 21 10:27:57 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -106,6 +106,7 @@ DIRECTORY STRUCTURE:
 ├── fix-android-code.sh
 ├── fix-android-font.sh
 ├── fix-android-namespace.sh
+├── fix-android-theme.sh
 ├── fix-ci-and-add-android.sh
 ├── fix-cpm.sh
 ├── fix-tests.sh
@@ -2812,6 +2813,64 @@ public partial class MainView : UserControl
 CS
 
 echo "✓ Fixed MainView.axaml.cs"
+
+# Test build
+echo ""
+echo "Testing build..."
+./build-android.sh
+
+
+================================================================================
+FILE: fix-android-theme.sh
+SIZE: 1.82 KB
+MODIFIED: 2025-12-21 10:26:47
+================================================================================
+
+#!/bin/bash
+set -e
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "Fixing Android theme configuration..."
+
+# Update Android csproj to include Fluent theme package
+cat > src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj << 'CSPROJ'
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationId>com.mycompany.mydesktopapplication</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Workarounds for aapt2 hanging issues -->
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
+    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
+    
+    <!-- Use interpreted mode for faster dev builds -->
+    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
+    <RunAOTCompilation Condition="'$(Configuration)' == 'Debug'">false</RunAOTCompilation>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <AndroidLinkMode Condition="'$(Configuration)' == 'Debug'">None</AndroidLinkMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+  </ItemGroup>
+</Project>
+CSPROJ
+
+echo "✓ Updated Android csproj with Avalonia.Themes.Fluent"
 
 # Test build
 echo ""
@@ -7820,8 +7879,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 1.50 KB
-MODIFIED: 2025-12-21 10:17:25
+SIZE: 1.45 KB
+MODIFIED: 2025-12-21 10:26:59
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -7838,21 +7897,18 @@ MODIFIED: 2025-12-21 10:17:25
     <!-- Workarounds for aapt2 hanging issues -->
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
-    
-    <!-- Reduce parallelism to avoid aapt2 daemon deadlocks -->
     <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
     
     <!-- Use interpreted mode for faster dev builds -->
     <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
     <RunAOTCompilation Condition="'$(Configuration)' == 'Debug'">false</RunAOTCompilation>
-    
-    <!-- Faster incremental builds -->
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <AndroidLinkMode Condition="'$(Configuration)' == 'Debug'">None</AndroidLinkMode>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
 
   <ItemGroup>
@@ -10043,9 +10099,9 @@ fi
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 10:25:47 AM CST 2025
-Total Files Found: 72
-Files Exported: 72
+EXPORT COMPLETED: Sun Dec 21 10:27:58 AM CST 2025
+Total Files Found: 73
+Files Exported: 73
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

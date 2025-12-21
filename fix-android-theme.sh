@@ -1,3 +1,12 @@
+#!/bin/bash
+set -e
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "Fixing Android theme configuration..."
+
+# Update Android csproj to include Fluent theme package
+cat > src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj << 'CSPROJ'
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0-android</TargetFramework>
@@ -31,3 +40,11 @@
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
 </Project>
+CSPROJ
+
+echo "✓ Updated Android csproj with Avalonia.Themes.Fluent"
+
+# Test build
+echo ""
+echo "Testing build..."
+./build-android.sh

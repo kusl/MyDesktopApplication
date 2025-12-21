@@ -2277,3 +2277,14 @@ Build failed with 1 error(s) in 1.6s
 real	0m1.759s
 user	0m1.226s
 sys	0m0.254s
+
+The `FluentTheme` requires the `Avalonia.Themes.Fluent` package. Let me fix the Android csproj to include it and update the App.axaml:```bash
+chmod +x fix-android-theme.sh
+./fix-android-theme.sh
+```
+
+This adds `Avalonia.Themes.Fluent` to the Android project's package references, which provides the `FluentTheme` used in App.axaml.
+
+
+
+
