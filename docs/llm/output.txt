@@ -184,4 +184,57 @@ Build failed with 18 error(s) and 3 warning(s) in 1.8s
 real	0m1.959s
 user	0m1.587s
 sys	0m0.507s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-all-errors.sh 
+[5/9] Fixing Country entity...
+[6/9] Fixing QuestionType and extensions...
+[7/9] Fixing repositories and tests...
+[8/9] Fixing UI tests...
+[9/9] Restoring and building...
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+
+Restore failed with 1 error(s) in 1.3s
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 8 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(14,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(15,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(29,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(30,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(44,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(45,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(60,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(61,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 failed with 3 error(s) (0.5s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(50,27): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(51,31): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs(19,22): error CS0122: 'MainWindowViewModel.InitializeAsync()' is inaccessible due to its protection level
+Attempting to cancel the build...
+
+Build failed with 12 error(s) in 22.0s
+
+==============================================
+  Fix Complete!
+==============================================
+
+The following issues were fixed:
+  • GameState: Added CurrentScore, HighScore, RecordAnswer(), Reset()
+  • Country: Added Flag, PopulationDensity, LiteracyRate aliases
+  • QuestionType: Added GetLabel(), GetValue(), FormatValue() extensions
+  • IGameStateRepository: Fixed interface with userId parameter
+  • GameStateRepository: Fixed implementation
+  • Integration.Tests: Added Microsoft.EntityFrameworkCore.InMemory package
+  • TodoRepositoryTests: Added proper using statements
+  • GameStateTests: Rewrote to use correct properties
+  • QuestionTypeTests: Fixed to use correct property names
+  • Desktop Converters: Fixed QuestionType converter
+  • MainWindowViewModel: Fixed nullable .Value calls
+
+Run tests with: dotnet test MyDesktopApplication.slnx
+
+real	0m23.548s
+user	0m4.242s
+sys	0m0.753s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
