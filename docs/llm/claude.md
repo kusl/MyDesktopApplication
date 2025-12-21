@@ -3028,3 +3028,5 @@ chmod +x fix-avalonia-version.sh
 
 
 
+I ran the script and got an error as you can see in dump.txt and output.txt but more importantly I think there are fundamental errors. 
+You mentioned  `Avalonia.ReactiveUI` however, from nuget `This package has been deprecated as it is legacy and is no longer maintained. Suggested Alternatives ReactiveUI.Avalonia` we should not use packages that are deprecated. this is a green field project and we have no legacy to be mindful of. we should use the latest and greatest technology (within reason, of course, we prefer stable working code to the latest javascript whatever that only works in 0.0000998749% of web browsers or android devices). can you please review the whole code base and rewrite the whole project as necessary to remove all obsolete and deprecated packages using the latest recommended packages? please and thank you. as always I have updated the project files with the latest dump and output. 
