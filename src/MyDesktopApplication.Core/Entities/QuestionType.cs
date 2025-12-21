@@ -56,7 +56,7 @@ public static class QuestionTypeExtensions
     {
         QuestionType.Population => country.Population,
         QuestionType.Area => country.Area,
-        QuestionType.GdpTotal => country.GdpTotal,
+        QuestionType.GdpTotal => country.Gdp,
         QuestionType.GdpPerCapita => country.GdpPerCapita,
         QuestionType.PopulationDensity => country.PopulationDensity,
         QuestionType.LiteracyRate => country.LiteracyRate,
