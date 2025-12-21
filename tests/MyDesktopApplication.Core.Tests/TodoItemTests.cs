@@ -13,7 +13,8 @@ public class TodoItemTests
         
         todo.Title.ShouldBe("Test");
         todo.IsCompleted.ShouldBeFalse();
-        todo.Id.ShouldBe(Guid.Empty);
+        todo.Priority.ShouldBe(0);
+        todo.Id.ShouldNotBe(Guid.Empty);
     }
     
     [Fact]

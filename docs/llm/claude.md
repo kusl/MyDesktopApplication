@@ -3158,3 +3158,211 @@ chmod +x fix-build-errors.sh
 2. **ViewModelBase.cs** - The `MainViewModel` was calling `ClearError()` and `SetError()` helper methods that didn't exist in the base class. I've added them as protected methods.
 
 
+I fixed an error manually. 
+I added the following 
+```csharp
+    public int Priority { get; set; }
+```
+to 
+```csharp /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/TodoItem.cs
+namespace MyDesktopApplication.Core.Entities;
+
+public class TodoItem : EntityBase
+{
+    public required string Title { get; set; }
+    public int Priority { get; set; }
+    public string? Description { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public DateTime? DueDate { get; set; }
+    
+    public void MarkComplete()
+    {
+        IsCompleted = true;
+        CompletedAt = DateTime.UtcNow;
+    }
+    
+    public void MarkIncomplete()
+    {
+        IsCompleted = false;
+        CompletedAt = null;
+    }
+}
+```
+that seemed to fix my error 
+which was 
+```csharp 
+.ThenByDescending(t => t.Priority)
+```
+in 
+```csharp /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+using Microsoft.EntityFrameworkCore;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+
+namespace MyDesktopApplication.Infrastructure.Repositories;
+
+/// <summary>
+/// TodoItem-specific repository implementation
+/// </summary>
+public class TodoRepository : Repository<TodoItem>, ITodoRepository
+{
+    public TodoRepository(AppDbContext context) : base(context)
+    {
+    }
+
+    public async Task<IReadOnlyList<TodoItem>> GetCompletedAsync(CancellationToken ct = default)
+        => await DbSet.AsNoTracking()
+            .Where(t => t.IsCompleted)
+            .OrderByDescending(t => t.UpdatedAt)
+            .ToListAsync(ct);
+
+    public async Task<IReadOnlyList<TodoItem>> GetPendingAsync(CancellationToken ct = default)
+        => await DbSet.AsNoTracking()
+            .Where(t => !t.IsCompleted)
+            .OrderBy(t => t.DueDate)
+            .ThenByDescending(t => t.Priority)
+            .ToListAsync(ct);
+
+    public async Task<IReadOnlyList<TodoItem>> GetOverdueAsync(CancellationToken ct = default)
+        => await DbSet.AsNoTracking()
+            .Where(t => !t.IsCompleted && t.DueDate != null && t.DueDate < DateTime.UtcNow)
+            .OrderBy(t => t.DueDate)
+            .ToListAsync(ct);
+}
+```
+However, after this change, the build never ended. Remember we have this problem earlier as well? 
+Yes, feels like this error came back. 
+I tried to let it run as long as I could but eventually gave up and `ctrl + c` ed it. 
+Also I got errors in dotnet test as well. 
+The full logs are in output.txt but here is the relevant snippet 
+```
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 2414.0s
+
+real	40m14.149s
+user	0m20.599s
+sys	0m17.839s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.20]     MyDesktopApplication.Core.Tests.TodoItemTests.NewTodoItem_HasDefaultValues [FAIL]
+[xUnit.net 00:00:00.20]       Shouldly.ShouldAssertException : todo.Id
+[xUnit.net 00:00:00.20]           should be
+[xUnit.net 00:00:00.20]       00000000-0000-0000-0000-000000000000
+[xUnit.net 00:00:00.20]           but was
+[xUnit.net 00:00:00.20]       7206280d-4c88-4883-9616-f6b2bd51747a
+[xUnit.net 00:00:00.20]       Stack Trace:
+[xUnit.net 00:00:00.20]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(16,0): at MyDesktopApplication.Core.Tests.TodoItemTests.NewTodoItem_HasDefaultValues()
+[xUnit.net 00:00:00.20]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.20]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 failed with 1 error(s) (0.8s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs(16): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.TodoItemTests.NewTodoItem_HasDefaultValues (34ms): Error Message: Shouldly.ShouldAssertException : todo.Id
+          should be
+      00000000-0000-0000-0000-000000000000
+          but was
+      7206280d-4c88-4883-9616-f6b2bd51747a
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.TodoItemTests.NewTodoItem_HasDefaultValues() in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs:line 16
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.68]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+
+Test summary: total: 21, failed: 1, succeeded: 20, skipped: 0, duration: 1.4s
+Build failed with 1 error(s) in 2.9s
+
+real	0m3.059s
+user	0m2.202s
+sys	0m0.518s
+```
+
+I also updated the test at 
+```csharp /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+using MyDesktopApplication.Core.Entities;
+using Shouldly;
+using Xunit;
+
+namespace MyDesktopApplication.Core.Tests;
+
+public class TodoItemTests
+{
+    [Fact]
+    public void NewTodoItem_HasDefaultValues()
+    {
+        var todo = new TodoItem { Title = "Test" };
+        
+        todo.Title.ShouldBe("Test");
+        todo.IsCompleted.ShouldBeFalse();
+        todo.Priority.ShouldBe(0);
+        todo.Id.ShouldNotBe(Guid.Empty);
+    }
+    
+    [Fact]
+    public void MarkComplete_SetsIsCompletedTrue()
+    {
+        var todo = new TodoItem { Title = "Test" };
+        
+        todo.MarkComplete();
+        
+        todo.IsCompleted.ShouldBeTrue();
+        todo.CompletedAt.ShouldNotBeNull();
+    }
+    
+    [Fact]
+    public void MarkIncomplete_SetsIsCompletedFalse()
+    {
+        var todo = new TodoItem { Title = "Test", IsCompleted = true };
+        
+        todo.MarkIncomplete();
+        
+        todo.IsCompleted.ShouldBeFalse();
+        todo.CompletedAt.ShouldBeNull();
+    }
+}
+```
+however, I have not successfully run any migration yet. 
+```bash
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet ef migrations add AddPriorityToTodoItem --project src/MyDesktopApplication.Infrastructure --startup-project src/MyDesktopApplication.Desktop
+Could not execute because the specified command or file was not found.
+Possible reasons for this include:
+  * You misspelled a built-in dotnet command.
+  * You intended to execute a .NET program, but dotnet-ef does not exist.
+  * You intended to run a global tool, but a dotnet-prefixed executable with this name could not be found on the PATH.
+
+real	0m0.092s
+user	0m0.064s
+sys	0m0.027s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+```

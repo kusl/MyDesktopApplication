@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 01:02:07 PM CST 2025
+Generated: Sun Dec 21 01:06:30 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -2663,53 +2663,32 @@ public static class QuestionTypeExtensions
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/TodoItem.cs
-SIZE: 1.05 KB
-MODIFIED: 2025-12-20 01:51:45
+SIZE: .55 KB
+MODIFIED: 2025-12-21 13:05:38
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
-/// <summary>
-/// Represents a todo item in the application
-/// </summary>
 public class TodoItem : EntityBase
 {
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
+    public int Priority { get; set; }
     public string? Description { get; set; }
     public bool IsCompleted { get; set; }
+    public DateTime? CompletedAt { get; set; }
     public DateTime? DueDate { get; set; }
-    public Priority Priority { get; set; } = Priority.Normal;
-
-    /// <summary>
-    /// Marks the todo item as completed
-    /// </summary>
+    
     public void MarkComplete()
     {
         IsCompleted = true;
-        UpdatedAt = DateTime.UtcNow;
+        CompletedAt = DateTime.UtcNow;
     }
-
-    /// <summary>
-    /// Marks the todo item as incomplete
-    /// </summary>
+    
     public void MarkIncomplete()
     {
         IsCompleted = false;
-        UpdatedAt = DateTime.UtcNow;
+        CompletedAt = null;
     }
-
-    /// <summary>
-    /// Returns true if the item is past its due date and not completed
-    /// </summary>
-    public bool IsOverdue => DueDate.HasValue && DueDate.Value < DateTime.UtcNow && !IsCompleted;
-}
-
-public enum Priority
-{
-    Low = 0,
-    Normal = 1,
-    High = 2,
-    Critical = 3
 }
 
 
@@ -4635,8 +4614,8 @@ public partial class MainViewModel : ViewModelBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-SIZE: .27 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: .89 KB
+MODIFIED: 2025-12-21 13:02:52
 ================================================================================
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -4650,6 +4629,35 @@ public abstract partial class ViewModelBase : ObservableObject
     
     [ObservableProperty]
     private string? _errorMessage;
+    
+    /// <summary>
+    /// Clears any error message.
+    /// </summary>
+    protected void ClearError()
+    {
+        ErrorMessage = null;
+    }
+    
+    /// <summary>
+    /// Sets an error message.
+    /// </summary>
+    protected void SetError(string message)
+    {
+        ErrorMessage = message;
+    }
+    
+    /// <summary>
+    /// Sets error from an exception.
+    /// </summary>
+    protected void SetError(Exception ex)
+    {
+        ErrorMessage = ex.Message;
+    }
+    
+    /// <summary>
+    /// Returns true if there's an error message.
+    /// </summary>
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 }
 
 
@@ -5078,7 +5086,7 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 01:02:08 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 01:06:31 PM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
