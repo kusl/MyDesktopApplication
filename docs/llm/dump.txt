@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 12:57:16 PM CST 2025
+Generated: Sun Dec 21 01:02:07 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -113,6 +113,7 @@ DIRECTORY STRUCTURE:
 ├── Directory.Packages.props.bak
 ├── export.sh
 ├── export.sh.bak
+├── fix-build-errors.sh
 ├── .gitattributes
 ├── .gitignore
 ├── MyDesktopApplication.slnx
@@ -1283,6 +1284,122 @@ echo "  • Docs: .md, .txt"
 echo "  • Scripts: .sh, .ps1, .cmd, .bat"
 echo "  • Other: .sql, .resx, .css, .scss, Dockerfile, etc."
 echo ""
+
+
+================================================================================
+FILE: fix-build-errors.sh
+SIZE: 2.80 KB
+MODIFIED: 2025-12-21 13:01:48
+================================================================================
+
+#!/bin/bash
+# Fix build errors: TodoItem.CompletedAt and ViewModelBase.ClearError/SetError
+
+set -e
+
+echo "Fixing build errors..."
+
+# -----------------------------------------------------------------------------
+# Fix 1: Update TodoItem.cs to include CompletedAt property
+# -----------------------------------------------------------------------------
+echo "[1/3] Fixing TodoItem.cs..."
+
+cat > src/MyDesktopApplication.Core/Entities/TodoItem.cs << 'EOF'
+namespace MyDesktopApplication.Core.Entities;
+
+public class TodoItem : EntityBase
+{
+    public required string Title { get; set; }
+    public string? Description { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public DateTime? DueDate { get; set; }
+    
+    public void MarkComplete()
+    {
+        IsCompleted = true;
+        CompletedAt = DateTime.UtcNow;
+    }
+    
+    public void MarkIncomplete()
+    {
+        IsCompleted = false;
+        CompletedAt = null;
+    }
+}
+EOF
+
+echo "  ✓ Fixed TodoItem.cs (added CompletedAt property)"
+
+# -----------------------------------------------------------------------------
+# Fix 2: Update ViewModelBase.cs to include ClearError/SetError methods
+# -----------------------------------------------------------------------------
+echo "[2/3] Fixing ViewModelBase.cs in Shared project..."
+
+cat > src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs << 'EOF'
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace MyDesktopApplication.Shared.ViewModels;
+
+public abstract partial class ViewModelBase : ObservableObject
+{
+    [ObservableProperty]
+    private bool _isBusy;
+    
+    [ObservableProperty]
+    private string? _errorMessage;
+    
+    /// <summary>
+    /// Clears any error message.
+    /// </summary>
+    protected void ClearError()
+    {
+        ErrorMessage = null;
+    }
+    
+    /// <summary>
+    /// Sets an error message.
+    /// </summary>
+    protected void SetError(string message)
+    {
+        ErrorMessage = message;
+    }
+    
+    /// <summary>
+    /// Sets error from an exception.
+    /// </summary>
+    protected void SetError(Exception ex)
+    {
+        ErrorMessage = ex.Message;
+    }
+    
+    /// <summary>
+    /// Returns true if there's an error message.
+    /// </summary>
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+}
+EOF
+
+echo "  ✓ Fixed ViewModelBase.cs (added ClearError/SetError methods)"
+
+# -----------------------------------------------------------------------------
+# Fix 3: Rebuild and test
+# -----------------------------------------------------------------------------
+echo "[3/3] Rebuilding..."
+
+dotnet build --verbosity quiet
+
+if [ $? -eq 0 ]; then
+    echo ""
+    echo "✅ Build successful!"
+    echo ""
+    echo "Running tests..."
+    dotnet test --verbosity quiet
+else
+    echo ""
+    echo "❌ Build failed - check errors above"
+    exit 1
+fi
 
 
 ================================================================================
@@ -4961,9 +5078,9 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 12:57:16 PM CST 2025
-Total Files Found: 64
-Files Exported: 64
+EXPORT COMPLETED: Sun Dec 21 01:02:08 PM CST 2025
+Total Files Found: 65
+Files Exported: 65
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
