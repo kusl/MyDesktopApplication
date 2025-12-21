@@ -128,6 +128,7 @@ find . -type f \( \
     \) \
     ! -path "*/bin/*" \
     ! -path "*/obj/*" \
+    ! -path "*/docs/*" \
     ! -path "*/.git/*" \
     ! -path "*/.vs/*" \
     ! -path "*/.idea/*" \
