@@ -10168,4 +10168,185 @@ File types included:
 real	0m0.782s
 user	0m0.377s
 sys	0m0.593s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 68 files to export
+
+Processing (1/68): add-migration.sh
+Processing (2/68): Directory.Build.props
+Processing (3/68): Directory.Packages.props
+Processing (4/68): export.sh
+Processing (5/68): fix-project-properly.sh
+Processing (6/68): .gitattributes
+Processing (7/68): .github/dependabot.yml
+Processing (8/68): .github/workflows/build.yml
+Processing (9/68): .github/workflows/ci.yml
+Processing (10/68): .github/workflows/release.yml
+Processing (11/68): .gitignore
+Processing (12/68): migrate.sh
+Processing (13/68): MyDesktopApplication.slnx
+Processing (14/68): README.md
+Processing (15/68): repair-project.sh
+Processing (16/68): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (17/68): src/MyDesktopApplication.Android/App.axaml
+Processing (18/68): src/MyDesktopApplication.Android/App.cs
+Processing (19/68): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (20/68): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (21/68): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (22/68): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (23/68): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (24/68): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (25/68): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (26/68): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (27/68): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (28/68): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (29/68): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (30/68): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (31/68): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (32/68): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (33/68): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (34/68): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (35/68): src/MyDesktopApplication.Desktop/App.axaml
+Processing (36/68): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (37/68): src/MyDesktopApplication.Desktop/app.manifest
+Processing (38/68): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (39/68): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (40/68): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (41/68): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (42/68): src/MyDesktopApplication.Desktop/Program.cs
+Processing (43/68): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (44/68): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (45/68): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (46/68): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (47/68): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (48/68): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (49/68): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (50/68): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (51/68): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (52/68): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (53/68): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (54/68): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (55/68): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (56/68): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (57/68): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (58/68): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (59/68): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (60/68): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (61/68): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (62/68): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (63/68): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (64/68): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (65/68): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (66/68): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (67/68): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (68/68): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 68
+Files skipped:  0
+Output size:    376.36 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.791s
+user	0m0.377s
+sys	0m0.600s
+
+Build succeeded in 0.5s
+
+real	0m0.618s
+user	0m0.689s
+sys	0m0.172s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.845s
+user	0m0.971s
+sys	0m0.205s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 2 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(11,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.GetOrCreateAsync(CancellationToken)'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(11,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+  MyDesktopApplication.Shared net10.0 failed with 11 error(s) and 5 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(14,22): error CS0117: 'Country' does not contain a definition for 'Iso2'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,16): error CS0266: Cannot implicitly convert type 'long?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,35): error CS0266: Cannot implicitly convert type 'long?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,40): error CS0117: 'Country' does not contain a definition for 'Gdp'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,66): error CS0266: Cannot implicitly convert type 'int?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,9): error CS0117: 'Country' does not contain a definition for 'Density'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,28): error CS0117: 'Country' does not contain a definition for 'Literacy'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,55): error CS0266: Cannot implicitly convert type 'double?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,77): error CS0266: Cannot implicitly convert type 'double?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(12,60): error CS9035: Required member 'Country.Code' must be set in the object initializer or attribute constructor.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,16): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,35): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,66): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,55): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,77): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(151,56): error CS1501: No overload for method 'GetCorrectMessage' takes 1 arguments
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+
+Build failed with 13 error(s) and 5 warning(s) in 1.1s
+
+real	0m1.282s
+user	0m1.546s
+sys	0m0.348s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 2 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(11,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.GetOrCreateAsync(CancellationToken)'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(11,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 11 error(s) and 5 warning(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(14,22): error CS0117: 'Country' does not contain a definition for 'Iso2'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,16): error CS0266: Cannot implicitly convert type 'long?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,35): error CS0266: Cannot implicitly convert type 'long?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,40): error CS0117: 'Country' does not contain a definition for 'Gdp'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,66): error CS0266: Cannot implicitly convert type 'int?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,9): error CS0117: 'Country' does not contain a definition for 'Density'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,28): error CS0117: 'Country' does not contain a definition for 'Literacy'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,55): error CS0266: Cannot implicitly convert type 'double?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,77): error CS0266: Cannot implicitly convert type 'double?' to 'double'. An explicit conversion exists (are you missing a cast?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(12,60): error CS9035: Required member 'Country.Code' must be set in the object initializer or attribute constructor.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,16): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,35): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(15,66): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,55): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/Data/CountryData.cs(16,77): warning CS8629: Nullable value type may be null.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(151,56): error CS1501: No overload for method 'GetCorrectMessage' takes 1 arguments
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+
+Test summary: total: 16, failed: 0, succeeded: 16, skipped: 0, duration: 0.8s
+Build failed with 13 error(s) and 5 warning(s) in 1.7s
+
+real	0m1.891s
+user	0m1.626s
+sys	0m0.329s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
