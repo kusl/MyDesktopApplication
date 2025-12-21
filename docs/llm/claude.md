@@ -2349,6 +2349,7 @@ No more shell script sprawl! 🧹
 
 
 I ran the script but want to quickly verify, are you sure we don't need this app settings json? 
+Please check the updated `dump.txt` and `output.txt` to verify success? 
 ```json ~/src/dotnet/MyDesktopApplication/appsettings.json
 {
   "Application": {
@@ -2380,3 +2381,10 @@ I ran the script but want to quickly verify, are you sure we don't need this app
   }
 }
 ```
+
+
+
+
+
+
+
