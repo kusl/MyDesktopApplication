@@ -2038,3 +2038,143 @@ chmod +x fix-android-code.sh
 
 
 
+Found it! From our past conversations, the Android SDK was set up at:
+
+- **ANDROID_HOME**: `~/.android/sdk` (which is `/home/kushal/.android/sdk`)
+- **sdkmanager location**: `~/.android/sdk/cmdline-tools/latest/bin/sdkmanager`
+
+Let's accept the licenses properly:
+
+```bash
+# First, let's check if sdkmanager exists there
+ls -la ~/.android/sdk/cmdline-tools/latest/bin/sdkmanager
+
+# Accept licenses
+yes | ~/.android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+
+# If that doesn't work, create the license files manually
+mkdir -p ~/.android/sdk/licenses
+echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > ~/.android/sdk/licenses/android-sdk-license
+echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" >> ~/.android/sdk/licenses/android-sdk-license  
+echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> ~/.android/sdk/licenses/android-sdk-license
+echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > ~/.android/sdk/licenses/android-sdk-preview-license
+```
+
+Then kill those stale processes and retry:
+
+```bash
+# Kill stuck processes
+pkill -f aapt2
+pkill -f VBCSCompiler
+dotnet build-server shutdown
+
+# Clean and rebuild
+rm -rf bin obj src/*/bin src/*/obj tests/*/bin tests/*/obj
+dotnet build
+```
+
+Can you run `ls -la ~/.android/sdk/cmdline-tools/` and `ls -la ~/.android/sdk/licenses/` to see what's actually there?
+
+
+
+
+[missing chat here]
+I accepted the licenses which seems like worked but that didn't change the outcome of this build. 
+I have updated the contents of the `dump.txt` and `output.txt` maybe you will find some clues there? 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ls -la ~/.android/sdk/cmdline-tools/
+total 0
+drwxr-xr-x. 1 kushal kushal  12 Dec 20 07:04 .
+drwxr-xr-x. 1 kushal kushal 148 Dec 20 07:16 ..
+drwxr-xr-x. 1 kushal kushal  66 Dec 20 07:04 latest
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ls -la ~/.android/sdk/licenses/
+total 28
+drwxr-xr-x. 1 kushal kushal 336 Dec 20 07:04 .
+drwxr-xr-x. 1 kushal kushal 148 Dec 20 07:16 ..
+-rw-r--r--. 1 kushal kushal  41 Dec 20 07:04 android-googletv-license
+-rw-r--r--. 1 kushal kushal  41 Dec 20 07:04 android-googlexr-license
+-rw-r--r--. 1 kushal kushal  82 Dec 20 07:04 android-sdk-arm-dbt-license
+-rw-r--r--. 1 kushal kushal 123 Dec 20 07:16 android-sdk-license
+-rw-r--r--. 1 kushal kushal  42 Dec 20 06:34 android-sdk-preview-license
+-rw-r--r--. 1 kushal kushal  41 Dec 20 07:04 google-gdk-license
+-rw-r--r--. 1 kushal kushal  41 Dec 20 07:04 mips-android-sysimage-license
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ls -la ~/.android/sdk/cmdline-tools/latest/bin/sdkmanager
+-rwxr-xr-x. 1 kushal kushal 5319 Jan  1  2010 /home/kushal/.android/sdk/cmdline-tools/latest/bin/sdkmanager
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ yes | ~/.android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+[=======================================] 100% Computing updates...             
+All SDK package licenses accepted.
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -f aapt2
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -f VBCSCompiler
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet build-server shutdown
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ rm -rf bin obj src/*/bin src/*/obj tests/*/bin tests/*/obj
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build
+Restore complete (1.0s)
+  MyDesktopApplication.Core net10.0 succeeded (2.5s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.5s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 70.5s
+
+real	1m10.651s
+user	0m5.207s
+sys	0m1.287s
+
+The build is still hanging on the Android project (notice it says "Build failed in 70.5s" but only ~7 seconds of actual CPU time - the rest is waiting). Let me check the project knowledge for clues about what might be causing this.Now I can see the issue more clearly. Looking at the build log, the Android build is getting stuck in the `_CompileResources` phase with aapt2. This is a known issue where aapt2 daemon processes hang indefinitely.
+
+Let me check the current dump.txt for the actual Android project configuration:Based on my analysis of the build logs and project knowledge, I can see the problem. The Android build is hanging at the `_CompileResources` step because aapt2 daemon processes are getting stuck in a deadlock state. This is a known issue with the Android build toolchain.
+
+Let me create a practical workaround - **exclude Android from the default build** and build it separately when needed:Run this script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-android-build.sh
+./fix-android-build.sh
+```
+
+**What this fixes:**
+
+1. **Separates desktop and Android builds** - Creates `MyDesktopApplication.Desktop.slnx` for fast desktop-only builds
+2. **Adds aapt2 workarounds** to prevent the hanging:
+   - `_Aapt2DaemonMaxInstanceCount=1` - Single-threaded aapt2 to avoid daemon deadlocks
+   - `AndroidAapt2CompileExtraArgs="--no-crunch"` - Skips image crunching (faster)
+   - Interpreted mode for debug builds (faster)
+3. **Creates helper scripts**:
+   - `./build-desktop.sh` - Fast desktop builds
+   - `./build-android.sh` - Android builds with workarounds
+   - `./run-tests.sh` - Run tests
+
+**After running, your daily workflow becomes:**
+
+```bash
+# For normal development (fast):
+./build-desktop.sh
+./run-tests.sh
+dotnet run --project src/MyDesktopApplication.Desktop
+
+# When you need to test Android:
+./build-android.sh
+```
+
+**If Android still hangs**, the nuclear option is:
+```bash
+pkill -9 -f aapt2
+pkill -9 -f dotnet
+./build-android.sh
+```
+
+
+
+
+
+
+
+
