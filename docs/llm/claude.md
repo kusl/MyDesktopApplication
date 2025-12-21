@@ -3648,3 +3648,63 @@ Requirements: 1. Consolidate Solutions: Delete MyDesktopApplication.Desktop.slnx
 
 
 
+I'll search the project knowledge to understand the current project structure and create a comprehensive cleanup script.Now let me search for the current state of the GitHub Actions workflow files:Now let me search for the specific workflow content to understand the current state:Now I have the current workflow files. Let me search for more details about the current workflow configuration:Now I have a clear picture of the current state. Let me verify the exact action versions to use by searching the web:Now I have all the information I need. Now I have all the information needed. Let me create the comprehensive cleanup and update script:Now run the script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x cleanup-and-standardize.sh
+./cleanup-and-standardize.sh
+```
+
+Then commit and push:
+
+```bash
+git add -A
+git commit -m "Cleanup: consolidate solution, update GitHub Actions to latest
+
+Changes:
+- Consolidated to single MyDesktopApplication.slnx (removed Desktop.slnx)
+- Updated GitHub Actions to latest versions:
+  - actions/checkout: v4 → v6
+  - actions/setup-java: v4 → v5
+  - actions/upload-artifact: v4 → v6
+  - actions/download-artifact: v4 → v7
+  - actions/setup-dotnet: v4 → v5
+  - actions/cache: v4 → v5
+  - softprops/action-gh-release: v1 → v2
+- Created robust add-migration.sh with validation
+- Removed all redundant fix-*.sh and setup-*.sh scripts
+- Added aapt2 daemon fixes to Directory.Build.props
+
+Workflow behavior:
+- ci.yml: Build & test on every push/PR
+- build.yml: Creates 'dev' pre-release on push to main
+- release.yml: Creates stable release on git tags (v*)"
+
+git push
+```
+
+## Summary
+
+| Component | Change |
+|-----------|--------|
+| **Solution** | Consolidated to single `MyDesktopApplication.slnx` with all 8 projects |
+| **actions/checkout** | v4 → v6 |
+| **actions/setup-java** | v4 → v5 (added `distribution: 'temurin'`) |
+| **actions/upload-artifact** | v4 → v6 (Node.js 24, immutable artifacts) |
+| **actions/download-artifact** | v4 → v7 (Node.js 24, `merge-multiple` for pattern downloads) |
+| **actions/setup-dotnet** | v4 → v5 |
+| **actions/cache** | v4 → v5 |
+| **softprops/action-gh-release** | v1 → v2 |
+| **add-migration.sh** | Robust version with AppDbContext validation, auto database update |
+| **Redundant scripts** | All `fix-*.sh`, `setup-*.sh`, `build-*.sh` removed |
+
+The script also:
+- Kills stuck aapt2/VBCSCompiler processes before building
+- Updates `Directory.Build.props` with aapt2 daemon fixes
+- Sets up proper CI workflow that only builds desktop projects (avoiding Android workload issues on CI)
+- Separates Android builds into their own job with workload installation
+
+
+
+
