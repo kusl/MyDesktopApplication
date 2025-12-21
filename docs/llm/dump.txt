@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 02:59:44 PM CST 2025
+Generated: Sun Dec 21 03:07:51 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -75,7 +75,8 @@ DIRECTORY STRUCTURE:
 │   │   └── Program.cs
 │   ├── MyDesktopApplication.Infrastructure
 │   │   ├── Data
-│   │   │   └── AppDbContext.cs
+│   │   │   ├── AppDbContext.cs
+│   │   │   └── DesignTimeDbContextFactory.cs
 │   │   ├── Repositories
 │   │   │   ├── GameStateRepository.cs
 │   │   │   ├── Repository.cs
@@ -105,7 +106,9 @@ DIRECTORY STRUCTURE:
 │   └── MyDesktopApplication.UI.Tests
 │       ├── MainWindowViewModelTests.cs
 │       └── MyDesktopApplication.UI.Tests.csproj
+├── add-migration.sh
 ├── android-build.binlog
+├── build-desktop.sh
 ├── cleanup-and-rebuild.sh
 ├── Directory.Build.props
 ├── Directory.Packages.props
@@ -117,12 +120,58 @@ DIRECTORY STRUCTURE:
 ├── fix-build-errors.sh
 ├── .gitattributes
 ├── .gitignore
+├── MyDesktopApplication.Desktop.slnx
 ├── MyDesktopApplication.slnx
-└── README.md
+├── README.md
+└── run-tests.sh
 
 
 FILE CONTENTS:
 ==============
+
+================================================================================
+FILE: add-migration.sh
+SIZE: .68 KB
+MODIFIED: 2025-12-21 15:00:14
+================================================================================
+
+#!/bin/bash
+# Add a new EF Core migration
+# Usage: ./add-migration.sh MigrationName
+
+if [ -z "$1" ]; then
+    echo "Usage: ./add-migration.sh <MigrationName>"
+    echo "Example: ./add-migration.sh AddPriorityToTodoItem"
+    exit 1
+fi
+
+MIGRATION_NAME="$1"
+
+echo "Adding migration: $MIGRATION_NAME"
+dotnet ef migrations add "$MIGRATION_NAME" \
+    --project src/MyDesktopApplication.Infrastructure \
+    --startup-project src/MyDesktopApplication.Desktop \
+    --output-dir Data/Migrations
+
+echo "✓ Migration created"
+echo ""
+echo "To apply the migration, run:"
+echo "  dotnet ef database update --project src/MyDesktopApplication.Infrastructure --startup-project src/MyDesktopApplication.Desktop"
+
+
+================================================================================
+FILE: build-desktop.sh
+SIZE: .20 KB
+MODIFIED: 2025-12-21 15:00:14
+================================================================================
+
+#!/bin/bash
+# Build desktop projects only (excludes Android to avoid aapt2 hanging)
+set -e
+echo "Building desktop projects..."
+dotnet build MyDesktopApplication.Desktop.slnx
+echo "✓ Desktop build complete"
+
 
 ================================================================================
 FILE: cleanup-and-rebuild.sh
@@ -2273,6 +2322,27 @@ appsettings.*.local.json
 
 
 ================================================================================
+FILE: MyDesktopApplication.Desktop.slnx
+SIZE: .76 KB
+MODIFIED: 2025-12-21 15:00:14
+================================================================================
+
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <Project Path="src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+    <Project Path="src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
+    <Project Path="src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj" />
+    <Project Path="tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj" />
+  </Folder>
+</Solution>
+
+
+================================================================================
 FILE: MyDesktopApplication.slnx
 SIZE: .85 KB
 MODIFIED: 2025-12-21 12:48:54
@@ -2388,6 +2458,19 @@ git push origin v1.0.0
 MIT License - Free for any use.
 
 All dependencies are MIT, Apache-2.0, BSD, or Public Domain licensed.
+
+
+================================================================================
+FILE: run-tests.sh
+SIZE: .12 KB
+MODIFIED: 2025-12-21 15:00:14
+================================================================================
+
+#!/bin/bash
+# Run all tests (uses desktop solution)
+set -e
+echo "Running tests..."
+dotnet test MyDesktopApplication.Desktop.slnx
 
 
 ================================================================================
@@ -4028,8 +4111,8 @@ public partial class MainWindow : Window
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-SIZE: 1.00 KB
-MODIFIED: 2025-12-21 12:48:54
+SIZE: 1.73 KB
+MODIFIED: 2025-12-21 15:00:14
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -4037,31 +4120,95 @@ using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Infrastructure.Data;
 
+/// <summary>
+/// Application database context for Entity Framework Core.
+/// </summary>
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
     
-    public DbSet<GameState> GameStates => Set<GameState>();
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         
-        modelBuilder.Entity<GameState>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.SelectedQuestionType)
-                  .HasMaxLength(50)
-                  .HasDefaultValue("Population");
-        });
-        
+        // Configure TodoItem
         modelBuilder.Entity<TodoItem>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Title).HasMaxLength(200).IsRequired();
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.Priority).HasDefaultValue(0);
+            
+            // Indexes for common queries
+            entity.HasIndex(e => e.IsCompleted);
+            entity.HasIndex(e => e.DueDate);
+            entity.HasIndex(e => e.Priority);
         });
+    }
+    
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // Auto-update timestamps
+        var entries = ChangeTracker.Entries<EntityBase>();
+        var now = DateTime.UtcNow;
+        
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = now;
+                entry.Entity.UpdatedAt = now;
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                entry.Entity.UpdatedAt = now;
+            }
+        }
+        
+        return base.SaveChangesAsync(cancellationToken);
+    }
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+SIZE: 1.14 KB
+MODIFIED: 2025-12-21 15:00:14
+================================================================================
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+
+namespace MyDesktopApplication.Infrastructure.Data;
+
+/// <summary>
+/// Factory for creating AppDbContext at design time (for EF migrations).
+/// This is required because the Desktop app uses Avalonia's startup,
+/// not the standard ASP.NET Core host that EF tools expect.
+/// </summary>
+public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        
+        // Use SQLite for migrations - this creates the migration files
+        // The actual connection string at runtime comes from DI
+        var dbPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "MyDesktopApplication",
+            "app.db");
+        
+        // Ensure directory exists
+        Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
+        
+        optionsBuilder.UseSqlite($"Data Source={dbPath}");
+        
+        return new AppDbContext(optionsBuilder.Options);
     }
 }
 
@@ -5359,9 +5506,9 @@ MODIFIED: 2025-12-21 12:48:54
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 02:59:45 PM CST 2025
-Total Files Found: 66
-Files Exported: 66
+EXPORT COMPLETED: Sun Dec 21 03:07:52 PM CST 2025
+Total Files Found: 71
+Files Exported: 71
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
