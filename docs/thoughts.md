@@ -1,3 +1,4 @@
+Instructions: 
 I want to learn Avalonia UI to write high performance cross platform free of cost. 
 I want to use the latest and greatest technology. 
 I want this to serve as a sample as well as a starting point for native applications. 
