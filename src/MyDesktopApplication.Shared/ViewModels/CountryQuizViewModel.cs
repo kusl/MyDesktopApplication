@@ -89,7 +89,8 @@ public partial class CountryQuizViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectCountry(string countryParam) 
     {
-        if (HasAnswered || _country1 == null || _country2 == null)
+        // FIX for MVVMTK0034: Use public properties (Country1, Country2) instead of backing fields
+        if (HasAnswered || Country1 == null || Country2 == null)
             return;
 
         // Parse the string parameter to int safely
@@ -98,8 +99,9 @@ public partial class CountryQuizViewModel : ViewModelBase
         HasAnswered = true;
         TotalQuestions++;
 
-        var value1 = SelectedQuestionType.GetValue(_country1);
-        var value2 = SelectedQuestionType.GetValue(_country2);
+        // FIX for MVVMTK0034: Use public properties here too
+        var value1 = SelectedQuestionType.GetValue(Country1);
+        var value2 = SelectedQuestionType.GetValue(Country2);
 
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
