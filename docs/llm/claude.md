@@ -8598,3 +8598,103 @@ This is a surgical fix that addresses only the root cause of the error without t
 
 
 
+and now we have this error 
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(12,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+
+Build failed with 1 error(s) in 1.0s
+
+real	0m1.111s
+user	0m1.389s
+sys	0m0.273s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(12,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+
+Test summary: total: 18, failed: 0, succeeded: 18, skipped: 0, duration: 0.7s
+Build failed with 1 error(s) in 1.5s
+
+real	0m1.683s
+user	0m1.392s
+sys	0m0.271s
+
+I'll search the project knowledge to find the current state of the interface and repository to understand what's needed.Let me also search for the current state of the files to understand what we're working with:Now I have a clear picture. The error is:
+
+```
+'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+```
+
+This means the interface `IGameStateRepository` declares `SaveAsync`, but `GameStateRepository` doesn't implement it. Let me create a targeted fix script:The error is straightforward: `IGameStateRepository` declares a `SaveAsync(GameState, CancellationToken)` method, but `GameStateRepository` doesn't implement it.
+
+## The Fix
+
+The script adds the missing `SaveAsync` method to `GameStateRepository`:
+
+```csharp
+public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
+{
+    if (gameState.Id == Guid.Empty)
+        await AddAsync(gameState, ct);
+    else
+        await UpdateAsync(gameState, ct);
+}
+```
+
+This method:
+- Checks if the `GameState` is new (Id is `Guid.Empty`)
+- If new, uses `AddAsync` to insert it
+- If existing, uses `UpdateAsync` to update it
+
+## To Run
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-saveasync-implementation.sh
+./fix-saveasync-implementation.sh
+```
+
+The script also shows you the current state of both files before applying the fix, so you can verify what's happening.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
