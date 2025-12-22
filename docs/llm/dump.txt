@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Mon Dec 22 03:15:23 AM CST 2025
+Generated: Mon Dec 22 03:20:30 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1299,8 +1299,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: .70 KB
-MODIFIED: 2025-12-21 22:03:31
+SIZE: .77 KB
+MODIFIED: 2025-12-22 03:20:04
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -1320,6 +1320,7 @@ MODIFIED: 2025-12-21 22:03:31
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
 
@@ -4206,7 +4207,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Mon Dec 22 03:15:24 AM CST 2025
+EXPORT COMPLETED: Mon Dec 22 03:20:31 AM CST 2025
 Total Files Found: 64
 Files Exported: 64
 Files Skipped: 0 (binary or large files)
