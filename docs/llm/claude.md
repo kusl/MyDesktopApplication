@@ -8398,3 +8398,103 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+There are all sort of things wrong with this code base. 
+Please fix all the errors as identified in output.txt and use the code in dump.txt as your starting point. 
+Please generate a single script to fix all these issues. 
+Please harmonize property names. For example, it makes no sense to call something Gdp somewhere and GdpTotal somewhere else. 
+Please make sure the build works. Do not hallucinate. 
+Please keep in mind all our instructions. Do not introduce non-free (including paid for commercial only) nuget packages. 
+Do not try to sneak in "solutions" by deleting functionality or by siloing code into desktop only vs mobile only, properly fix errors. 
+Please write a single script to fix the issues. 
+Please make sure the script is idempotent, meaning it doesn't break things if you run it multiple times. 
+Do not use pre-release packages but also do not downgrade my packages to make the code build. 
+Fix code properly instead of downgrading to older versions. 
+Do not introduce new errors. 
+Fix all existing errors. 
+Please be very thorough and fix ALL the issues. 
+You really need to step up here buddy. 
+This has gone on for multiple rounds and I am about to hit my weekly quota soon. 
+
+
+
+
+I'll analyze the build errors and create a comprehensive fix script. Let me first search for any relevant context from the project knowledge.Now let me look at the actual dump.txt and output.txt files to see the current state:Now let me look at the actual current dump.txt content to see the exact source files:Now I have a comprehensive picture of all the issues. Let me search for the current test files that need fixing:Now I have a comprehensive understanding of all the errors. Let me create a thorough fix script based on the actual error messages from output.txt and the current source code patterns. The key issues are:
+
+1. **MainWindowViewModel is missing many properties that the XAML binds to**: `Country1`, `Country2`, `HasAnswered`, `SelectCountryCommand`, `ScoreText`, `StreakText`, `BestStreakText`, `AccuracyText`, `IsCountry1Correct`, `IsCountry1Wrong`, `IsCountry2Correct`, `IsCountry2Wrong`, `Country1Value`, `Country2Value`, `ResultMessage`, `NextRoundCommand`
+
+2. **UI Tests reference wrong property names**: `Score` instead of `CurrentScore`, `Streak` instead of `CurrentStreak`
+
+3. **The XAML uses `Country1`, `Country2` but ViewModel has `Country1Name`, `Country2Name`**I've created a comprehensive fix script that addresses all the errors from your `output.txt`. Here's what it fixes:
+
+## Summary of All Fixes
+
+### XAML Binding Errors (28 errors)
+The `MainWindowViewModel` was missing many properties that the XAML binds to. The script adds:
+
+| Missing Property | Fix |
+|-----------------|-----|
+| `Country1`, `Country2` | Added as `[ObservableProperty]` |
+| `HasAnswered` | Added as `[ObservableProperty]` |
+| `SelectCountryCommand` | Added via `[RelayCommand]` on `SelectCountry()` |
+| `NextRoundCommand` | Added via `[RelayCommand]` on `NextRound()` |
+| `ResultMessage` | Added as `[ObservableProperty]` |
+| `ScoreText`, `StreakText`, `BestStreakText`, `AccuracyText` | Added as computed properties |
+| `IsCountry1Correct`, `IsCountry1Wrong`, `IsCountry2Correct`, `IsCountry2Wrong` | Added as `[ObservableProperty]` |
+| `Country1Value`, `Country2Value` | Added as `[ObservableProperty]` |
+
+### Test Errors (11 errors)
+The UI tests referenced wrong property names:
+
+| Wrong Name | Correct Name |
+|------------|--------------|
+| `Score` | `CurrentScore` |
+| `Streak` | `CurrentStreak` |
+| `Country1Name` | `Country1` (the property directly) |
+
+### Files Updated
+1. **Country.cs** - Added `Flag` property with emoji generation
+2. **QuestionType.cs** - Added `GetLabel()`, `GetValue()`, `FormatValue()` extension methods
+3. **GameState.cs** - Complete entity with score tracking
+4. **IGameStateRepository.cs** - Inherits from `IRepository<GameState>` for `UpdateAsync`
+5. **MainWindowViewModel.cs** - **Complete rewrite** with ALL properties the XAML expects
+6. **CountryData.cs** - 50 countries with real data
+7. **MainWindowViewModelTests.cs** - Fixed to use correct property names
+
+## To Run
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-all-errors.sh
+./fix-all-errors.sh
+```
+
+The script is idempotent and will:
+1. Kill stuck build processes
+2. Clean all build artifacts
+3. Fix all source files
+4. Restore packages
+5. Build the solution
+6. Run tests
+7. Exit with error code if build fails
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
