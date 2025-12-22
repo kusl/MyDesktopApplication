@@ -5152,3 +5152,149 @@ Restore complete (0.6s)
 
 Test summary: total: 3, failed: 0, succeeded: 3, skipped: 0, duration: 1.3s
 Build failed with 7 error(s) in 2.4s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I'll analyze the errors and create a fix script. Let me first search for the current codebase to understand the structure.Now I have a clear picture of the issues. Let me search for the current source code to understand exactly what needs to be fixed:Now I have a comprehensive understanding of the errors. Let me create the fix script:I've created a comprehensive fix script that addresses all 7 build errors. Here's what it fixes:
+
+## Summary of Fixes
+
+| Error | Location | Fix |
+|-------|----------|-----|
+| `QuestionType` missing `GetLabel` | `QuestionTypeTests.cs:20` | Added extension method to `QuestionType.cs` |
+| `QuestionType` missing `GetValue` | `QuestionTypeTests.cs:41-44` | Added extension method that extracts values from Country |
+| `QuestionType` missing `FormatValue` | `QuestionTypeTests.cs:53` | Added extension method for human-readable formatting |
+| `Cannot convert string to double` | `CountryQuizViewModel.cs:203` | Rewrote entire ViewModel with correct types |
+
+## Files Created/Updated
+
+1. **`src/MyDesktopApplication.Core/Entities/QuestionType.cs`** - Added `QuestionTypeExtensions` class with `GetLabel()`, `GetValue()`, and `FormatValue()` extension methods
+
+2. **`src/MyDesktopApplication.Core/Entities/Country.cs`** - Complete class with all properties (Population, Area, Gdp, GdpPerCapita, Density, Literacy, Hdi, LifeExpectancy, Flag)
+
+3. **`src/MyDesktopApplication.Core/Entities/GameState.cs`** - Full entity with score tracking and `RecordAnswer()` method
+
+4. **`src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs`** - Complete rewrite fixing the type conversion error on line 203
+
+5. **`tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs`** - Fixed tests with proper `using Xunit;` and Shouldly assertions
+
+## To Run
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-all-errors.sh
+./fix-all-errors.sh
+```
+
+The script is idempotent (safe to run multiple times) and will:
+1. Kill stuck build processes
+2. Clean build artifacts
+3. Fix all source files
+4. Restore packages
+5. Build the solution
+6. Run tests
+7. Exit with error code if build fails
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
