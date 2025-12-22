@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-             xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+             xmlns:conv="using:MyDesktopApplication.Android.Converters"
              xmlns:core="using:MyDesktopApplication.Core.Entities"
              x:Class="MyDesktopApplication.Android.Views.MainView"
              x:DataType="vm:CountryQuizViewModel"

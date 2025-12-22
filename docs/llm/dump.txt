@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Mon Dec 22 03:34:32 AM CST 2025
+Generated: Mon Dec 22 03:42:55 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -24,6 +24,8 @@ DIRECTORY STRUCTURE:
 │   └── dependabot.yml
 ├── src
 │   ├── MyDesktopApplication.Android
+│   │   ├── Converters
+│   │   │   └── Converters.cs
 │   │   ├── Resources
 │   │   │   ├── drawable
 │   │   │   │   ├── icon.png
@@ -1269,6 +1271,39 @@ public class App : Avalonia.Application
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Android/Converters/Converters.cs
+SIZE: .68 KB
+MODIFIED: 2025-12-22 03:41:59
+================================================================================
+
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Android.Converters;
+
+public class QuestionTypeLabelConverter : IValueConverter
+{
+    public static readonly QuestionTypeLabelConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is QuestionType qt)
+        {
+            return qt.GetLabel();
+        }
+        return value?.ToString() ?? "";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
+}
+
+
+================================================================================
 FILE: src/MyDesktopApplication.Android/MainActivity.cs
 SIZE: .58 KB
 MODIFIED: 2025-12-21 10:25:16
@@ -1299,8 +1334,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: .88 KB
-MODIFIED: 2025-12-22 03:22:03
+SIZE: .94 KB
+MODIFIED: 2025-12-22 03:39:08
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -1321,6 +1356,7 @@ MODIFIED: 2025-12-22 03:22:03
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
@@ -1380,13 +1416,13 @@ MODIFIED: 2025-12-21 11:20:44
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml
 SIZE: 7.07 KB
-MODIFIED: 2025-12-21 12:33:54
+MODIFIED: 2025-12-22 03:42:51
 ================================================================================
 
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-             xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+             xmlns:conv="using:MyDesktopApplication.Android.Converters"
              xmlns:core="using:MyDesktopApplication.Core.Entities"
              x:Class="MyDesktopApplication.Android.Views.MainView"
              x:DataType="vm:CountryQuizViewModel"
@@ -4257,9 +4293,9 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Mon Dec 22 03:34:33 AM CST 2025
-Total Files Found: 64
-Files Exported: 64
+EXPORT COMPLETED: Mon Dec 22 03:42:56 AM CST 2025
+Total Files Found: 65
+Files Exported: 65
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
