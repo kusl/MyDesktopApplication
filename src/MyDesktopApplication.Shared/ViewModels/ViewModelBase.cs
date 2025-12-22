@@ -26,7 +26,7 @@ public abstract partial class ViewModelBase : ObservableObject
     }
     
     /// <summary>
-    /// Clears any error state
+    /// Clears the error message and marks HasError as false
     /// </summary>
     protected void ClearError()
     {
@@ -35,9 +35,9 @@ public abstract partial class ViewModelBase : ObservableObject
     }
     
     /// <summary>
-    /// Executes an action with busy indicator and error handling
+    /// Executes an async operation with busy state management and error handling
     /// </summary>
-    protected async Task ExecuteAsync(Func<Task> action, string? errorContext = null)
+    protected async Task ExecuteAsync(Func<Task> operation, string? errorContext = null)
     {
         if (IsBusy) return;
         
@@ -45,12 +45,13 @@ public abstract partial class ViewModelBase : ObservableObject
         {
             IsBusy = true;
             ClearError();
-            await action();
+            await operation();
         }
         catch (Exception ex)
         {
-            var context = errorContext ?? "An error occurred";
-            SetError($"{context}: {ex.Message}");
+            SetError(errorContext != null 
+                ? $"{errorContext}: {ex.Message}" 
+                : ex.Message);
         }
         finally
         {
@@ -59,9 +60,9 @@ public abstract partial class ViewModelBase : ObservableObject
     }
     
     /// <summary>
-    /// Executes a function with busy indicator and error handling
+    /// Executes an async operation that returns a result
     /// </summary>
-    protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> action, string? errorContext = null)
+    protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> operation, string? errorContext = null)
     {
         if (IsBusy) return default;
         
@@ -69,12 +70,13 @@ public abstract partial class ViewModelBase : ObservableObject
         {
             IsBusy = true;
             ClearError();
-            return await action();
+            return await operation();
         }
         catch (Exception ex)
         {
-            var context = errorContext ?? "An error occurred";
-            SetError($"{context}: {ex.Message}");
+            SetError(errorContext != null 
+                ? $"{errorContext}: {ex.Message}" 
+                : ex.Message);
             return default;
         }
         finally

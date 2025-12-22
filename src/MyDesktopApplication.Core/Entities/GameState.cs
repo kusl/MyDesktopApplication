@@ -1,11 +1,8 @@
 namespace MyDesktopApplication.Core.Entities;
 
-/// <summary>
-/// Tracks game state including scores, streaks, and question preferences
-/// </summary>
 public class GameState : EntityBase
 {
-    public string UserId { get; set; } = string.Empty;
+    public string UserId { get; set; } = "default";
     
     // Score tracking
     public int CurrentScore { get; set; }
@@ -13,19 +10,22 @@ public class GameState : EntityBase
     public int CurrentStreak { get; set; }
     public int BestStreak { get; set; }
     
-    // Question tracking
+    // Statistics
     public int TotalCorrect { get; set; }
     public int TotalAnswered { get; set; }
     
-    // Selected question type for filtering
+    // Selected question type (persisted)
     public QuestionType? SelectedQuestionType { get; set; }
     
     // Calculated properties
-    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered : 0;
+    public double Accuracy => TotalAnswered > 0 
+        ? (double)TotalCorrect / TotalAnswered 
+        : 0;
+    
     public double AccuracyPercentage => Accuracy * 100;
     
     /// <summary>
-    /// Records an answer and updates all relevant statistics
+    /// Records an answer and updates all related scores
     /// </summary>
     public void RecordAnswer(bool isCorrect)
     {
@@ -50,16 +50,17 @@ public class GameState : EntityBase
     }
     
     /// <summary>
-    /// Resets the current game (keeps high scores)
+    /// Resets current game while preserving high scores
     /// </summary>
     public void Reset()
     {
         CurrentScore = 0;
         CurrentStreak = 0;
+        // Keep HighScore and BestStreak
     }
     
     /// <summary>
-    /// Resets everything including high scores
+    /// Resets all statistics including high scores
     /// </summary>
     public void ResetAll()
     {
@@ -69,6 +70,5 @@ public class GameState : EntityBase
         BestStreak = 0;
         TotalCorrect = 0;
         TotalAnswered = 0;
-        SelectedQuestionType = null;
     }
 }

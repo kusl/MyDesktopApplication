@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
@@ -12,103 +13,87 @@ public partial class CountryQuizViewModel : ViewModelBase
 {
     private readonly Random _random = new();
     private Country? _currentCountry;
-    private QuestionType _currentQuestionType;
-    private readonly List<Country> _countries;
+    private Country? _countryA;
+    private Country? _countryB;
     
-    [ObservableProperty]
-    private string _questionText = string.Empty;
+    [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _feedbackMessage = "";
+    [ObservableProperty] private bool _showFeedback;
+    [ObservableProperty] private int _currentScore;
+    [ObservableProperty] private int _highScore;
+    [ObservableProperty] private int _currentStreak;
+    [ObservableProperty] private int _bestStreak;
+    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
     
-    [ObservableProperty]
-    private string _option1 = string.Empty;
+    public string Country1Name => _countryA?.Name ?? "";
+    public string Country2Name => _countryB?.Name ?? "";
+    public string Country1Flag => _countryA?.Flag ?? "🏳️";
+    public string Country2Flag => _countryB?.Flag ?? "🏳️";
     
-    [ObservableProperty]
-    private string _option2 = string.Empty;
-    
-    [ObservableProperty]
-    private string _option3 = string.Empty;
-    
-    [ObservableProperty]
-    private string _option4 = string.Empty;
-    
-    [ObservableProperty]
-    private string _feedbackMessage = string.Empty;
-    
-    [ObservableProperty]
-    private bool _showFeedback;
-    
-    [ObservableProperty]
-    private bool _isCorrectAnswer;
-    
-    [ObservableProperty]
-    private int _currentScore;
-    
-    [ObservableProperty]
-    private int _highScore;
-    
-    [ObservableProperty]
-    private int _currentStreak;
-    
-    [ObservableProperty]
-    private int _bestStreak;
-    
-    [ObservableProperty]
-    private int _totalCorrect;
-    
-    [ObservableProperty]
-    private int _totalAnswered;
-    
-    [ObservableProperty]
-    private QuestionType? _selectedQuestionType;
-    
-    public double AccuracyPercentage => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
+    public ObservableCollection<QuestionType> QuestionTypes { get; } = 
+        new(Enum.GetValues<QuestionType>());
     
     public CountryQuizViewModel()
     {
-        _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
     
     [RelayCommand]
-    private void SelectAnswer(string answer)
+    private void GenerateNewQuestion()
     {
-        if (_currentCountry == null) return;
+        var countries = CountryData.GetAllCountries();
+        if (countries.Count < 2) return;
         
-        var correctValue = GetValue(_currentQuestionType, _currentCountry);
-        var correctAnswer = FormatValue(_currentQuestionType, correctValue);
-        var isCorrect = answer == correctAnswer;
+        // Pick two different random countries
+        var indices = Enumerable.Range(0, countries.Count)
+            .OrderBy(_ => _random.Next())
+            .Take(2)
+            .ToList();
         
-        TotalAnswered++;
-        OnPropertyChanged(nameof(AccuracyPercentage));
+        _countryA = countries[indices[0]];
+        _countryB = countries[indices[1]];
+        _currentCountry = _countryA; // Track the "correct" country for this round
+        
+        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
+        ShowFeedback = false;
+        
+        OnPropertyChanged(nameof(Country1Name));
+        OnPropertyChanged(nameof(Country2Name));
+        OnPropertyChanged(nameof(Country1Flag));
+        OnPropertyChanged(nameof(Country2Flag));
+    }
+    
+    [RelayCommand]
+    private async Task SelectCountry(string countryParam)
+    {
+        if (_countryA == null || _countryB == null) return;
+        
+        bool selectedCountry1 = countryParam == "1";
+        
+        var valueA = GetValue(_countryA);
+        var valueB = GetValue(_countryB);
+        
+        bool isCorrect = selectedCountry1 ? (valueA >= valueB) : (valueB >= valueA);
         
         if (isCorrect)
         {
-            TotalCorrect++;
             CurrentScore++;
             CurrentStreak++;
-            
-            if (CurrentScore > HighScore)
-                HighScore = CurrentScore;
-            
-            if (CurrentStreak > BestStreak)
-                BestStreak = CurrentStreak;
-            
+            if (CurrentScore > HighScore) HighScore = CurrentScore;
+            if (CurrentStreak > BestStreak) BestStreak = CurrentStreak;
             FeedbackMessage = GetCorrectMessage(CurrentStreak, BestStreak);
-            IsCorrectAnswer = true;
         }
         else
         {
             CurrentStreak = 0;
-            FeedbackMessage = $"Wrong! The correct answer was {correctAnswer}.";
-            IsCorrectAnswer = false;
+            var winner = valueA >= valueB ? _countryA : _countryB;
+            var winnerValue = FormatValue(Math.Max(valueA, valueB));
+            var loserValue = FormatValue(Math.Min(valueA, valueB));
+            FeedbackMessage = $"Wrong! {winner.Name} has {winnerValue} vs {loserValue}";
         }
         
         ShowFeedback = true;
-    }
-    
-    [RelayCommand]
-    private void NextQuestion()
-    {
-        ShowFeedback = false;
+        await Task.Delay(1500);
         GenerateNewQuestion();
     }
     
@@ -117,69 +102,15 @@ public partial class CountryQuizViewModel : ViewModelBase
     {
         CurrentScore = 0;
         CurrentStreak = 0;
-        TotalCorrect = 0;
-        TotalAnswered = 0;
         ShowFeedback = false;
-        OnPropertyChanged(nameof(AccuracyPercentage));
         GenerateNewQuestion();
     }
     
-    private void GenerateNewQuestion()
-    {
-        if (_countries.Count < 4) return;
-        
-        // Select question type
-        var questionTypes = Enum.GetValues<QuestionType>();
-        if (SelectedQuestionType.HasValue)
-        {
-            _currentQuestionType = SelectedQuestionType.Value;
-        }
-        else
-        {
-            _currentQuestionType = questionTypes[_random.Next(questionTypes.Length)];
-        }
-        
-        // Select 4 random countries
-        var selectedCountries = _countries
-            .OrderBy(_ => _random.Next())
-            .Take(4)
-            .ToList();
-        
-        // Pick one as the correct answer
-        _currentCountry = selectedCountries[_random.Next(4)];
-        
-        // Generate question text
-        QuestionText = $"What is the {GetLabel(_currentQuestionType)} of {_currentCountry.Name}?";
-        
-        // Generate options
-        var options = selectedCountries
-            .Select(c => FormatValue(_currentQuestionType, GetValue(_currentQuestionType, c)))
-            .ToList();
-        
-        Option1 = options[0];
-        Option2 = options[1];
-        Option3 = options[2];
-        Option4 = options[3];
-    }
-    
-    private static string GetLabel(QuestionType type) => type switch
-    {
-        QuestionType.Population => "population",
-        QuestionType.Area => "area (km²)",
-        QuestionType.GdpTotal=> "GDP",
-        QuestionType.GdpPerCapita => "GDP per capita",
-        QuestionType.PopulationDensity => "population density",
-        QuestionType.LiteracyRate => "literacy rate",
-        QuestionType.Hdi => "Human Development Index",
-        QuestionType.LifeExpectancy => "life expectancy",
-        _ => "value"
-    };
-    
-    private static double GetValue(QuestionType type, Country country) => type switch
+    private double GetValue(Country country) => SelectedQuestionType switch
     {
         QuestionType.Population => country.Population,
         QuestionType.Area => country.Area,
-        QuestionType.GdpTotal=> country.GdpTotal,
+        QuestionType.GdpTotal => country.GdpTotal,
         QuestionType.GdpPerCapita => country.GdpPerCapita,
         QuestionType.PopulationDensity => country.PopulationDensity,
         QuestionType.LiteracyRate => country.LiteracyRate,
@@ -188,11 +119,11 @@ public partial class CountryQuizViewModel : ViewModelBase
         _ => 0
     };
     
-    private static string FormatValue(QuestionType type, double value) => type switch
+    private string FormatValue(double value) => SelectedQuestionType switch
     {
         QuestionType.Population => FormatPopulation(value),
         QuestionType.Area => $"{value:N0} km²",
-        QuestionType.GdpTotal=> FormatCurrency(value),
+        QuestionType.GdpTotal => FormatCurrency(value),
         QuestionType.GdpPerCapita => $"${value:N0}",
         QuestionType.PopulationDensity => $"{value:N1}/km²",
         QuestionType.LiteracyRate => $"{value:N1}%",
@@ -203,36 +134,26 @@ public partial class CountryQuizViewModel : ViewModelBase
     
     private static string FormatPopulation(double value)
     {
-        return value switch
-        {
-            >= 1_000_000_000 => $"{value / 1_000_000_000:N2}B",
-            >= 1_000_000 => $"{value / 1_000_000:N2}M",
-            >= 1_000 => $"{value / 1_000:N1}K",
-            _ => value.ToString("N0")
-        };
+        if (value >= 1_000_000_000) return $"{value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"{value / 1_000_000:N1}M";
+        if (value >= 1_000) return $"{value / 1_000:N0}K";
+        return value.ToString("N0");
     }
     
     private static string FormatCurrency(double value)
     {
-        return value switch
-        {
-            >= 1_000_000_000_000 => $"${value / 1_000_000_000_000:N2}T",
-            >= 1_000_000_000 => $"${value / 1_000_000_000:N2}B",
-            >= 1_000_000 => $"${value / 1_000_000:N2}M",
-            _ => $"${value:N0}"
-        };
+        if (value >= 1_000_000_000_000) return $"${value / 1_000_000_000_000:N2}T";
+        if (value >= 1_000_000_000) return $"${value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"${value / 1_000_000:N1}M";
+        return $"${value:N0}";
     }
     
     private static string GetCorrectMessage(int streak, int bestStreak)
     {
-        if (streak >= 10)
-            return $"🔥 UNSTOPPABLE! {streak} in a row!";
-        if (streak >= 5)
-            return $"🎯 Amazing! {streak} streak!";
-        if (streak == bestStreak && streak > 1)
-            return $"⭐ New personal best: {streak}!";
-        if (streak > 1)
-            return $"✓ Correct! {streak} in a row!";
+        if (streak >= 10) return $"🔥 INCREDIBLE! {streak} in a row!";
+        if (streak >= 5) return $"🎯 Amazing! {streak} streak!";
+        if (streak >= 3) return $"✨ Nice! {streak} in a row!";
+        if (streak == bestStreak && streak > 1) return $"🏆 New best streak: {streak}!";
         return "✓ Correct!";
     }
 }
