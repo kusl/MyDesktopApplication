@@ -1,28 +1,39 @@
 <Project>
   <PropertyGroup>
+    <!-- Target Framework Configuration -->
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Central Package Management -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-
-  <!-- Android aapt2 daemon fix to prevent hangs -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
-    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
-    <Aapt2DaemonStartupTimeout>60000</Aapt2DaemonStartupTimeout>
-    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
-    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    
+    <!-- Code Quality -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    
+    <!-- Build Configuration -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <!-- ANDROID AAPT2 DAEMON FIX - Prevents infinite hangs on Linux -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
+    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
+    <AndroidResourceDesignerMaxParallelism>1</AndroidResourceDesignerMaxParallelism>
+  </PropertyGroup>
+
+  <!-- Common metadata -->
+  <PropertyGroup>
+    <Authors>Kushal</Authors>
+    <Company>MyDesktopApplication</Company>
+    <Copyright>Copyright © 2025</Copyright>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>
