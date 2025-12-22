@@ -331,3 +331,31 @@ real	0m2.230s
 user	0m1.664s
 sys	0m0.370s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd ~/src/dotnet/MyDesktopApplication; git add -A && git commit -m "add a new build" && git push && git tag -a v1.0.7 -m "Add more countries" && git push origin --tags --verbose
+warning: in the working copy of 'docs/llm/dump.txt', CRLF will be replaced by LF the next time Git touches it
+[master c00013b] add a new build
+ 2 files changed, 169 insertions(+), 3 deletions(-)
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 3.11 KiB | 3.11 MiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To github.com:kusl/MyDesktopApplication.git
+   91e5c29..c00013b  master -> master
+Pushing to github.com:kusl/MyDesktopApplication.git
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 167 bytes | 167.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To github.com:kusl/MyDesktopApplication.git
+ = [up to date]      dev -> dev
+ = [up to date]      v1.0.0 -> v1.0.0
+ = [up to date]      v1.0.1 -> v1.0.1
+ = [up to date]      v1.0.2 -> v1.0.2
+ = [up to date]      v1.0.3 -> v1.0.3
+ = [up to date]      v1.0.4 -> v1.0.4
+ = [up to date]      v1.0.5 -> v1.0.5
+ = [up to date]      v1.0.6 -> v1.0.6
+ * [new tag]         v1.0.7 -> v1.0.7
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
