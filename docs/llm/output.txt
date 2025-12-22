@@ -1150,4 +1150,259 @@ Build succeeded in 3.0s
 real	0m3.108s
 user	0m2.053s
 sys	0m0.525s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash apply-android-fixes.sh 
+==============================================
+  Applying Android Build Fixes
+==============================================
+
+[1/6] Killing stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+  ✓ Done
+
+[2/6] Cleaning build artifacts...
+  ✓ Done
+
+[3/6] Updating Directory.Build.props...
+  ✓ Done
+
+[4/6] Updating Android project...
+  ✓ Done
+
+[5/6] Updating GitHub Actions workflow...
+  ✓ Done
+
+[6/6] Building solution...
+Using Java: /usr/lib/jvm/java-21-openjdk
+Restore complete (1.3s)
+
+Build succeeded in 1.5s
+
+Building with aapt2 daemon disabled...
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded with 2 warning(s) (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(6,7): warning CS1570: XML comment has badly formed XML -- 'End tag 'summary' does not match the start tag 'T'.'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(7,1): warning CS1570: XML comment has badly formed XML -- 'Expected an end tag for element 'summary'.'
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android                                               _CompileResources (286.9s)
+^C[3~                                                                                                          (288.4s)
+                                                                                                               (291.0s)
+^C                                                                                                             (296.4s)
+
+==============================================
+  Build timed out - retrying with manual cleanup...
+==============================================
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android                                                 _CompileResources (4.8s)
+Attempting to cancel the build...
+
+Build failed in 243.3s
+
+real	9m8.587s
+user	0m16.170s
+sys	0m3.170s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 74 files to export
+
+Processing (1/74): add-migration.sh
+Processing (2/74): apply-android-fixes.sh
+Processing (3/74): Directory.Build.props
+Processing (4/74): Directory.Packages.props
+Processing (5/74): export.sh
+Processing (6/74): fix-all-errors.sh
+Processing (7/74): fix-android-hang.sh
+Processing (8/74): fix-entitybase-inheritance.sh
+Processing (9/74): fix-project-properly.sh
+Processing (10/74): fix-saveasync-implementation.sh
+Processing (11/74): fix-test-failures.sh
+Processing (12/74): .gitattributes
+Processing (13/74): .github/dependabot.yml
+Processing (14/74): .github/workflows/build.yml
+Processing (15/74): .github/workflows/ci.yml
+Processing (16/74): .github/workflows/release.yml
+Processing (17/74): .gitignore
+Processing (18/74): migrate.sh
+Processing (19/74): MyDesktopApplication.slnx
+Processing (20/74): README.md
+Processing (21/74): repair-project.sh
+Processing (22/74): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (23/74): src/MyDesktopApplication.Android/App.axaml
+Processing (24/74): src/MyDesktopApplication.Android/App.cs
+Processing (25/74): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (26/74): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (27/74): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (28/74): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (29/74): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (30/74): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (31/74): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (32/74): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (33/74): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (34/74): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (35/74): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (36/74): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (37/74): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (38/74): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/74): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/74): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/74): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/74): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/74): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/74): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/74): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/74): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (47/74): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (48/74): src/MyDesktopApplication.Desktop/Program.cs
+Processing (49/74): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (50/74): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (51/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (52/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (53/74): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (54/74): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (55/74): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (56/74): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (57/74): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (58/74): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (59/74): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (60/74): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (61/74): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (62/74): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (63/74): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (64/74): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (65/74): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (66/74): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (67/74): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (68/74): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (69/74): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (70/74): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (71/74): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (72/74): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (73/74): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (74/74): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 74
+Files skipped:  0
+Output size:    449.11 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.728s
+user	0m0.434s
+sys	0m0.454s
+
+Build succeeded in 0.9s
+
+real	0m1.036s
+user	0m0.861s
+sys	0m0.218s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.842s
+user	0m0.952s
+sys	0m0.188s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded with 2 warning(s) (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(6,7): warning CS1570: XML comment has badly formed XML -- 'End tag 'summary' does not match the start tag 'T'.'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(7,1): warning CS1570: XML comment has badly formed XML -- 'Expected an end tag for element 'summary'.'
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed with 2 warning(s) in 108.1s
+
+real	1m48.232s
+user	0m4.197s
+sys	0m0.742s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.72]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
+Build succeeded in 2.9s
+
+real	0m3.091s
+user	0m2.193s
+sys	0m0.489s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -9 -f aapt2
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -9 -f dotnet
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build -p:AndroidUseAapt2Daemon=false -p:_Aapt2DaemonMaxInstanceCount=1 
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 183.1s
+
+real	3m3.205s
+user	0m9.787s
+sys	0m1.413s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

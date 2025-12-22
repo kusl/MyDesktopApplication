@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 09:51:31 PM CST 2025
+Generated: Sun Dec 21 10:16:17 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -109,6 +109,7 @@ DIRECTORY STRUCTURE:
 │       └── MyDesktopApplication.UI.Tests.csproj
 ├── add-migration.sh
 ├── android-build.binlog
+├── apply-android-fixes.sh
 ├── Directory.Build.props
 ├── Directory.Packages.props
 ├── Directory.Packages.props.2025-12-21-12-53-54.bak
@@ -272,37 +273,272 @@ echo ""
 
 
 ================================================================================
+FILE: apply-android-fixes.sh
+SIZE: 7.14 KB
+MODIFIED: 2025-12-21 22:02:14
+================================================================================
+
+#!/bin/bash
+# =============================================================================
+# Apply Android Build Fixes - Single Script to Rule Them All
+# =============================================================================
+# Run this script to apply all fixes for the Android aapt2 daemon hang issue.
+# This maintains a SINGLE unified solution - no desktop/android splitting!
+# =============================================================================
+
+set -e
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "=============================================="
+echo "  Applying Android Build Fixes"
+echo "=============================================="
+
+# -----------------------------------------------------------------------------
+# Step 1: Kill stuck processes
+# -----------------------------------------------------------------------------
+echo ""
+echo "[1/6] Killing stuck processes..."
+pkill -9 -f "aapt2" 2>/dev/null || true
+pkill -9 -f "VBCSCompiler" 2>/dev/null || true
+dotnet build-server shutdown 2>/dev/null || true
+sleep 1
+echo "  ✓ Done"
+
+# -----------------------------------------------------------------------------
+# Step 2: Clean build artifacts
+# -----------------------------------------------------------------------------
+echo ""
+echo "[2/6] Cleaning build artifacts..."
+rm -rf bin obj
+find . -type d -name "bin" -exec rm -rf {} + 2>/dev/null || true
+find . -type d -name "obj" -exec rm -rf {} + 2>/dev/null || true
+echo "  ✓ Done"
+
+# -----------------------------------------------------------------------------
+# Step 3: Update Directory.Build.props with aapt2 fixes
+# -----------------------------------------------------------------------------
+echo ""
+echo "[3/6] Updating Directory.Build.props..."
+
+cat > Directory.Build.props << 'EOF'
+<Project>
+  <PropertyGroup>
+    <!-- Target Framework Configuration -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Central Package Management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    
+    <!-- Code Quality -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    
+    <!-- Build Configuration -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <!-- ANDROID AAPT2 DAEMON FIX - Prevents infinite hangs on Linux -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
+    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
+    <AndroidResourceDesignerMaxParallelism>1</AndroidResourceDesignerMaxParallelism>
+  </PropertyGroup>
+
+  <!-- Common metadata -->
+  <PropertyGroup>
+    <Authors>Kushal</Authors>
+    <Company>MyDesktopApplication</Company>
+    <Copyright>Copyright © 2025</Copyright>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
+EOF
+echo "  ✓ Done"
+
+# -----------------------------------------------------------------------------
+# Step 4: Update Android .csproj
+# -----------------------------------------------------------------------------
+echo ""
+echo "[4/6] Updating Android project..."
+
+mkdir -p src/MyDesktopApplication.Android
+
+cat > src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj << 'EOF'
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Android" />
+  </ItemGroup>
+</Project>
+EOF
+echo "  ✓ Done"
+
+# -----------------------------------------------------------------------------
+# Step 5: Create/Update GitHub Actions workflow
+# -----------------------------------------------------------------------------
+echo ""
+echo "[5/6] Updating GitHub Actions workflow..."
+
+mkdir -p .github/workflows
+
+cat > .github/workflows/ci.yml << 'EOF'
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, 'feature/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  AndroidUseAapt2Daemon: false
+  _Aapt2DaemonMaxInstanceCount: 1
+
+jobs:
+  build:
+    name: Build & Test (All Platforms)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    - uses: android-actions/setup-android@v3
+      with:
+        packages: platforms;android-35|build-tools;35.0.0
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build (Desktop + Android)
+      run: |
+        pkill -9 -f aapt2 || true
+        dotnet build --configuration Release --no-restore \
+          -p:AndroidUseAapt2Daemon=false \
+          -p:_Aapt2DaemonMaxInstanceCount=1
+      timeout-minutes: 15
+
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal
+EOF
+echo "  ✓ Done"
+
+# -----------------------------------------------------------------------------
+# Step 6: Build and verify
+# -----------------------------------------------------------------------------
+echo ""
+echo "[6/6] Building solution..."
+
+# Configure Java if available
+for jdk in /usr/lib/jvm/java-{21,17,11}-openjdk; do
+    if [ -d "$jdk" ]; then
+        export JAVA_HOME="$jdk"
+        export PATH="$JAVA_HOME/bin:$PATH"
+        echo "Using Java: $JAVA_HOME"
+        break
+    fi
+done
+
+dotnet restore --verbosity minimal
+
+echo ""
+echo "Building with aapt2 daemon disabled..."
+if timeout 300 dotnet build --verbosity minimal; then
+    echo ""
+    echo "=============================================="
+    echo "  ✓ Build completed successfully!"
+    echo "=============================================="
+    echo ""
+    echo "Next steps:"
+    echo "  dotnet test                                    # Run tests"
+    echo "  dotnet run --project src/MyDesktopApplication.Desktop  # Run app"
+    echo ""
+    echo "If Android builds hang in the future:"
+    echo "  pkill -9 -f aapt2 && dotnet build"
+else
+    echo ""
+    echo "=============================================="
+    echo "  Build timed out - retrying with manual cleanup..."
+    echo "=============================================="
+    pkill -9 -f aapt2 2>/dev/null || true
+    sleep 2
+    dotnet build --verbosity minimal
+fi
+
+
+================================================================================
 FILE: Directory.Build.props
-SIZE: 1.15 KB
-MODIFIED: 2025-12-21 21:15:24
+SIZE: 1.46 KB
+MODIFIED: 2025-12-21 22:03:31
 ================================================================================
 
 <Project>
   <PropertyGroup>
+    <!-- Target Framework Configuration -->
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Central Package Management -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-
-  <!-- Android aapt2 daemon fix to prevent hangs -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
-    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
-    <Aapt2DaemonStartupTimeout>60000</Aapt2DaemonStartupTimeout>
-    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
-    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    
+    <!-- Code Quality -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    
+    <!-- Build Configuration -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <!-- ANDROID AAPT2 DAEMON FIX - Prevents infinite hangs on Linux -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
+    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
+    <AndroidResourceDesignerMaxParallelism>1</AndroidResourceDesignerMaxParallelism>
+  </PropertyGroup>
+
+  <!-- Common metadata -->
+  <PropertyGroup>
+    <Authors>Kushal</Authors>
+    <Company>MyDesktopApplication</Company>
+    <Copyright>Copyright © 2025</Copyright>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>
 
@@ -3250,62 +3486,57 @@ jobs:
 
 ================================================================================
 FILE: .github/workflows/ci.yml
-SIZE: 1.96 KB
-MODIFIED: 2025-12-21 15:35:39
+SIZE: 1.13 KB
+MODIFIED: 2025-12-21 22:03:31
 ================================================================================
 
 name: CI
 
 on:
   push:
-    branches: [master, main, develop]
+    branches: [ main, develop, 'feature/**' ]
   pull_request:
-    branches: [master, main, develop]
+    branches: [ main, develop ]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  AndroidUseAapt2Daemon: false
+  _Aapt2DaemonMaxInstanceCount: 1
 
 jobs:
-  build-and-test:
-    name: Build & Test
+  build:
+    name: Build & Test (All Platforms)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-            
-      - name: Restore (Desktop only)
-        run: |
-          dotnet restore src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-          dotnet restore src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-          dotnet restore src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-          dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-          dotnet restore tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-          
-      - name: Build
-        run: |
-          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj --no-restore -c Release
-          
-      - name: Test
-        run: |
-          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj --no-restore -c Release --verbosity normal
-          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj --no-restore -c Release --verbosity normal
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    - uses: android-actions/setup-android@v3
+      with:
+        packages: platforms;android-35|build-tools;35.0.0
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build (Desktop + Android)
+      run: |
+        pkill -9 -f aapt2 || true
+        dotnet build --configuration Release --no-restore \
+          -p:AndroidUseAapt2Daemon=false \
+          -p:_Aapt2DaemonMaxInstanceCount=1
+      timeout-minutes: 15
+
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal
 
 
 ================================================================================
@@ -4695,31 +4926,27 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 1.11 KB
-MODIFIED: 2025-12-21 12:48:54
+SIZE: .70 KB
+MODIFIED: 2025-12-21 22:03:31
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0-android</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ApplicationId>com.mycompany.countryquiz</ApplicationId>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
-    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
 
@@ -7606,9 +7833,9 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 09:51:32 PM CST 2025
-Total Files Found: 73
-Files Exported: 73
+EXPORT COMPLETED: Sun Dec 21 10:16:18 PM CST 2025
+Total Files Found: 74
+Files Exported: 74
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
