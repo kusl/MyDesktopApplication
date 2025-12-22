@@ -1,7 +1,7 @@
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Types of quiz questions comparing countries
+/// Types of quiz questions about countries.
 /// </summary>
 public enum QuestionType
 {
@@ -16,28 +16,28 @@ public enum QuestionType
 }
 
 /// <summary>
-/// Extension methods for QuestionType enum
+/// Extension methods for QuestionType enum.
 /// </summary>
 public static class QuestionTypeExtensions
 {
     /// <summary>
-    /// Gets a human-readable label for the question type
+    /// Gets the human-readable label for a question type, including units where applicable.
     /// </summary>
     public static string GetLabel(this QuestionType questionType) => questionType switch
     {
         QuestionType.Population => "Population",
         QuestionType.Area => "Area (km²)",
-        QuestionType.GdpTotal => "GDP (Total)",
-        QuestionType.GdpPerCapita => "GDP per Capita",
-        QuestionType.PopulationDensity => "Population Density",
-        QuestionType.LiteracyRate => "Literacy Rate",
+        QuestionType.GdpTotal => "GDP (Total USD)",
+        QuestionType.GdpPerCapita => "GDP per Capita (USD)",
+        QuestionType.PopulationDensity => "Population Density (per km²)",
+        QuestionType.LiteracyRate => "Literacy Rate (%)",
         QuestionType.Hdi => "Human Development Index",
-        QuestionType.LifeExpectancy => "Life Expectancy",
+        QuestionType.LifeExpectancy => "Life Expectancy (years)",
         _ => questionType.ToString()
     };
 
     /// <summary>
-    /// Gets the corresponding value from a Country for this question type
+    /// Gets the numeric value for a question type from a country.
     /// </summary>
     public static double GetValue(this QuestionType questionType, Country country) => questionType switch
     {
@@ -53,7 +53,7 @@ public static class QuestionTypeExtensions
     };
 
     /// <summary>
-    /// Formats a value according to the question type's expected format
+    /// Formats a numeric value according to the question type's display conventions.
     /// </summary>
     public static string FormatValue(this QuestionType questionType, double value) => questionType switch
     {
@@ -70,34 +70,25 @@ public static class QuestionTypeExtensions
 
     private static string FormatPopulation(double value)
     {
-        return value switch
-        {
-            >= 1_000_000_000 => $"{value / 1_000_000_000:N2}B",
-            >= 1_000_000 => $"{value / 1_000_000:N2}M",
-            >= 1_000 => $"{value / 1_000:N1}K",
-            _ => value.ToString("N0")
-        };
+        if (value >= 1_000_000_000) return $"{value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"{value / 1_000_000:N2}M";
+        if (value >= 1_000) return $"{value / 1_000:N2}K";
+        return value.ToString("N0");
     }
 
     private static string FormatArea(double value)
     {
-        return value switch
-        {
-            >= 1_000_000 => $"{value / 1_000_000:N2}M km²",
-            >= 1_000 => $"{value / 1_000:N1}K km²",
-            _ => $"{value:N0} km²"
-        };
+        if (value >= 1_000_000) return $"{value / 1_000_000:N2}M km²";
+        if (value >= 1_000) return $"{value / 1_000:N2}K km²";
+        return $"{value:N0} km²";
     }
 
     private static string FormatCurrency(double value)
     {
-        return value switch
-        {
-            >= 1_000_000_000_000 => $"${value / 1_000_000_000_000:N2}T",
-            >= 1_000_000_000 => $"${value / 1_000_000_000:N2}B",
-            >= 1_000_000 => $"${value / 1_000_000:N2}M",
-            >= 1_000 => $"${value / 1_000:N1}K",
-            _ => $"${value:N0}"
-        };
+        if (value >= 1_000_000_000_000) return $"${value / 1_000_000_000_000:N2}T";
+        if (value >= 1_000_000_000) return $"${value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"${value / 1_000_000:N2}M";
+        if (value >= 1_000) return $"${value / 1_000:N2}K";
+        return $"${value:N0}";
     }
 }
