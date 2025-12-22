@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Mon Dec 22 04:56:14 AM CST 2025
+Generated: Mon Dec 22 04:59:07 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3488,8 +3488,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 7.12 KB
-MODIFIED: 2025-12-22 04:54:12
+SIZE: 7.28 KB
+MODIFIED: 2025-12-22 04:58:31
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -3583,7 +3583,8 @@ public partial class CountryQuizViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectCountry(string countryParam) 
     {
-        if (HasAnswered || _country1 == null || _country2 == null)
+        // FIX for MVVMTK0034: Use public properties (Country1, Country2) instead of backing fields
+        if (HasAnswered || Country1 == null || Country2 == null)
             return;
 
         // Parse the string parameter to int safely
@@ -3592,8 +3593,9 @@ public partial class CountryQuizViewModel : ViewModelBase
         HasAnswered = true;
         TotalQuestions++;
 
-        var value1 = SelectedQuestionType.GetValue(_country1);
-        var value2 = SelectedQuestionType.GetValue(_country2);
+        // FIX for MVVMTK0034: Use public properties here too
+        var value1 = SelectedQuestionType.GetValue(Country1);
+        var value2 = SelectedQuestionType.GetValue(Country2);
 
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
@@ -4384,7 +4386,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Mon Dec 22 04:56:14 AM CST 2025
+EXPORT COMPLETED: Mon Dec 22 04:59:08 AM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
