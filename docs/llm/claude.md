@@ -8898,3 +8898,33 @@ This is a **surgical fix** - it only touches one file (`QuestionType.cs`) and co
 
 
 
+You have fixed the compilation errors and the test case failures. 
+However, the build still does not complete. 
+I know we are not doing react native. we are doing avalonia.
+however, I found this online and thought maybe I should mention this to you 
+maybe this is related or maybe this will guide you toward an answer? 
+the code in `dump.txt` and the logs at `output.txt` are up to date. 
+-- 
+I recently ran into a frustrating issue after upgrading my Android compileSdkVersion and targetSdkVersion to 35 in a React Native project (v0.72.1). The build failed with the following error:
+A failure occurred while executing com.android.build.gradle.internal.res.Aapt2ProcessResourcesRunnable
+Android resource linking failed
+RES_TABLE_TYPE_TYPE entry offsets overlap actual entry data.
+Failed to load resources table in APK '/opt/android/platforms/android-35/android.jar'
+After digging into it, I found that SDK 35 requires Android Gradle Plugin (AGP) 8.x+, which isn't compatible with RN 0.72.1 out of the box.
+Fix:
+Upgraded React Native to 0.73.5
+Upgraded Gradle to 8.3
+Upgraded AGP to 8.x.x (I used 8.1.1)
+Updated Kotlin plugin to at least 1.8.22
+Then set both compileSdkVersion and targetSdkVersion to 35
+After all this, the build worked fine.
+Hope this helps others facing the same cryptic error!
+
+
+
+
+
+
+
+
+
