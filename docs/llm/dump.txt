@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 08:48:41 PM CST 2025
+Generated: Sun Dec 21 08:55:11 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -118,6 +118,7 @@ DIRECTORY STRUCTURE:
 ├── fix-all-errors.sh
 ├── fix-entitybase-inheritance.sh
 ├── fix-project-properly.sh
+├── fix-saveasync-implementation.sh
 ├── .gitattributes
 ├── .gitignore
 ├── migrate.sh
@@ -2281,6 +2282,108 @@ echo "  1. Run: ./migrate.sh add InitialCreate"
 echo "  2. Run: ./migrate.sh update"
 echo "  3. Commit changes: git add -A && git commit -m 'Unify project structure'"
 echo ""
+
+
+================================================================================
+FILE: fix-saveasync-implementation.sh
+SIZE: 3.34 KB
+MODIFIED: 2025-12-21 20:50:55
+================================================================================
+
+#!/bin/bash
+set -e
+
+# =============================================================================
+# Fix: Add SaveAsync implementation to GameStateRepository
+# Error: CS0535 - 'GameStateRepository' does not implement interface member 
+#        'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
+# =============================================================================
+
+cd ~/src/dotnet/MyDesktopApplication
+
+echo "=== Fixing SaveAsync Implementation ==="
+
+# -----------------------------------------------------------------------------
+# 1. First, let's see what the interface looks like
+# -----------------------------------------------------------------------------
+echo "[1/4] Checking current IGameStateRepository interface..."
+cat src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+
+echo ""
+echo "[2/4] Checking current GameStateRepository implementation..."
+cat src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+
+# -----------------------------------------------------------------------------
+# 2. The fix: Add SaveAsync to the GameStateRepository
+#    Since IGameStateRepository inherits from IRepository<GameState>, 
+#    we need to add SaveAsync which is declared in IGameStateRepository
+# -----------------------------------------------------------------------------
+echo ""
+echo "[3/4] Adding SaveAsync implementation to GameStateRepository..."
+
+cat > src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs << 'EOF'
+using Microsoft.EntityFrameworkCore;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+
+namespace MyDesktopApplication.Infrastructure.Repositories;
+
+public class GameStateRepository : Repository<GameState>, IGameStateRepository
+{
+    public GameStateRepository(AppDbContext context) : base(context)
+    {
+    }
+
+    public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
+    {
+        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        if (state == null)
+        {
+            state = new GameState { UserId = userId };
+            await AddAsync(state, ct);
+        }
+        return state;
+    }
+
+    public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
+    {
+        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+    }
+
+    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
+    {
+        // If the entity is new (Id is empty Guid), add it; otherwise update it
+        if (gameState.Id == Guid.Empty)
+        {
+            await AddAsync(gameState, ct);
+        }
+        else
+        {
+            await UpdateAsync(gameState, ct);
+        }
+    }
+
+    public async Task ResetAsync(string userId, CancellationToken ct = default)
+    {
+        var state = await GetOrCreateAsync(userId, ct);
+        state.Reset();
+        await UpdateAsync(state, ct);
+    }
+}
+EOF
+
+# -----------------------------------------------------------------------------
+# 3. Build to verify the fix
+# -----------------------------------------------------------------------------
+echo ""
+echo "[4/4] Building to verify fix..."
+dotnet build --no-restore 2>&1 || true
+
+echo ""
+echo "=== Fix Applied ==="
+echo "Added SaveAsync(GameState, CancellationToken) implementation to GameStateRepository"
+EOF
 
 
 ================================================================================
@@ -5646,8 +5749,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-SIZE: 1.34 KB
-MODIFIED: 2025-12-21 19:57:20
+SIZE: 1.47 KB
+MODIFIED: 2025-12-21 20:51:34
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -5657,17 +5760,12 @@ using MyDesktopApplication.Infrastructure.Data;
 
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
-/// <summary>
-/// GameState-specific repository implementation.
-/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
-/// </summary>
 public class GameStateRepository : Repository<GameState>, IGameStateRepository
 {
     public GameStateRepository(AppDbContext context) : base(context)
     {
     }
 
-    /// <inheritdoc />
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
         var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
@@ -5679,13 +5777,24 @@ public class GameStateRepository : Repository<GameState>, IGameStateRepository
         return state;
     }
 
-    /// <inheritdoc />
     public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
     {
         return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
     }
 
-    /// <inheritdoc />
+    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
+    {
+        // If the entity is new (Id is empty Guid), add it; otherwise update it
+        if (gameState.Id == Guid.Empty)
+        {
+            await AddAsync(gameState, ct);
+        }
+        else
+        {
+            await UpdateAsync(gameState, ct);
+        }
+    }
+
     public async Task ResetAsync(string userId, CancellationToken ct = default)
     {
         var state = await GetOrCreateAsync(userId, ct);
@@ -6860,9 +6969,9 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 08:48:42 PM CST 2025
-Total Files Found: 70
-Files Exported: 70
+EXPORT COMPLETED: Sun Dec 21 08:55:12 PM CST 2025
+Total Files Found: 71
+Files Exported: 71
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
