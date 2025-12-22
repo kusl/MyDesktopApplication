@@ -2,46 +2,57 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop, 'feature/**' ]
+    branches: [master, main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [master, main, develop]
 
 env:
   DOTNET_VERSION: '10.0.x'
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  AndroidUseAapt2Daemon: false
-  _Aapt2DaemonMaxInstanceCount: 1
 
 jobs:
-  build:
-    name: Build & Test (All Platforms)
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-    - uses: android-actions/setup-android@v3
-      with:
-        packages: platforms;android-35|build-tools;35.0.0
+      - name: Checkout
+        uses: actions/checkout@v6
 
-    - name: Restore
-      run: dotnet restore
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Build (Desktop + Android)
-      run: |
-        pkill -9 -f aapt2 || true
-        dotnet build --configuration Release --no-restore \
-          -p:AndroidUseAapt2Daemon=false \
-          -p:_Aapt2DaemonMaxInstanceCount=1
-      timeout-minutes: 15
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
-    - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      - name: Restore (Desktop only)
+        run: |
+          dotnet restore src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+          dotnet restore src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+          dotnet restore src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+          dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+          dotnet restore tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+          dotnet restore tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+          dotnet restore tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+      - name: Build
+        run: |
+          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj --no-restore --configuration Release
+
+      - name: Test
+        run: |
+          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj --no-restore --configuration Release --verbosity normal
+          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj --no-restore --configuration Release --verbosity normal
+          dotnet test tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj --no-restore --configuration Release --verbosity normal
