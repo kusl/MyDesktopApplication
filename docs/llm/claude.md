@@ -9312,3 +9312,59 @@ MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(7,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?)
 
 Build failed with 2 error(s) in 2.3s
+
+
+
+
+
+
+The error occurs because your **Android project** is missing references that are required by the code in `App.cs` (specifically for Dependency Injection and your Infrastructure layer).
+
+Here is the fix:
+
+### 1. Update `MyDesktopApplication.Android.csproj`
+
+You need to add a **Project Reference** to your Infrastructure project and a **Package Reference** for Dependency Injection.
+
+**File:** `src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj`
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+</Project>
+
+```
+
+### 2. Why this happened
+
+* 
+**Error 1 (`Microsoft.Extensions`):** Your `App.cs` uses `ServiceCollection`, which lives in the `Microsoft.Extensions.DependencyInjection` NuGet package. While your Desktop project had this reference, the Android project did not.
+
+
+* 
+**Error 2 (`MyDesktopApplication.Infrastructure`):** Your `App.cs` calls `.AddInfrastructure(...)`. This method is defined in the Infrastructure project, but the Android project didn't reference it.
+
+
+
+After applying these changes, run `dotnet restore` and build again.
+
+
+
