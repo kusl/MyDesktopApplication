@@ -5,54 +5,39 @@ using MyDesktopApplication.Infrastructure.Data;
 
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
-public class GameStateRepository : IGameStateRepository
+/// <summary>
+/// GameState-specific repository implementation.
+/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
+/// </summary>
+public class GameStateRepository : Repository<GameState>, IGameStateRepository
 {
-    private readonly AppDbContext _context;
-    
-    public GameStateRepository(AppDbContext context)
+    public GameStateRepository(AppDbContext context) : base(context)
     {
-        _context = context;
     }
-    
+
+    /// <inheritdoc />
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
-        var state = await _context.GameStates
-            .FirstOrDefaultAsync(g => g.UserId == userId, ct);
-        
+        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
         if (state == null)
         {
             state = new GameState { UserId = userId };
-            _context.GameStates.Add(state);
-            await _context.SaveChangesAsync(ct);
+            await AddAsync(state, ct);
         }
-        
         return state;
     }
-    
+
+    /// <inheritdoc />
     public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
     {
-        return await _context.GameStates
-            .FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
     }
-    
-    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
-    {
-        if (gameState.Id == Guid.Empty)
-        {
-            _context.GameStates.Add(gameState);
-        }
-        else
-        {
-            _context.GameStates.Update(gameState);
-        }
-        
-        await _context.SaveChangesAsync(ct);
-    }
-    
+
+    /// <inheritdoc />
     public async Task ResetAsync(string userId, CancellationToken ct = default)
     {
         var state = await GetOrCreateAsync(userId, ct);
         state.Reset();
-        await _context.SaveChangesAsync(ct);
+        await UpdateAsync(state, ct);
     }
 }

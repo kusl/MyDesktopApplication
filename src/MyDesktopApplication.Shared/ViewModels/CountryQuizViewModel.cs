@@ -1,246 +1,238 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
+/// <summary>
+/// ViewModel for the Country Quiz game
+/// </summary>
 public partial class CountryQuizViewModel : ViewModelBase
 {
-    private readonly IGameStateRepository? _gameStateRepository;
     private readonly Random _random = new();
-    private List<Country> _countries = new();
     private Country? _currentCountry;
-    private Country? _optionA;
-    private Country? _optionB;
-
+    private QuestionType _currentQuestionType;
+    private readonly List<Country> _countries;
+    
     [ObservableProperty]
-    private string _questionText = "Loading...";
-
+    private string _questionText = string.Empty;
+    
     [ObservableProperty]
-    private string _optionAText = "";
-
+    private string _option1 = string.Empty;
+    
     [ObservableProperty]
-    private string _optionBText = "";
-
+    private string _option2 = string.Empty;
+    
     [ObservableProperty]
-    private string _feedbackMessage = "";
-
+    private string _option3 = string.Empty;
+    
     [ObservableProperty]
-    private bool _isCorrect;
-
+    private string _option4 = string.Empty;
+    
     [ObservableProperty]
-    private bool _hasAnswered;
-
+    private string _feedbackMessage = string.Empty;
+    
     [ObservableProperty]
-    private int _score;
-
+    private bool _showFeedback;
+    
     [ObservableProperty]
-    private int _streak;
-
+    private bool _isCorrectAnswer;
+    
+    [ObservableProperty]
+    private int _currentScore;
+    
+    [ObservableProperty]
+    private int _highScore;
+    
+    [ObservableProperty]
+    private int _currentStreak;
+    
     [ObservableProperty]
     private int _bestStreak;
-
+    
+    [ObservableProperty]
+    private int _totalCorrect;
+    
     [ObservableProperty]
     private int _totalAnswered;
-
+    
     [ObservableProperty]
-    private double _accuracy;
-
-    [ObservableProperty]
-    private string _correctAnswer = "";
-
-    [ObservableProperty]
-    private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    [ObservableProperty]
-    private List<QuestionType> _questionTypes = Enum.GetValues<QuestionType>().ToList();
-
-    [ObservableProperty]
-    private string _selectedQuestionTypeLabel = "Population";
-
-    public CountryQuizViewModel() : this(null) { }
-
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
+    private QuestionType? _selectedQuestionType;
+    
+    public double AccuracyPercentage => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
+    
+    public CountryQuizViewModel()
     {
-        _gameStateRepository = gameStateRepository;
         _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
-
-    partial void OnSelectedQuestionTypeChanged(QuestionType value)
-    {
-        SelectedQuestionTypeLabel = value.GetLabel();
-        GenerateNewQuestion();
-    }
-
+    
     [RelayCommand]
-    private void SelectOptionA()
+    private void SelectAnswer(string answer)
     {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionA, _optionB);
-    }
-
-    [RelayCommand]
-    private void SelectOptionB()
-    {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionB, _optionA);
-    }
-
-    private void ProcessAnswer(Country selected, Country other)
-    {
-        HasAnswered = true;
+        if (_currentCountry == null) return;
+        
+        var correctValue = GetValue(_currentQuestionType, _currentCountry);
+        var correctAnswer = FormatValue(_currentQuestionType, correctValue);
+        var isCorrect = answer == correctAnswer;
+        
         TotalAnswered++;
-
-        var selectedValue = SelectedQuestionType.GetValue(selected);
-        var otherValue = SelectedQuestionType.GetValue(other);
-
-        // Higher value wins for all question types
-        IsCorrect = selectedValue >= otherValue;
-
-        if (IsCorrect)
+        OnPropertyChanged(nameof(AccuracyPercentage));
+        
+        if (isCorrect)
         {
-            Score++;
-            Streak++;
-            if (Streak > BestStreak)
-            {
-                BestStreak = Streak;
-            }
-            FeedbackMessage = GetCorrectMessage();
-            CorrectAnswer = $"{selected.Flag} {selected.Name}: {SelectedQuestionType.FormatValue(selectedValue)}";
+            TotalCorrect++;
+            CurrentScore++;
+            CurrentStreak++;
+            
+            if (CurrentScore > HighScore)
+                HighScore = CurrentScore;
+            
+            if (CurrentStreak > BestStreak)
+                BestStreak = CurrentStreak;
+            
+            FeedbackMessage = GetCorrectMessage(CurrentStreak, BestStreak);
+            IsCorrectAnswer = true;
         }
         else
         {
-            Streak = 0;
-            var correctCountry = selectedValue >= otherValue ? selected : other;
-            var correctValue = SelectedQuestionType.GetValue(correctCountry);
-            FeedbackMessage = GetIncorrectMessage();
-            CorrectAnswer = $"{correctCountry.Flag} {correctCountry.Name}: {SelectedQuestionType.FormatValue(correctValue)}";
+            CurrentStreak = 0;
+            FeedbackMessage = $"Wrong! The correct answer was {correctAnswer}.";
+            IsCorrectAnswer = false;
         }
-
-        UpdateAccuracy();
-        _ = SaveGameStateAsync();
-    }
-
-    private string GetCorrectMessage()
-    {
-        if (Streak >= 10) return "🔥 UNSTOPPABLE! 10+ streak!";
-        if (Streak >= 5) return "🔥 On fire! " + Streak + " in a row!";
-        if (Streak >= 3) return "🎯 Great streak! " + Streak + " correct!";
-        if (Streak == BestStreak && BestStreak > 1) return "🏆 NEW PERSONAL BEST!";
         
-        var messages = new[]
-        {
-            "✅ Correct!",
-            "🎉 Well done!",
-            "👏 Nice one!",
-            "💪 You got it!",
-            "⭐ Excellent!"
-        };
-        return messages[_random.Next(messages.Length)];
+        ShowFeedback = true;
     }
-
-    private string GetIncorrectMessage()
-    {
-        var messages = new[]
-        {
-            "❌ Not quite!",
-            "😅 Oops!",
-            "🤔 Close one!",
-            "📚 Now you know!",
-            "💡 Learn something new!"
-        };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private void UpdateAccuracy()
-    {
-        Accuracy = TotalAnswered > 0 ? (double)Score / TotalAnswered * 100 : 0;
-    }
-
+    
     [RelayCommand]
     private void NextQuestion()
     {
+        ShowFeedback = false;
         GenerateNewQuestion();
     }
-
+    
     [RelayCommand]
-    private void Reset()
+    private void ResetGame()
     {
-        Score = 0;
-        Streak = 0;
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalCorrect = 0;
         TotalAnswered = 0;
-        Accuracy = 0;
-        // Keep BestStreak
+        ShowFeedback = false;
+        OnPropertyChanged(nameof(AccuracyPercentage));
         GenerateNewQuestion();
-        _ = SaveGameStateAsync();
     }
-
+    
     private void GenerateNewQuestion()
     {
-        HasAnswered = false;
-        FeedbackMessage = "";
-        CorrectAnswer = "";
-        IsCorrect = false;
-
-        if (_countries.Count < 2) return;
-
-        // Pick two random different countries
-        var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
-        _optionA = _countries[indices[0]];
-        _optionB = _countries[indices[1]];
-
-        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
-        OptionAText = $"{_optionA.Flag} {_optionA.Name}";
-        OptionBText = $"{_optionB.Flag} {_optionB.Name}";
+        if (_countries.Count < 4) return;
+        
+        // Select question type
+        var questionTypes = Enum.GetValues<QuestionType>();
+        if (SelectedQuestionType.HasValue)
+        {
+            _currentQuestionType = SelectedQuestionType.Value;
+        }
+        else
+        {
+            _currentQuestionType = questionTypes[_random.Next(questionTypes.Length)];
+        }
+        
+        // Select 4 random countries
+        var selectedCountries = _countries
+            .OrderBy(_ => _random.Next())
+            .Take(4)
+            .ToList();
+        
+        // Pick one as the correct answer
+        _currentCountry = selectedCountries[_random.Next(4)];
+        
+        // Generate question text
+        QuestionText = $"What is the {GetLabel(_currentQuestionType)} of {_currentCountry.Name}?";
+        
+        // Generate options
+        var options = selectedCountries
+            .Select(c => FormatValue(_currentQuestionType, GetValue(_currentQuestionType, c)))
+            .ToList();
+        
+        Option1 = options[0];
+        Option2 = options[1];
+        Option3 = options[2];
+        Option4 = options[3];
     }
-
-    private async Task SaveGameStateAsync()
+    
+    private static string GetLabel(QuestionType type) => type switch
     {
-        if (_gameStateRepository == null) return;
-
-        try
+        QuestionType.Population => "population",
+        QuestionType.Area => "area (km²)",
+        QuestionType.GdpTotal=> "GDP",
+        QuestionType.GdpPerCapita => "GDP per capita",
+        QuestionType.PopulationDensity => "population density",
+        QuestionType.LiteracyRate => "literacy rate",
+        QuestionType.Hdi => "Human Development Index",
+        QuestionType.LifeExpectancy => "life expectancy",
+        _ => "value"
+    };
+    
+    private static double GetValue(QuestionType type, Country country) => type switch
+    {
+        QuestionType.Population => country.Population,
+        QuestionType.Area => country.Area,
+        QuestionType.GdpTotal=> country.GdpTotal,
+        QuestionType.GdpPerCapita => country.GdpPerCapita,
+        QuestionType.PopulationDensity => country.PopulationDensity,
+        QuestionType.LiteracyRate => country.LiteracyRate,
+        QuestionType.Hdi => country.Hdi,
+        QuestionType.LifeExpectancy => country.LifeExpectancy,
+        _ => 0
+    };
+    
+    private static string FormatValue(QuestionType type, double value) => type switch
+    {
+        QuestionType.Population => FormatPopulation(value),
+        QuestionType.Area => $"{value:N0} km²",
+        QuestionType.GdpTotal=> FormatCurrency(value),
+        QuestionType.GdpPerCapita => $"${value:N0}",
+        QuestionType.PopulationDensity => $"{value:N1}/km²",
+        QuestionType.LiteracyRate => $"{value:N1}%",
+        QuestionType.Hdi => $"{value:N3}",
+        QuestionType.LifeExpectancy => $"{value:N1} years",
+        _ => value.ToString("N0")
+    };
+    
+    private static string FormatPopulation(double value)
+    {
+        return value switch
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            state.CurrentScore = Score;
-            state.CurrentStreak = Streak;
-            if (BestStreak > state.BestStreak)
-            {
-                state.BestStreak = BestStreak;
-            }
-            state.TotalCorrect = Score;
-            state.TotalAnswered = TotalAnswered;
-            state.LastPlayedAt = DateTime.UtcNow;
-            await _gameStateRepository.SaveAsync(state);
-        }
-        catch
-        {
-            // Silently ignore save errors - game continues without persistence
-        }
+            >= 1_000_000_000 => $"{value / 1_000_000_000:N2}B",
+            >= 1_000_000 => $"{value / 1_000_000:N2}M",
+            >= 1_000 => $"{value / 1_000:N1}K",
+            _ => value.ToString("N0")
+        };
     }
-
-    public async Task LoadGameStateAsync()
+    
+    private static string FormatCurrency(double value)
     {
-        if (_gameStateRepository == null) return;
-
-        try
+        return value switch
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            Score = state.CurrentScore;
-            Streak = state.CurrentStreak;
-            BestStreak = state.BestStreak;
-            TotalAnswered = state.TotalAnswered;
-            UpdateAccuracy();
-        }
-        catch
-        {
-            // Silently ignore load errors - start fresh
-        }
+            >= 1_000_000_000_000 => $"${value / 1_000_000_000_000:N2}T",
+            >= 1_000_000_000 => $"${value / 1_000_000_000:N2}B",
+            >= 1_000_000 => $"${value / 1_000_000:N2}M",
+            _ => $"${value:N0}"
+        };
+    }
+    
+    private static string GetCorrectMessage(int streak, int bestStreak)
+    {
+        if (streak >= 10)
+            return $"🔥 UNSTOPPABLE! {streak} in a row!";
+        if (streak >= 5)
+            return $"🎯 Amazing! {streak} streak!";
+        if (streak == bestStreak && streak > 1)
+            return $"⭐ New personal best: {streak}!";
+        if (streak > 1)
+            return $"✓ Correct! {streak} in a row!";
+        return "✓ Correct!";
     }
 }

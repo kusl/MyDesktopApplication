@@ -1,88 +1,74 @@
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Represents the persistent game state for a user
+/// Tracks game state including scores, streaks, and question preferences
 /// </summary>
 public class GameState : EntityBase
 {
-    /// <summary>
-    /// User identifier (default for single-player)
-    /// </summary>
-    public string UserId { get; set; } = "default";
-
-    /// <summary>
-    /// Current score in the active session
-    /// </summary>
+    public string UserId { get; set; } = string.Empty;
+    
+    // Score tracking
     public int CurrentScore { get; set; }
-
-    /// <summary>
-    /// Highest score ever achieved
-    /// </summary>
     public int HighScore { get; set; }
-
-    /// <summary>
-    /// Current consecutive correct answers
-    /// </summary>
     public int CurrentStreak { get; set; }
-
-    /// <summary>
-    /// Best streak ever achieved
-    /// </summary>
     public int BestStreak { get; set; }
-
-    /// <summary>
-    /// Total number of correct answers
-    /// </summary>
+    
+    // Question tracking
     public int TotalCorrect { get; set; }
-
-    /// <summary>
-    /// Total number of questions answered
-    /// </summary>
     public int TotalAnswered { get; set; }
-
+    
+    // Selected question type for filtering
+    public QuestionType? SelectedQuestionType { get; set; }
+    
+    // Calculated properties
+    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered : 0;
+    public double AccuracyPercentage => Accuracy * 100;
+    
     /// <summary>
-    /// When the user last played
-    /// </summary>
-    public DateTime? LastPlayedAt { get; set; }
-
-    /// <summary>
-    /// Calculated accuracy percentage
-    /// </summary>
-    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
-
-    /// <summary>
-    /// Records an answer and updates statistics
+    /// Records an answer and updates all relevant statistics
     /// </summary>
     public void RecordAnswer(bool isCorrect)
     {
         TotalAnswered++;
+        
         if (isCorrect)
         {
             TotalCorrect++;
             CurrentScore++;
             CurrentStreak++;
+            
             if (CurrentScore > HighScore)
-            {
                 HighScore = CurrentScore;
-            }
+            
             if (CurrentStreak > BestStreak)
-            {
                 BestStreak = CurrentStreak;
-            }
         }
         else
         {
             CurrentStreak = 0;
         }
-        LastPlayedAt = DateTime.UtcNow;
     }
-
+    
     /// <summary>
-    /// Resets the current session (keeps high scores)
+    /// Resets the current game (keeps high scores)
     /// </summary>
     public void Reset()
     {
         CurrentScore = 0;
         CurrentStreak = 0;
+    }
+    
+    /// <summary>
+    /// Resets everything including high scores
+    /// </summary>
+    public void ResetAll()
+    {
+        CurrentScore = 0;
+        HighScore = 0;
+        CurrentStreak = 0;
+        BestStreak = 0;
+        TotalCorrect = 0;
+        TotalAnswered = 0;
+        SelectedQuestionType = null;
     }
 }

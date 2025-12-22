@@ -109,10 +109,10 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             QuestionType.Population => "Which country has a larger population?",
             QuestionType.Area => "Which country has a larger area?",
-            QuestionType.Gdp => "Which country has a higher GDP?",
+            QuestionType.GdpTotal=> "Which country has a higher GDP?",
             QuestionType.GdpPerCapita => "Which country has a higher GDP per capita?",
-            QuestionType.Density => "Which country has a higher population density?",
-            QuestionType.Literacy => "Which country has a higher literacy rate?",
+            QuestionType.PopulationDensity => "Which country has a higher population density?",
+            QuestionType.LiteracyRate => "Which country has a higher literacy rate?",
             QuestionType.Hdi => "Which country has a higher Human Development Index?",
             QuestionType.LifeExpectancy => "Which country has a higher life expectancy?",
             _ => "Which country has a larger population?"
@@ -125,10 +125,10 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             QuestionType.Population => country.Population,
             QuestionType.Area => country.Area,
-            QuestionType.Gdp => country.Gdp,
+            QuestionType.GdpTotal=> country.GdpTotal,
             QuestionType.GdpPerCapita => country.GdpPerCapita,
-            QuestionType.Density => country.Density,
-            QuestionType.Literacy => country.Literacy,
+            QuestionType.PopulationDensity => country.PopulationDensity,
+            QuestionType.LiteracyRate => country.LiteracyRate,
             QuestionType.Hdi => country.Hdi,
             QuestionType.LifeExpectancy => country.LifeExpectancy,
             _ => country.Population

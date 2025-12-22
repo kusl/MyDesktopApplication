@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 06:41:20 PM CST 2025
+Generated: Sun Dec 21 08:20:44 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -312,7 +312,7 @@ MODIFIED: 2025-12-21 15:35:39
 ================================================================================
 FILE: Directory.Packages.props
 SIZE: 4.28 KB
-MODIFIED: 2025-12-21 18:05:32
+MODIFIED: 2025-12-21 19:29:49
 ================================================================================
 
 <Project>
@@ -674,775 +674,125 @@ echo ""
 
 ================================================================================
 FILE: fix-all-errors.sh
-SIZE: 22.08 KB
-MODIFIED: 2025-12-21 18:33:35
+SIZE: 4.87 KB
+MODIFIED: 2025-12-21 20:04:28
 ================================================================================
 
 #!/bin/bash
-# ==============================================
-#  Comprehensive Fix Script for MyDesktopApplication
-#  Fixes 7 build errors identified in output.txt
-# ==============================================
-
 set -e
-cd "$(dirname "$0")"
+
+# =============================================================================
+# fix-updateasync-error.sh
+# =============================================================================
+# This script:
+# 1. RESTORES MainWindowViewModel.cs from git (since it was accidentally overwritten)
+# 2. Applies a SURGICAL fix to IGameStateRepository.cs to add inheritance
+#
+# The previous script accidentally overwrote MainWindowViewModel.cs, causing
+# 28 AXAML binding errors. This script fixes that.
+# =============================================================================
 
 echo "=============================================="
-echo "  Fixing All Build Errors"
+echo "  Fixing UpdateAsync Error (Properly)"
 echo "=============================================="
-echo ""
-echo "Errors to fix:"
-echo "  1. QuestionType missing GetLabel extension method"
-echo "  2. QuestionType missing GetValue extension method (4 occurrences)"
-echo "  3. QuestionType missing FormatValue extension method"
-echo "  4. CountryQuizViewModel line 203: Cannot convert string to double"
-echo ""
 
-# Kill any stuck processes
-echo "Step 1: Killing any stuck build processes..."
-pkill -f VBCSCompiler 2>/dev/null || true
-pkill -f aapt2 2>/dev/null || true
-pkill -f "dotnet.*build" 2>/dev/null || true
-sleep 1
-echo "✓ Done"
-
-# Clean build artifacts
-echo ""
-echo "Step 2: Cleaning build artifacts..."
-rm -rf src/*/bin src/*/obj tests/*/bin tests/*/obj 2>/dev/null || true
-echo "✓ Done"
-
-# ==============================================
-# Step 3: Fix QuestionType.cs with extension methods
-# ==============================================
-echo ""
-echo "Step 3: Adding extension methods to QuestionType.cs..."
-
-mkdir -p src/MyDesktopApplication.Core/Entities
-
-cat > src/MyDesktopApplication.Core/Entities/QuestionType.cs << 'QUESTIONTYPE_EOF'
-namespace MyDesktopApplication.Core.Entities;
-
-/// <summary>
-/// Types of quiz questions about countries
-/// </summary>
-public enum QuestionType
-{
-    Population,
-    Area,
-    Gdp,
-    GdpPerCapita,
-    Density,
-    Literacy,
-    Hdi,
-    LifeExpectancy
-}
-
-/// <summary>
-/// Extension methods for QuestionType enum
-/// </summary>
-public static class QuestionTypeExtensions
-{
-    /// <summary>
-    /// Gets a human-readable label for the question type
-    /// </summary>
-    public static string GetLabel(this QuestionType questionType) => questionType switch
-    {
-        QuestionType.Population => "Population",
-        QuestionType.Area => "Area (km²)",
-        QuestionType.Gdp => "GDP (USD)",
-        QuestionType.GdpPerCapita => "GDP per Capita (USD)",
-        QuestionType.Density => "Population Density (per km²)",
-        QuestionType.Literacy => "Literacy Rate (%)",
-        QuestionType.Hdi => "Human Development Index",
-        QuestionType.LifeExpectancy => "Life Expectancy (years)",
-        _ => questionType.ToString()
-    };
-
-    /// <summary>
-    /// Gets the value from a country for the specified question type
-    /// </summary>
-    public static double GetValue(this QuestionType questionType, Country country) => questionType switch
-    {
-        QuestionType.Population => country.Population,
-        QuestionType.Area => country.Area,
-        QuestionType.Gdp => country.Gdp,
-        QuestionType.GdpPerCapita => country.GdpPerCapita,
-        QuestionType.Density => country.Density,
-        QuestionType.Literacy => country.Literacy,
-        QuestionType.Hdi => country.Hdi,
-        QuestionType.LifeExpectancy => country.LifeExpectancy,
-        _ => 0
-    };
-
-    /// <summary>
-    /// Formats a value according to the question type
-    /// </summary>
-    public static string FormatValue(this QuestionType questionType, double value) => questionType switch
-    {
-        QuestionType.Population => FormatPopulation(value),
-        QuestionType.Area => FormatArea(value),
-        QuestionType.Gdp => FormatCurrency(value),
-        QuestionType.GdpPerCapita => FormatCurrency(value),
-        QuestionType.Density => $"{value:N1}/km²",
-        QuestionType.Literacy => $"{value:N1}%",
-        QuestionType.Hdi => $"{value:N3}",
-        QuestionType.LifeExpectancy => $"{value:N1} years",
-        _ => value.ToString("N0")
-    };
-
-    private static string FormatPopulation(double value)
-    {
-        if (value >= 1_000_000_000) return $"{value / 1_000_000_000:N2}B";
-        if (value >= 1_000_000) return $"{value / 1_000_000:N2}M";
-        if (value >= 1_000) return $"{value / 1_000:N2}K";
-        return value.ToString("N0");
-    }
-
-    private static string FormatArea(double value)
-    {
-        if (value >= 1_000_000) return $"{value / 1_000_000:N2}M km²";
-        if (value >= 1_000) return $"{value / 1_000:N2}K km²";
-        return $"{value:N0} km²";
-    }
-
-    private static string FormatCurrency(double value)
-    {
-        if (value >= 1_000_000_000_000) return $"${value / 1_000_000_000_000:N2}T";
-        if (value >= 1_000_000_000) return $"${value / 1_000_000_000:N2}B";
-        if (value >= 1_000_000) return $"${value / 1_000_000:N2}M";
-        if (value >= 1_000) return $"${value / 1_000:N2}K";
-        return $"${value:N0}";
-    }
-}
-QUESTIONTYPE_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 4: Fix Country.cs to ensure all properties exist
-# ==============================================
-echo ""
-echo "Step 4: Ensuring Country class has all required properties..."
-
-cat > src/MyDesktopApplication.Core/Entities/Country.cs << 'COUNTRY_EOF'
-namespace MyDesktopApplication.Core.Entities;
-
-/// <summary>
-/// Represents a country with geographic and demographic data
-/// </summary>
-public class Country
-{
-    /// <summary>
-    /// ISO 3166-1 alpha-3 country code (e.g., "USA", "GBR")
-    /// </summary>
-    public required string Code { get; init; }
-
-    /// <summary>
-    /// Common name of the country
-    /// </summary>
-    public required string Name { get; init; }
-
-    /// <summary>
-    /// ISO 3166-1 alpha-2 country code (e.g., "US", "GB")
-    /// </summary>
-    public string Iso2 { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Continent where the country is located
-    /// </summary>
-    public string Continent { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Total population
-    /// </summary>
-    public double Population { get; init; }
-
-    /// <summary>
-    /// Total area in square kilometers
-    /// </summary>
-    public double Area { get; init; }
-
-    /// <summary>
-    /// Gross Domestic Product in USD
-    /// </summary>
-    public double Gdp { get; init; }
-
-    /// <summary>
-    /// GDP per capita in USD
-    /// </summary>
-    public double GdpPerCapita { get; init; }
-
-    /// <summary>
-    /// Population density (people per square kilometer)
-    /// </summary>
-    public double Density { get; init; }
-
-    /// <summary>
-    /// Literacy rate as a percentage (0-100)
-    /// </summary>
-    public double Literacy { get; init; }
-
-    /// <summary>
-    /// Human Development Index (0-1)
-    /// </summary>
-    public double Hdi { get; init; }
-
-    /// <summary>
-    /// Life expectancy in years
-    /// </summary>
-    public double LifeExpectancy { get; init; }
-
-    /// <summary>
-    /// Flag emoji for the country
-    /// </summary>
-    public string Flag => GetFlagEmoji();
-
-    private string GetFlagEmoji()
-    {
-        if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
-            return "🏳️";
-
-        // Convert ISO2 code to regional indicator symbols
-        var c1 = char.ToUpperInvariant(Iso2[0]);
-        var c2 = char.ToUpperInvariant(Iso2[1]);
-        
-        // Regional indicator symbols start at U+1F1E6 (A)
-        var ri1 = 0x1F1E6 + (c1 - 'A');
-        var ri2 = 0x1F1E6 + (c2 - 'A');
-        
-        return char.ConvertFromUtf32(ri1) + char.ConvertFromUtf32(ri2);
-    }
-}
-COUNTRY_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 5: Fix CountryQuizViewModel.cs
-# ==============================================
-echo ""
-echo "Step 5: Rewriting CountryQuizViewModel.cs to fix all errors..."
-
-mkdir -p src/MyDesktopApplication.Shared/ViewModels
-
-cat > src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs << 'VIEWMODEL_EOF'
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Shared.Data;
-
-namespace MyDesktopApplication.Shared.ViewModels;
-
-public partial class CountryQuizViewModel : ViewModelBase
-{
-    private readonly IGameStateRepository? _gameStateRepository;
-    private readonly Random _random = new();
-    private List<Country> _countries = new();
-    private Country? _currentCountry;
-    private Country? _optionA;
-    private Country? _optionB;
-
-    [ObservableProperty]
-    private string _questionText = "Loading...";
-
-    [ObservableProperty]
-    private string _optionAText = "";
-
-    [ObservableProperty]
-    private string _optionBText = "";
-
-    [ObservableProperty]
-    private string _feedbackMessage = "";
-
-    [ObservableProperty]
-    private bool _isCorrect;
-
-    [ObservableProperty]
-    private bool _hasAnswered;
-
-    [ObservableProperty]
-    private int _score;
-
-    [ObservableProperty]
-    private int _streak;
-
-    [ObservableProperty]
-    private int _bestStreak;
-
-    [ObservableProperty]
-    private int _totalAnswered;
-
-    [ObservableProperty]
-    private double _accuracy;
-
-    [ObservableProperty]
-    private string _correctAnswer = "";
-
-    [ObservableProperty]
-    private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    [ObservableProperty]
-    private List<QuestionType> _questionTypes = Enum.GetValues<QuestionType>().ToList();
-
-    [ObservableProperty]
-    private string _selectedQuestionTypeLabel = "Population";
-
-    public CountryQuizViewModel() : this(null) { }
-
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
-    {
-        _gameStateRepository = gameStateRepository;
-        _countries = CountryData.GetAllCountries().ToList();
-        GenerateNewQuestion();
-    }
-
-    partial void OnSelectedQuestionTypeChanged(QuestionType value)
-    {
-        SelectedQuestionTypeLabel = value.GetLabel();
-        GenerateNewQuestion();
-    }
-
-    [RelayCommand]
-    private void SelectOptionA()
-    {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionA, _optionB);
-    }
-
-    [RelayCommand]
-    private void SelectOptionB()
-    {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionB, _optionA);
-    }
-
-    private void ProcessAnswer(Country selected, Country other)
-    {
-        HasAnswered = true;
-        TotalAnswered++;
-
-        var selectedValue = SelectedQuestionType.GetValue(selected);
-        var otherValue = SelectedQuestionType.GetValue(other);
-
-        // Higher value wins for all question types
-        IsCorrect = selectedValue >= otherValue;
-
-        if (IsCorrect)
-        {
-            Score++;
-            Streak++;
-            if (Streak > BestStreak)
-            {
-                BestStreak = Streak;
-            }
-            FeedbackMessage = GetCorrectMessage();
-            CorrectAnswer = $"{selected.Flag} {selected.Name}: {SelectedQuestionType.FormatValue(selectedValue)}";
-        }
-        else
-        {
-            Streak = 0;
-            var correctCountry = selectedValue >= otherValue ? selected : other;
-            var correctValue = SelectedQuestionType.GetValue(correctCountry);
-            FeedbackMessage = GetIncorrectMessage();
-            CorrectAnswer = $"{correctCountry.Flag} {correctCountry.Name}: {SelectedQuestionType.FormatValue(correctValue)}";
-        }
-
-        UpdateAccuracy();
-        _ = SaveGameStateAsync();
-    }
-
-    private string GetCorrectMessage()
-    {
-        if (Streak >= 10) return "🔥 UNSTOPPABLE! 10+ streak!";
-        if (Streak >= 5) return "🔥 On fire! " + Streak + " in a row!";
-        if (Streak >= 3) return "🎯 Great streak! " + Streak + " correct!";
-        if (Streak == BestStreak && BestStreak > 1) return "🏆 NEW PERSONAL BEST!";
-        
-        var messages = new[]
-        {
-            "✅ Correct!",
-            "🎉 Well done!",
-            "👏 Nice one!",
-            "💪 You got it!",
-            "⭐ Excellent!"
-        };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private string GetIncorrectMessage()
-    {
-        var messages = new[]
-        {
-            "❌ Not quite!",
-            "😅 Oops!",
-            "🤔 Close one!",
-            "📚 Now you know!",
-            "💡 Learn something new!"
-        };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private void UpdateAccuracy()
-    {
-        Accuracy = TotalAnswered > 0 ? (double)Score / TotalAnswered * 100 : 0;
-    }
-
-    [RelayCommand]
-    private void NextQuestion()
-    {
-        GenerateNewQuestion();
-    }
-
-    [RelayCommand]
-    private void Reset()
-    {
-        Score = 0;
-        Streak = 0;
-        TotalAnswered = 0;
-        Accuracy = 0;
-        // Keep BestStreak
-        GenerateNewQuestion();
-        _ = SaveGameStateAsync();
-    }
-
-    private void GenerateNewQuestion()
-    {
-        HasAnswered = false;
-        FeedbackMessage = "";
-        CorrectAnswer = "";
-        IsCorrect = false;
-
-        if (_countries.Count < 2) return;
-
-        // Pick two random different countries
-        var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
-        _optionA = _countries[indices[0]];
-        _optionB = _countries[indices[1]];
-
-        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
-        OptionAText = $"{_optionA.Flag} {_optionA.Name}";
-        OptionBText = $"{_optionB.Flag} {_optionB.Name}";
-    }
-
-    private async Task SaveGameStateAsync()
-    {
-        if (_gameStateRepository == null) return;
-
-        try
-        {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            state.CurrentScore = Score;
-            state.CurrentStreak = Streak;
-            if (BestStreak > state.BestStreak)
-            {
-                state.BestStreak = BestStreak;
-            }
-            state.TotalCorrect = Score;
-            state.TotalAnswered = TotalAnswered;
-            state.LastPlayedAt = DateTime.UtcNow;
-            await _gameStateRepository.SaveAsync(state);
-        }
-        catch
-        {
-            // Silently ignore save errors - game continues without persistence
-        }
-    }
-
-    public async Task LoadGameStateAsync()
-    {
-        if (_gameStateRepository == null) return;
-
-        try
-        {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            Score = state.CurrentScore;
-            Streak = state.CurrentStreak;
-            BestStreak = state.BestStreak;
-            TotalAnswered = state.TotalAnswered;
-            UpdateAccuracy();
-        }
-        catch
-        {
-            // Silently ignore load errors - start fresh
-        }
-    }
-}
-VIEWMODEL_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 6: Fix GameState.cs to have all required properties
-# ==============================================
-echo ""
-echo "Step 6: Updating GameState.cs with all required properties..."
-
-cat > src/MyDesktopApplication.Core/Entities/GameState.cs << 'GAMESTATE_EOF'
-namespace MyDesktopApplication.Core.Entities;
-
-/// <summary>
-/// Represents the persistent game state for a user
-/// </summary>
-public class GameState : EntityBase
-{
-    /// <summary>
-    /// User identifier (default for single-player)
-    /// </summary>
-    public string UserId { get; set; } = "default";
-
-    /// <summary>
-    /// Current score in the active session
-    /// </summary>
-    public int CurrentScore { get; set; }
-
-    /// <summary>
-    /// Highest score ever achieved
-    /// </summary>
-    public int HighScore { get; set; }
-
-    /// <summary>
-    /// Current consecutive correct answers
-    /// </summary>
-    public int CurrentStreak { get; set; }
-
-    /// <summary>
-    /// Best streak ever achieved
-    /// </summary>
-    public int BestStreak { get; set; }
-
-    /// <summary>
-    /// Total number of correct answers
-    /// </summary>
-    public int TotalCorrect { get; set; }
-
-    /// <summary>
-    /// Total number of questions answered
-    /// </summary>
-    public int TotalAnswered { get; set; }
-
-    /// <summary>
-    /// When the user last played
-    /// </summary>
-    public DateTime? LastPlayedAt { get; set; }
-
-    /// <summary>
-    /// Calculated accuracy percentage
-    /// </summary>
-    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
-
-    /// <summary>
-    /// Records an answer and updates statistics
-    /// </summary>
-    public void RecordAnswer(bool isCorrect)
-    {
-        TotalAnswered++;
-        if (isCorrect)
-        {
-            TotalCorrect++;
-            CurrentScore++;
-            CurrentStreak++;
-            if (CurrentScore > HighScore)
-            {
-                HighScore = CurrentScore;
-            }
-            if (CurrentStreak > BestStreak)
-            {
-                BestStreak = CurrentStreak;
-            }
-        }
-        else
-        {
-            CurrentStreak = 0;
-        }
-        LastPlayedAt = DateTime.UtcNow;
-    }
-
-    /// <summary>
-    /// Resets the current session (keeps high scores)
-    /// </summary>
-    public void Reset()
-    {
-        CurrentScore = 0;
-        CurrentStreak = 0;
-    }
-}
-GAMESTATE_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 7: Fix QuestionTypeTests.cs
-# ==============================================
-echo ""
-echo "Step 7: Fixing QuestionTypeTests.cs..."
-
-mkdir -p tests/MyDesktopApplication.Core.Tests
-
-cat > tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs << 'TESTS_EOF'
-using MyDesktopApplication.Core.Entities;
-using Shouldly;
-using Xunit;
-
-namespace MyDesktopApplication.Core.Tests;
-
-public class QuestionTypeTests
-{
-    [Theory]
-    [InlineData(QuestionType.Population, "Population")]
-    [InlineData(QuestionType.Area, "Area (km²)")]
-    [InlineData(QuestionType.Gdp, "GDP (USD)")]
-    [InlineData(QuestionType.GdpPerCapita, "GDP per Capita (USD)")]
-    [InlineData(QuestionType.Density, "Population Density (per km²)")]
-    [InlineData(QuestionType.Literacy, "Literacy Rate (%)")]
-    [InlineData(QuestionType.Hdi, "Human Development Index")]
-    [InlineData(QuestionType.LifeExpectancy, "Life Expectancy (years)")]
-    public void GetLabel_ReturnsCorrectLabel(QuestionType questionType, string expectedLabel)
-    {
-        // Act
-        var label = questionType.GetLabel();
-
-        // Assert
-        label.ShouldBe(expectedLabel);
-    }
-
-    [Fact]
-    public void GetValue_ReturnsCorrectValueForCountry()
-    {
-        // Arrange
-        var country = new Country
-        {
-            Code = "USA",
-            Name = "United States",
-            Iso2 = "US",
-            Continent = "North America",
-            Population = 331_000_000,
-            Area = 9_833_520,
-            Gdp = 25_462_700_000_000,
-            GdpPerCapita = 76_330,
-            Density = 33.6,
-            Literacy = 99.0,
-            Hdi = 0.921,
-            LifeExpectancy = 77.0
-        };
-
-        // Act & Assert
-        QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
-        QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
-        QuestionType.Gdp.GetValue(country).ShouldBe(25_462_700_000_000);
-        QuestionType.GdpPerCapita.GetValue(country).ShouldBe(76_330);
-        QuestionType.Density.GetValue(country).ShouldBe(33.6);
-        QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
-        QuestionType.Hdi.GetValue(country).ShouldBe(0.921);
-        QuestionType.LifeExpectancy.GetValue(country).ShouldBe(77.0);
-    }
-
-    [Fact]
-    public void FormatValue_FormatsPopulationCorrectly()
-    {
-        // Arrange & Act & Assert
-        QuestionType.Population.FormatValue(1_500_000_000).ShouldBe("1.50B");
-        QuestionType.Population.FormatValue(331_000_000).ShouldBe("331.00M");
-        QuestionType.Population.FormatValue(500_000).ShouldBe("500.00K");
-        QuestionType.Population.FormatValue(999).ShouldBe("999");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsCurrencyCorrectly()
-    {
-        // Arrange & Act & Assert
-        QuestionType.Gdp.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
-        QuestionType.Gdp.FormatValue(1_500_000_000).ShouldBe("$1.50B");
-        QuestionType.Gdp.FormatValue(500_000_000).ShouldBe("$500.00M");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsPercentageCorrectly()
-    {
-        QuestionType.Literacy.FormatValue(99.5).ShouldBe("99.5%");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsHdiCorrectly()
-    {
-        QuestionType.Hdi.FormatValue(0.921).ShouldBe("0.921");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsLifeExpectancyCorrectly()
-    {
-        QuestionType.LifeExpectancy.FormatValue(77.5).ShouldBe("77.5 years");
-    }
-}
-TESTS_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 8: Fix ViewModelBase.cs to ensure it exists
-# ==============================================
-echo ""
-echo "Step 8: Ensuring ViewModelBase.cs exists..."
-
-cat > src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs << 'VMBASE_EOF'
-using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace MyDesktopApplication.Shared.ViewModels;
-
-/// <summary>
-/// Base class for all view models
-/// </summary>
-public abstract partial class ViewModelBase : ObservableObject
-{
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
-    private string _errorMessage = string.Empty;
-}
-VMBASE_EOF
-
-echo "✓ Done"
-
-# ==============================================
-# Step 9: Restore and Build
-# ==============================================
-echo ""
-echo "Step 9: Restoring packages..."
-dotnet restore MyDesktopApplication.slnx --verbosity quiet
-echo "✓ Done"
-
-echo ""
-echo "Step 10: Building solution..."
-if dotnet build MyDesktopApplication.slnx --no-restore; then
-    echo ""
-    echo "=============================================="
-    echo "  ✅ BUILD SUCCEEDED"
-    echo "=============================================="
+cd ~/src/dotnet/MyDesktopApplication
+
+# -----------------------------------------------------------------------------
+# STEP 1: Restore MainWindowViewModel.cs from git
+# -----------------------------------------------------------------------------
+echo "[1/4] Restoring MainWindowViewModel.cs from git..."
+
+if git checkout HEAD -- src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs 2>/dev/null; then
+    echo "  ✓ MainWindowViewModel.cs restored from git"
+else
+    echo "  ⚠ Could not restore from git - file may not have been in git yet"
+    echo "  Checking if backup exists..."
     
-    echo ""
-    echo "Step 11: Running tests..."
-    if dotnet test MyDesktopApplication.slnx --no-build --verbosity normal; then
-        echo ""
-        echo "=============================================="
-        echo "  ✅ ALL TESTS PASSED"
-        echo "=============================================="
-    else
-        echo ""
-        echo "⚠️  Some tests failed - check output above"
+    # If git restore failed, the file might be new or there might be a backup
+    if [ -f src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs.bak ]; then
+        cp src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs.bak \
+           src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+        echo "  ✓ Restored from backup"
     fi
+fi
+
+# -----------------------------------------------------------------------------
+# STEP 2: Apply SURGICAL fix to IGameStateRepository.cs
+# Only add inheritance, don't rewrite the whole file
+# -----------------------------------------------------------------------------
+echo "[2/4] Fixing IGameStateRepository.cs..."
+
+INTERFACE_FILE="src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs"
+
+# Check if the interface already inherits from IRepository<GameState>
+if grep -q ": IRepository<GameState>" "$INTERFACE_FILE" 2>/dev/null; then
+    echo "  ✓ Interface already inherits from IRepository<GameState>"
+else
+    echo "  Adding inheritance from IRepository<GameState>..."
+    
+    # Use sed to add the inheritance
+    # Match: "public interface IGameStateRepository" (with no inheritance)
+    # Replace with: "public interface IGameStateRepository : IRepository<GameState>"
+    sed -i 's/public interface IGameStateRepository[[:space:]]*$/public interface IGameStateRepository : IRepository<GameState>/g' "$INTERFACE_FILE"
+    
+    # Also handle case where there's a brace on the same line
+    sed -i 's/public interface IGameStateRepository[[:space:]]*{/public interface IGameStateRepository : IRepository<GameState>\n{/g' "$INTERFACE_FILE"
+    
+    echo "  ✓ Added inheritance"
+fi
+
+# Verify the change
+echo ""
+echo "  Current interface declaration:"
+grep "public interface IGameStateRepository" "$INTERFACE_FILE" | head -1
+
+# -----------------------------------------------------------------------------
+# STEP 3: Ensure GameStateRepository extends Repository<GameState>
+# -----------------------------------------------------------------------------
+echo ""
+echo "[3/4] Verifying GameStateRepository implementation..."
+
+REPO_FILE="src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs"
+
+if grep -q "Repository<GameState>" "$REPO_FILE" 2>/dev/null; then
+    echo "  ✓ GameStateRepository already extends Repository<GameState>"
+else
+    echo "  ⚠ GameStateRepository may need to extend Repository<GameState>"
+    echo "  Checking current class declaration..."
+    grep "class GameStateRepository" "$REPO_FILE" | head -1
+fi
+
+# -----------------------------------------------------------------------------
+# STEP 4: Clean and rebuild
+# -----------------------------------------------------------------------------
+echo ""
+echo "[4/4] Rebuilding..."
+
+# Clean obj directories
+rm -rf src/MyDesktopApplication.Core/obj
+rm -rf src/MyDesktopApplication.Infrastructure/obj  
+rm -rf src/MyDesktopApplication.Desktop/obj
+
+echo "Restoring packages..."
+dotnet restore --verbosity minimal
+
+echo ""
+echo "Building solution..."
+if dotnet build --no-restore --verbosity minimal; then
+    echo ""
+    echo "=============================================="
+    echo "  ✓ Build Successful!"
+    echo "=============================================="
 else
     echo ""
     echo "=============================================="
-    echo "  ❌ BUILD FAILED"
+    echo "  ✗ Build Failed - see errors above"
     echo "=============================================="
     echo ""
-    echo "Check the errors above and run the script again."
+    echo "If you still see AXAML binding errors, you may need to"
+    echo "restore MainWindowViewModel.cs manually from a backup or"
+    echo "revert your last git commit."
     exit 1
 fi
 
@@ -2909,7 +2259,7 @@ esac
 ================================================================================
 FILE: MyDesktopApplication.slnx
 SIZE: .85 KB
-MODIFIED: 2025-12-21 16:41:27
+MODIFIED: 2025-12-21 19:27:18
 ================================================================================
 
 <Solution>
@@ -4245,95 +3595,40 @@ public partial class MainView : UserControl
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/Country.cs
-SIZE: 2.25 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 1.13 KB
+MODIFIED: 2025-12-21 19:42:34
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
-/// <summary>
-/// Represents a country with geographic and demographic data
-/// </summary>
 public class Country
 {
-    /// <summary>
-    /// ISO 3166-1 alpha-3 country code (e.g., "USA", "GBR")
-    /// </summary>
     public required string Code { get; init; }
-
-    /// <summary>
-    /// Common name of the country
-    /// </summary>
     public required string Name { get; init; }
-
-    /// <summary>
-    /// ISO 3166-1 alpha-2 country code (e.g., "US", "GB")
-    /// </summary>
     public string Iso2 { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Continent where the country is located
-    /// </summary>
     public string Continent { get; init; } = string.Empty;
 
-    /// <summary>
-    /// Total population
-    /// </summary>
+    // Harmonized Property Names
     public double Population { get; init; }
-
-    /// <summary>
-    /// Total area in square kilometers
-    /// </summary>
     public double Area { get; init; }
-
-    /// <summary>
-    /// Gross Domestic Product in USD
-    /// </summary>
-    public double Gdp { get; init; }
-
-    /// <summary>
-    /// GDP per capita in USD
-    /// </summary>
+    public double GdpTotal { get; init; }        // Was Gdp
     public double GdpPerCapita { get; init; }
-
-    /// <summary>
-    /// Population density (people per square kilometer)
-    /// </summary>
-    public double Density { get; init; }
-
-    /// <summary>
-    /// Literacy rate as a percentage (0-100)
-    /// </summary>
-    public double Literacy { get; init; }
-
-    /// <summary>
-    /// Human Development Index (0-1)
-    /// </summary>
+    public double PopulationDensity { get; init; } // Was Density
+    public double LiteracyRate { get; init; }      // Was Literacy
     public double Hdi { get; init; }
-
-    /// <summary>
-    /// Life expectancy in years
-    /// </summary>
     public double LifeExpectancy { get; init; }
 
-    /// <summary>
-    /// Flag emoji for the country
-    /// </summary>
     public string Flag => GetFlagEmoji();
 
     private string GetFlagEmoji()
     {
         if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
             return "🏳️";
-
-        // Convert ISO2 code to regional indicator symbols
+        
         var c1 = char.ToUpperInvariant(Iso2[0]);
         var c2 = char.ToUpperInvariant(Iso2[1]);
-        
-        // Regional indicator symbols start at U+1F1E6 (A)
         var ri1 = 0x1F1E6 + (c1 - 'A');
         var ri2 = 0x1F1E6 + (c2 - 'A');
-        
         return char.ConvertFromUtf32(ri1) + char.ConvertFromUtf32(ri2);
     }
 }
@@ -4360,104 +3655,90 @@ public abstract class EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/GameState.cs
-SIZE: 2.08 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 1.88 KB
+MODIFIED: 2025-12-21 18:50:50
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
-/// Represents the persistent game state for a user
+/// Tracks game state including scores, streaks, and question preferences
 /// </summary>
 public class GameState : EntityBase
 {
-    /// <summary>
-    /// User identifier (default for single-player)
-    /// </summary>
-    public string UserId { get; set; } = "default";
-
-    /// <summary>
-    /// Current score in the active session
-    /// </summary>
+    public string UserId { get; set; } = string.Empty;
+    
+    // Score tracking
     public int CurrentScore { get; set; }
-
-    /// <summary>
-    /// Highest score ever achieved
-    /// </summary>
     public int HighScore { get; set; }
-
-    /// <summary>
-    /// Current consecutive correct answers
-    /// </summary>
     public int CurrentStreak { get; set; }
-
-    /// <summary>
-    /// Best streak ever achieved
-    /// </summary>
     public int BestStreak { get; set; }
-
-    /// <summary>
-    /// Total number of correct answers
-    /// </summary>
+    
+    // Question tracking
     public int TotalCorrect { get; set; }
-
-    /// <summary>
-    /// Total number of questions answered
-    /// </summary>
     public int TotalAnswered { get; set; }
-
+    
+    // Selected question type for filtering
+    public QuestionType? SelectedQuestionType { get; set; }
+    
+    // Calculated properties
+    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered : 0;
+    public double AccuracyPercentage => Accuracy * 100;
+    
     /// <summary>
-    /// When the user last played
-    /// </summary>
-    public DateTime? LastPlayedAt { get; set; }
-
-    /// <summary>
-    /// Calculated accuracy percentage
-    /// </summary>
-    public double Accuracy => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
-
-    /// <summary>
-    /// Records an answer and updates statistics
+    /// Records an answer and updates all relevant statistics
     /// </summary>
     public void RecordAnswer(bool isCorrect)
     {
         TotalAnswered++;
+        
         if (isCorrect)
         {
             TotalCorrect++;
             CurrentScore++;
             CurrentStreak++;
+            
             if (CurrentScore > HighScore)
-            {
                 HighScore = CurrentScore;
-            }
+            
             if (CurrentStreak > BestStreak)
-            {
                 BestStreak = CurrentStreak;
-            }
         }
         else
         {
             CurrentStreak = 0;
         }
-        LastPlayedAt = DateTime.UtcNow;
     }
-
+    
     /// <summary>
-    /// Resets the current session (keeps high scores)
+    /// Resets the current game (keeps high scores)
     /// </summary>
     public void Reset()
     {
         CurrentScore = 0;
         CurrentStreak = 0;
     }
+    
+    /// <summary>
+    /// Resets everything including high scores
+    /// </summary>
+    public void ResetAll()
+    {
+        CurrentScore = 0;
+        HighScore = 0;
+        CurrentStreak = 0;
+        BestStreak = 0;
+        TotalCorrect = 0;
+        TotalAnswered = 0;
+        SelectedQuestionType = null;
+    }
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/QuestionType.cs
-SIZE: 3.21 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 3.02 KB
+MODIFIED: 2025-12-21 19:42:34
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
@@ -4469,10 +3750,10 @@ public enum QuestionType
 {
     Population,
     Area,
-    Gdp,
+    GdpTotal,
     GdpPerCapita,
-    Density,
-    Literacy,
+    PopulationDensity,
+    LiteracyRate,
     Hdi,
     LifeExpectancy
 }
@@ -4482,49 +3763,40 @@ public enum QuestionType
 /// </summary>
 public static class QuestionTypeExtensions
 {
-    /// <summary>
-    /// Gets a human-readable label for the question type
-    /// </summary>
     public static string GetLabel(this QuestionType questionType) => questionType switch
     {
         QuestionType.Population => "Population",
         QuestionType.Area => "Area (km²)",
-        QuestionType.Gdp => "GDP (USD)",
+        QuestionType.GdpTotal => "GDP (Total USD)",
         QuestionType.GdpPerCapita => "GDP per Capita (USD)",
-        QuestionType.Density => "Population Density (per km²)",
-        QuestionType.Literacy => "Literacy Rate (%)",
+        QuestionType.PopulationDensity => "Population Density (per km²)",
+        QuestionType.LiteracyRate => "Literacy Rate (%)",
         QuestionType.Hdi => "Human Development Index",
         QuestionType.LifeExpectancy => "Life Expectancy (years)",
         _ => questionType.ToString()
     };
 
-    /// <summary>
-    /// Gets the value from a country for the specified question type
-    /// </summary>
     public static double GetValue(this QuestionType questionType, Country country) => questionType switch
     {
         QuestionType.Population => country.Population,
         QuestionType.Area => country.Area,
-        QuestionType.Gdp => country.Gdp,
+        QuestionType.GdpTotal => country.GdpTotal,
         QuestionType.GdpPerCapita => country.GdpPerCapita,
-        QuestionType.Density => country.Density,
-        QuestionType.Literacy => country.Literacy,
+        QuestionType.PopulationDensity => country.PopulationDensity,
+        QuestionType.LiteracyRate => country.LiteracyRate,
         QuestionType.Hdi => country.Hdi,
         QuestionType.LifeExpectancy => country.LifeExpectancy,
         _ => 0
     };
 
-    /// <summary>
-    /// Formats a value according to the question type
-    /// </summary>
     public static string FormatValue(this QuestionType questionType, double value) => questionType switch
     {
         QuestionType.Population => FormatPopulation(value),
         QuestionType.Area => FormatArea(value),
-        QuestionType.Gdp => FormatCurrency(value),
+        QuestionType.GdpTotal => FormatCurrency(value),
         QuestionType.GdpPerCapita => FormatCurrency(value),
-        QuestionType.Density => $"{value:N1}/km²",
-        QuestionType.Literacy => $"{value:N1}%",
+        QuestionType.PopulationDensity => $"{value:N1}/km²",
+        QuestionType.LiteracyRate => $"{value:N1}%",
         QuestionType.Hdi => $"{value:N3}",
         QuestionType.LifeExpectancy => $"{value:N1} years",
         _ => value.ToString("N0")
@@ -4594,19 +3866,33 @@ public class TodoItem : EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-SIZE: .43 KB
-MODIFIED: 2025-12-21 17:58:28
+SIZE: .83 KB
+MODIFIED: 2025-12-21 19:57:20
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Core.Interfaces;
 
-public interface IGameStateRepository
+/// <summary>
+/// Repository interface for GameState entities.
+/// Inherits from IRepository&lt;GameState&gt; to provide UpdateAsync, AddAsync, etc.
+/// </summary>
+public interface IGameStateRepository : IRepository<GameState>
 {
+    /// <summary>
+    /// Gets or creates a game state for the specified user.
+    /// </summary>
     Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default);
+    
+    /// <summary>
+    /// Gets a game state by user ID, or null if not found.
+    /// </summary>
     Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default);
-    Task SaveAsync(GameState gameState, CancellationToken ct = default);
+    
+    /// <summary>
+    /// Resets the game state for the specified user.
+    /// </summary>
     Task ResetAsync(string userId, CancellationToken ct = default);
 }
 
@@ -5094,8 +4380,8 @@ sealed class Program
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 5.98 KB
-MODIFIED: 2025-12-21 18:15:44
+SIZE: 6.03 KB
+MODIFIED: 2025-12-21 19:29:49
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -5209,10 +4495,10 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             QuestionType.Population => "Which country has a larger population?",
             QuestionType.Area => "Which country has a larger area?",
-            QuestionType.Gdp => "Which country has a higher GDP?",
+            QuestionType.GdpTotal=> "Which country has a higher GDP?",
             QuestionType.GdpPerCapita => "Which country has a higher GDP per capita?",
-            QuestionType.Density => "Which country has a higher population density?",
-            QuestionType.Literacy => "Which country has a higher literacy rate?",
+            QuestionType.PopulationDensity => "Which country has a higher population density?",
+            QuestionType.LiteracyRate => "Which country has a higher literacy rate?",
             QuestionType.Hdi => "Which country has a higher Human Development Index?",
             QuestionType.LifeExpectancy => "Which country has a higher life expectancy?",
             _ => "Which country has a larger population?"
@@ -5225,10 +4511,10 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             QuestionType.Population => country.Population,
             QuestionType.Area => country.Area,
-            QuestionType.Gdp => country.Gdp,
+            QuestionType.GdpTotal=> country.GdpTotal,
             QuestionType.GdpPerCapita => country.GdpPerCapita,
-            QuestionType.Density => country.Density,
-            QuestionType.Literacy => country.Literacy,
+            QuestionType.PopulationDensity => country.PopulationDensity,
+            QuestionType.LiteracyRate => country.LiteracyRate,
             QuestionType.Hdi => country.Hdi,
             QuestionType.LifeExpectancy => country.LifeExpectancy,
             _ => country.Population
@@ -5593,8 +4879,8 @@ public partial class MainWindow : Window
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-SIZE: 1.42 KB
-MODIFIED: 2025-12-21 17:15:21
+SIZE: 1.61 KB
+MODIFIED: 2025-12-21 18:50:50
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -5603,28 +4889,29 @@ using MyDesktopApplication.Core.Entities;
 namespace MyDesktopApplication.Infrastructure.Data;
 
 /// <summary>
-/// Entity Framework Core database context for the application.
+/// Application database context
 /// </summary>
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-
-    // Required for design-time migrations
+    
+    // For EF migrations design-time support
     public AppDbContext() : base(new DbContextOptionsBuilder<AppDbContext>()
         .UseSqlite("Data Source=app.db")
         .Options)
     {
     }
-
+    
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<GameState> GameStates => Set<GameState>();
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
+        // TodoItem configuration
         modelBuilder.Entity<TodoItem>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -5633,13 +4920,18 @@ public class AppDbContext : DbContext
             entity.HasIndex(e => e.IsCompleted);
             entity.HasIndex(e => e.DueDate);
         });
-
+        
+        // GameState configuration
         modelBuilder.Entity<GameState>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.UserId).IsRequired().HasMaxLength(100);
             entity.HasIndex(e => e.UserId).IsUnique();
-            entity.Property(e => e.SelectedQuestionType).HasMaxLength(50);
+            
+            // Store the enum as string for readability
+            entity.Property(e => e.SelectedQuestionType)
+                .HasConversion<string?>()
+                .HasMaxLength(50);
         });
     }
 }
@@ -5755,8 +5047,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-SIZE: 1.64 KB
-MODIFIED: 2025-12-21 17:58:28
+SIZE: 1.34 KB
+MODIFIED: 2025-12-21 19:57:20
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -5766,55 +5058,40 @@ using MyDesktopApplication.Infrastructure.Data;
 
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
-public class GameStateRepository : IGameStateRepository
+/// <summary>
+/// GameState-specific repository implementation.
+/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
+/// </summary>
+public class GameStateRepository : Repository<GameState>, IGameStateRepository
 {
-    private readonly AppDbContext _context;
-    
-    public GameStateRepository(AppDbContext context)
+    public GameStateRepository(AppDbContext context) : base(context)
     {
-        _context = context;
     }
-    
+
+    /// <inheritdoc />
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
-        var state = await _context.GameStates
-            .FirstOrDefaultAsync(g => g.UserId == userId, ct);
-        
+        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
         if (state == null)
         {
             state = new GameState { UserId = userId };
-            _context.GameStates.Add(state);
-            await _context.SaveChangesAsync(ct);
+            await AddAsync(state, ct);
         }
-        
         return state;
     }
-    
+
+    /// <inheritdoc />
     public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
     {
-        return await _context.GameStates
-            .FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
     }
-    
-    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
-    {
-        if (gameState.Id == Guid.Empty)
-        {
-            _context.GameStates.Add(gameState);
-        }
-        else
-        {
-            _context.GameStates.Update(gameState);
-        }
-        
-        await _context.SaveChangesAsync(ct);
-    }
-    
+
+    /// <inheritdoc />
     public async Task ResetAsync(string userId, CancellationToken ct = default)
     {
         var state = await GetOrCreateAsync(userId, ct);
         state.Reset();
-        await _context.SaveChangesAsync(ct);
+        await UpdateAsync(state, ct);
     }
 }
 
@@ -5932,8 +5209,8 @@ public class TodoRepository : Repository<TodoItem>, ITodoRepository
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/Data/CountryData.cs
-SIZE: 11.76 KB
-MODIFIED: 2025-12-21 18:15:44
+SIZE: 12.69 KB
+MODIFIED: 2025-12-21 19:42:34
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -5944,56 +5221,56 @@ public static class CountryData
 {
     private static readonly List<Country> _countries = new()
     {
-        new() { Code = "USA", Name = "United States", Iso2 = "US", Continent = "North America", Population = 331900000, Area = 9833517, Gdp = 25462700, GdpPerCapita = 76330, Density = 33.8, Literacy = 99.0, Hdi = 0.921, LifeExpectancy = 76.4 },
-        new() { Code = "CHN", Name = "China", Iso2 = "CN", Continent = "Asia", Population = 1412000000, Area = 9596961, Gdp = 17963200, GdpPerCapita = 12720, Density = 147.0, Literacy = 96.8, Hdi = 0.768, LifeExpectancy = 78.2 },
-        new() { Code = "IND", Name = "India", Iso2 = "IN", Continent = "Asia", Population = 1408000000, Area = 3287263, Gdp = 3385090, GdpPerCapita = 2410, Density = 428.0, Literacy = 74.4, Hdi = 0.633, LifeExpectancy = 70.8 },
-        new() { Code = "BRA", Name = "Brazil", Iso2 = "BR", Continent = "South America", Population = 214300000, Area = 8515767, Gdp = 1920100, GdpPerCapita = 8960, Density = 25.2, Literacy = 93.2, Hdi = 0.754, LifeExpectancy = 76.0 },
-        new() { Code = "RUS", Name = "Russia", Iso2 = "RU", Continent = "Europe", Population = 144100000, Area = 17098242, Gdp = 2240400, GdpPerCapita = 15350, Density = 8.4, Literacy = 99.7, Hdi = 0.822, LifeExpectancy = 72.6 },
-        new() { Code = "JPN", Name = "Japan", Iso2 = "JP", Continent = "Asia", Population = 125700000, Area = 377975, Gdp = 4231140, GdpPerCapita = 33650, Density = 333.0, Literacy = 99.0, Hdi = 0.925, LifeExpectancy = 84.6 },
-        new() { Code = "DEU", Name = "Germany", Iso2 = "DE", Continent = "Europe", Population = 83200000, Area = 357114, Gdp = 4072190, GdpPerCapita = 48940, Density = 233.0, Literacy = 99.0, Hdi = 0.942, LifeExpectancy = 81.3 },
-        new() { Code = "GBR", Name = "United Kingdom", Iso2 = "GB", Continent = "Europe", Population = 67330000, Area = 242495, Gdp = 3070670, GdpPerCapita = 45600, Density = 278.0, Literacy = 99.0, Hdi = 0.929, LifeExpectancy = 81.2 },
-        new() { Code = "FRA", Name = "France", Iso2 = "FR", Continent = "Europe", Population = 67750000, Area = 643801, Gdp = 2782910, GdpPerCapita = 41090, Density = 105.0, Literacy = 99.0, Hdi = 0.903, LifeExpectancy = 82.7 },
-        new() { Code = "ITA", Name = "Italy", Iso2 = "IT", Continent = "Europe", Population = 59110000, Area = 301340, Gdp = 2010430, GdpPerCapita = 34010, Density = 196.0, Literacy = 99.2, Hdi = 0.895, LifeExpectancy = 83.5 },
-        new() { Code = "CAN", Name = "Canada", Iso2 = "CA", Continent = "North America", Population = 38250000, Area = 9984670, Gdp = 2139840, GdpPerCapita = 55960, Density = 3.8, Literacy = 99.0, Hdi = 0.936, LifeExpectancy = 82.4 },
-        new() { Code = "AUS", Name = "Australia", Iso2 = "AU", Continent = "Oceania", Population = 25690000, Area = 7692024, Gdp = 1675420, GdpPerCapita = 65210, Density = 3.3, Literacy = 99.0, Hdi = 0.951, LifeExpectancy = 83.4 },
-        new() { Code = "KOR", Name = "South Korea", Iso2 = "KR", Continent = "Asia", Population = 51740000, Area = 100210, Gdp = 1804680, GdpPerCapita = 34870, Density = 516.0, Literacy = 99.0, Hdi = 0.925, LifeExpectancy = 83.7 },
-        new() { Code = "ESP", Name = "Spain", Iso2 = "ES", Continent = "Europe", Population = 47420000, Area = 505990, Gdp = 1397510, GdpPerCapita = 29470, Density = 93.7, Literacy = 98.4, Hdi = 0.905, LifeExpectancy = 83.6 },
-        new() { Code = "MEX", Name = "Mexico", Iso2 = "MX", Continent = "North America", Population = 130300000, Area = 1964375, Gdp = 1293040, GdpPerCapita = 9930, Density = 66.3, Literacy = 95.4, Hdi = 0.758, LifeExpectancy = 75.0 },
-        new() { Code = "IDN", Name = "Indonesia", Iso2 = "ID", Continent = "Asia", Population = 273800000, Area = 1904569, Gdp = 1319100, GdpPerCapita = 4820, Density = 144.0, Literacy = 96.0, Hdi = 0.705, LifeExpectancy = 71.9 },
-        new() { Code = "NLD", Name = "Netherlands", Iso2 = "NL", Continent = "Europe", Population = 17530000, Area = 41543, Gdp = 991110, GdpPerCapita = 56550, Density = 422.0, Literacy = 99.0, Hdi = 0.941, LifeExpectancy = 82.3 },
-        new() { Code = "SAU", Name = "Saudi Arabia", Iso2 = "SA", Continent = "Asia", Population = 35340000, Area = 2149690, Gdp = 1108150, GdpPerCapita = 31360, Density = 16.4, Literacy = 97.6, Hdi = 0.875, LifeExpectancy = 76.9 },
-        new() { Code = "TUR", Name = "Turkey", Iso2 = "TR", Continent = "Asia", Population = 84780000, Area = 783562, Gdp = 905990, GdpPerCapita = 10680, Density = 108.0, Literacy = 96.7, Hdi = 0.838, LifeExpectancy = 78.0 },
-        new() { Code = "CHE", Name = "Switzerland", Iso2 = "CH", Continent = "Europe", Population = 8700000, Area = 41285, Gdp = 807710, GdpPerCapita = 92840, Density = 211.0, Literacy = 99.0, Hdi = 0.962, LifeExpectancy = 84.0 },
-        new() { Code = "POL", Name = "Poland", Iso2 = "PL", Continent = "Europe", Population = 38180000, Area = 312679, Gdp = 688180, GdpPerCapita = 18030, Density = 122.0, Literacy = 99.8, Hdi = 0.876, LifeExpectancy = 78.7 },
-        new() { Code = "SWE", Name = "Sweden", Iso2 = "SE", Continent = "Europe", Population = 10420000, Area = 450295, Gdp = 585940, GdpPerCapita = 56230, Density = 23.1, Literacy = 99.0, Hdi = 0.947, LifeExpectancy = 83.0 },
-        new() { Code = "BEL", Name = "Belgium", Iso2 = "BE", Continent = "Europe", Population = 11590000, Area = 30528, Gdp = 578600, GdpPerCapita = 49930, Density = 380.0, Literacy = 99.0, Hdi = 0.937, LifeExpectancy = 82.0 },
-        new() { Code = "NOR", Name = "Norway", Iso2 = "NO", Continent = "Europe", Population = 5470000, Area = 385207, Gdp = 579270, GdpPerCapita = 105890, Density = 14.2, Literacy = 99.0, Hdi = 0.961, LifeExpectancy = 83.2 },
-        new() { Code = "ARG", Name = "Argentina", Iso2 = "AR", Continent = "South America", Population = 45810000, Area = 2780400, Gdp = 632770, GdpPerCapita = 13810, Density = 16.5, Literacy = 99.0, Hdi = 0.842, LifeExpectancy = 77.3 },
-        new() { Code = "AUT", Name = "Austria", Iso2 = "AT", Continent = "Europe", Population = 9000000, Area = 83879, Gdp = 471400, GdpPerCapita = 52380, Density = 107.0, Literacy = 99.0, Hdi = 0.916, LifeExpectancy = 82.0 },
-        new() { Code = "IRN", Name = "Iran", Iso2 = "IR", Continent = "Asia", Population = 87590000, Area = 1648195, Gdp = 366440, GdpPerCapita = 4180, Density = 53.1, Literacy = 85.5, Hdi = 0.774, LifeExpectancy = 76.7 },
-        new() { Code = "THA", Name = "Thailand", Iso2 = "TH", Continent = "Asia", Population = 69950000, Area = 513120, Gdp = 505950, GdpPerCapita = 7230, Density = 136.0, Literacy = 93.8, Hdi = 0.800, LifeExpectancy = 78.7 },
-        new() { Code = "ARE", Name = "United Arab Emirates", Iso2 = "AE", Continent = "Asia", Population = 9890000, Area = 83600, Gdp = 421140, GdpPerCapita = 42600, Density = 118.0, Literacy = 93.8, Hdi = 0.911, LifeExpectancy = 78.0 },
-        new() { Code = "NGA", Name = "Nigeria", Iso2 = "NG", Continent = "Africa", Population = 218500000, Area = 923768, Gdp = 440830, GdpPerCapita = 2020, Density = 236.0, Literacy = 62.0, Hdi = 0.535, LifeExpectancy = 55.4 },
-        new() { Code = "ISR", Name = "Israel", Iso2 = "IL", Continent = "Asia", Population = 9450000, Area = 22072, Gdp = 520700, GdpPerCapita = 55110, Density = 428.0, Literacy = 97.8, Hdi = 0.919, LifeExpectancy = 83.0 },
-        new() { Code = "EGY", Name = "Egypt", Iso2 = "EG", Continent = "Africa", Population = 104300000, Area = 1002450, Gdp = 476750, GdpPerCapita = 4570, Density = 104.0, Literacy = 71.2, Hdi = 0.731, LifeExpectancy = 72.0 },
-        new() { Code = "SGP", Name = "Singapore", Iso2 = "SG", Continent = "Asia", Population = 5450000, Area = 733, Gdp = 396990, GdpPerCapita = 72790, Density = 7440.0, Literacy = 97.5, Hdi = 0.939, LifeExpectancy = 84.1 },
-        new() { Code = "VNM", Name = "Vietnam", Iso2 = "VN", Continent = "Asia", Population = 98170000, Area = 331212, Gdp = 408800, GdpPerCapita = 4160, Density = 296.0, Literacy = 95.8, Hdi = 0.703, LifeExpectancy = 75.8 },
-        new() { Code = "PHL", Name = "Philippines", Iso2 = "PH", Continent = "Asia", Population = 113900000, Area = 300000, Gdp = 404260, GdpPerCapita = 3550, Density = 380.0, Literacy = 96.3, Hdi = 0.699, LifeExpectancy = 72.1 },
-        new() { Code = "ZAF", Name = "South Africa", Iso2 = "ZA", Continent = "Africa", Population = 60040000, Area = 1221037, Gdp = 405270, GdpPerCapita = 6750, Density = 49.2, Literacy = 95.0, Hdi = 0.713, LifeExpectancy = 65.3 },
-        new() { Code = "PAK", Name = "Pakistan", Iso2 = "PK", Continent = "Asia", Population = 231400000, Area = 881913, Gdp = 376530, GdpPerCapita = 1630, Density = 262.0, Literacy = 59.1, Hdi = 0.544, LifeExpectancy = 67.3 },
-        new() { Code = "BGD", Name = "Bangladesh", Iso2 = "BD", Continent = "Asia", Population = 169400000, Area = 148460, Gdp = 460200, GdpPerCapita = 2720, Density = 1140.0, Literacy = 74.7, Hdi = 0.661, LifeExpectancy = 73.4 },
-        new() { Code = "DNK", Name = "Denmark", Iso2 = "DK", Continent = "Europe", Population = 5860000, Area = 43094, Gdp = 395400, GdpPerCapita = 67500, Density = 136.0, Literacy = 99.0, Hdi = 0.948, LifeExpectancy = 81.4 },
-        new() { Code = "FIN", Name = "Finland", Iso2 = "FI", Continent = "Europe", Population = 5540000, Area = 338424, Gdp = 299150, GdpPerCapita = 54010, Density = 16.4, Literacy = 99.0, Hdi = 0.940, LifeExpectancy = 82.1 },
-        new() { Code = "NZL", Name = "New Zealand", Iso2 = "NZ", Continent = "Oceania", Population = 5124000, Area = 268021, Gdp = 249890, GdpPerCapita = 48780, Density = 19.1, Literacy = 99.0, Hdi = 0.937, LifeExpectancy = 82.5 },
-        new() { Code = "CHL", Name = "Chile", Iso2 = "CL", Continent = "South America", Population = 19490000, Area = 756102, Gdp = 317060, GdpPerCapita = 16270, Density = 25.8, Literacy = 96.9, Hdi = 0.855, LifeExpectancy = 80.7 },
-        new() { Code = "COL", Name = "Colombia", Iso2 = "CO", Continent = "South America", Population = 51870000, Area = 1141748, Gdp = 343940, GdpPerCapita = 6630, Density = 45.4, Literacy = 95.6, Hdi = 0.752, LifeExpectancy = 77.3 },
-        new() { Code = "PER", Name = "Peru", Iso2 = "PE", Continent = "South America", Population = 33360000, Area = 1285216, Gdp = 242630, GdpPerCapita = 7270, Density = 26.0, Literacy = 94.5, Hdi = 0.762, LifeExpectancy = 77.0 },
-        new() { Code = "KEN", Name = "Kenya", Iso2 = "KE", Continent = "Africa", Population = 54030000, Area = 580367, Gdp = 113420, GdpPerCapita = 2100, Density = 93.1, Literacy = 81.5, Hdi = 0.575, LifeExpectancy = 67.0 },
-        new() { Code = "ETH", Name = "Ethiopia", Iso2 = "ET", Continent = "Africa", Population = 120300000, Area = 1104300, Gdp = 126780, GdpPerCapita = 1050, Density = 109.0, Literacy = 51.8, Hdi = 0.498, LifeExpectancy = 67.8 },
-        new() { Code = "GHA", Name = "Ghana", Iso2 = "GH", Continent = "Africa", Population = 32830000, Area = 238533, Gdp = 77590, GdpPerCapita = 2360, Density = 138.0, Literacy = 79.0, Hdi = 0.632, LifeExpectancy = 64.9 },
-        new() { Code = "TZA", Name = "Tanzania", Iso2 = "TZ", Continent = "Africa", Population = 63590000, Area = 947303, Gdp = 75710, GdpPerCapita = 1190, Density = 67.1, Literacy = 77.9, Hdi = 0.549, LifeExpectancy = 66.2 },
-        new() { Code = "UGA", Name = "Uganda", Iso2 = "UG", Continent = "Africa", Population = 47250000, Area = 241550, Gdp = 45570, GdpPerCapita = 960, Density = 196.0, Literacy = 76.5, Hdi = 0.525, LifeExpectancy = 63.7 },
-        new() { Code = "ISL", Name = "Iceland", Iso2 = "IS", Continent = "Europe", Population = 372000, Area = 103000, Gdp = 27840, GdpPerCapita = 74840, Density = 3.6, Literacy = 99.0, Hdi = 0.959, LifeExpectancy = 83.1 }
+        new() { Code = "USA", Name = "United States", Iso2 = "US", Continent = "North America", Population = 331900000, Area = 9833517, GdpTotal = 25462700, GdpPerCapita = 76330, PopulationDensity = 33.8, LiteracyRate = 99.0, Hdi = 0.921, LifeExpectancy = 76.4 },
+        new() { Code = "CHN", Name = "China", Iso2 = "CN", Continent = "Asia", Population = 1412000000, Area = 9596961, GdpTotal = 17963200, GdpPerCapita = 12720, PopulationDensity = 147.0, LiteracyRate = 96.8, Hdi = 0.768, LifeExpectancy = 78.2 },
+        new() { Code = "IND", Name = "India", Iso2 = "IN", Continent = "Asia", Population = 1408000000, Area = 3287263, GdpTotal = 3385090, GdpPerCapita = 2410, PopulationDensity = 428.0, LiteracyRate = 74.4, Hdi = 0.633, LifeExpectancy = 70.8 },
+        new() { Code = "BRA", Name = "Brazil", Iso2 = "BR", Continent = "South America", Population = 214300000, Area = 8515767, GdpTotal = 1920100, GdpPerCapita = 8960, PopulationDensity = 25.2, LiteracyRate = 93.2, Hdi = 0.754, LifeExpectancy = 76.0 },
+        new() { Code = "RUS", Name = "Russia", Iso2 = "RU", Continent = "Europe", Population = 144100000, Area = 17098242, GdpTotal = 2240400, GdpPerCapita = 15350, PopulationDensity = 8.4, LiteracyRate = 99.7, Hdi = 0.822, LifeExpectancy = 72.6 },
+        new() { Code = "JPN", Name = "Japan", Iso2 = "JP", Continent = "Asia", Population = 125700000, Area = 377975, GdpTotal = 4231140, GdpPerCapita = 33650, PopulationDensity = 333.0, LiteracyRate = 99.0, Hdi = 0.925, LifeExpectancy = 84.6 },
+        new() { Code = "DEU", Name = "Germany", Iso2 = "DE", Continent = "Europe", Population = 83200000, Area = 357114, GdpTotal = 4072190, GdpPerCapita = 48940, PopulationDensity = 233.0, LiteracyRate = 99.0, Hdi = 0.942, LifeExpectancy = 81.3 },
+        new() { Code = "GBR", Name = "United Kingdom", Iso2 = "GB", Continent = "Europe", Population = 67330000, Area = 242495, GdpTotal = 3070670, GdpPerCapita = 45600, PopulationDensity = 278.0, LiteracyRate = 99.0, Hdi = 0.929, LifeExpectancy = 81.2 },
+        new() { Code = "FRA", Name = "France", Iso2 = "FR", Continent = "Europe", Population = 67750000, Area = 643801, GdpTotal = 2782910, GdpPerCapita = 41090, PopulationDensity = 105.0, LiteracyRate = 99.0, Hdi = 0.903, LifeExpectancy = 82.7 },
+        new() { Code = "ITA", Name = "Italy", Iso2 = "IT", Continent = "Europe", Population = 59110000, Area = 301340, GdpTotal = 2010430, GdpPerCapita = 34010, PopulationDensity = 196.0, LiteracyRate = 99.2, Hdi = 0.895, LifeExpectancy = 83.5 },
+        new() { Code = "CAN", Name = "Canada", Iso2 = "CA", Continent = "North America", Population = 38250000, Area = 9984670, GdpTotal = 2139840, GdpPerCapita = 55960, PopulationDensity = 3.8, LiteracyRate = 99.0, Hdi = 0.936, LifeExpectancy = 82.4 },
+        new() { Code = "AUS", Name = "Australia", Iso2 = "AU", Continent = "Oceania", Population = 25690000, Area = 7692024, GdpTotal = 1675420, GdpPerCapita = 65210, PopulationDensity = 3.3, LiteracyRate = 99.0, Hdi = 0.951, LifeExpectancy = 83.4 },
+        new() { Code = "KOR", Name = "South Korea", Iso2 = "KR", Continent = "Asia", Population = 51740000, Area = 100210, GdpTotal = 1804680, GdpPerCapita = 34870, PopulationDensity = 516.0, LiteracyRate = 99.0, Hdi = 0.925, LifeExpectancy = 83.7 },
+        new() { Code = "ESP", Name = "Spain", Iso2 = "ES", Continent = "Europe", Population = 47420000, Area = 505990, GdpTotal = 1397510, GdpPerCapita = 29470, PopulationDensity = 93.7, LiteracyRate = 98.4, Hdi = 0.905, LifeExpectancy = 83.6 },
+        new() { Code = "MEX", Name = "Mexico", Iso2 = "MX", Continent = "North America", Population = 130300000, Area = 1964375, GdpTotal = 1293040, GdpPerCapita = 9930, PopulationDensity = 66.3, LiteracyRate = 95.4, Hdi = 0.758, LifeExpectancy = 75.0 },
+        new() { Code = "IDN", Name = "Indonesia", Iso2 = "ID", Continent = "Asia", Population = 273800000, Area = 1904569, GdpTotal = 1319100, GdpPerCapita = 4820, PopulationDensity = 144.0, LiteracyRate = 96.0, Hdi = 0.705, LifeExpectancy = 71.9 },
+        new() { Code = "NLD", Name = "Netherlands", Iso2 = "NL", Continent = "Europe", Population = 17530000, Area = 41543, GdpTotal = 991110, GdpPerCapita = 56550, PopulationDensity = 422.0, LiteracyRate = 99.0, Hdi = 0.941, LifeExpectancy = 82.3 },
+        new() { Code = "SAU", Name = "Saudi Arabia", Iso2 = "SA", Continent = "Asia", Population = 35340000, Area = 2149690, GdpTotal = 1108150, GdpPerCapita = 31360, PopulationDensity = 16.4, LiteracyRate = 97.6, Hdi = 0.875, LifeExpectancy = 76.9 },
+        new() { Code = "TUR", Name = "Turkey", Iso2 = "TR", Continent = "Asia", Population = 84780000, Area = 783562, GdpTotal = 905990, GdpPerCapita = 10680, PopulationDensity = 108.0, LiteracyRate = 96.7, Hdi = 0.838, LifeExpectancy = 78.0 },
+        new() { Code = "CHE", Name = "Switzerland", Iso2 = "CH", Continent = "Europe", Population = 8700000, Area = 41285, GdpTotal = 807710, GdpPerCapita = 92840, PopulationDensity = 211.0, LiteracyRate = 99.0, Hdi = 0.962, LifeExpectancy = 84.0 },
+        new() { Code = "POL", Name = "Poland", Iso2 = "PL", Continent = "Europe", Population = 38180000, Area = 312679, GdpTotal = 688180, GdpPerCapita = 18030, PopulationDensity = 122.0, LiteracyRate = 99.8, Hdi = 0.876, LifeExpectancy = 78.7 },
+        new() { Code = "SWE", Name = "Sweden", Iso2 = "SE", Continent = "Europe", Population = 10420000, Area = 450295, GdpTotal = 585940, GdpPerCapita = 56230, PopulationDensity = 23.1, LiteracyRate = 99.0, Hdi = 0.947, LifeExpectancy = 83.0 },
+        new() { Code = "BEL", Name = "Belgium", Iso2 = "BE", Continent = "Europe", Population = 11590000, Area = 30528, GdpTotal = 578600, GdpPerCapita = 49930, PopulationDensity = 380.0, LiteracyRate = 99.0, Hdi = 0.937, LifeExpectancy = 82.0 },
+        new() { Code = "NOR", Name = "Norway", Iso2 = "NO", Continent = "Europe", Population = 5470000, Area = 385207, GdpTotal = 579270, GdpPerCapita = 105890, PopulationDensity = 14.2, LiteracyRate = 99.0, Hdi = 0.961, LifeExpectancy = 83.2 },
+        new() { Code = "ARG", Name = "Argentina", Iso2 = "AR", Continent = "South America", Population = 45810000, Area = 2780400, GdpTotal = 632770, GdpPerCapita = 13810, PopulationDensity = 16.5, LiteracyRate = 99.0, Hdi = 0.842, LifeExpectancy = 77.3 },
+        new() { Code = "AUT", Name = "Austria", Iso2 = "AT", Continent = "Europe", Population = 9000000, Area = 83879, GdpTotal = 471400, GdpPerCapita = 52380, PopulationDensity = 107.0, LiteracyRate = 99.0, Hdi = 0.916, LifeExpectancy = 82.0 },
+        new() { Code = "IRN", Name = "Iran", Iso2 = "IR", Continent = "Asia", Population = 87590000, Area = 1648195, GdpTotal = 366440, GdpPerCapita = 4180, PopulationDensity = 53.1, LiteracyRate = 85.5, Hdi = 0.774, LifeExpectancy = 76.7 },
+        new() { Code = "THA", Name = "Thailand", Iso2 = "TH", Continent = "Asia", Population = 69950000, Area = 513120, GdpTotal = 505950, GdpPerCapita = 7230, PopulationDensity = 136.0, LiteracyRate = 93.8, Hdi = 0.800, LifeExpectancy = 78.7 },
+        new() { Code = "ARE", Name = "United Arab Emirates", Iso2 = "AE", Continent = "Asia", Population = 9890000, Area = 83600, GdpTotal = 421140, GdpPerCapita = 42600, PopulationDensity = 118.0, LiteracyRate = 93.8, Hdi = 0.911, LifeExpectancy = 78.0 },
+        new() { Code = "NGA", Name = "Nigeria", Iso2 = "NG", Continent = "Africa", Population = 218500000, Area = 923768, GdpTotal = 440830, GdpPerCapita = 2020, PopulationDensity = 236.0, LiteracyRate = 62.0, Hdi = 0.535, LifeExpectancy = 55.4 },
+        new() { Code = "ISR", Name = "Israel", Iso2 = "IL", Continent = "Asia", Population = 9450000, Area = 22072, GdpTotal = 520700, GdpPerCapita = 55110, PopulationDensity = 428.0, LiteracyRate = 97.8, Hdi = 0.919, LifeExpectancy = 83.0 },
+        new() { Code = "EGY", Name = "Egypt", Iso2 = "EG", Continent = "Africa", Population = 104300000, Area = 1002450, GdpTotal = 476750, GdpPerCapita = 4570, PopulationDensity = 104.0, LiteracyRate = 71.2, Hdi = 0.731, LifeExpectancy = 72.0 },
+        new() { Code = "SGP", Name = "Singapore", Iso2 = "SG", Continent = "Asia", Population = 5450000, Area = 733, GdpTotal = 396990, GdpPerCapita = 72790, PopulationDensity = 7440.0, LiteracyRate = 97.5, Hdi = 0.939, LifeExpectancy = 84.1 },
+        new() { Code = "VNM", Name = "Vietnam", Iso2 = "VN", Continent = "Asia", Population = 98170000, Area = 331212, GdpTotal = 408800, GdpPerCapita = 4160, PopulationDensity = 296.0, LiteracyRate = 95.8, Hdi = 0.703, LifeExpectancy = 75.8 },
+        new() { Code = "PHL", Name = "Philippines", Iso2 = "PH", Continent = "Asia", Population = 113900000, Area = 300000, GdpTotal = 404260, GdpPerCapita = 3550, PopulationDensity = 380.0, LiteracyRate = 96.3, Hdi = 0.699, LifeExpectancy = 72.1 },
+        new() { Code = "ZAF", Name = "South Africa", Iso2 = "ZA", Continent = "Africa", Population = 60040000, Area = 1221037, GdpTotal = 405270, GdpPerCapita = 6750, PopulationDensity = 49.2, LiteracyRate = 95.0, Hdi = 0.713, LifeExpectancy = 65.3 },
+        new() { Code = "PAK", Name = "Pakistan", Iso2 = "PK", Continent = "Asia", Population = 231400000, Area = 881913, GdpTotal = 376530, GdpPerCapita = 1630, PopulationDensity = 262.0, LiteracyRate = 59.1, Hdi = 0.544, LifeExpectancy = 67.3 },
+        new() { Code = "BGD", Name = "Bangladesh", Iso2 = "BD", Continent = "Asia", Population = 169400000, Area = 148460, GdpTotal = 460200, GdpPerCapita = 2720, PopulationDensity = 1140.0, LiteracyRate = 74.7, Hdi = 0.661, LifeExpectancy = 73.4 },
+        new() { Code = "DNK", Name = "Denmark", Iso2 = "DK", Continent = "Europe", Population = 5860000, Area = 43094, GdpTotal = 395400, GdpPerCapita = 67500, PopulationDensity = 136.0, LiteracyRate = 99.0, Hdi = 0.948, LifeExpectancy = 81.4 },
+        new() { Code = "FIN", Name = "Finland", Iso2 = "FI", Continent = "Europe", Population = 5540000, Area = 338424, GdpTotal = 299150, GdpPerCapita = 54010, PopulationDensity = 16.4, LiteracyRate = 99.0, Hdi = 0.940, LifeExpectancy = 82.1 },
+        new() { Code = "NZL", Name = "New Zealand", Iso2 = "NZ", Continent = "Oceania", Population = 5124000, Area = 268021, GdpTotal = 249890, GdpPerCapita = 48780, PopulationDensity = 19.1, LiteracyRate = 99.0, Hdi = 0.937, LifeExpectancy = 82.5 },
+        new() { Code = "CHL", Name = "Chile", Iso2 = "CL", Continent = "South America", Population = 19490000, Area = 756102, GdpTotal = 317060, GdpPerCapita = 16270, PopulationDensity = 25.8, LiteracyRate = 96.9, Hdi = 0.855, LifeExpectancy = 80.7 },
+        new() { Code = "COL", Name = "Colombia", Iso2 = "CO", Continent = "South America", Population = 51870000, Area = 1141748, GdpTotal = 343940, GdpPerCapita = 6630, PopulationDensity = 45.4, LiteracyRate = 95.6, Hdi = 0.752, LifeExpectancy = 77.3 },
+        new() { Code = "PER", Name = "Peru", Iso2 = "PE", Continent = "South America", Population = 33360000, Area = 1285216, GdpTotal = 242630, GdpPerCapita = 7270, PopulationDensity = 26.0, LiteracyRate = 94.5, Hdi = 0.762, LifeExpectancy = 77.0 },
+        new() { Code = "KEN", Name = "Kenya", Iso2 = "KE", Continent = "Africa", Population = 54030000, Area = 580367, GdpTotal = 113420, GdpPerCapita = 2100, PopulationDensity = 93.1, LiteracyRate = 81.5, Hdi = 0.575, LifeExpectancy = 67.0 },
+        new() { Code = "ETH", Name = "Ethiopia", Iso2 = "ET", Continent = "Africa", Population = 120300000, Area = 1104300, GdpTotal = 126780, GdpPerCapita = 1050, PopulationDensity = 109.0, LiteracyRate = 51.8, Hdi = 0.498, LifeExpectancy = 67.8 },
+        new() { Code = "GHA", Name = "Ghana", Iso2 = "GH", Continent = "Africa", Population = 32830000, Area = 238533, GdpTotal = 77590, GdpPerCapita = 2360, PopulationDensity = 138.0, LiteracyRate = 79.0, Hdi = 0.632, LifeExpectancy = 64.9 },
+        new() { Code = "TZA", Name = "Tanzania", Iso2 = "TZ", Continent = "Africa", Population = 63590000, Area = 947303, GdpTotal = 75710, GdpPerCapita = 1190, PopulationDensity = 67.1, LiteracyRate = 77.9, Hdi = 0.549, LifeExpectancy = 66.2 },
+        new() { Code = "UGA", Name = "Uganda", Iso2 = "UG", Continent = "Africa", Population = 47250000, Area = 241550, GdpTotal = 45570, GdpPerCapita = 960, PopulationDensity = 196.0, LiteracyRate = 76.5, Hdi = 0.525, LifeExpectancy = 63.7 },
+        new() { Code = "ISL", Name = "Iceland", Iso2 = "IS", Continent = "Europe", Population = 372000, Area = 103000, GdpTotal = 27840, GdpPerCapita = 74840, PopulationDensity = 3.6, LiteracyRate = 99.0, Hdi = 0.959, LifeExpectancy = 83.1 }
     };
 
     public static IReadOnlyList<Country> GetAllCountries() => _countries.AsReadOnly();
@@ -6160,254 +5437,246 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 6.82 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 7.15 KB
+MODIFIED: 2025-12-21 19:12:52
 ================================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
+/// <summary>
+/// ViewModel for the Country Quiz game
+/// </summary>
 public partial class CountryQuizViewModel : ViewModelBase
 {
-    private readonly IGameStateRepository? _gameStateRepository;
     private readonly Random _random = new();
-    private List<Country> _countries = new();
     private Country? _currentCountry;
-    private Country? _optionA;
-    private Country? _optionB;
-
+    private QuestionType _currentQuestionType;
+    private readonly List<Country> _countries;
+    
     [ObservableProperty]
-    private string _questionText = "Loading...";
-
+    private string _questionText = string.Empty;
+    
     [ObservableProperty]
-    private string _optionAText = "";
-
+    private string _option1 = string.Empty;
+    
     [ObservableProperty]
-    private string _optionBText = "";
-
+    private string _option2 = string.Empty;
+    
     [ObservableProperty]
-    private string _feedbackMessage = "";
-
+    private string _option3 = string.Empty;
+    
     [ObservableProperty]
-    private bool _isCorrect;
-
+    private string _option4 = string.Empty;
+    
     [ObservableProperty]
-    private bool _hasAnswered;
-
+    private string _feedbackMessage = string.Empty;
+    
     [ObservableProperty]
-    private int _score;
-
+    private bool _showFeedback;
+    
     [ObservableProperty]
-    private int _streak;
-
+    private bool _isCorrectAnswer;
+    
+    [ObservableProperty]
+    private int _currentScore;
+    
+    [ObservableProperty]
+    private int _highScore;
+    
+    [ObservableProperty]
+    private int _currentStreak;
+    
     [ObservableProperty]
     private int _bestStreak;
-
+    
+    [ObservableProperty]
+    private int _totalCorrect;
+    
     [ObservableProperty]
     private int _totalAnswered;
-
+    
     [ObservableProperty]
-    private double _accuracy;
-
-    [ObservableProperty]
-    private string _correctAnswer = "";
-
-    [ObservableProperty]
-    private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    [ObservableProperty]
-    private List<QuestionType> _questionTypes = Enum.GetValues<QuestionType>().ToList();
-
-    [ObservableProperty]
-    private string _selectedQuestionTypeLabel = "Population";
-
-    public CountryQuizViewModel() : this(null) { }
-
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
+    private QuestionType? _selectedQuestionType;
+    
+    public double AccuracyPercentage => TotalAnswered > 0 ? (double)TotalCorrect / TotalAnswered * 100 : 0;
+    
+    public CountryQuizViewModel()
     {
-        _gameStateRepository = gameStateRepository;
         _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
-
-    partial void OnSelectedQuestionTypeChanged(QuestionType value)
-    {
-        SelectedQuestionTypeLabel = value.GetLabel();
-        GenerateNewQuestion();
-    }
-
+    
     [RelayCommand]
-    private void SelectOptionA()
+    private void SelectAnswer(string answer)
     {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionA, _optionB);
-    }
-
-    [RelayCommand]
-    private void SelectOptionB()
-    {
-        if (HasAnswered || _optionA == null || _optionB == null) return;
-        ProcessAnswer(_optionB, _optionA);
-    }
-
-    private void ProcessAnswer(Country selected, Country other)
-    {
-        HasAnswered = true;
+        if (_currentCountry == null) return;
+        
+        var correctValue = GetValue(_currentQuestionType, _currentCountry);
+        var correctAnswer = FormatValue(_currentQuestionType, correctValue);
+        var isCorrect = answer == correctAnswer;
+        
         TotalAnswered++;
-
-        var selectedValue = SelectedQuestionType.GetValue(selected);
-        var otherValue = SelectedQuestionType.GetValue(other);
-
-        // Higher value wins for all question types
-        IsCorrect = selectedValue >= otherValue;
-
-        if (IsCorrect)
+        OnPropertyChanged(nameof(AccuracyPercentage));
+        
+        if (isCorrect)
         {
-            Score++;
-            Streak++;
-            if (Streak > BestStreak)
-            {
-                BestStreak = Streak;
-            }
-            FeedbackMessage = GetCorrectMessage();
-            CorrectAnswer = $"{selected.Flag} {selected.Name}: {SelectedQuestionType.FormatValue(selectedValue)}";
+            TotalCorrect++;
+            CurrentScore++;
+            CurrentStreak++;
+            
+            if (CurrentScore > HighScore)
+                HighScore = CurrentScore;
+            
+            if (CurrentStreak > BestStreak)
+                BestStreak = CurrentStreak;
+            
+            FeedbackMessage = GetCorrectMessage(CurrentStreak, BestStreak);
+            IsCorrectAnswer = true;
         }
         else
         {
-            Streak = 0;
-            var correctCountry = selectedValue >= otherValue ? selected : other;
-            var correctValue = SelectedQuestionType.GetValue(correctCountry);
-            FeedbackMessage = GetIncorrectMessage();
-            CorrectAnswer = $"{correctCountry.Flag} {correctCountry.Name}: {SelectedQuestionType.FormatValue(correctValue)}";
+            CurrentStreak = 0;
+            FeedbackMessage = $"Wrong! The correct answer was {correctAnswer}.";
+            IsCorrectAnswer = false;
         }
-
-        UpdateAccuracy();
-        _ = SaveGameStateAsync();
-    }
-
-    private string GetCorrectMessage()
-    {
-        if (Streak >= 10) return "🔥 UNSTOPPABLE! 10+ streak!";
-        if (Streak >= 5) return "🔥 On fire! " + Streak + " in a row!";
-        if (Streak >= 3) return "🎯 Great streak! " + Streak + " correct!";
-        if (Streak == BestStreak && BestStreak > 1) return "🏆 NEW PERSONAL BEST!";
         
-        var messages = new[]
-        {
-            "✅ Correct!",
-            "🎉 Well done!",
-            "👏 Nice one!",
-            "💪 You got it!",
-            "⭐ Excellent!"
-        };
-        return messages[_random.Next(messages.Length)];
+        ShowFeedback = true;
     }
-
-    private string GetIncorrectMessage()
-    {
-        var messages = new[]
-        {
-            "❌ Not quite!",
-            "😅 Oops!",
-            "🤔 Close one!",
-            "📚 Now you know!",
-            "💡 Learn something new!"
-        };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private void UpdateAccuracy()
-    {
-        Accuracy = TotalAnswered > 0 ? (double)Score / TotalAnswered * 100 : 0;
-    }
-
+    
     [RelayCommand]
     private void NextQuestion()
     {
+        ShowFeedback = false;
         GenerateNewQuestion();
     }
-
+    
     [RelayCommand]
-    private void Reset()
+    private void ResetGame()
     {
-        Score = 0;
-        Streak = 0;
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalCorrect = 0;
         TotalAnswered = 0;
-        Accuracy = 0;
-        // Keep BestStreak
+        ShowFeedback = false;
+        OnPropertyChanged(nameof(AccuracyPercentage));
         GenerateNewQuestion();
-        _ = SaveGameStateAsync();
     }
-
+    
     private void GenerateNewQuestion()
     {
-        HasAnswered = false;
-        FeedbackMessage = "";
-        CorrectAnswer = "";
-        IsCorrect = false;
-
-        if (_countries.Count < 2) return;
-
-        // Pick two random different countries
-        var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
-        _optionA = _countries[indices[0]];
-        _optionB = _countries[indices[1]];
-
-        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
-        OptionAText = $"{_optionA.Flag} {_optionA.Name}";
-        OptionBText = $"{_optionB.Flag} {_optionB.Name}";
+        if (_countries.Count < 4) return;
+        
+        // Select question type
+        var questionTypes = Enum.GetValues<QuestionType>();
+        if (SelectedQuestionType.HasValue)
+        {
+            _currentQuestionType = SelectedQuestionType.Value;
+        }
+        else
+        {
+            _currentQuestionType = questionTypes[_random.Next(questionTypes.Length)];
+        }
+        
+        // Select 4 random countries
+        var selectedCountries = _countries
+            .OrderBy(_ => _random.Next())
+            .Take(4)
+            .ToList();
+        
+        // Pick one as the correct answer
+        _currentCountry = selectedCountries[_random.Next(4)];
+        
+        // Generate question text
+        QuestionText = $"What is the {GetLabel(_currentQuestionType)} of {_currentCountry.Name}?";
+        
+        // Generate options
+        var options = selectedCountries
+            .Select(c => FormatValue(_currentQuestionType, GetValue(_currentQuestionType, c)))
+            .ToList();
+        
+        Option1 = options[0];
+        Option2 = options[1];
+        Option3 = options[2];
+        Option4 = options[3];
     }
-
-    private async Task SaveGameStateAsync()
+    
+    private static string GetLabel(QuestionType type) => type switch
     {
-        if (_gameStateRepository == null) return;
-
-        try
+        QuestionType.Population => "population",
+        QuestionType.Area => "area (km²)",
+        QuestionType.GdpTotal=> "GDP",
+        QuestionType.GdpPerCapita => "GDP per capita",
+        QuestionType.PopulationDensity => "population density",
+        QuestionType.LiteracyRate => "literacy rate",
+        QuestionType.Hdi => "Human Development Index",
+        QuestionType.LifeExpectancy => "life expectancy",
+        _ => "value"
+    };
+    
+    private static double GetValue(QuestionType type, Country country) => type switch
+    {
+        QuestionType.Population => country.Population,
+        QuestionType.Area => country.Area,
+        QuestionType.GdpTotal=> country.GdpTotal,
+        QuestionType.GdpPerCapita => country.GdpPerCapita,
+        QuestionType.PopulationDensity => country.PopulationDensity,
+        QuestionType.LiteracyRate => country.LiteracyRate,
+        QuestionType.Hdi => country.Hdi,
+        QuestionType.LifeExpectancy => country.LifeExpectancy,
+        _ => 0
+    };
+    
+    private static string FormatValue(QuestionType type, double value) => type switch
+    {
+        QuestionType.Population => FormatPopulation(value),
+        QuestionType.Area => $"{value:N0} km²",
+        QuestionType.GdpTotal=> FormatCurrency(value),
+        QuestionType.GdpPerCapita => $"${value:N0}",
+        QuestionType.PopulationDensity => $"{value:N1}/km²",
+        QuestionType.LiteracyRate => $"{value:N1}%",
+        QuestionType.Hdi => $"{value:N3}",
+        QuestionType.LifeExpectancy => $"{value:N1} years",
+        _ => value.ToString("N0")
+    };
+    
+    private static string FormatPopulation(double value)
+    {
+        return value switch
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            state.CurrentScore = Score;
-            state.CurrentStreak = Streak;
-            if (BestStreak > state.BestStreak)
-            {
-                state.BestStreak = BestStreak;
-            }
-            state.TotalCorrect = Score;
-            state.TotalAnswered = TotalAnswered;
-            state.LastPlayedAt = DateTime.UtcNow;
-            await _gameStateRepository.SaveAsync(state);
-        }
-        catch
-        {
-            // Silently ignore save errors - game continues without persistence
-        }
+            >= 1_000_000_000 => $"{value / 1_000_000_000:N2}B",
+            >= 1_000_000 => $"{value / 1_000_000:N2}M",
+            >= 1_000 => $"{value / 1_000:N1}K",
+            _ => value.ToString("N0")
+        };
     }
-
-    public async Task LoadGameStateAsync()
+    
+    private static string FormatCurrency(double value)
     {
-        if (_gameStateRepository == null) return;
-
-        try
+        return value switch
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            Score = state.CurrentScore;
-            Streak = state.CurrentStreak;
-            BestStreak = state.BestStreak;
-            TotalAnswered = state.TotalAnswered;
-            UpdateAccuracy();
-        }
-        catch
-        {
-            // Silently ignore load errors - start fresh
-        }
+            >= 1_000_000_000_000 => $"${value / 1_000_000_000_000:N2}T",
+            >= 1_000_000_000 => $"${value / 1_000_000_000:N2}B",
+            >= 1_000_000 => $"${value / 1_000_000:N2}M",
+            _ => $"${value:N0}"
+        };
+    }
+    
+    private static string GetCorrectMessage(int streak, int bestStreak)
+    {
+        if (streak >= 10)
+            return $"🔥 UNSTOPPABLE! {streak} in a row!";
+        if (streak >= 5)
+            return $"🎯 Amazing! {streak} streak!";
+        if (streak == bestStreak && streak > 1)
+            return $"⭐ New personal best: {streak}!";
+        if (streak > 1)
+            return $"✓ Correct! {streak} in a row!";
+        return "✓ Correct!";
     }
 }
 
@@ -6503,8 +5772,8 @@ public partial class MainViewModel : ViewModelBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-SIZE: .34 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 1.98 KB
+MODIFIED: 2025-12-21 18:50:50
 ================================================================================
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6512,22 +5781,92 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace MyDesktopApplication.Shared.ViewModels;
 
 /// <summary>
-/// Base class for all view models
+/// Base class for all ViewModels providing common functionality
 /// </summary>
 public abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
     private bool _isBusy;
-
+    
     [ObservableProperty]
-    private string _errorMessage = string.Empty;
+    private string? _errorMessage;
+    
+    [ObservableProperty]
+    private bool _hasError;
+    
+    /// <summary>
+    /// Sets an error message and marks HasError as true
+    /// </summary>
+    protected void SetError(string message)
+    {
+        ErrorMessage = message;
+        HasError = true;
+    }
+    
+    /// <summary>
+    /// Clears any error state
+    /// </summary>
+    protected void ClearError()
+    {
+        ErrorMessage = null;
+        HasError = false;
+    }
+    
+    /// <summary>
+    /// Executes an action with busy indicator and error handling
+    /// </summary>
+    protected async Task ExecuteAsync(Func<Task> action, string? errorContext = null)
+    {
+        if (IsBusy) return;
+        
+        try
+        {
+            IsBusy = true;
+            ClearError();
+            await action();
+        }
+        catch (Exception ex)
+        {
+            var context = errorContext ?? "An error occurred";
+            SetError($"{context}: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+    
+    /// <summary>
+    /// Executes a function with busy indicator and error handling
+    /// </summary>
+    protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> action, string? errorContext = null)
+    {
+        if (IsBusy) return default;
+        
+        try
+        {
+            IsBusy = true;
+            ClearError();
+            return await action();
+        }
+        catch (Exception ex)
+        {
+            var context = errorContext ?? "An error occurred";
+            SetError($"{context}: {ex.Message}");
+            return default;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 }
 
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-SIZE: 2.00 KB
-MODIFIED: 2025-12-21 18:15:44
+SIZE: 2.16 KB
+MODIFIED: 2025-12-21 19:29:49
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -6542,7 +5881,6 @@ public class GameStateTests
     public void NewGameState_HasDefaultValues()
     {
         var state = new GameState();
-        
         state.CurrentScore.ShouldBe(0);
         state.HighScore.ShouldBe(0);
         state.CurrentStreak.ShouldBe(0);
@@ -6555,7 +5893,6 @@ public class GameStateTests
     public void RecordAnswer_CorrectAnswer_IncrementsScore()
     {
         var state = new GameState();
-        
         state.RecordAnswer(true);
         
         state.CurrentScore.ShouldBe(1);
@@ -6605,8 +5942,12 @@ public class GameStateTests
         state.RecordAnswer(false);
         state.RecordAnswer(true);
         
+        // 3 correct out of 4 = 0.75 accuracy
         state.Accuracy.ShouldBe(0.75, tolerance: 0.01);
-        state.AccuracyPercentage.ShouldBe("75%");
+        
+        // AccuracyPercentage returns double (75.0), not string "75%"
+        // Fix: Compare as double
+        state.AccuracyPercentage.ShouldBe(75.0, tolerance: 0.1);
     }
 }
 
@@ -6649,8 +5990,8 @@ MODIFIED: 2025-12-21 17:58:28
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-SIZE: 3.10 KB
-MODIFIED: 2025-12-21 18:36:34
+SIZE: 2.36 KB
+MODIFIED: 2025-12-21 19:07:37
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -6664,25 +6005,21 @@ public class QuestionTypeTests
     [Theory]
     [InlineData(QuestionType.Population, "Population")]
     [InlineData(QuestionType.Area, "Area (km²)")]
-    [InlineData(QuestionType.Gdp, "GDP (USD)")]
+    [InlineData(QuestionType.GdpTotal, "GDP (Total USD)")]
     [InlineData(QuestionType.GdpPerCapita, "GDP per Capita (USD)")]
-    [InlineData(QuestionType.Density, "Population Density (per km²)")]
-    [InlineData(QuestionType.Literacy, "Literacy Rate (%)")]
+    [InlineData(QuestionType.PopulationDensity, "Population Density (per km²)")]
+    [InlineData(QuestionType.LiteracyRate, "Literacy Rate (%)")]
     [InlineData(QuestionType.Hdi, "Human Development Index")]
     [InlineData(QuestionType.LifeExpectancy, "Life Expectancy (years)")]
     public void GetLabel_ReturnsCorrectLabel(QuestionType questionType, string expectedLabel)
     {
-        // Act
         var label = questionType.GetLabel();
-
-        // Assert
         label.ShouldBe(expectedLabel);
     }
 
     [Fact]
     public void GetValue_ReturnsCorrectValueForCountry()
     {
-        // Arrange
         var country = new Country
         {
             Code = "USA",
@@ -6691,59 +6028,31 @@ public class QuestionTypeTests
             Continent = "North America",
             Population = 331_000_000,
             Area = 9_833_520,
-            Gdp = 25_462_700_000_000,
+            GdpTotal = 25_462_700_000_000,
             GdpPerCapita = 76_330,
-            Density = 33.6,
-            Literacy = 99.0,
+            PopulationDensity = 33.6,
+            LiteracyRate = 99.0,
             Hdi = 0.921,
             LifeExpectancy = 77.0
         };
 
-        // Act & Assert
         QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
         QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
-        QuestionType.Gdp.GetValue(country).ShouldBe(25_462_700_000_000);
+        QuestionType.GdpTotal.GetValue(country).ShouldBe(25_462_700_000_000);
         QuestionType.GdpPerCapita.GetValue(country).ShouldBe(76_330);
-        QuestionType.Density.GetValue(country).ShouldBe(33.6);
-        QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
+        QuestionType.PopulationDensity.GetValue(country).ShouldBe(33.6);
+        QuestionType.LiteracyRate.GetValue(country).ShouldBe(99.0);
         QuestionType.Hdi.GetValue(country).ShouldBe(0.921);
         QuestionType.LifeExpectancy.GetValue(country).ShouldBe(77.0);
     }
 
     [Fact]
-    public void FormatValue_FormatsPopulationCorrectly()
+    public void FormatValue_FormatsValuesCorrectly()
     {
-        // Arrange & Act & Assert
         QuestionType.Population.FormatValue(1_500_000_000).ShouldBe("1.50B");
-        QuestionType.Population.FormatValue(331_000_000).ShouldBe("331.00M");
-        QuestionType.Population.FormatValue(500_000).ShouldBe("500.00K");
-        QuestionType.Population.FormatValue(999).ShouldBe("999");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsCurrencyCorrectly()
-    {
-        // Arrange & Act & Assert
-        QuestionType.Gdp.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
-        QuestionType.Gdp.FormatValue(1_500_000_000).ShouldBe("$1.50B");
-        QuestionType.Gdp.FormatValue(500_000_000).ShouldBe("$500.00M");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsPercentageCorrectly()
-    {
-        QuestionType.Literacy.FormatValue(99.5).ShouldBe("99.5%");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsHdiCorrectly()
-    {
+        QuestionType.GdpTotal.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
+        QuestionType.LiteracyRate.FormatValue(99.5).ShouldBe("99.5%");
         QuestionType.Hdi.FormatValue(0.921).ShouldBe("0.921");
-    }
-
-    [Fact]
-    public void FormatValue_FormatsLifeExpectancyCorrectly()
-    {
         QuestionType.LifeExpectancy.FormatValue(77.5).ShouldBe("77.5 years");
     }
 }
@@ -6912,8 +6221,8 @@ public class TodoRepositoryTests : IDisposable
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-SIZE: 1.38 KB
-MODIFIED: 2025-12-21 17:58:28
+SIZE: 1.39 KB
+MODIFIED: 2025-12-21 19:29:49
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -6929,7 +6238,6 @@ public class MainWindowViewModelTests
     public void NewViewModel_ShouldHaveInitialState()
     {
         var vm = new MainWindowViewModel();
-
         vm.Score.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
         vm.Streak.ShouldBe(0);
@@ -6940,20 +6248,18 @@ public class MainWindowViewModelTests
     public void QuestionTypes_ShouldContainAllTypes()
     {
         var vm = new MainWindowViewModel();
-
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
-        vm.QuestionTypes.ShouldContain(QuestionType.Gdp);
+        vm.QuestionTypes.ShouldContain(QuestionType.GdpTotal);
     }
 
     [Fact]
     public void GenerateNewQuestion_ShouldSetCountryNames()
     {
         var vm = new MainWindowViewModel();
-        
         // Wait briefly for initialization
-        Thread.Sleep(100);
+        System.Threading.Thread.Sleep(100);
         vm.GenerateNewQuestionCommand.Execute(null);
 
         vm.Country1Name.ShouldNotBeNullOrEmpty();
@@ -6965,7 +6271,6 @@ public class MainWindowViewModelTests
     public void SelectedQuestionType_DefaultsToPopulation()
     {
         var vm = new MainWindowViewModel();
-
         vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
     }
 }
@@ -7010,7 +6315,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 06:41:21 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 08:20:44 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)

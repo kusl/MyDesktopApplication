@@ -10,7 +10,6 @@ public class GameStateTests
     public void NewGameState_HasDefaultValues()
     {
         var state = new GameState();
-        
         state.CurrentScore.ShouldBe(0);
         state.HighScore.ShouldBe(0);
         state.CurrentStreak.ShouldBe(0);
@@ -23,7 +22,6 @@ public class GameStateTests
     public void RecordAnswer_CorrectAnswer_IncrementsScore()
     {
         var state = new GameState();
-        
         state.RecordAnswer(true);
         
         state.CurrentScore.ShouldBe(1);
@@ -73,7 +71,11 @@ public class GameStateTests
         state.RecordAnswer(false);
         state.RecordAnswer(true);
         
+        // 3 correct out of 4 = 0.75 accuracy
         state.Accuracy.ShouldBe(0.75, tolerance: 0.01);
-        state.AccuracyPercentage.ShouldBe("75%");
+        
+        // AccuracyPercentage returns double (75.0), not string "75%"
+        // Fix: Compare as double
+        state.AccuracyPercentage.ShouldBe(75.0, tolerance: 0.1);
     }
 }
