@@ -1,1 +1,1 @@
-cd ~/src/dotnet/MyDesktopApplication; git add -A && git commit -m "add a new build" && git push && git tag -a v1.0.3 -m "Implement country compare" && git push origin v1.0.2
+cd ~/src/dotnet/MyDesktopApplication; git add -A && git commit -m "add a new build" && git push && git tag -a v1.0.3 -m "Implement country compare" && git push origin v1.0.3
