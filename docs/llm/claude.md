@@ -8928,3 +8928,73 @@ Hope this helps others facing the same cryptic error!
 
 
 
+I'll analyze the build issue. Let me first search the project knowledge for context, then examine the current state.Now I have a clear picture of the situation. The React Native hint you found is actually very relevant! The core issue is the same: **Android SDK/tool version mismatch**.
+
+Looking at the output, I can see:
+1. You're using `.NET 10` with `Microsoft.Android.Sdk.Linux/36.1.2`
+2. Java 25 is installed but may not be fully compatible
+3. The aapt2 daemon is getting stuck during resource compilation
+
+The React Native solution points to the root cause: **newer Android SDKs require specific compatible tooling versions**.
+
+Let me search for your current Android project configuration:Now I have a comprehensive picture. Let me check the current Android project configuration:Now I have a comprehensive understanding. The issue is clear: **the Android build is hanging at aapt2 resource compilation** (the `_CompileResources` target). This is a known issue with the aapt2 daemon on Linux that can cause indefinite hangs.
+
+The React Native tip you found is indeed relevant - it points to **SDK/tooling version mismatches**. In your case:
+- You're using `Microsoft.Android.Sdk.Linux/36.1.2` (which targets Android API 36)
+- But there may be compatibility issues with Java 25 or the aapt2 daemon
+
+Let me create a comprehensive fix that addresses this **without splitting the solution**:Now let me also create a companion script for CI/CD that handles this properly:Now I'll save both files with a single script that you can run:Now run this single script to apply all fixes:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+
+# Download and run the fix script
+cat > apply-android-fixes.sh << 'SCRIPT_EOF'
+# [paste the content from the artifact above]
+SCRIPT_EOF
+
+chmod +x apply-android-fixes.sh
+./apply-android-fixes.sh
+```
+
+Or simply copy the script content from the artifact and run it.
+
+## What This Fixes
+
+The **root cause** of your hanging Android build is the **aapt2 daemon** getting stuck. This is a known issue on Linux where the aapt2 daemon process doesn't terminate properly and causes the build to hang indefinitely.
+
+The fix adds these MSBuild properties (via `Directory.Build.props`) that apply **only to Android builds**:
+
+| Property | Value | Effect |
+|----------|-------|--------|
+| `AndroidUseAapt2Daemon` | `false` | Disables the daemon, uses single-process mode |
+| `_Aapt2DaemonMaxInstanceCount` | `1` | Limits parallel aapt2 instances to 1 |
+| `AndroidAapt2CompileExtraArgs` | `--no-crunch` | Skips image optimization (faster) |
+| `AndroidResourceDesignerMaxParallelism` | `1` | Single-threaded resource designer |
+
+## Key Points
+
+1. **Single unified solution** - No siloing, no separate solutions
+2. **Everyone builds everything** - Desktop AND Android together
+3. **CI/CD configured** - GitHub Actions workflow with proper timeouts and aapt2 workarounds
+4. **Idempotent** - Safe to run multiple times
+5. **Proper Java detection** - Uses JDK 21/17/11 (not Java 25 which has issues)
+
+## If It Still Hangs
+
+```bash
+# Kill stuck processes manually
+pkill -9 -f aapt2
+pkill -9 -f dotnet
+
+# Rebuild with explicit flags
+dotnet build -p:AndroidUseAapt2Daemon=false -p:_Aapt2DaemonMaxInstanceCount=1
+```
+
+
+
+
+
+
+
+
