@@ -101,68 +101,68 @@ File types included:
   • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
 
 
-real	0m0.756s
-user	0m0.450s
-sys	0m0.409s
+real	0m0.755s
+user	0m0.437s
+sys	0m0.417s
 
 Build succeeded in 1.0s
 
-real	0m1.144s
-user	0m0.880s
-sys	0m0.273s
+real	0m1.147s
+user	0m0.891s
+sys	0m0.260s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.814s
-user	0m0.910s
-sys	0m0.194s
+real	0m0.823s
+user	0m0.947s
+sys	0m0.181s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (2.4s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core net10.0 succeeded (2.5s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.Desktop net10.0 succeeded (1.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 Attempting to cancel the build...
 
-Build failed in 38.6s
+Build failed in 191.7s
 
-real	0m38.745s
-user	0m4.492s
-sys	0m0.907s
+real	3m11.825s
+user	0m4.625s
+sys	0m0.957s
 Restore complete (0.8s)
   MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.23]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.09]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.14]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.24]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.16]   Starting:    MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.15]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.17]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.24]   Finished:    MyDesktopApplication.UI.Tests
   MyDesktopApplication.UI.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.78]   Finished:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+[xUnit.net 00:00:00.79]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.5s)
 
 Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.6s
 Build succeeded in 3.0s
 
-real	0m3.150s
-user	0m2.112s
-sys	0m0.507s
+real	0m3.184s
+user	0m2.209s
+sys	0m0.510s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
