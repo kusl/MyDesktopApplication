@@ -5298,3 +5298,25 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+There are all sort of things wrong with this code base. 
+Please fix all the errors as identified in output.txt and use the code in dump.txt as your starting point. 
+Please generate a single script to fix all these issues. 
+Please harmonize property names. For example, it makes no sense to call something Gdp somewhere and GdpTotal somewhere else. 
+Please make sure the build works. Do not hallucinate. 
+Please keep in mind all our instructions. Do not introduce non-free (including paid for commercial only) nuget packages. 
+Do not try to sneak in "solutions" by deleting functionality or by siloing code into desktop only vs mobile only, properly fix errors. 
+Please write a single script to fix the issues. 
+Please make sure the script is idempotent, meaning it doesn't break things if you run it multiple times. 
+Do not use pre-release packages but also do not downgrade my packages to make the code build. 
+Fix code properly instead of downgrading to older versions. 
+Do not introduce new errors. 
+Fix all existing errors. 
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
