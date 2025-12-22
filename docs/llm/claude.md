@@ -9802,5 +9802,92 @@ Hi Gemini,
 I got these errors 
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml(5,10,5,10): Avalonia error AVLN2000: Unable to resolve type FluentTheme from namespace https://github.com/avaloniaui Line 5, position 10.
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml(11,10,11,10): Avalonia error AVLN2000: Unable to resolve type QuestionTypeLabelConverter from namespace using:MyDesktopApplication.Desktop.Converters Line 11, position 10.
-
 Build failed with 2 error(s) in 5.5s
+
+Based on the error logs and the project structure provided in your dump file, here are the fixes for the two build errors.
+
+### Error 1: `Unable to resolve type FluentTheme`
+
+**Cause:** The Android project uses `<FluentTheme />` in `App.axaml` , but the project file `MyDesktopApplication.Android.csproj`  is missing the reference to the Fluent theme package.
+
+**Fix:** Add the `Avalonia.Themes.Fluent` package to your Android project.
+
+**File:** `src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj`
+Add the package reference inside the `ItemGroup`:
+
+```xml
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" /> 
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+```
+
+---
+
+### Error 2: `Unable to resolve type QuestionTypeLabelConverter`
+
+**Cause:** Your Android `MainView.axaml`  tries to import converters from the Desktop namespace (`using:MyDesktopApplication.Desktop.Converters`). The Android project cannot reference the Desktop project, so it cannot find this class.
+
+**Fix:** You need to create a `Converters.cs` file specifically for the Android project and update the XAML to reference it.
+
+**Step 1: Create the Converters file for Android**
+Create a new file at `src/MyDesktopApplication.Android/Converters/Converters.cs` with this content:
+
+```csharp
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Android.Converters;
+
+public class QuestionTypeLabelConverter : IValueConverter
+{
+    public static readonly QuestionTypeLabelConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is QuestionType qt)
+        {
+            return qt.GetLabel();
+        }
+        return value?.ToString() ?? "";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
+}
+
+```
+
+**Step 2: Update the Android XAML Namespace**
+Update the namespace in `src/MyDesktopApplication.Android/Views/MainView.axaml` to point to the new Android location instead of Desktop.
+
+**File:** `src/MyDesktopApplication.Android/Views/MainView.axaml`
+Find line 4 (the `xmlns:conv` line) and change it:
+
+**Change this:**
+
+```xml
+xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+
+```
+
+**To this:**
+
+```xml
+xmlns:conv="using:MyDesktopApplication.Android.Converters"
+
+```
+
+### Summary of Changes
+
+1. **Edited:** `src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj` (Added Package)
+2. **Created:** `src/MyDesktopApplication.Android/Converters/Converters.cs` (New File)
+3. **Edited:** `src/MyDesktopApplication.Android/Views/MainView.axaml` (Updated Namespace)
+
+After applying these changes, run `dotnet build src/MyDesktopApplication.Android` again.
