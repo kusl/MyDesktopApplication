@@ -8998,3 +8998,303 @@ dotnet build -p:AndroidUseAapt2Daemon=false -p:_Aapt2DaemonMaxInstanceCount=1
 
 
 
+what is wrong with this github action? 
+Run dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+ParserError: C:\a\_temp\42e37fc2-44c9-40ff-a023-0d67c45de80f.ps1:5
+Line |
+   5 |    --self-contained true \
+     |      ~
+     | Missing expression after unary operator '--'.
+Error: Process completed with exit code 1.
+
+name: Build
+
+on:
+  push:
+    branches: [master, main, develop]
+    
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-desktop:
+    name: Build Desktop (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact: linux-x64
+          - os: ubuntu-24.04-arm
+            rid: linux-arm64
+            artifact: linux-arm64
+          - os: windows-latest
+            rid: win-x64
+            artifact: win-x64
+          - os: windows-11-arm
+            rid: win-arm64
+            artifact: win-arm64
+          - os: macos-latest
+            rid: osx-arm64
+            artifact: osx-arm64
+          - os: macos-13
+            rid: osx-x64
+            artifact: osx-x64
+            
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+            
+      - name: Restore
+        run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+        
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o ./publish/${{ matrix.artifact }}
+            
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: desktop-${{ matrix.artifact }}
+          path: ./publish/${{ matrix.artifact }}
+          retention-days: 5
+
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+          
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Install Android Workload
+        run: dotnet workload install android
+        
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-android-nuget-
+            
+      - name: Restore
+        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+        
+      - name: Build APK
+        run: |
+          dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            -c Release \
+            -p:AndroidAapt2DaemonEnabled=false
+            
+      - name: Upload APK
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-apk
+          path: src/MyDesktopApplication.Android/bin/Release/**/**.apk
+          retention-days: 5
+
+  create-prerelease:
+    name: Create Pre-release
+    needs: [build-desktop, build-android]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v7
+        with:
+          path: ./artifacts
+          pattern: '*'
+          merge-multiple: false
+          
+      - name: Create Archives
+        run: |
+          cd artifacts
+          for dir in */; do
+            name="${dir%/}"
+            if [[ "$name" == *"win"* ]]; then
+              zip -r "../${name}.zip" "$dir"
+            else
+              tar -czvf "../${name}.tar.gz" "$dir"
+            fi
+          done
+          
+      - name: Delete Previous Dev Release
+        uses: dev-drprasad/delete-tag-and-release@v1.1
+        with:
+          tag_name: dev
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
+        continue-on-error: true
+        
+      - name: Create Dev Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev
+          name: Development Build
+          prerelease: true
+          body: |
+            🚧 **Development Build**
+            
+            This is an automatically generated pre-release from the latest commit on `${{ github.ref_name }}`.
+            
+            **Commit:** ${{ github.sha }}
+            **Date:** ${{ github.event.head_commit.timestamp }}
+            
+            ⚠️ This build may be unstable. Use at your own risk.
+          files: |
+            *.zip
+            *.tar.gz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The issue is a **shell syntax mismatch** on your Windows runners.
+
+### **The Problem**
+
+You are running a **matrix build** that includes Windows (`windows-latest`, `windows-11-arm`).
+
+* On **Linux/macOS**, the default shell is `bash`. It recognizes the backslash `\` as a line continuation character.
+* On **Windows**, the default shell is **PowerShell** (`pwsh`). PowerShell does **not** recognize `\` as a line continuation character (it uses the backtick ```).
+
+When the Windows runner executes your script, it treats every line ending in `\` as the end of a command. It then tries to execute line 5 (`--self-contained true \`) as a *new* command. Since `--` is a special operator in PowerShell (decrement), it throws the `ParserError: Missing expression after unary operator '--'`.
+
+### **The Fix**
+
+The cleanest solution is to explicitly tell GitHub Actions to use `bash` for that step (or the whole job), even on Windows. This allows you to keep the `\` syntax consistent across all operating systems.
+
+Add `shell: bash` to your **Publish** step:
+
+```yaml
+      - name: Publish
+        shell: bash  # <--- Add this line
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o ./publish/${{ matrix.artifact }}
+
+```
+
+---
+
+### **⚠️ Critical: Future Version Issues**
+
+While reviewing your workflow, I noticed you are using Action versions that **do not exist yet** (as of late 2024/early 2025). This will be the *next* error you face after fixing the shell issue.
+
+You need to downgrade these to the current stable major versions:
+
+| Action | Your Version (Invalid) | Current Stable Version |
+| --- | --- | --- |
+| `actions/checkout` | `v6` | **`v4`** |
+| `actions/setup-dotnet` | `v5` | **`v4`** |
+| `actions/cache` | `v5` | **`v4`** |
+| `actions/upload-artifact` | `v6` | **`v4`** |
+| `actions/download-artifact` | `v7` | **`v4`** |
+| `actions/setup-java` | `v5` | **`v4`** |
+
+**Corrected Snippet for the Job Setup:**
+
+```yaml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  # Changed from v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4  # Changed from v5
+        with:
+          dotnet-version: '10.0.x' # Note: .NET 10 is likely preview/future context, ensure this is intended.
+
+```
+
+### **Summary of Fixes**
+
+1. Add `shell: bash` to any multi-line `run` step running on Windows.
+2. Update all `actions/*` versions to `v4`.
+
+Would you like me to rewrite the full YAML with these fixes applied?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
