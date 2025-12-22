@@ -196,3 +196,174 @@ real	0m3.131s
 user	0m2.615s
 sys	0m0.515s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-all-errors.sh 
+==============================================
+  Comprehensive Build Fix Script
+==============================================
+
+This script fixes ALL errors from output.txt:
+  - MainWindowViewModel missing XAML bindings
+  - Test files with wrong property names
+  - Property name harmonization
+
+[0/8] Killing stuck processes and cleaning...
+[1/8] Fixing Country.cs...
+[2/8] Fixing QuestionType.cs...
+[3/8] Fixing GameState.cs...
+[4/8] Fixing IGameStateRepository.cs...
+[5/8] Fixing MainWindowViewModel.cs (COMPLETE rewrite with ALL bindings)...
+[6/8] Fixing CountryData.cs...
+[7/8] Fixing UI Tests...
+[8/8] Restoring and building...
+Restore complete (0.8s)
+
+Build succeeded in 0.9s
+
+Building solution...
+  MyDesktopApplication.Core net10.0 failed with 1 error(s) (1.9s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
+
+Build failed with 1 error(s) in 2.2s
+
+==============================================
+  ❌ BUILD FAILED
+==============================================
+
+real	0m4.505s
+user	0m2.617s
+sys	0m0.681s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): add-migration.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-errors.sh
+Processing (6/69): fix-project-properly.sh
+Processing (7/69): .gitattributes
+Processing (8/69): .github/dependabot.yml
+Processing (9/69): .github/workflows/build.yml
+Processing (10/69): .github/workflows/ci.yml
+Processing (11/69): .github/workflows/release.yml
+Processing (12/69): .gitignore
+Processing (13/69): migrate.sh
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): repair-project.sh
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    412.36 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.793s
+user	0m0.388s
+sys	0m0.596s
+
+Build succeeded in 0.5s
+
+real	0m0.616s
+user	0m0.699s
+sys	0m0.154s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.793s
+user	0m0.901s
+sys	0m0.208s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
+
+Build failed with 1 error(s) in 1.0s
+
+real	0m1.139s
+user	0m1.339s
+sys	0m0.281s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
+
+Build failed with 1 error(s) in 0.8s
+
+real	0m0.945s
+user	0m1.192s
+sys	0m0.240s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

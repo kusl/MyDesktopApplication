@@ -1,8 +1,5 @@
 namespace MyDesktopApplication.Core.Entities;
 
-/// <summary>
-/// Types of quiz questions about countries
-/// </summary>
 public enum QuestionType
 {
     Population,
@@ -15,9 +12,6 @@ public enum QuestionType
     LifeExpectancy
 }
 
-/// <summary>
-/// Extension methods for QuestionType enum
-/// </summary>
 public static class QuestionTypeExtensions
 {
     public static string GetLabel(this QuestionType questionType) => questionType switch
@@ -48,10 +42,10 @@ public static class QuestionTypeExtensions
 
     public static string FormatValue(this QuestionType questionType, double value) => questionType switch
     {
-        QuestionType.Population => FormatPopulation(value),
-        QuestionType.Area => FormatArea(value),
+        QuestionType.Population => FormatLargeNumber(value),
+        QuestionType.Area => $"{value:N0} km²",
         QuestionType.GdpTotal => FormatCurrency(value),
-        QuestionType.GdpPerCapita => FormatCurrency(value),
+        QuestionType.GdpPerCapita => $"${value:N0}",
         QuestionType.PopulationDensity => $"{value:N1}/km²",
         QuestionType.LiteracyRate => $"{value:N1}%",
         QuestionType.Hdi => $"{value:N3}",
@@ -59,7 +53,7 @@ public static class QuestionTypeExtensions
         _ => value.ToString("N0")
     };
 
-    private static string FormatPopulation(double value)
+    private static string FormatLargeNumber(double value)
     {
         if (value >= 1_000_000_000) return $"{value / 1_000_000_000:N2}B";
         if (value >= 1_000_000) return $"{value / 1_000_000:N2}M";
@@ -67,19 +61,11 @@ public static class QuestionTypeExtensions
         return value.ToString("N0");
     }
 
-    private static string FormatArea(double value)
-    {
-        if (value >= 1_000_000) return $"{value / 1_000_000:N2}M km²";
-        if (value >= 1_000) return $"{value / 1_000:N2}K km²";
-        return $"{value:N0} km²";
-    }
-
     private static string FormatCurrency(double value)
     {
         if (value >= 1_000_000_000_000) return $"${value / 1_000_000_000_000:N2}T";
         if (value >= 1_000_000_000) return $"${value / 1_000_000_000:N2}B";
         if (value >= 1_000_000) return $"${value / 1_000_000:N2}M";
-        if (value >= 1_000) return $"${value / 1_000:N2}K";
         return $"${value:N0}";
     }
 }
