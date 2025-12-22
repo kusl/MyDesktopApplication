@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces; // Add this using
 using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
@@ -13,9 +14,14 @@ public partial class CountryQuizViewModel : ViewModelBase
 {
     private readonly Random _random = new();
     private readonly List<Country> _countries;
+    // Add repository and game state backing field
+    private readonly IGameStateRepository? _gameStateRepository;
+    private GameState _gameState = new();
+
     private Country? _country1;
     private Country? _country2;
 
+    // ... [Keep existing ObservableProperties] ...
     [ObservableProperty] private string _questionText = "Loading...";
     [ObservableProperty] private string _country1Name = "";
     [ObservableProperty] private string _country2Name = "";
@@ -43,10 +49,16 @@ public partial class CountryQuizViewModel : ViewModelBase
         ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
 
+    // Update Constructor to support DI
+    public CountryQuizViewModel(IGameStateRepository gameStateRepository) : this()
+    {
+        _gameStateRepository = gameStateRepository;
+    }
+
+    // Keep existing parameterless constructor for design-time/default init
     public CountryQuizViewModel()
     {
         _countries = CountryData.GetAllCountries().ToList();
-
         foreach (QuestionType qt in Enum.GetValues<QuestionType>())
         {
             QuestionTypes.Add(qt);
@@ -55,8 +67,32 @@ public partial class CountryQuizViewModel : ViewModelBase
         GenerateNewQuestion();
     }
 
+    // Add the missing method called by App.cs
+    public async Task InitializeAsync()
+    {
+        if (_gameStateRepository != null)
+        {
+            try 
+            {
+                // Load saved state from database
+                _gameState = await _gameStateRepository.GetOrCreateAsync("default");
+                
+                // Sync UI with saved state
+                CurrentScore = _gameState.CurrentScore;
+                CurrentStreak = _gameState.CurrentStreak;
+                BestStreak = _gameState.BestStreak;
+                // Note: You might want to add HighScore property to this ViewModel later
+            }
+            catch (Exception ex)
+            {
+                // Handle or log DB initialization errors safely
+                System.Diagnostics.Debug.WriteLine($"Error loading game state: {ex.Message}");
+            }
+        }
+    }
+
     [RelayCommand]
-    private void SelectCountry(int countryNumber)
+    private async Task SelectCountry(int countryNumber) // Change to async Task
     {
         if (HasAnswered || _country1 == null || _country2 == null)
             return;
@@ -88,6 +124,7 @@ public partial class CountryQuizViewModel : ViewModelBase
             IsCountry1Wrong = isCorrect;
         }
 
+        // Logic to update GameState and Save
         if (isCorrect)
         {
             CurrentScore++;
@@ -101,6 +138,18 @@ public partial class CountryQuizViewModel : ViewModelBase
             CurrentStreak = 0;
             ResultMessage = GetIncorrectMessage();
         }
+        
+        // Sync to Entity
+        _gameState.CurrentScore = CurrentScore;
+        _gameState.CurrentStreak = CurrentStreak;
+        _gameState.BestStreak = BestStreak;
+        _gameState.RecordAnswer(isCorrect);
+
+        // Save to Database
+        if (_gameStateRepository != null)
+        {
+            await _gameStateRepository.SaveAsync(_gameState);
+        }
 
         OnPropertyChanged(nameof(ScoreText));
         OnPropertyChanged(nameof(StreakText));
@@ -108,7 +157,8 @@ public partial class CountryQuizViewModel : ViewModelBase
         OnPropertyChanged(nameof(AccuracyText));
     }
 
-    [RelayCommand]
+    // ... [Keep the rest of the methods: NextRound, ChangeQuestionType, etc.] ...
+        [RelayCommand]
     private void NextRound()
     {
         GenerateNewQuestion();
