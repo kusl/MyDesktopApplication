@@ -160,4 +160,733 @@ Build failed with 7 error(s) in 2.4s
 real	0m2.540s
 user	0m1.654s
 sys	0m0.422s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): add-migration.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-errors.sh
+Processing (6/69): fix-project-properly.sh
+Processing (7/69): .gitattributes
+Processing (8/69): .github/dependabot.yml
+Processing (9/69): .github/workflows/build.yml
+Processing (10/69): .github/workflows/ci.yml
+Processing (11/69): .github/workflows/release.yml
+Processing (12/69): .gitignore
+Processing (13/69): migrate.sh
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): repair-project.sh
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    398.07 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.833s
+user	0m0.382s
+sys	0m0.610s
+
+Build succeeded in 0.5s
+
+real	0m0.621s
+user	0m0.672s
+sys	0m0.180s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.820s
+user	0m0.932s
+sys	0m0.205s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 6 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(20,14): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,33): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(42,27): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(43,30): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(44,31): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(53,33): error CS1061: 'QuestionType' does not contain a definition for 'FormatValue' and no accessible extension method 'FormatValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(203,20): error CS0029: Cannot implicitly convert type 'string' to 'double'
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+
+Build failed with 7 error(s) in 1.2s
+
+real	0m1.346s
+user	0m1.552s
+sys	0m0.379s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 6 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(20,14): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,33): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(42,27): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(43,30): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(44,31): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(53,33): error CS1061: 'QuestionType' does not contain a definition for 'FormatValue' and no accessible extension method 'FormatValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(203,20): error CS0029: Cannot implicitly convert type 'string' to 'double'
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.62]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 3, failed: 0, succeeded: 3, skipped: 0, duration: 1.2s
+Build failed with 7 error(s) in 2.1s
+
+real	0m2.257s
+user	0m1.472s
+sys	0m0.335s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-all-errors.sh 
+==============================================
+  Fixing All Build Errors
+==============================================
+
+Errors to fix:
+  1. QuestionType missing GetLabel extension method
+  2. QuestionType missing GetValue extension method (4 occurrences)
+  3. QuestionType missing FormatValue extension method
+  4. CountryQuizViewModel line 203: Cannot convert string to double
+
+Step 1: Killing any stuck build processes...
+✓ Done
+
+Step 2: Cleaning build artifacts...
+✓ Done
+
+Step 3: Adding extension methods to QuestionType.cs...
+✓ Done
+
+Step 4: Ensuring Country class has all required properties...
+✓ Done
+
+Step 5: Rewriting CountryQuizViewModel.cs to fix all errors...
+✓ Done
+
+Step 6: Updating GameState.cs with all required properties...
+✓ Done
+
+Step 7: Fixing QuestionTypeTests.cs...
+✓ Done
+
+Step 8: Ensuring ViewModelBase.cs exists...
+✓ Done
+
+Step 9: Restoring packages...
+✓ Done
+
+Step 10: Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (1.9s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.5s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 2.7s
+
+==============================================
+  ❌ BUILD FAILED
+==============================================
+
+Check the errors above and run the script again.
+
+real	0m5.340s
+user	0m2.808s
+sys	0m0.614s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-all-errors.sh 
+==============================================
+  Fixing All Build Errors
+==============================================
+
+Errors to fix:
+  1. QuestionType missing GetLabel extension method
+  2. QuestionType missing GetValue extension method (4 occurrences)
+  3. QuestionType missing FormatValue extension method
+  4. CountryQuizViewModel line 203: Cannot convert string to double
+
+Step 1: Killing any stuck build processes...
+✓ Done
+
+Step 2: Cleaning build artifacts...
+✓ Done
+
+Step 3: Adding extension methods to QuestionType.cs...
+✓ Done
+
+Step 4: Ensuring Country class has all required properties...
+✓ Done
+
+Step 5: Rewriting CountryQuizViewModel.cs to fix all errors...
+✓ Done
+
+Step 6: Updating GameState.cs with all required properties...
+✓ Done
+
+Step 7: Fixing QuestionTypeTests.cs...
+✓ Done
+
+Step 8: Ensuring ViewModelBase.cs exists...
+✓ Done
+
+Step 9: Restoring packages...
+✓ Done
+
+Step 10: Building solution...
+  MyDesktopApplication.Core net10.0 succeeded (1.9s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.5s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 2.6s
+
+==============================================
+  ❌ BUILD FAILED
+==============================================
+
+Check the errors above and run the script again.
+
+real	0m4.770s
+user	0m2.622s
+sys	0m0.570s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): add-migration.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-errors.sh
+Processing (6/69): fix-project-properly.sh
+Processing (7/69): .gitattributes
+Processing (8/69): .github/dependabot.yml
+Processing (9/69): .github/workflows/build.yml
+Processing (10/69): .github/workflows/ci.yml
+Processing (11/69): .github/workflows/release.yml
+Processing (12/69): .gitignore
+Processing (13/69): migrate.sh
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): repair-project.sh
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    402.74 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.794s
+user	0m0.403s
+sys	0m0.585s
+
+Build succeeded in 0.5s
+
+real	0m0.623s
+user	0m0.696s
+sys	0m0.149s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.782s
+user	0m0.897s
+sys	0m0.193s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 1.0s
+
+real	0m1.113s
+user	0m1.343s
+sys	0m0.320s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 0.9s
+
+real	0m1.052s
+user	0m1.247s
+sys	0m0.302s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): add-migration.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-errors.sh
+Processing (6/69): fix-project-properly.sh
+Processing (7/69): .gitattributes
+Processing (8/69): .github/dependabot.yml
+Processing (9/69): .github/workflows/build.yml
+Processing (10/69): .github/workflows/ci.yml
+Processing (11/69): .github/workflows/release.yml
+Processing (12/69): .gitignore
+Processing (13/69): migrate.sh
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): repair-project.sh
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    402.74 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.809s
+user	0m0.380s
+sys	0m0.624s
+
+Build succeeded in 0.5s
+
+real	0m0.618s
+user	0m0.697s
+sys	0m0.145s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.774s
+user	0m0.888s
+sys	0m0.187s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 1.0s
+
+real	0m1.125s
+user	0m1.384s
+sys	0m0.307s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 0.9s
+
+real	0m1.041s
+user	0m1.256s
+sys	0m0.265s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): add-migration.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-errors.sh
+Processing (6/69): fix-project-properly.sh
+Processing (7/69): .gitattributes
+Processing (8/69): .github/dependabot.yml
+Processing (9/69): .github/workflows/build.yml
+Processing (10/69): .github/workflows/ci.yml
+Processing (11/69): .github/workflows/release.yml
+Processing (12/69): .gitignore
+Processing (13/69): migrate.sh
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): repair-project.sh
+Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/69): src/MyDesktopApplication.Android/App.axaml
+Processing (19/69): src/MyDesktopApplication.Android/App.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    402.74 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.805s
+user	0m0.373s
+sys	0m0.626s
+
+Build succeeded in 0.5s
+
+real	0m0.656s
+user	0m0.724s
+sys	0m0.151s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.753s
+user	0m0.849s
+sys	0m0.219s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 1.0s
+
+real	0m1.160s
+user	0m1.409s
+sys	0m0.307s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs(43,36): error CS1061: 'GameState' does not contain a definition for 'SelectedQuestionType' and no accessible extension method 'SelectedQuestionType' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core.Tests net10.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(77,15): error CS1061: 'GameState' does not contain a definition for 'AccuracyPercentage' and no accessible extension method 'AccuracyPercentage' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Shared net10.0 failed with 2 error(s) and 1 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(43,9): error CS0103: The name 'ClearError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs(51,13): error CS0103: The name 'SetError' does not exist in the current context
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(18,22): warning CS0169: The field 'CountryQuizViewModel._currentCountry' is never used
+
+Build failed with 4 error(s) and 1 warning(s) in 0.9s
+
+real	0m1.016s
+user	0m1.221s
+sys	0m0.291s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
