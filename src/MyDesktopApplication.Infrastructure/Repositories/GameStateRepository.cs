@@ -5,17 +5,12 @@ using MyDesktopApplication.Infrastructure.Data;
 
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
-/// <summary>
-/// GameState-specific repository implementation.
-/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
-/// </summary>
 public class GameStateRepository : Repository<GameState>, IGameStateRepository
 {
     public GameStateRepository(AppDbContext context) : base(context)
     {
     }
 
-    /// <inheritdoc />
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
         var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
@@ -27,13 +22,24 @@ public class GameStateRepository : Repository<GameState>, IGameStateRepository
         return state;
     }
 
-    /// <inheritdoc />
     public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
     {
         return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
     }
 
-    /// <inheritdoc />
+    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
+    {
+        // If the entity is new (Id is empty Guid), add it; otherwise update it
+        if (gameState.Id == Guid.Empty)
+        {
+            await AddAsync(gameState, ct);
+        }
+        else
+        {
+            await UpdateAsync(gameState, ct);
+        }
+    }
+
     public async Task ResetAsync(string userId, CancellationToken ct = default)
     {
         var state = await GetOrCreateAsync(userId, ct);

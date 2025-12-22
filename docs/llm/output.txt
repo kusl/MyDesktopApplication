@@ -543,4 +543,83 @@ Build failed with 1 error(s) in 1.5s
 real	0m1.683s
 user	0m1.392s
 sys	0m0.271s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-saveasync-implementation.sh
+=== Fixing SaveAsync Implementation ===
+[1/4] Checking current IGameStateRepository interface...
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Core.Interfaces;
+
+public interface IGameStateRepository : IRepository<GameState>
+{
+    Task<GameState> GetOrCreateAsync(string userId, CancellationToken cancellationToken = default);
+    Task SaveAsync(GameState gameState, CancellationToken cancellationToken = default);
+}
+
+[2/4] Checking current GameStateRepository implementation...
+using Microsoft.EntityFrameworkCore;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+
+namespace MyDesktopApplication.Infrastructure.Repositories;
+
+/// <summary>
+/// GameState-specific repository implementation.
+/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
+/// </summary>
+public class GameStateRepository : Repository<GameState>, IGameStateRepository
+{
+    public GameStateRepository(AppDbContext context) : base(context)
+    {
+    }
+
+    /// <inheritdoc />
+    public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
+    {
+        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        if (state == null)
+        {
+            state = new GameState { UserId = userId };
+            await AddAsync(state, ct);
+        }
+        return state;
+    }
+
+    /// <inheritdoc />
+    public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
+    {
+        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+    }
+
+    /// <inheritdoc />
+    public async Task ResetAsync(string userId, CancellationToken ct = default)
+    {
+        var state = await GetOrCreateAsync(userId, ct);
+        state.Reset();
+        await UpdateAsync(state, ct);
+    }
+}
+
+[3/4] Adding SaveAsync implementation to GameStateRepository...
+
+[4/4] Building to verify fix...
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 186.2s
+
+=== Fix Applied ===
+Added SaveAsync(GameState, CancellationToken) implementation to GameStateRepository
+fix-saveasync-implementation.sh: line 94: EOF: command not found
+
+real	3m6.366s
+user	0m3.761s
+sys	0m2.327s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
