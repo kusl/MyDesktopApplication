@@ -1406,3 +1406,1079 @@ real	3m3.205s
 user	0m9.787s
 sys	0m1.413s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 72 files to export
+
+Processing (1/72): add-migration.sh
+Processing (2/72): Directory.Build.props
+Processing (3/72): Directory.Packages.props
+Processing (4/72): export.sh
+Processing (5/72): fix-all-errors.sh
+Processing (6/72): fix-android-hang.sh
+Processing (7/72): fix-entitybase-inheritance.sh
+Processing (8/72): fix-project-properly.sh
+Processing (9/72): fix-saveasync-implementation.sh
+Processing (10/72): .gitattributes
+Processing (11/72): .github/dependabot.yml
+Processing (12/72): .github/workflows/build.yml
+Processing (13/72): .github/workflows/ci.yml
+Processing (14/72): .github/workflows/release.yml
+Processing (15/72): .gitignore
+Processing (16/72): migrate.sh
+Processing (17/72): MyDesktopApplication.slnx
+Processing (18/72): README.md
+Processing (19/72): repair-project.sh
+Processing (20/72): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (21/72): src/MyDesktopApplication.Android/App.axaml
+Processing (22/72): src/MyDesktopApplication.Android/App.cs
+Processing (23/72): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (24/72): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (25/72): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (26/72): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (27/72): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (28/72): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (29/72): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (30/72): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (31/72): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (32/72): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (33/72): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (34/72): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (35/72): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (36/72): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (37/72): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (38/72): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (39/72): src/MyDesktopApplication.Desktop/App.axaml
+Processing (40/72): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (41/72): src/MyDesktopApplication.Desktop/app.manifest
+Processing (42/72): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (43/72): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (44/72): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (45/72): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (46/72): src/MyDesktopApplication.Desktop/Program.cs
+Processing (47/72): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (48/72): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (49/72): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (50/72): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (51/72): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (52/72): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (53/72): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (54/72): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (55/72): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (56/72): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (57/72): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (58/72): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (59/72): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (60/72): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (61/72): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (62/72): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (63/72): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (64/72): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (65/72): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (66/72): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (67/72): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (68/72): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (69/72): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (70/72): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (71/72): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (72/72): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 72
+Files skipped:  0
+Output size:    436.92 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.756s
+user	0m0.429s
+sys	0m0.426s
+
+Build succeeded in 0.9s
+
+real	0m1.110s
+user	0m0.857s
+sys	0m0.256s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.818s
+user	0m0.925s
+sys	0m0.193s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 185.3s
+
+real	3m5.438s
+user	0m4.245s
+sys	0m0.944s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.21]     MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: GdpTotal, expectedLabel: "GDP (Total USD)") [FAIL]
+[xUnit.net 00:00:00.21]       Shouldly.ShouldAssertException : label
+[xUnit.net 00:00:00.21]           should be
+[xUnit.net 00:00:00.21]       "GDP (Total USD)"
+[xUnit.net 00:00:00.21]           but was
+[xUnit.net 00:00:00.21]       "GDP (Total)"
+[xUnit.net 00:00:00.21]           difference
+[xUnit.net 00:00:00.21]       Difference     |                                                    |    |    |    |    |   
+[xUnit.net 00:00:00.21]                      |                                                   \|/  \|/  \|/  \|/  \|/  
+[xUnit.net 00:00:00.21]       Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   
+[xUnit.net 00:00:00.21]       Expected Value | G    D    P    \s   (    T    o    t    a    l    \s   U    S    D    )    
+[xUnit.net 00:00:00.21]       Actual Value   | G    D    P    \s   (    T    o    t    a    l    )                        
+[xUnit.net 00:00:00.21]       Expected Code  | 71   68   80   32   40   84   111  116  97   108  32   85   83   68   41   
+[xUnit.net 00:00:00.21]       Actual Code    | 71   68   80   32   40   84   111  116  97   108  41                       
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel)
+[xUnit.net 00:00:00.21]            at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.21]     MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: LifeExpectancy, expectedLabel: "Life Expectancy (years)") [FAIL]
+[xUnit.net 00:00:00.21]       Shouldly.ShouldAssertException : label
+[xUnit.net 00:00:00.21]           should be
+[xUnit.net 00:00:00.21]       "Life Expectancy (years)"
+[xUnit.net 00:00:00.21]           but was
+[xUnit.net 00:00:00.21]       "Life Expectancy"
+[xUnit.net 00:00:00.21]           difference
+[xUnit.net 00:00:00.21]       Difference     |                                                                        |    |    |    |    |    |    |    |   
+[xUnit.net 00:00:00.21]                      |                                                                       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+[xUnit.net 00:00:00.21]       Index          | ...  2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   
+[xUnit.net 00:00:00.21]       Expected Value | ...  f    e    \s   E    x    p    e    c    t    a    n    c    y    \s   (    y    e    a    r    s    )    
+[xUnit.net 00:00:00.21]       Actual Value   | ...  f    e    \s   E    x    p    e    c    t    a    n    c    y                                            
+[xUnit.net 00:00:00.21]       Expected Code  | ...  102  101  32   69   120  112  101  99   116  97   110  99   121  32   40   121  101  97   114  115  41   
+[xUnit.net 00:00:00.21]       Actual Code    | ...  102  101  32   69   120  112  101  99   116  97   110  99   121                                          
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel)
+[xUnit.net 00:00:00.21]            at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.21]     MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: GdpPerCapita, expectedLabel: "GDP per Capita (USD)") [FAIL]
+[xUnit.net 00:00:00.21]       Shouldly.ShouldAssertException : label
+[xUnit.net 00:00:00.21]           should be
+[xUnit.net 00:00:00.21]       "GDP per Capita (USD)"
+[xUnit.net 00:00:00.21]           but was
+[xUnit.net 00:00:00.21]       "GDP per Capita"
+[xUnit.net 00:00:00.21]           difference
+[xUnit.net 00:00:00.21]       Difference     |                                                                        |    |    |    |    |    |   
+[xUnit.net 00:00:00.21]                      |                                                                       \|/  \|/  \|/  \|/  \|/  \|/  
+[xUnit.net 00:00:00.21]       Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   
+[xUnit.net 00:00:00.21]       Expected Value | G    D    P    \s   p    e    r    \s   C    a    p    i    t    a    \s   (    U    S    D    )    
+[xUnit.net 00:00:00.21]       Actual Value   | G    D    P    \s   p    e    r    \s   C    a    p    i    t    a                                  
+[xUnit.net 00:00:00.21]       Expected Code  | 71   68   80   32   112  101  114  32   67   97   112  105  116  97   32   40   85   83   68   41   
+[xUnit.net 00:00:00.21]       Actual Code    | 71   68   80   32   112  101  114  32   67   97   112  105  116  97                                 
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel)
+[xUnit.net 00:00:00.21]            at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.21]     MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: PopulationDensity, expectedLabel: "Population Density (per km²)") [FAIL]
+[xUnit.net 00:00:00.21]       Shouldly.ShouldAssertException : label
+[xUnit.net 00:00:00.21]           should be
+[xUnit.net 00:00:00.21]       "Population Density (per km²)"
+[xUnit.net 00:00:00.21]           but was
+[xUnit.net 00:00:00.21]       "Population Density"
+[xUnit.net 00:00:00.21]           difference
+[xUnit.net 00:00:00.21]       Difference     |                                                              |    |    |    |    |    |    |    |    |    |   
+[xUnit.net 00:00:00.21]                      |                                                             \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+[xUnit.net 00:00:00.21]       Index          | ...  7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   
+[xUnit.net 00:00:00.21]       Expected Value | ...  i    o    n    \s   D    e    n    s    i    t    y    \s   (    p    e    r    \s   k    m    ²    )    
+[xUnit.net 00:00:00.21]       Actual Value   | ...  i    o    n    \s   D    e    n    s    i    t    y                                                      
+[xUnit.net 00:00:00.21]       Expected Code  | ...  105  111  110  32   68   101  110  115  105  116  121  32   40   112  101  114  32   107  109  178  41   
+[xUnit.net 00:00:00.21]       Actual Code    | ...  105  111  110  32   68   101  110  115  105  116  121                                                    
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel)
+[xUnit.net 00:00:00.21]            at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.22]     MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: LiteracyRate, expectedLabel: "Literacy Rate (%)") [FAIL]
+[xUnit.net 00:00:00.22]       Shouldly.ShouldAssertException : label
+[xUnit.net 00:00:00.22]           should be
+[xUnit.net 00:00:00.22]       "Literacy Rate (%)"
+[xUnit.net 00:00:00.22]           but was
+[xUnit.net 00:00:00.22]       "Literacy Rate"
+[xUnit.net 00:00:00.22]           difference
+[xUnit.net 00:00:00.22]       Difference     |                                                                   |    |    |    |   
+[xUnit.net 00:00:00.22]                      |                                                                  \|/  \|/  \|/  \|/  
+[xUnit.net 00:00:00.22]       Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+[xUnit.net 00:00:00.22]       Expected Value | L    i    t    e    r    a    c    y    \s   R    a    t    e    \s   (    %    )    
+[xUnit.net 00:00:00.22]       Actual Value   | L    i    t    e    r    a    c    y    \s   R    a    t    e                        
+[xUnit.net 00:00:00.22]       Expected Code  | 76   105  116  101  114  97   99   121  32   82   97   116  101  32   40   37   41   
+[xUnit.net 00:00:00.22]       Actual Code    | 76   105  116  101  114  97   99   121  32   82   97   116  101                      
+[xUnit.net 00:00:00.22]       Stack Trace:
+[xUnit.net 00:00:00.22]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel)
+[xUnit.net 00:00:00.22]            at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.23]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 failed with 5 error(s) (0.8s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: GdpTotal, expectedLabel: "GDP (Total USD)") (22ms): Error Message: Shouldly.ShouldAssertException : label
+          should be
+      "GDP (Total USD)"
+          but was
+      "GDP (Total)"
+          difference
+      Difference     |                                                    |    |    |    |    |   
+                     |                                                   \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   
+      Expected Value | G    D    P    \s   (    T    o    t    a    l    \s   U    S    D    )    
+      Actual Value   | G    D    P    \s   (    T    o    t    a    l    )                        
+      Expected Code  | 71   68   80   32   40   84   111  116  97   108  32   85   83   68   41   
+      Actual Code    | 71   68   80   32   40   84   111  116  97   108  41                       
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel) in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplicati
+      on.Core.Tests/QuestionTypeTests.cs:line 21
+         at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+         at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: LifeExpectancy, expectedLabel: "Life Expectancy (years)") (10ms): Error Message: Shouldly.ShouldAssertException :
+       label
+          should be
+      "Life Expectancy (years)"
+          but was
+      "Life Expectancy"
+          difference
+      Difference     |                                                                        |    |    |    |    |    |    |    |   
+                     |                                                                       \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | ...  2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   
+      Expected Value | ...  f    e    \s   E    x    p    e    c    t    a    n    c    y    \s   (    y    e    a    r    s    )    
+      Actual Value   | ...  f    e    \s   E    x    p    e    c    t    a    n    c    y                                            
+      Expected Code  | ...  102  101  32   69   120  112  101  99   116  97   110  99   121  32   40   121  101  97   114  115  41   
+      Actual Code    | ...  102  101  32   69   120  112  101  99   116  97   110  99   121                                          
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel) in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplicati
+      on.Core.Tests/QuestionTypeTests.cs:line 21
+         at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+         at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: GdpPerCapita, expectedLabel: "GDP per Capita (USD)") (< 1ms): Error Message: Shouldly.ShouldAssertException : lab
+      el
+          should be
+      "GDP per Capita (USD)"
+          but was
+      "GDP per Capita"
+          difference
+      Difference     |                                                                        |    |    |    |    |    |   
+                     |                                                                       \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   
+      Expected Value | G    D    P    \s   p    e    r    \s   C    a    p    i    t    a    \s   (    U    S    D    )    
+      Actual Value   | G    D    P    \s   p    e    r    \s   C    a    p    i    t    a                                  
+      Expected Code  | 71   68   80   32   112  101  114  32   67   97   112  105  116  97   32   40   85   83   68   41   
+      Actual Code    | 71   68   80   32   112  101  114  32   67   97   112  105  116  97                                 
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel) in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplicati
+      on.Core.Tests/QuestionTypeTests.cs:line 21
+         at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+         at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: PopulationDensity, expectedLabel: "Population Density (per km²)") (< 1ms): Error Message: Shouldly.ShouldAssertEx
+      ception : label
+          should be
+      "Population Density (per km²)"
+          but was
+      "Population Density"
+          difference
+      Difference     |                                                              |    |    |    |    |    |    |    |    |    |   
+                     |                                                             \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  \|/  
+      Index          | ...  7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   
+      Expected Value | ...  i    o    n    \s   D    e    n    s    i    t    y    \s   (    p    e    r    \s   k    m    ²    )    
+      Actual Value   | ...  i    o    n    \s   D    e    n    s    i    t    y                                                      
+      Expected Code  | ...  105  111  110  32   68   101  110  115  105  116  121  32   40   112  101  114  32   107  109  178  41   
+      Actual Code    | ...  105  111  110  32   68   101  110  115  105  116  121                                                    
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel) in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplicati
+      on.Core.Tests/QuestionTypeTests.cs:line 21
+         at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+         at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(21): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(questionType: LiteracyRate, expectedLabel: "Literacy Rate (%)") (< 1ms): Error Message: Shouldly.ShouldAssertException : label
+          should be
+      "Literacy Rate (%)"
+          but was
+      "Literacy Rate"
+          difference
+      Difference     |                                                                   |    |    |    |   
+                     |                                                                  \|/  \|/  \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   
+      Expected Value | L    i    t    e    r    a    c    y    \s   R    a    t    e    \s   (    %    )    
+      Actual Value   | L    i    t    e    r    a    c    y    \s   R    a    t    e                        
+      Expected Code  | 76   105  116  101  114  97   99   121  32   82   97   116  101  32   40   37   41   
+      Actual Code    | 76   105  116  101  114  97   99   121  32   82   97   116  101                      
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.GetLabel_ReturnsCorrectLabel(QuestionType questionType, String expectedLabel) in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplicati
+      on.Core.Tests/QuestionTypeTests.cs:line 21
+         at InvokeStub_QuestionTypeTests.GetLabel_ReturnsCorrectLabel(Object, Span`1)
+         at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.72]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+
+Test summary: total: 28, failed: 5, succeeded: 23, skipped: 0, duration: 1.5s
+Build failed with 5 error(s) in 3.0s
+
+real	0m3.115s
+user	0m2.432s
+sys	0m0.475s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-test-failures.sh 
+==============================================
+  Fixing Test Failures: QuestionType Labels
+==============================================
+[1/4] Cleaning up stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+[2/4] Fixing QuestionType.cs GetLabel() extension method...
+    ✓ QuestionType.cs updated with correct labels
+[3/4] Building solution...
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.3s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 203.0s
+
+real	3m23.533s
+user	0m4.178s
+sys	0m0.936s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 73 files to export
+
+Processing (1/73): add-migration.sh
+Processing (2/73): Directory.Build.props
+Processing (3/73): Directory.Packages.props
+Processing (4/73): export.sh
+Processing (5/73): fix-all-errors.sh
+Processing (6/73): fix-android-hang.sh
+Processing (7/73): fix-entitybase-inheritance.sh
+Processing (8/73): fix-project-properly.sh
+Processing (9/73): fix-saveasync-implementation.sh
+Processing (10/73): fix-test-failures.sh
+Processing (11/73): .gitattributes
+Processing (12/73): .github/dependabot.yml
+Processing (13/73): .github/workflows/build.yml
+Processing (14/73): .github/workflows/ci.yml
+Processing (15/73): .github/workflows/release.yml
+Processing (16/73): .gitignore
+Processing (17/73): migrate.sh
+Processing (18/73): MyDesktopApplication.slnx
+Processing (19/73): README.md
+Processing (20/73): repair-project.sh
+Processing (21/73): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (22/73): src/MyDesktopApplication.Android/App.axaml
+Processing (23/73): src/MyDesktopApplication.Android/App.cs
+Processing (24/73): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (25/73): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (26/73): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (27/73): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (28/73): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (29/73): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (30/73): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (31/73): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (32/73): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (33/73): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (34/73): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (35/73): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (36/73): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (37/73): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (38/73): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (39/73): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (40/73): src/MyDesktopApplication.Desktop/App.axaml
+Processing (41/73): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (42/73): src/MyDesktopApplication.Desktop/app.manifest
+Processing (43/73): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (44/73): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (45/73): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (46/73): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (47/73): src/MyDesktopApplication.Desktop/Program.cs
+Processing (48/73): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (49/73): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (50/73): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (51/73): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (52/73): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (53/73): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (54/73): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (55/73): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (56/73): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (57/73): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (58/73): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (59/73): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (60/73): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (61/73): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (62/73): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (63/73): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (64/73): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (65/73): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (66/73): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (67/73): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (68/73): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (69/73): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (70/73): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (71/73): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (72/73): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (73/73): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 73
+Files skipped:  0
+Output size:    442.63 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.716s
+user	0m0.418s
+sys	0m0.455s
+
+Build succeeded in 0.9s
+
+real	0m1.008s
+user	0m0.832s
+sys	0m0.229s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.826s
+user	0m0.946s
+sys	0m0.178s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 95.7s
+
+real	1m35.876s
+user	0m4.250s
+sys	0m0.786s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.23]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.73]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
+Build succeeded in 3.0s
+
+real	0m3.108s
+user	0m2.053s
+sys	0m0.525s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash apply-android-fixes.sh 
+==============================================
+  Applying Android Build Fixes
+==============================================
+
+[1/6] Killing stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+  ✓ Done
+
+[2/6] Cleaning build artifacts...
+  ✓ Done
+
+[3/6] Updating Directory.Build.props...
+  ✓ Done
+
+[4/6] Updating Android project...
+  ✓ Done
+
+[5/6] Updating GitHub Actions workflow...
+  ✓ Done
+
+[6/6] Building solution...
+Using Java: /usr/lib/jvm/java-21-openjdk
+Restore complete (1.3s)
+
+Build succeeded in 1.5s
+
+Building with aapt2 daemon disabled...
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded with 2 warning(s) (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(6,7): warning CS1570: XML comment has badly formed XML -- 'End tag 'summary' does not match the start tag 'T'.'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(7,1): warning CS1570: XML comment has badly formed XML -- 'Expected an end tag for element 'summary'.'
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android                                               _CompileResources (286.9s)
+^C[3~                                                                                                          (288.4s)
+                                                                                                               (291.0s)
+^C                                                                                                             (296.4s)
+
+==============================================
+  Build timed out - retrying with manual cleanup...
+==============================================
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android                                                 _CompileResources (4.8s)
+Attempting to cancel the build...
+
+Build failed in 243.3s
+
+real	9m8.587s
+user	0m16.170s
+sys	0m3.170s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 74 files to export
+
+Processing (1/74): add-migration.sh
+Processing (2/74): apply-android-fixes.sh
+Processing (3/74): Directory.Build.props
+Processing (4/74): Directory.Packages.props
+Processing (5/74): export.sh
+Processing (6/74): fix-all-errors.sh
+Processing (7/74): fix-android-hang.sh
+Processing (8/74): fix-entitybase-inheritance.sh
+Processing (9/74): fix-project-properly.sh
+Processing (10/74): fix-saveasync-implementation.sh
+Processing (11/74): fix-test-failures.sh
+Processing (12/74): .gitattributes
+Processing (13/74): .github/dependabot.yml
+Processing (14/74): .github/workflows/build.yml
+Processing (15/74): .github/workflows/ci.yml
+Processing (16/74): .github/workflows/release.yml
+Processing (17/74): .gitignore
+Processing (18/74): migrate.sh
+Processing (19/74): MyDesktopApplication.slnx
+Processing (20/74): README.md
+Processing (21/74): repair-project.sh
+Processing (22/74): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (23/74): src/MyDesktopApplication.Android/App.axaml
+Processing (24/74): src/MyDesktopApplication.Android/App.cs
+Processing (25/74): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (26/74): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (27/74): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (28/74): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (29/74): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (30/74): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (31/74): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (32/74): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (33/74): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (34/74): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (35/74): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (36/74): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (37/74): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (38/74): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/74): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/74): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/74): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/74): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/74): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/74): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/74): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/74): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (47/74): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (48/74): src/MyDesktopApplication.Desktop/Program.cs
+Processing (49/74): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (50/74): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (51/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (52/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (53/74): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (54/74): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (55/74): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (56/74): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (57/74): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (58/74): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (59/74): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (60/74): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (61/74): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (62/74): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (63/74): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (64/74): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (65/74): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (66/74): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (67/74): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (68/74): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (69/74): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (70/74): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (71/74): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (72/74): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (73/74): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (74/74): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 74
+Files skipped:  0
+Output size:    449.11 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.728s
+user	0m0.434s
+sys	0m0.454s
+
+Build succeeded in 0.9s
+
+real	0m1.036s
+user	0m0.861s
+sys	0m0.218s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.842s
+user	0m0.952s
+sys	0m0.188s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded with 2 warning(s) (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(6,7): warning CS1570: XML comment has badly formed XML -- 'End tag 'summary' does not match the start tag 'T'.'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/GameState.cs(7,1): warning CS1570: XML comment has badly formed XML -- 'Expected an end tag for element 'summary'.'
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed with 2 warning(s) in 108.1s
+
+real	1m48.232s
+user	0m4.197s
+sys	0m0.742s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.72]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
+Build succeeded in 2.9s
+
+real	0m3.091s
+user	0m2.193s
+sys	0m0.489s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -9 -f aapt2
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ pkill -9 -f dotnet
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet build -p:AndroidUseAapt2Daemon=false -p:_Aapt2DaemonMaxInstanceCount=1 
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 183.1s
+
+real	3m3.205s
+user	0m9.787s
+sys	0m1.413s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet format
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet format
+
+real	0m7.823s
+user	0m12.218s
+sys	0m1.135s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 74 files to export
+
+Processing (1/74): add-migration.sh
+Processing (2/74): apply-android-fixes.sh
+Processing (3/74): Directory.Build.props
+Processing (4/74): Directory.Packages.props
+Processing (5/74): export.sh
+Processing (6/74): fix-all-errors.sh
+Processing (7/74): fix-android-hang.sh
+Processing (8/74): fix-entitybase-inheritance.sh
+Processing (9/74): fix-project-properly.sh
+Processing (10/74): fix-saveasync-implementation.sh
+Processing (11/74): fix-test-failures.sh
+Processing (12/74): .gitattributes
+Processing (13/74): .github/dependabot.yml
+Processing (14/74): .github/workflows/build.yml
+Processing (15/74): .github/workflows/ci.yml
+Processing (16/74): .github/workflows/release.yml
+Processing (17/74): .gitignore
+Processing (18/74): migrate.sh
+Processing (19/74): MyDesktopApplication.slnx
+Processing (20/74): README.md
+Processing (21/74): repair-project.sh
+Processing (22/74): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (23/74): src/MyDesktopApplication.Android/App.axaml
+Processing (24/74): src/MyDesktopApplication.Android/App.cs
+Processing (25/74): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (26/74): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (27/74): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (28/74): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (29/74): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (30/74): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (31/74): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (32/74): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (33/74): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (34/74): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (35/74): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (36/74): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (37/74): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (38/74): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (39/74): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (40/74): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (41/74): src/MyDesktopApplication.Desktop/App.axaml
+Processing (42/74): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (43/74): src/MyDesktopApplication.Desktop/app.manifest
+Processing (44/74): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (45/74): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (46/74): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (47/74): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (48/74): src/MyDesktopApplication.Desktop/Program.cs
+Processing (49/74): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (50/74): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (51/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (52/74): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (53/74): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (54/74): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (55/74): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (56/74): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (57/74): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (58/74): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (59/74): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (60/74): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (61/74): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (62/74): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (63/74): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (64/74): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (65/74): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (66/74): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (67/74): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (68/74): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (69/74): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (70/74): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (71/74): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (72/74): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (73/74): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (74/74): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 74
+Files skipped:  0
+Output size:    448.39 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.715s
+user	0m0.448s
+sys	0m0.428s
+
+Build succeeded in 0.6s
+
+real	0m0.707s
+user	0m0.796s
+sys	0m0.173s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.832s
+user	0m0.981s
+sys	0m0.189s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.3s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+Attempting to cancel the build...
+
+Build failed in 64.4s
+
+real	1m4.607s
+user	0m4.245s
+sys	0m0.808s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.17]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.69]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.6s
+Build succeeded in 3.0s
+
+real	0m3.131s
+user	0m2.130s
+sys	0m0.497s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

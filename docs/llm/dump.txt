@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 10:16:17 PM CST 2025
+Generated: Sun Dec 21 10:59:47 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3306,8 +3306,8 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build.yml
-SIZE: 4.89 KB
-MODIFIED: 2025-12-21 15:35:39
+SIZE: 4.91 KB
+MODIFIED: 2025-12-21 22:35:14
 ================================================================================
 
 name: Build
@@ -3343,7 +3343,7 @@ jobs:
           - os: macos-latest
             rid: osx-arm64
             artifact: osx-arm64
-          - os: macos-13
+          - os: macos-latest
             rid: osx-x64
             artifact: osx-x64
             
@@ -3368,6 +3368,7 @@ jobs:
         run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
         
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
             -c Release \
@@ -4842,8 +4843,8 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.cs
-SIZE: 1.45 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: 1.39 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Avalonia;
@@ -4860,36 +4861,36 @@ namespace MyDesktopApplication.Android;
 public class App : Avalonia.Application
 {
     private IServiceProvider? _services;
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     public override async void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
-        
+
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "countryquiz.db");
-        
+
         services.AddInfrastructure(dbPath);
         services.AddTransient<CountryQuizViewModel>();
-        
+
         _services = services.BuildServiceProvider();
-        
+
         await DependencyInjection.InitializeDatabaseAsync(_services);
-        
+
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
         {
             var vm = _services.GetRequiredService<CountryQuizViewModel>();
             var mainView = new MainView { DataContext = vm };
             singleViewLifetime.MainView = mainView;
-            
+
             _ = vm.InitializeAsync();
         }
-        
+
         base.OnFrameworkInitializationCompleted();
     }
 }
@@ -5164,8 +5165,8 @@ public partial class MainView : UserControl
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/Country.cs
-SIZE: 1.27 KB
-MODIFIED: 2025-12-21 21:15:24
+SIZE: 1.26 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
@@ -5199,7 +5200,7 @@ public class Country
     {
         if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
             return "🏳️";
-        
+
         var c1 = char.ToUpperInvariant(Iso2[0]);
         var c2 = char.ToUpperInvariant(Iso2[1]);
         var ri1 = 0x1F1E6 + (c1 - 'A');
@@ -5231,14 +5232,14 @@ public abstract class EntityBase
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/GameState.cs
 SIZE: 1.55 KB
-MODIFIED: 2025-12-21 20:46:56
+MODIFIED: 2025-12-21 22:56:19
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
 /// Stores game state for the Country Quiz game.
-/// Inherits from EntityBase to work with IRepository<T> constraint.
+/// Inherits from EntityBase to work with IRepository T constraint.
 /// </summary>
 public class GameState : EntityBase
 {
@@ -5393,8 +5394,8 @@ public static class QuestionTypeExtensions
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/TodoItem.cs
-SIZE: .55 KB
-MODIFIED: 2025-12-21 20:28:59
+SIZE: .54 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
@@ -5407,13 +5408,13 @@ public class TodoItem : EntityBase
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
     public DateTime? DueDate { get; set; }
-    
+
     public void MarkComplete()
     {
         IsCompleted = true;
         CompletedAt = DateTime.UtcNow;
     }
-    
+
     public void MarkIncomplete()
     {
         IsCompleted = false;
@@ -5520,8 +5521,8 @@ MODIFIED: 2025-12-20 01:51:45
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.15 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: 1.11 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Avalonia;
@@ -5537,28 +5538,28 @@ namespace MyDesktopApplication.Desktop;
 public partial class App : Avalonia.Application
 {
     private IServiceProvider? _services;
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     public override async void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
         services.AddInfrastructure();
         services.AddTransient<MainWindowViewModel>();
-        
+
         _services = services.BuildServiceProvider();
-        
+
         await DependencyInjection.InitializeDatabaseAsync(_services);
-        
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var vm = _services.GetRequiredService<MainWindowViewModel>();
             desktop.MainWindow = new MainWindow { DataContext = vm };
         }
-        
+
         base.OnFrameworkInitializationCompleted();
     }
 }
@@ -5922,8 +5923,8 @@ sealed class Program
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 7.51 KB
-MODIFIED: 2025-12-21 20:42:05
+SIZE: 7.33 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -5944,7 +5945,7 @@ public partial class MainWindowViewModel : ViewModelBase
     // =========================================================================
     // Observable Properties (backing fields auto-generated by CommunityToolkit)
     // =========================================================================
-    
+
     [ObservableProperty] private string _greeting = "Welcome to Country Quiz!";
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _highScore;
@@ -5954,23 +5955,23 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _feedbackMessage = "";
     [ObservableProperty] private bool _showFeedback;
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
-    
+
     // The two countries being compared
     [ObservableProperty] private Country? _country1;
     [ObservableProperty] private Country? _country2;
-    
+
     // Has the user answered the current question?
     [ObservableProperty] private bool _hasAnswered;
-    
+
     // Result message after answering
     [ObservableProperty] private string _resultMessage = "";
-    
+
     // Visual feedback for correct/wrong answers
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
-    
+
     // Formatted values shown after answering
     [ObservableProperty] private string _country1Value = "";
     [ObservableProperty] private string _country2Value = "";
@@ -5978,28 +5979,28 @@ public partial class MainWindowViewModel : ViewModelBase
     // =========================================================================
     // Computed Properties for UI Binding
     // =========================================================================
-    
+
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
-    public string AccuracyText => _gameState.TotalAnswered > 0 
-        ? $"Accuracy: {_gameState.AccuracyPercentage:F1}%" 
+    public string AccuracyText => _gameState.TotalAnswered > 0
+        ? $"Accuracy: {_gameState.AccuracyPercentage:F1}%"
         : "Accuracy: --";
-    
+
     // Question type dropdown options
-    public ObservableCollection<QuestionType> QuestionTypes { get; } = 
+    public ObservableCollection<QuestionType> QuestionTypes { get; } =
         new(Enum.GetValues<QuestionType>());
 
     // =========================================================================
     // Constructors
     // =========================================================================
-    
-    public MainWindowViewModel() 
+
+    public MainWindowViewModel()
     {
         // Design-time / parameterless constructor
         GenerateNewQuestion();
     }
-    
+
     public MainWindowViewModel(IGameStateRepository gameStateRepository)
     {
         _gameStateRepository = gameStateRepository;
@@ -6008,7 +6009,7 @@ public partial class MainWindowViewModel : ViewModelBase
     // =========================================================================
     // Initialization
     // =========================================================================
-    
+
     public async Task InitializeAsync()
     {
         if (_gameStateRepository != null)
@@ -6018,14 +6019,14 @@ public partial class MainWindowViewModel : ViewModelBase
         }
         GenerateNewQuestion();
     }
-    
+
     private void UpdateScoresFromGameState()
     {
         CurrentScore = _gameState.CurrentScore;
         HighScore = _gameState.HighScore;
         CurrentStreak = _gameState.CurrentStreak;
         BestStreak = _gameState.BestStreak;
-        
+
         OnPropertyChanged(nameof(ScoreText));
         OnPropertyChanged(nameof(StreakText));
         OnPropertyChanged(nameof(BestStreakText));
@@ -6035,12 +6036,12 @@ public partial class MainWindowViewModel : ViewModelBase
     // =========================================================================
     // Commands
     // =========================================================================
-    
+
     [RelayCommand]
     private void GenerateNewQuestion()
     {
         var countries = CountryData.GetAllCountries();
-        
+
         var indices = Enumerable.Range(0, countries.Count)
             .OrderBy(_ => _random.Next())
             .Take(2)
@@ -6048,9 +6049,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
         Country1 = countries[indices[0]];
         Country2 = countries[indices[1]];
-        
+
         QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
-        
+
         // Reset answer state
         HasAnswered = false;
         ResultMessage = "";
@@ -6061,34 +6062,34 @@ public partial class MainWindowViewModel : ViewModelBase
         Country1Value = "";
         Country2Value = "";
     }
-    
+
     [RelayCommand]
     private async Task SelectCountry(string countryParam)
     {
         if (Country1 == null || Country2 == null || HasAnswered) return;
 
         bool selectedCountry1 = countryParam == "1";
-        
+
         var val1 = SelectedQuestionType.GetValue(Country1);
         var val2 = SelectedQuestionType.GetValue(Country2);
-        
+
         bool country1IsHigher = val1 >= val2;
         bool isCorrect = selectedCountry1 == country1IsHigher;
-        
+
         // Record the answer
         _gameState.RecordAnswer(isCorrect);
         UpdateScoresFromGameState();
-        
+
         if (_gameStateRepository != null)
         {
             await _gameStateRepository.UpdateAsync(_gameState);
         }
-        
+
         // Update UI state
         HasAnswered = true;
         Country1Value = SelectedQuestionType.FormatValue(val1);
         Country2Value = SelectedQuestionType.FormatValue(val2);
-        
+
         // Set visual feedback
         if (country1IsHigher)
         {
@@ -6100,37 +6101,37 @@ public partial class MainWindowViewModel : ViewModelBase
             IsCountry2Correct = true;
             IsCountry1Wrong = !isCorrect && selectedCountry1;
         }
-        
+
         // Set result message
-        ResultMessage = isCorrect 
-            ? GetCorrectMessage() 
+        ResultMessage = isCorrect
+            ? GetCorrectMessage()
             : GetIncorrectMessage();
     }
-    
+
     [RelayCommand]
     private void NextRound()
     {
         GenerateNewQuestion();
     }
-    
+
     [RelayCommand]
     private async Task ResetGame()
     {
         _gameState.Reset();
         UpdateScoresFromGameState();
-        
+
         if (_gameStateRepository != null)
         {
             await _gameStateRepository.UpdateAsync(_gameState);
         }
-        
+
         GenerateNewQuestion();
     }
 
     // =========================================================================
     // Helper Methods
     // =========================================================================
-    
+
     private string GetCorrectMessage()
     {
         if (CurrentStreak >= 10) return "🔥 UNSTOPPABLE! 10+ streak!";
@@ -6139,7 +6140,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (CurrentScore > _gameState.HighScore - 1) return "🏆 NEW HIGH SCORE!";
         return "✅ Correct!";
     }
-    
+
     private string GetIncorrectMessage()
     {
         if (CurrentStreak == 0 && _gameState.TotalAnswered > 5)
@@ -6151,8 +6152,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-SIZE: .27 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: .26 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6163,7 +6164,7 @@ public abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
     private bool _isBusy;
-    
+
     [ObservableProperty]
     private string? _errorMessage;
 }
@@ -6411,8 +6412,8 @@ MODIFIED: 2025-12-21 12:33:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-SIZE: .43 KB
-MODIFIED: 2025-12-21 18:15:44
+SIZE: .42 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Avalonia.Controls;
@@ -6424,7 +6425,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        
+
         // Initialize the ViewModel when the window loads
         Loaded += async (_, _) =>
         {
@@ -6439,8 +6440,8 @@ public partial class MainWindow : Window
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-SIZE: 1.61 KB
-MODIFIED: 2025-12-21 18:50:50
+SIZE: 1.57 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -6456,21 +6457,21 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-    
+
     // For EF migrations design-time support
     public AppDbContext() : base(new DbContextOptionsBuilder<AppDbContext>()
         .UseSqlite("Data Source=app.db")
         .Options)
     {
     }
-    
+
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<GameState> GameStates => Set<GameState>();
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         // TodoItem configuration
         modelBuilder.Entity<TodoItem>(entity =>
         {
@@ -6480,14 +6481,14 @@ public class AppDbContext : DbContext
             entity.HasIndex(e => e.IsCompleted);
             entity.HasIndex(e => e.DueDate);
         });
-        
+
         // GameState configuration
         modelBuilder.Entity<GameState>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.UserId).IsRequired().HasMaxLength(100);
             entity.HasIndex(e => e.UserId).IsUnique();
-            
+
             // Store the enum as string for readability
             entity.Property(e => e.SelectedQuestionType)
                 .HasConversion<string?>()
@@ -6499,8 +6500,8 @@ public class AppDbContext : DbContext
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-SIZE: 1.14 KB
-MODIFIED: 2025-12-21 15:00:14
+SIZE: 1.11 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -6518,19 +6519,19 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        
+
         // Use SQLite for migrations - this creates the migration files
         // The actual connection string at runtime comes from DI
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "MyDesktopApplication",
             "app.db");
-        
+
         // Ensure directory exists
         Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-        
+
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
-        
+
         return new AppDbContext(optionsBuilder.Options);
     }
 }
@@ -6538,8 +6539,8 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-SIZE: 1.33 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: 1.29 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -6558,21 +6559,21 @@ public static class DependencyInjection
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "CountryQuiz",
             "countryquiz.db");
-        
+
         var directory = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }
-        
+
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={path}"));
-        
+
         services.AddScoped<IGameStateRepository, GameStateRepository>();
-        
+
         return services;
     }
-    
+
     public static async Task InitializeDatabaseAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
@@ -6845,8 +6846,8 @@ public static class CountryData
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-SIZE: 2.71 KB
-MODIFIED: 2025-12-21 12:33:54
+SIZE: 2.67 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 namespace MyDesktopApplication.Shared.Data;
@@ -6857,7 +6858,7 @@ namespace MyDesktopApplication.Shared.Data;
 public static class MotivationalMessages
 {
     private static readonly Random _random = new();
-    
+
     private static readonly string[] CorrectMessages =
     [
         "🎉 Correct! You're on fire!",
@@ -6869,7 +6870,7 @@ public static class MotivationalMessages
         "📚 Well studied!",
         "🌍 World expert in the making!"
     ];
-    
+
     private static readonly string[] IncorrectMessages =
     [
         "Not quite, but you're learning!",
@@ -6881,7 +6882,7 @@ public static class MotivationalMessages
         "That's a tricky one!",
         "You'll get the next one!"
     ];
-    
+
     private static readonly string[] StreakMessages =
     [
         "🔥 {0} in a row!",
@@ -6889,14 +6890,14 @@ public static class MotivationalMessages
         "🔥 {0} consecutive! You're unstoppable!",
         "🔥 {0} correct answers! Amazing run!"
     ];
-    
+
     private static readonly string[] NewBestMessages =
     [
         "🏆 NEW PERSONAL BEST! {0} streak!",
         "⭐ NEW RECORD! {0} in a row!",
         "🎊 PERSONAL BEST! {0} streak!"
     ];
-    
+
     private static readonly string[] ResetMessages =
     [
         "Fresh start! Good luck! 🍀",
@@ -6904,29 +6905,29 @@ public static class MotivationalMessages
         "Let's see what you've got! 🌟",
         "New game, new opportunities! 🎯"
     ];
-    
-    public static string GetCorrectMessage() => 
+
+    public static string GetCorrectMessage() =>
         CorrectMessages[_random.Next(CorrectMessages.Length)];
-    
-    public static string GetIncorrectMessage() => 
+
+    public static string GetIncorrectMessage() =>
         IncorrectMessages[_random.Next(IncorrectMessages.Length)];
-    
+
     public static string GetStreakMessage(int streak)
     {
         if (streak < 3) return string.Empty;
         var template = StreakMessages[_random.Next(StreakMessages.Length)];
         return string.Format(template, streak);
     }
-    
+
     public static string GetNewBestMessage(int streak)
     {
         var template = NewBestMessages[_random.Next(NewBestMessages.Length)];
         return string.Format(template, streak);
     }
-    
-    public static string GetResetMessage() => 
+
+    public static string GetResetMessage() =>
         ResetMessages[_random.Next(ResetMessages.Length)];
-    
+
     public static string GetAccuracyComment(double accuracy) => accuracy switch
     {
         >= 90 => "🏅 Geography genius!",
@@ -6998,8 +6999,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 5.29 KB
-MODIFIED: 2025-12-21 21:15:24
+SIZE: 5.27 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -7043,19 +7044,19 @@ public partial class CountryQuizViewModel : ViewModelBase
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
-    public string AccuracyText => TotalQuestions > 0 
-        ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%" 
+    public string AccuracyText => TotalQuestions > 0
+        ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
 
     public CountryQuizViewModel()
     {
         _countries = CountryData.GetAllCountries().ToList();
-        
+
         foreach (QuestionType qt in Enum.GetValues<QuestionType>())
         {
             QuestionTypes.Add(qt);
         }
-        
+
         GenerateNewQuestion();
     }
 
@@ -7070,7 +7071,7 @@ public partial class CountryQuizViewModel : ViewModelBase
 
         var value1 = SelectedQuestionType.GetValue(_country1);
         var value2 = SelectedQuestionType.GetValue(_country2);
-        
+
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
 
@@ -7260,8 +7261,8 @@ public partial class MainViewModel : ViewModelBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-SIZE: 2.05 KB
-MODIFIED: 2025-12-21 20:28:59
+SIZE: 2.01 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -7275,13 +7276,13 @@ public abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
     private bool _isBusy;
-    
+
     [ObservableProperty]
     private string? _errorMessage;
-    
+
     [ObservableProperty]
     private bool _hasError;
-    
+
     /// <summary>
     /// Sets an error message and marks HasError as true
     /// </summary>
@@ -7290,7 +7291,7 @@ public abstract partial class ViewModelBase : ObservableObject
         ErrorMessage = message;
         HasError = true;
     }
-    
+
     /// <summary>
     /// Clears the error message and marks HasError as false
     /// </summary>
@@ -7299,14 +7300,14 @@ public abstract partial class ViewModelBase : ObservableObject
         ErrorMessage = null;
         HasError = false;
     }
-    
+
     /// <summary>
     /// Executes an async operation with busy state management and error handling
     /// </summary>
     protected async Task ExecuteAsync(Func<Task> operation, string? errorContext = null)
     {
         if (IsBusy) return;
-        
+
         try
         {
             IsBusy = true;
@@ -7315,8 +7316,8 @@ public abstract partial class ViewModelBase : ObservableObject
         }
         catch (Exception ex)
         {
-            SetError(errorContext != null 
-                ? $"{errorContext}: {ex.Message}" 
+            SetError(errorContext != null
+                ? $"{errorContext}: {ex.Message}"
                 : ex.Message);
         }
         finally
@@ -7324,14 +7325,14 @@ public abstract partial class ViewModelBase : ObservableObject
             IsBusy = false;
         }
     }
-    
+
     /// <summary>
     /// Executes an async operation that returns a result
     /// </summary>
     protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> operation, string? errorContext = null)
     {
         if (IsBusy) return default;
-        
+
         try
         {
             IsBusy = true;
@@ -7340,8 +7341,8 @@ public abstract partial class ViewModelBase : ObservableObject
         }
         catch (Exception ex)
         {
-            SetError(errorContext != null 
-                ? $"{errorContext}: {ex.Message}" 
+            SetError(errorContext != null
+                ? $"{errorContext}: {ex.Message}"
                 : ex.Message);
             return default;
         }
@@ -7355,8 +7356,8 @@ public abstract partial class ViewModelBase : ObservableObject
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-SIZE: 2.16 KB
-MODIFIED: 2025-12-21 19:29:49
+SIZE: 2.09 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -7378,35 +7379,35 @@ public class GameStateTests
         state.TotalCorrect.ShouldBe(0);
         state.TotalAnswered.ShouldBe(0);
     }
-    
+
     [Fact]
     public void RecordAnswer_CorrectAnswer_IncrementsScore()
     {
         var state = new GameState();
         state.RecordAnswer(true);
-        
+
         state.CurrentScore.ShouldBe(1);
         state.HighScore.ShouldBe(1);
         state.CurrentStreak.ShouldBe(1);
         state.TotalCorrect.ShouldBe(1);
         state.TotalAnswered.ShouldBe(1);
     }
-    
+
     [Fact]
     public void RecordAnswer_WrongAnswer_ResetsStreak()
     {
         var state = new GameState();
         state.RecordAnswer(true);
         state.RecordAnswer(true);
-        
+
         state.RecordAnswer(false);
-        
+
         state.CurrentScore.ShouldBe(2);
         state.HighScore.ShouldBe(2);
         state.CurrentStreak.ShouldBe(0);
         state.BestStreak.ShouldBe(2);
     }
-    
+
     [Fact]
     public void Reset_KeepsHighScoreAndBestStreak()
     {
@@ -7414,15 +7415,15 @@ public class GameStateTests
         state.RecordAnswer(true);
         state.RecordAnswer(true);
         state.RecordAnswer(true);
-        
+
         state.Reset();
-        
+
         state.CurrentScore.ShouldBe(0);
         state.HighScore.ShouldBe(3);
         state.CurrentStreak.ShouldBe(0);
         state.BestStreak.ShouldBe(3);
     }
-    
+
     [Fact]
     public void Accuracy_CalculatedCorrectly()
     {
@@ -7431,10 +7432,10 @@ public class GameStateTests
         state.RecordAnswer(true);
         state.RecordAnswer(false);
         state.RecordAnswer(true);
-        
+
         // 3 correct out of 4 = 0.75 accuracy
         state.Accuracy.ShouldBe(0.75, tolerance: 0.01);
-        
+
         // AccuracyPercentage returns double (75.0), not string "75%"
         // Fix: Compare as double
         state.AccuracyPercentage.ShouldBe(75.0, tolerance: 0.1);
@@ -7550,8 +7551,8 @@ public class QuestionTypeTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-SIZE: .90 KB
-MODIFIED: 2025-12-21 17:58:28
+SIZE: .86 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -7566,7 +7567,7 @@ public class TodoItemTests
     public void NewTodoItem_ShouldBeIncomplete()
     {
         var todo = new TodoItem { Title = "Test" };
-        
+
         todo.IsCompleted.ShouldBeFalse();
         todo.CompletedAt.ShouldBeNull();
     }
@@ -7575,9 +7576,9 @@ public class TodoItemTests
     public void MarkComplete_ShouldSetCompletedAtAndIsCompleted()
     {
         var todo = new TodoItem { Title = "Test" };
-        
+
         todo.MarkComplete();
-        
+
         todo.IsCompleted.ShouldBeTrue();
         todo.CompletedAt.ShouldNotBeNull();
     }
@@ -7587,9 +7588,9 @@ public class TodoItemTests
     {
         var todo = new TodoItem { Title = "Test" };
         todo.MarkComplete();
-        
+
         todo.MarkIncomplete();
-        
+
         todo.IsCompleted.ShouldBeFalse();
         todo.CompletedAt.ShouldBeNull();
     }
@@ -7636,8 +7637,8 @@ MODIFIED: 2025-12-21 17:58:28
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-SIZE: 2.17 KB
-MODIFIED: 2025-12-21 18:15:44
+SIZE: 2.09 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -7653,56 +7654,56 @@ public class TodoRepositoryTests : IDisposable
 {
     private readonly AppDbContext _context;
     private readonly TodoRepository _repository;
-    
+
     public TodoRepositoryTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
-        
+
         _context = new AppDbContext(options);
         _repository = new TodoRepository(_context);
     }
-    
+
     public void Dispose()
     {
         _context.Dispose();
     }
-    
+
     [Fact]
     public async Task AddAsync_AddsTodoItem()
     {
         var todo = new TodoItem { Title = "Test Todo" };
-        
+
         var result = await _repository.AddAsync(todo);
-        
+
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(Guid.Empty);
         result.Title.ShouldBe("Test Todo");
     }
-    
+
     [Fact]
     public async Task GetCompletedAsync_ReturnsOnlyCompletedItems()
     {
         await _repository.AddAsync(new TodoItem { Title = "Todo 1", IsCompleted = true });
         await _repository.AddAsync(new TodoItem { Title = "Todo 2", IsCompleted = false });
         await _repository.AddAsync(new TodoItem { Title = "Todo 3", IsCompleted = true });
-        
+
         var completed = await _repository.GetCompletedAsync();
-        
+
         completed.Count.ShouldBe(2);
         completed.All(t => t.IsCompleted).ShouldBeTrue();
     }
-    
+
     [Fact]
     public async Task GetIncompleteAsync_ReturnsOnlyIncompleteItems()
     {
         await _repository.AddAsync(new TodoItem { Title = "Todo 1", IsCompleted = true });
         await _repository.AddAsync(new TodoItem { Title = "Todo 2", IsCompleted = false });
         await _repository.AddAsync(new TodoItem { Title = "Todo 3", IsCompleted = false });
-        
+
         var incomplete = await _repository.GetIncompleteAsync();
-        
+
         incomplete.Count.ShouldBe(2);
         incomplete.All(t => !t.IsCompleted).ShouldBeTrue();
     }
@@ -7711,8 +7712,8 @@ public class TodoRepositoryTests : IDisposable
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-SIZE: 2.17 KB
-MODIFIED: 2025-12-21 20:42:05
+SIZE: 2.13 KB
+MODIFIED: 2025-12-21 22:48:06
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -7728,7 +7729,7 @@ public class MainWindowViewModelTests
     public void NewViewModel_ShouldHaveInitialState()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
         vm.CurrentStreak.ShouldBe(0);
@@ -7740,7 +7741,7 @@ public class MainWindowViewModelTests
     public void QuestionTypes_ShouldContainAllTypes()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
@@ -7756,7 +7757,7 @@ public class MainWindowViewModelTests
     public void GenerateNewQuestion_ShouldSetCountries()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.GenerateNewQuestionCommand.Execute(null);
 
         vm.Country1.ShouldNotBeNull();
@@ -7770,21 +7771,21 @@ public class MainWindowViewModelTests
         var vm = new MainWindowViewModel();
         vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
     }
-    
+
     [Fact]
     public void ScoreText_ShouldBeFormatted()
     {
         var vm = new MainWindowViewModel();
         vm.ScoreText.ShouldBe("Score: 0");
     }
-    
+
     [Fact]
     public void StreakText_ShouldBeFormatted()
     {
         var vm = new MainWindowViewModel();
         vm.StreakText.ShouldBe("Streak: 0");
     }
-    
+
     [Fact]
     public void BestStreakText_ShouldBeFormatted()
     {
@@ -7833,7 +7834,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 10:16:18 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 10:59:47 PM CST 2025
 Total Files Found: 74
 Files Exported: 74
 Files Skipped: 0 (binary or large files)
