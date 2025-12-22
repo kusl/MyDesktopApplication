@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Mon Dec 22 03:52:50 AM CST 2025
+Generated: Mon Dec 22 03:56:54 AM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -861,8 +861,8 @@ jobs:
 
 ================================================================================
 FILE: .github/workflows/release.yml
-SIZE: 4.03 KB
-MODIFIED: 2025-12-21 15:35:39
+SIZE: 4.06 KB
+MODIFIED: 2025-12-22 03:56:00
 ================================================================================
 
 name: Release
@@ -894,7 +894,7 @@ jobs:
           - os: macos-latest
             rid: osx-arm64
             artifact: osx-arm64
-          - os: macos-13
+          - os: macos-latest
             rid: osx-x64
             artifact: osx-x64
             
@@ -919,6 +919,7 @@ jobs:
         run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
         
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
             -c Release \
@@ -4293,7 +4294,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Mon Dec 22 03:52:50 AM CST 2025
+EXPORT COMPLETED: Mon Dec 22 03:56:54 AM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
