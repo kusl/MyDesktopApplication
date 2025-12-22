@@ -71,7 +71,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     private void GenerateNewQuestion()
     {
-        var countries = CountryData.Countries.ToList();
+        var countries = CountryData.GetAllCountries();
         var idx1 = _random.Next(countries.Count);
         int idx2;
         do { idx2 = _random.Next(countries.Count); } while (idx2 == idx1);
@@ -197,7 +197,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     private void UpdateScoreDisplay()
     {
-        Score = _gameState.Score;
+        Score = _gameState.CurrentScore;
         Streak = _gameState.CurrentStreak;
         BestStreak = _gameState.BestStreak;
         Accuracy = _gameState.AccuracyPercentage;

@@ -11,7 +11,7 @@ public class QuestionTypeTests
     [InlineData(QuestionType.Area, "Area (km²)")]
     [InlineData(QuestionType.Gdp, "GDP (USD)")]
     [InlineData(QuestionType.GdpPerCapita, "GDP per Capita")]
-    [InlineData(QuestionType.PopulationDensity, "Population Density")]
+    [InlineData(QuestionType.Density, "Population Density")]
     [InlineData(QuestionType.Literacy, "Literacy Rate (%)")]
     [InlineData(QuestionType.Hdi, "Human Development Index")]
     [InlineData(QuestionType.LifeExpectancy, "Life Expectancy")]
@@ -40,7 +40,7 @@ public class QuestionTypeTests
 
         QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
         QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
-        QuestionType.PopulationDensity.GetValue(country).ShouldBe(36);
+        QuestionType.Density.GetValue(country).ShouldBe(36);
         QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
     }
 

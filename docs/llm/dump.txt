@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 06:16:05 PM CST 2025
+Generated: Sun Dec 21 06:21:58 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -6023,8 +6023,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 7.22 KB
-MODIFIED: 2025-12-21 17:15:21
+SIZE: 7.23 KB
+MODIFIED: 2025-12-21 18:21:42
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -6100,7 +6100,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     private void GenerateNewQuestion()
     {
-        var countries = CountryData.Countries.ToList();
+        var countries = CountryData.GetAllCountries();
         var idx1 = _random.Next(countries.Count);
         int idx2;
         do { idx2 = _random.Next(countries.Count); } while (idx2 == idx1);
@@ -6226,7 +6226,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     private void UpdateScoreDisplay()
     {
-        Score = _gameState.Score;
+        Score = _gameState.CurrentScore;
         Streak = _gameState.CurrentStreak;
         BestStreak = _gameState.BestStreak;
         Accuracy = _gameState.AccuracyPercentage;
@@ -6535,8 +6535,8 @@ MODIFIED: 2025-12-21 17:58:28
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-SIZE: 1.80 KB
-MODIFIED: 2025-12-21 17:58:28
+SIZE: 1.79 KB
+MODIFIED: 2025-12-21 18:17:26
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
@@ -6552,7 +6552,7 @@ public class QuestionTypeTests
     [InlineData(QuestionType.Area, "Area (km²)")]
     [InlineData(QuestionType.Gdp, "GDP (USD)")]
     [InlineData(QuestionType.GdpPerCapita, "GDP per Capita")]
-    [InlineData(QuestionType.PopulationDensity, "Population Density")]
+    [InlineData(QuestionType.Density, "Population Density")]
     [InlineData(QuestionType.Literacy, "Literacy Rate (%)")]
     [InlineData(QuestionType.Hdi, "Human Development Index")]
     [InlineData(QuestionType.LifeExpectancy, "Life Expectancy")]
@@ -6581,7 +6581,7 @@ public class QuestionTypeTests
 
         QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
         QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
-        QuestionType.PopulationDensity.GetValue(country).ShouldBe(36);
+        QuestionType.Density.GetValue(country).ShouldBe(36);
         QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
     }
 
@@ -6857,7 +6857,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 06:16:06 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 06:21:59 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)
