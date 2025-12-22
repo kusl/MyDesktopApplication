@@ -8,630 +8,6 @@ Output File:  docs/llm/dump.txt
 
 Generating directory structure...
 Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    394.89 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.897s
-user	0m0.394s
-sys	0m0.635s
-
-Build succeeded in 0.9s
-
-real	0m1.111s
-user	0m0.839s
-sys	0m0.263s
-Restore complete (0.6s)
-
-Build succeeded in 0.7s
-
-real	0m0.871s
-user	0m0.983s
-sys	0m0.199s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 failed with 28 error(s) (1.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(70,27,70,27): Avalonia error AVLN2000: Unable to resolve property or method of name 'QuestionTypes' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 70, position 27.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(94,26,94,26): Avalonia error AVLN2000: Unable to resolve property or method of name 'ScoreText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 94, position 26.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(96,28,96,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 96, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(98,28,98,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 98, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(99,28,99,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 99, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(101,28,101,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 101, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(106,24,106,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 106, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(111,24,111,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 111, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(129,29,129,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 129, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(130,29,130,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 130, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(131,29,131,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 131, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(133,29,133,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 133, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(136,40,136,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 136, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(139,40,139,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 139, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(145,40,145,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 145, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(149,40,149,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 149, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(169,29,169,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 169, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(170,29,170,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 170, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(171,29,171,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 171, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(173,29,173,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 173, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(176,40,176,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 176, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(179,40,179,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 179, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(185,40,185,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 185, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(189,40,189,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 189, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(201,21,201,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 201, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(202,28,202,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'ResultMessage' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 202, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(212,21,212,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'NextRoundCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 212, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(219,21,219,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 219, position 21.
-Attempting to cancel the build...
-
-Build failed with 28 error(s) in 34.4s
-
-real	0m34.562s
-user	0m4.285s
-sys	0m0.904s
-Restore complete (0.8s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.24]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.UI.Tests net10.0 failed with 11 error(s) (0.4s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(14,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Score' and no accessible extension method 'Score' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(16,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Streak' and no accessible extension method 'Streak' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(24,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(25,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(26,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(27,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(36,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(38,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1Name' and no accessible extension method 'Country1Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(39,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1Name' and no accessible extension method 'Country1Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,40): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.69]   Finished:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
-
-Test summary: total: 21, failed: 0, succeeded: 21, skipped: 0, duration: 1.5s
-Build failed with 11 error(s) in 3.0s
-
-real	0m3.131s
-user	0m2.615s
-sys	0m0.515s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-all-errors.sh 
-==============================================
-  Comprehensive Build Fix Script
-==============================================
-
-This script fixes ALL errors from output.txt:
-  - MainWindowViewModel missing XAML bindings
-  - Test files with wrong property names
-  - Property name harmonization
-
-[0/8] Killing stuck processes and cleaning...
-[1/8] Fixing Country.cs...
-[2/8] Fixing QuestionType.cs...
-[3/8] Fixing GameState.cs...
-[4/8] Fixing IGameStateRepository.cs...
-[5/8] Fixing MainWindowViewModel.cs (COMPLETE rewrite with ALL bindings)...
-[6/8] Fixing CountryData.cs...
-[7/8] Fixing UI Tests...
-[8/8] Restoring and building...
-Restore complete (0.8s)
-
-Build succeeded in 0.9s
-
-Building solution...
-  MyDesktopApplication.Core net10.0 failed with 1 error(s) (1.9s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
-
-Build failed with 1 error(s) in 2.2s
-
-==============================================
-  ❌ BUILD FAILED
-==============================================
-
-real	0m4.505s
-user	0m2.617s
-sys	0m0.681s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    412.36 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.793s
-user	0m0.388s
-sys	0m0.596s
-
-Build succeeded in 0.5s
-
-real	0m0.616s
-user	0m0.699s
-sys	0m0.154s
-Restore complete (0.5s)
-
-Build succeeded in 0.6s
-
-real	0m0.793s
-user	0m0.901s
-sys	0m0.208s
-Restore complete (0.5s)
-  MyDesktopApplication.Core net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
-
-Build failed with 1 error(s) in 1.0s
-
-real	0m1.139s
-user	0m1.339s
-sys	0m0.281s
-Restore complete (0.5s)
-  MyDesktopApplication.Core net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs(5,18): error CS0311: The type 'MyDesktopApplication.Core.Entities.GameState' cannot be used as type parameter 'T' in the generic type or method 'IRepository<T>'. There is no implicit reference conversion from 'MyDesktopApplication.Core.Entities.GameState' to 'MyDesktopApplication.Core.Entities.EntityBase'.
-
-Build failed with 1 error(s) in 0.8s
-
-real	0m0.945s
-user	0m1.192s
-sys	0m0.240s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-entitybase-inheritance.sh
-==============================================
-  Fixing EntityBase Inheritance
-==============================================
-[1/2] Fixing GameState.cs to inherit from EntityBase...
-✓ GameState now inherits from EntityBase
-[2/2] Verifying EntityBase.cs...
-✓ EntityBase verified
-
-Building solution...
-Restore complete (0.6s)
-
-Build succeeded in 0.7s
-  MyDesktopApplication.Core net10.0 succeeded (1.9s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(12,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.5s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-
-Build failed with 1 error(s) in 2.7s
-
-==============================================
-  ❌ BUILD FAILED
-==============================================
-
-real	0m4.722s
-user	0m2.424s
-sys	0m0.470s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 70 files to export
-
-Processing (1/70): add-migration.sh
-Processing (2/70): Directory.Build.props
-Processing (3/70): Directory.Packages.props
-Processing (4/70): export.sh
-Processing (5/70): fix-all-errors.sh
-Processing (6/70): fix-entitybase-inheritance.sh
-Processing (7/70): fix-project-properly.sh
-Processing (8/70): .gitattributes
-Processing (9/70): .github/dependabot.yml
-Processing (10/70): .github/workflows/build.yml
-Processing (11/70): .github/workflows/ci.yml
-Processing (12/70): .github/workflows/release.yml
-Processing (13/70): .gitignore
-Processing (14/70): migrate.sh
-Processing (15/70): MyDesktopApplication.slnx
-Processing (16/70): README.md
-Processing (17/70): repair-project.sh
-Processing (18/70): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (19/70): src/MyDesktopApplication.Android/App.axaml
-Processing (20/70): src/MyDesktopApplication.Android/App.cs
-Processing (21/70): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (22/70): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (23/70): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (24/70): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (25/70): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (26/70): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (27/70): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (28/70): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (29/70): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (30/70): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (31/70): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (32/70): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (33/70): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (34/70): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (35/70): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (36/70): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (37/70): src/MyDesktopApplication.Desktop/App.axaml
-Processing (38/70): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (39/70): src/MyDesktopApplication.Desktop/app.manifest
-Processing (40/70): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (41/70): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (42/70): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (43/70): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (44/70): src/MyDesktopApplication.Desktop/Program.cs
-Processing (45/70): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (46/70): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (47/70): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (48/70): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (49/70): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (50/70): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (51/70): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (52/70): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (53/70): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (54/70): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (55/70): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (56/70): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (57/70): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (58/70): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (59/70): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (60/70): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (61/70): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (62/70): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (63/70): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (64/70): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (65/70): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (66/70): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (67/70): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (68/70): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (69/70): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (70/70): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 70
-Files skipped:  0
-Output size:    417.29 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.812s
-user	0m0.395s
-sys	0m0.608s
-
-Build succeeded in 0.5s
-
-real	0m0.588s
-user	0m0.680s
-sys	0m0.124s
-Restore complete (0.5s)
-
-Build succeeded in 0.7s
-
-real	0m0.807s
-user	0m0.900s
-sys	0m0.195s
-Restore complete (0.5s)
-  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(12,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-
-Build failed with 1 error(s) in 1.0s
-
-real	0m1.111s
-user	0m1.389s
-sys	0m0.273s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Infrastructure net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs(12,59): error CS0535: 'GameStateRepository' does not implement interface member 'IGameStateRepository.SaveAsync(GameState, CancellationToken)'
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.Core.Tests
-  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
-
-Test summary: total: 18, failed: 0, succeeded: 18, skipped: 0, duration: 0.7s
-Build failed with 1 error(s) in 1.5s
-
-real	0m1.683s
-user	0m1.392s
-sys	0m0.271s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-saveasync-implementation.sh
-=== Fixing SaveAsync Implementation ===
-[1/4] Checking current IGameStateRepository interface...
-using MyDesktopApplication.Core.Entities;
-
-namespace MyDesktopApplication.Core.Interfaces;
-
-public interface IGameStateRepository : IRepository<GameState>
-{
-    Task<GameState> GetOrCreateAsync(string userId, CancellationToken cancellationToken = default);
-    Task SaveAsync(GameState gameState, CancellationToken cancellationToken = default);
-}
-
-[2/4] Checking current GameStateRepository implementation...
-using Microsoft.EntityFrameworkCore;
-using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Infrastructure.Data;
-
-namespace MyDesktopApplication.Infrastructure.Repositories;
-
-/// <summary>
-/// GameState-specific repository implementation.
-/// Inherits from Repository&lt;GameState&gt; to get UpdateAsync, AddAsync, etc.
-/// </summary>
-public class GameStateRepository : Repository<GameState>, IGameStateRepository
-{
-    public GameStateRepository(AppDbContext context) : base(context)
-    {
-    }
-
-    /// <inheritdoc />
-    public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
-    {
-        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
-        if (state == null)
-        {
-            state = new GameState { UserId = userId };
-            await AddAsync(state, ct);
-        }
-        return state;
-    }
-
-    /// <inheritdoc />
-    public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
-    {
-        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
-    }
-
-    /// <inheritdoc />
-    public async Task ResetAsync(string userId, CancellationToken ct = default)
-    {
-        var state = await GetOrCreateAsync(userId, ct);
-        state.Reset();
-        await UpdateAsync(state, ct);
-    }
-}
-
-[3/4] Adding SaveAsync implementation to GameStateRepository...
-
-[4/4] Building to verify fix...
-  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
-Attempting to cancel the build...
-
-Build failed in 186.2s
-
-=== Fix Applied ===
-Added SaveAsync(GameState, CancellationToken) implementation to GameStateRepository
-fix-saveasync-implementation.sh: line 94: EOF: command not found
-
-real	3m6.366s
-user	0m3.761s
-sys	0m2.327s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
 Found 71 files to export
 
 Processing (1/71): add-migration.sh
@@ -725,37 +101,37 @@ File types included:
   • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
 
 
-real	0m0.831s
-user	0m0.429s
-sys	0m0.593s
+real	0m0.756s
+user	0m0.450s
+sys	0m0.409s
 
-Build succeeded in 0.9s
+Build succeeded in 1.0s
 
-real	0m0.987s
-user	0m0.824s
-sys	0m0.218s
+real	0m1.144s
+user	0m0.880s
+sys	0m0.273s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.818s
-user	0m0.944s
-sys	0m0.192s
+real	0m0.814s
+user	0m0.910s
+sys	0m0.194s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Core net10.0 succeeded (2.4s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 Attempting to cancel the build...
 
-Build failed in 38.3s
+Build failed in 38.6s
 
-real	0m38.440s
-user	0m4.177s
-sys	0m1.055s
+real	0m38.745s
+user	0m4.492s
+sys	0m0.907s
 Restore complete (0.8s)
   MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
@@ -763,30 +139,30 @@ Restore complete (0.8s)
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
   MyDesktopApplication.Desktop net10.0 succeeded (0.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.23]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.14]   Discovered:  MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.16]   Starting:    MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
 [xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
 [xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.17]   Finished:    MyDesktopApplication.UI.Tests
-  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
-[xUnit.net 00:00:00.68]   Finished:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.78]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
 
-Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
-Build succeeded in 2.9s
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.6s
+Build succeeded in 3.0s
 
-real	0m3.062s
-user	0m2.080s
-sys	0m0.503s
+real	0m3.150s
+user	0m2.112s
+sys	0m0.507s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
