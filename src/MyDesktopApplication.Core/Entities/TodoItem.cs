@@ -8,13 +8,13 @@ public class TodoItem : EntityBase
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
     public DateTime? DueDate { get; set; }
-    
+
     public void MarkComplete()
     {
         IsCompleted = true;
         CompletedAt = DateTime.UtcNow;
     }
-    
+
     public void MarkIncomplete()
     {
         IsCompleted = false;

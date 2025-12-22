@@ -2,7 +2,7 @@ namespace MyDesktopApplication.Core.Entities;
 
 /// <summary>
 /// Stores game state for the Country Quiz game.
-/// Inherits from EntityBase to work with IRepository<T> constraint.
+/// Inherits from EntityBase to work with IRepository T constraint.
 /// </summary>
 public class GameState : EntityBase
 {

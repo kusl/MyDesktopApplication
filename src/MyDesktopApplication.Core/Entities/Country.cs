@@ -29,7 +29,7 @@ public class Country
     {
         if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
             return "🏳️";
-        
+
         var c1 = char.ToUpperInvariant(Iso2[0]);
         var c2 = char.ToUpperInvariant(Iso2[1]);
         var ri1 = 0x1F1E6 + (c1 - 'A');

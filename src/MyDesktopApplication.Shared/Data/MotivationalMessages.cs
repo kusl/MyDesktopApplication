@@ -6,7 +6,7 @@ namespace MyDesktopApplication.Shared.Data;
 public static class MotivationalMessages
 {
     private static readonly Random _random = new();
-    
+
     private static readonly string[] CorrectMessages =
     [
         "🎉 Correct! You're on fire!",
@@ -18,7 +18,7 @@ public static class MotivationalMessages
         "📚 Well studied!",
         "🌍 World expert in the making!"
     ];
-    
+
     private static readonly string[] IncorrectMessages =
     [
         "Not quite, but you're learning!",
@@ -30,7 +30,7 @@ public static class MotivationalMessages
         "That's a tricky one!",
         "You'll get the next one!"
     ];
-    
+
     private static readonly string[] StreakMessages =
     [
         "🔥 {0} in a row!",
@@ -38,14 +38,14 @@ public static class MotivationalMessages
         "🔥 {0} consecutive! You're unstoppable!",
         "🔥 {0} correct answers! Amazing run!"
     ];
-    
+
     private static readonly string[] NewBestMessages =
     [
         "🏆 NEW PERSONAL BEST! {0} streak!",
         "⭐ NEW RECORD! {0} in a row!",
         "🎊 PERSONAL BEST! {0} streak!"
     ];
-    
+
     private static readonly string[] ResetMessages =
     [
         "Fresh start! Good luck! 🍀",
@@ -53,29 +53,29 @@ public static class MotivationalMessages
         "Let's see what you've got! 🌟",
         "New game, new opportunities! 🎯"
     ];
-    
-    public static string GetCorrectMessage() => 
+
+    public static string GetCorrectMessage() =>
         CorrectMessages[_random.Next(CorrectMessages.Length)];
-    
-    public static string GetIncorrectMessage() => 
+
+    public static string GetIncorrectMessage() =>
         IncorrectMessages[_random.Next(IncorrectMessages.Length)];
-    
+
     public static string GetStreakMessage(int streak)
     {
         if (streak < 3) return string.Empty;
         var template = StreakMessages[_random.Next(StreakMessages.Length)];
         return string.Format(template, streak);
     }
-    
+
     public static string GetNewBestMessage(int streak)
     {
         var template = NewBestMessages[_random.Next(NewBestMessages.Length)];
         return string.Format(template, streak);
     }
-    
-    public static string GetResetMessage() => 
+
+    public static string GetResetMessage() =>
         ResetMessages[_random.Next(ResetMessages.Length)];
-    
+
     public static string GetAccuracyComment(double accuracy) => accuracy switch
     {
         >= 90 => "🏅 Geography genius!",

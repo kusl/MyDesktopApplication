@@ -7,7 +7,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        
+
         // Initialize the ViewModel when the window loads
         Loaded += async (_, _) =>
         {

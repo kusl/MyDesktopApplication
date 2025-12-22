@@ -39,19 +39,19 @@ public partial class CountryQuizViewModel : ViewModelBase
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
-    public string AccuracyText => TotalQuestions > 0 
-        ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%" 
+    public string AccuracyText => TotalQuestions > 0
+        ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
 
     public CountryQuizViewModel()
     {
         _countries = CountryData.GetAllCountries().ToList();
-        
+
         foreach (QuestionType qt in Enum.GetValues<QuestionType>())
         {
             QuestionTypes.Add(qt);
         }
-        
+
         GenerateNewQuestion();
     }
 
@@ -66,7 +66,7 @@ public partial class CountryQuizViewModel : ViewModelBase
 
         var value1 = SelectedQuestionType.GetValue(_country1);
         var value2 = SelectedQuestionType.GetValue(_country2);
-        
+
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
 

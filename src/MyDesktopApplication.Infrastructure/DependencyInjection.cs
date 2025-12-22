@@ -14,21 +14,21 @@ public static class DependencyInjection
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "CountryQuiz",
             "countryquiz.db");
-        
+
         var directory = Path.GetDirectoryName(path);
         if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }
-        
+
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={path}"));
-        
+
         services.AddScoped<IGameStateRepository, GameStateRepository>();
-        
+
         return services;
     }
-    
+
     public static async Task InitializeDatabaseAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();

@@ -9,13 +9,13 @@ public abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
     private bool _isBusy;
-    
+
     [ObservableProperty]
     private string? _errorMessage;
-    
+
     [ObservableProperty]
     private bool _hasError;
-    
+
     /// <summary>
     /// Sets an error message and marks HasError as true
     /// </summary>
@@ -24,7 +24,7 @@ public abstract partial class ViewModelBase : ObservableObject
         ErrorMessage = message;
         HasError = true;
     }
-    
+
     /// <summary>
     /// Clears the error message and marks HasError as false
     /// </summary>
@@ -33,14 +33,14 @@ public abstract partial class ViewModelBase : ObservableObject
         ErrorMessage = null;
         HasError = false;
     }
-    
+
     /// <summary>
     /// Executes an async operation with busy state management and error handling
     /// </summary>
     protected async Task ExecuteAsync(Func<Task> operation, string? errorContext = null)
     {
         if (IsBusy) return;
-        
+
         try
         {
             IsBusy = true;
@@ -49,8 +49,8 @@ public abstract partial class ViewModelBase : ObservableObject
         }
         catch (Exception ex)
         {
-            SetError(errorContext != null 
-                ? $"{errorContext}: {ex.Message}" 
+            SetError(errorContext != null
+                ? $"{errorContext}: {ex.Message}"
                 : ex.Message);
         }
         finally
@@ -58,14 +58,14 @@ public abstract partial class ViewModelBase : ObservableObject
             IsBusy = false;
         }
     }
-    
+
     /// <summary>
     /// Executes an async operation that returns a result
     /// </summary>
     protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> operation, string? errorContext = null)
     {
         if (IsBusy) return default;
-        
+
         try
         {
             IsBusy = true;
@@ -74,8 +74,8 @@ public abstract partial class ViewModelBase : ObservableObject
         }
         catch (Exception ex)
         {
-            SetError(errorContext != null 
-                ? $"{errorContext}: {ex.Message}" 
+            SetError(errorContext != null
+                ? $"{errorContext}: {ex.Message}"
                 : ex.Message);
             return default;
         }

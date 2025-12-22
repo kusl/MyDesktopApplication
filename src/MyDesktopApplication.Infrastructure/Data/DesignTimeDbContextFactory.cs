@@ -13,19 +13,19 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        
+
         // Use SQLite for migrations - this creates the migration files
         // The actual connection string at runtime comes from DI
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "MyDesktopApplication",
             "app.db");
-        
+
         // Ensure directory exists
         Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-        
+
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
-        
+
         return new AppDbContext(optionsBuilder.Options);
     }
 }

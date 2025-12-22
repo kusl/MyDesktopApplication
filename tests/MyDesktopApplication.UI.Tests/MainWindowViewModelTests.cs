@@ -11,7 +11,7 @@ public class MainWindowViewModelTests
     public void NewViewModel_ShouldHaveInitialState()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
         vm.CurrentStreak.ShouldBe(0);
@@ -23,7 +23,7 @@ public class MainWindowViewModelTests
     public void QuestionTypes_ShouldContainAllTypes()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
@@ -39,7 +39,7 @@ public class MainWindowViewModelTests
     public void GenerateNewQuestion_ShouldSetCountries()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.GenerateNewQuestionCommand.Execute(null);
 
         vm.Country1.ShouldNotBeNull();
@@ -53,21 +53,21 @@ public class MainWindowViewModelTests
         var vm = new MainWindowViewModel();
         vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
     }
-    
+
     [Fact]
     public void ScoreText_ShouldBeFormatted()
     {
         var vm = new MainWindowViewModel();
         vm.ScoreText.ShouldBe("Score: 0");
     }
-    
+
     [Fact]
     public void StreakText_ShouldBeFormatted()
     {
         var vm = new MainWindowViewModel();
         vm.StreakText.ShouldBe("Streak: 0");
     }
-    
+
     [Fact]
     public void BestStreakText_ShouldBeFormatted()
     {

@@ -10,7 +10,7 @@ public class TodoItemTests
     public void NewTodoItem_ShouldBeIncomplete()
     {
         var todo = new TodoItem { Title = "Test" };
-        
+
         todo.IsCompleted.ShouldBeFalse();
         todo.CompletedAt.ShouldBeNull();
     }
@@ -19,9 +19,9 @@ public class TodoItemTests
     public void MarkComplete_ShouldSetCompletedAtAndIsCompleted()
     {
         var todo = new TodoItem { Title = "Test" };
-        
+
         todo.MarkComplete();
-        
+
         todo.IsCompleted.ShouldBeTrue();
         todo.CompletedAt.ShouldNotBeNull();
     }
@@ -31,9 +31,9 @@ public class TodoItemTests
     {
         var todo = new TodoItem { Title = "Test" };
         todo.MarkComplete();
-        
+
         todo.MarkIncomplete();
-        
+
         todo.IsCompleted.ShouldBeFalse();
         todo.CompletedAt.ShouldBeNull();
     }
