@@ -9298,3 +9298,66 @@ Would you like me to rewrite the full YAML with these fixes applied?
 
 
 
+Hey Gemini, 
+I get this error. How can I fix this? 
+MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.0s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android failed with 2 error(s) (1.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(4,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(7,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?)
+
+Build failed with 2 error(s) in 2.3s
+```csharp
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Android;
+
+public class App : Avalonia.Application
+{
+    private IServiceProvider? _services;
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override async void OnFrameworkInitializationCompleted()
+    {
+        var services = new ServiceCollection();
+
+        var dbPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "countryquiz.db");
+
+        services.AddInfrastructure(dbPath);
+        services.AddTransient<CountryQuizViewModel>();
+
+        _services = services.BuildServiceProvider();
+
+        await DependencyInjection.InitializeDatabaseAsync(_services);
+
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+        {
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
+            var mainView = new MainView { DataContext = vm };
+            singleViewLifetime.MainView = mainView;
+
+            _ = vm.InitializeAsync();
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+```
