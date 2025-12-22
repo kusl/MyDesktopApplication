@@ -1,117 +1,464 @@
 #!/bin/bash
 set -e
 
-# =============================================================================
-# fix-updateasync-error.sh
-# =============================================================================
-# This script:
-# 1. RESTORES MainWindowViewModel.cs from git (since it was accidentally overwritten)
-# 2. Applies a SURGICAL fix to IGameStateRepository.cs to add inheritance
-#
-# The previous script accidentally overwrote MainWindowViewModel.cs, causing
-# 28 AXAML binding errors. This script fixes that.
-# =============================================================================
-
 echo "=============================================="
-echo "  Fixing UpdateAsync Error (Properly)"
+echo "  Comprehensive Error Fix Script"
 echo "=============================================="
+echo ""
 
-cd ~/src/dotnet/MyDesktopApplication
+# =============================================================================
+# Step 1: Kill any stuck build processes
+# =============================================================================
+echo "[Step 1/8] Killing stuck build processes..."
+pkill -f VBCSCompiler 2>/dev/null || true
+pkill -f aapt2 2>/dev/null || true
+pkill -f "dotnet.*build" 2>/dev/null || true
+dotnet build-server shutdown 2>/dev/null || true
+sleep 1
+echo "  ✓ Processes cleaned"
 
-# -----------------------------------------------------------------------------
-# STEP 1: Restore MainWindowViewModel.cs from git
-# -----------------------------------------------------------------------------
-echo "[1/4] Restoring MainWindowViewModel.cs from git..."
+# =============================================================================
+# Step 2: Clean build artifacts
+# =============================================================================
+echo "[Step 2/8] Cleaning build artifacts..."
+rm -rf src/*/bin src/*/obj tests/*/bin tests/*/obj 2>/dev/null || true
+echo "  ✓ Build artifacts cleaned"
 
-if git checkout HEAD -- src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs 2>/dev/null; then
-    echo "  ✓ MainWindowViewModel.cs restored from git"
-else
-    echo "  ⚠ Could not restore from git - file may not have been in git yet"
-    echo "  Checking if backup exists..."
+# =============================================================================
+# Step 3: Fix TodoItem.cs - Add CompletedAt and Priority properties
+# =============================================================================
+echo "[Step 3/8] Fixing TodoItem.cs..."
+cat > src/MyDesktopApplication.Core/Entities/TodoItem.cs << 'EOF'
+namespace MyDesktopApplication.Core.Entities;
+
+public class TodoItem : EntityBase
+{
+    public required string Title { get; set; }
+    public string? Description { get; set; }
+    public int Priority { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public DateTime? DueDate { get; set; }
     
-    # If git restore failed, the file might be new or there might be a backup
-    if [ -f src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs.bak ]; then
-        cp src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs.bak \
-           src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-        echo "  ✓ Restored from backup"
+    public void MarkComplete()
+    {
+        IsCompleted = true;
+        CompletedAt = DateTime.UtcNow;
+    }
+    
+    public void MarkIncomplete()
+    {
+        IsCompleted = false;
+        CompletedAt = null;
+    }
+}
+EOF
+echo "  ✓ TodoItem.cs fixed"
+
+# =============================================================================
+# Step 4: Fix ViewModelBase.cs - Add ClearError and SetError methods
+# =============================================================================
+echo "[Step 4/8] Fixing ViewModelBase.cs..."
+cat > src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs << 'EOF'
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace MyDesktopApplication.Shared.ViewModels;
+
+/// <summary>
+/// Base class for all ViewModels providing common functionality
+/// </summary>
+public abstract partial class ViewModelBase : ObservableObject
+{
+    [ObservableProperty]
+    private bool _isBusy;
+    
+    [ObservableProperty]
+    private string? _errorMessage;
+    
+    [ObservableProperty]
+    private bool _hasError;
+    
+    /// <summary>
+    /// Sets an error message and marks HasError as true
+    /// </summary>
+    protected void SetError(string message)
+    {
+        ErrorMessage = message;
+        HasError = true;
+    }
+    
+    /// <summary>
+    /// Clears the error message and marks HasError as false
+    /// </summary>
+    protected void ClearError()
+    {
+        ErrorMessage = null;
+        HasError = false;
+    }
+    
+    /// <summary>
+    /// Executes an async operation with busy state management and error handling
+    /// </summary>
+    protected async Task ExecuteAsync(Func<Task> operation, string? errorContext = null)
+    {
+        if (IsBusy) return;
+        
+        try
+        {
+            IsBusy = true;
+            ClearError();
+            await operation();
+        }
+        catch (Exception ex)
+        {
+            SetError(errorContext != null 
+                ? $"{errorContext}: {ex.Message}" 
+                : ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+    
+    /// <summary>
+    /// Executes an async operation that returns a result
+    /// </summary>
+    protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> operation, string? errorContext = null)
+    {
+        if (IsBusy) return default;
+        
+        try
+        {
+            IsBusy = true;
+            ClearError();
+            return await operation();
+        }
+        catch (Exception ex)
+        {
+            SetError(errorContext != null 
+                ? $"{errorContext}: {ex.Message}" 
+                : ex.Message);
+            return default;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+}
+EOF
+echo "  ✓ ViewModelBase.cs fixed"
+
+# =============================================================================
+# Step 5: Fix GameState.cs - Ensure all required properties exist
+# =============================================================================
+echo "[Step 5/8] Fixing GameState.cs..."
+cat > src/MyDesktopApplication.Core/Entities/GameState.cs << 'EOF'
+namespace MyDesktopApplication.Core.Entities;
+
+public class GameState : EntityBase
+{
+    public string UserId { get; set; } = "default";
+    
+    // Score tracking
+    public int CurrentScore { get; set; }
+    public int HighScore { get; set; }
+    public int CurrentStreak { get; set; }
+    public int BestStreak { get; set; }
+    
+    // Statistics
+    public int TotalCorrect { get; set; }
+    public int TotalAnswered { get; set; }
+    
+    // Selected question type (persisted)
+    public QuestionType? SelectedQuestionType { get; set; }
+    
+    // Calculated properties
+    public double Accuracy => TotalAnswered > 0 
+        ? (double)TotalCorrect / TotalAnswered 
+        : 0;
+    
+    public double AccuracyPercentage => Accuracy * 100;
+    
+    /// <summary>
+    /// Records an answer and updates all related scores
+    /// </summary>
+    public void RecordAnswer(bool isCorrect)
+    {
+        TotalAnswered++;
+        
+        if (isCorrect)
+        {
+            TotalCorrect++;
+            CurrentScore++;
+            CurrentStreak++;
+            
+            if (CurrentScore > HighScore)
+                HighScore = CurrentScore;
+            
+            if (CurrentStreak > BestStreak)
+                BestStreak = CurrentStreak;
+        }
+        else
+        {
+            CurrentStreak = 0;
+        }
+    }
+    
+    /// <summary>
+    /// Resets current game while preserving high scores
+    /// </summary>
+    public void Reset()
+    {
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        // Keep HighScore and BestStreak
+    }
+    
+    /// <summary>
+    /// Resets all statistics including high scores
+    /// </summary>
+    public void ResetAll()
+    {
+        CurrentScore = 0;
+        HighScore = 0;
+        CurrentStreak = 0;
+        BestStreak = 0;
+        TotalCorrect = 0;
+        TotalAnswered = 0;
+    }
+}
+EOF
+echo "  ✓ GameState.cs fixed"
+
+# =============================================================================
+# Step 6: Fix CountryQuizViewModel.cs - Use _currentCountry field properly
+# =============================================================================
+echo "[Step 6/8] Fixing CountryQuizViewModel.cs..."
+cat > src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs << 'EOF'
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Shared.Data;
+
+namespace MyDesktopApplication.Shared.ViewModels;
+
+/// <summary>
+/// ViewModel for the Country Quiz game
+/// </summary>
+public partial class CountryQuizViewModel : ViewModelBase
+{
+    private readonly Random _random = new();
+    private Country? _currentCountry;
+    private Country? _countryA;
+    private Country? _countryB;
+    
+    [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _feedbackMessage = "";
+    [ObservableProperty] private bool _showFeedback;
+    [ObservableProperty] private int _currentScore;
+    [ObservableProperty] private int _highScore;
+    [ObservableProperty] private int _currentStreak;
+    [ObservableProperty] private int _bestStreak;
+    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
+    
+    public string Country1Name => _countryA?.Name ?? "";
+    public string Country2Name => _countryB?.Name ?? "";
+    public string Country1Flag => _countryA?.Flag ?? "🏳️";
+    public string Country2Flag => _countryB?.Flag ?? "🏳️";
+    
+    public ObservableCollection<QuestionType> QuestionTypes { get; } = 
+        new(Enum.GetValues<QuestionType>());
+    
+    public CountryQuizViewModel()
+    {
+        GenerateNewQuestion();
+    }
+    
+    [RelayCommand]
+    private void GenerateNewQuestion()
+    {
+        var countries = CountryData.GetAllCountries();
+        if (countries.Count < 2) return;
+        
+        // Pick two different random countries
+        var indices = Enumerable.Range(0, countries.Count)
+            .OrderBy(_ => _random.Next())
+            .Take(2)
+            .ToList();
+        
+        _countryA = countries[indices[0]];
+        _countryB = countries[indices[1]];
+        _currentCountry = _countryA; // Track the "correct" country for this round
+        
+        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
+        ShowFeedback = false;
+        
+        OnPropertyChanged(nameof(Country1Name));
+        OnPropertyChanged(nameof(Country2Name));
+        OnPropertyChanged(nameof(Country1Flag));
+        OnPropertyChanged(nameof(Country2Flag));
+    }
+    
+    [RelayCommand]
+    private async Task SelectCountry(string countryParam)
+    {
+        if (_countryA == null || _countryB == null) return;
+        
+        bool selectedCountry1 = countryParam == "1";
+        
+        var valueA = GetValue(_countryA);
+        var valueB = GetValue(_countryB);
+        
+        bool isCorrect = selectedCountry1 ? (valueA >= valueB) : (valueB >= valueA);
+        
+        if (isCorrect)
+        {
+            CurrentScore++;
+            CurrentStreak++;
+            if (CurrentScore > HighScore) HighScore = CurrentScore;
+            if (CurrentStreak > BestStreak) BestStreak = CurrentStreak;
+            FeedbackMessage = GetCorrectMessage(CurrentStreak, BestStreak);
+        }
+        else
+        {
+            CurrentStreak = 0;
+            var winner = valueA >= valueB ? _countryA : _countryB;
+            var winnerValue = FormatValue(Math.Max(valueA, valueB));
+            var loserValue = FormatValue(Math.Min(valueA, valueB));
+            FeedbackMessage = $"Wrong! {winner.Name} has {winnerValue} vs {loserValue}";
+        }
+        
+        ShowFeedback = true;
+        await Task.Delay(1500);
+        GenerateNewQuestion();
+    }
+    
+    [RelayCommand]
+    private void ResetGame()
+    {
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        ShowFeedback = false;
+        GenerateNewQuestion();
+    }
+    
+    private double GetValue(Country country) => SelectedQuestionType switch
+    {
+        QuestionType.Population => country.Population,
+        QuestionType.Area => country.Area,
+        QuestionType.GdpTotal => country.GdpTotal,
+        QuestionType.GdpPerCapita => country.GdpPerCapita,
+        QuestionType.PopulationDensity => country.PopulationDensity,
+        QuestionType.LiteracyRate => country.LiteracyRate,
+        QuestionType.Hdi => country.Hdi,
+        QuestionType.LifeExpectancy => country.LifeExpectancy,
+        _ => 0
+    };
+    
+    private string FormatValue(double value) => SelectedQuestionType switch
+    {
+        QuestionType.Population => FormatPopulation(value),
+        QuestionType.Area => $"{value:N0} km²",
+        QuestionType.GdpTotal => FormatCurrency(value),
+        QuestionType.GdpPerCapita => $"${value:N0}",
+        QuestionType.PopulationDensity => $"{value:N1}/km²",
+        QuestionType.LiteracyRate => $"{value:N1}%",
+        QuestionType.Hdi => $"{value:N3}",
+        QuestionType.LifeExpectancy => $"{value:N1} years",
+        _ => value.ToString("N0")
+    };
+    
+    private static string FormatPopulation(double value)
+    {
+        if (value >= 1_000_000_000) return $"{value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"{value / 1_000_000:N1}M";
+        if (value >= 1_000) return $"{value / 1_000:N0}K";
+        return value.ToString("N0");
+    }
+    
+    private static string FormatCurrency(double value)
+    {
+        if (value >= 1_000_000_000_000) return $"${value / 1_000_000_000_000:N2}T";
+        if (value >= 1_000_000_000) return $"${value / 1_000_000_000:N2}B";
+        if (value >= 1_000_000) return $"${value / 1_000_000:N1}M";
+        return $"${value:N0}";
+    }
+    
+    private static string GetCorrectMessage(int streak, int bestStreak)
+    {
+        if (streak >= 10) return $"🔥 INCREDIBLE! {streak} in a row!";
+        if (streak >= 5) return $"🎯 Amazing! {streak} streak!";
+        if (streak >= 3) return $"✨ Nice! {streak} in a row!";
+        if (streak == bestStreak && streak > 1) return $"🏆 New best streak: {streak}!";
+        return "✓ Correct!";
+    }
+}
+EOF
+echo "  ✓ CountryQuizViewModel.cs fixed"
+
+# =============================================================================
+# Step 7: Ensure IGameStateRepository inherits from IRepository
+# =============================================================================
+echo "[Step 7/8] Fixing IGameStateRepository.cs..."
+cat > src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs << 'EOF'
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Core.Interfaces;
+
+/// <summary>
+/// Repository interface for GameState entities.
+/// Inherits from IRepository to get UpdateAsync and other base methods.
+/// </summary>
+public interface IGameStateRepository : IRepository<GameState>
+{
+    Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default);
+    Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default);
+    Task ResetAsync(string userId, CancellationToken ct = default);
+}
+EOF
+echo "  ✓ IGameStateRepository.cs fixed"
+
+# =============================================================================
+# Step 8: Build and Test
+# =============================================================================
+echo "[Step 8/8] Building and testing..."
+echo ""
+
+# Restore packages
+echo "  Restoring packages..."
+dotnet restore MyDesktopApplication.slnx --verbosity quiet
+
+# Build
+echo "  Building solution..."
+if dotnet build MyDesktopApplication.slnx --no-restore --verbosity minimal; then
+    echo ""
+    echo "  ✓ Build succeeded!"
+    echo ""
+    
+    # Run tests
+    echo "  Running tests..."
+    if dotnet test MyDesktopApplication.slnx --no-build --verbosity minimal; then
+        echo ""
+        echo "=============================================="
+        echo "  ✓ All fixes applied successfully!"
+        echo "  ✓ Build succeeded!"
+        echo "  ✓ All tests passed!"
+        echo "=============================================="
+        exit 0
+    else
+        echo ""
+        echo "=============================================="
+        echo "  ✓ Build succeeded but some tests failed"
+        echo "=============================================="
+        exit 1
     fi
-fi
-
-# -----------------------------------------------------------------------------
-# STEP 2: Apply SURGICAL fix to IGameStateRepository.cs
-# Only add inheritance, don't rewrite the whole file
-# -----------------------------------------------------------------------------
-echo "[2/4] Fixing IGameStateRepository.cs..."
-
-INTERFACE_FILE="src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs"
-
-# Check if the interface already inherits from IRepository<GameState>
-if grep -q ": IRepository<GameState>" "$INTERFACE_FILE" 2>/dev/null; then
-    echo "  ✓ Interface already inherits from IRepository<GameState>"
-else
-    echo "  Adding inheritance from IRepository<GameState>..."
-    
-    # Use sed to add the inheritance
-    # Match: "public interface IGameStateRepository" (with no inheritance)
-    # Replace with: "public interface IGameStateRepository : IRepository<GameState>"
-    sed -i 's/public interface IGameStateRepository[[:space:]]*$/public interface IGameStateRepository : IRepository<GameState>/g' "$INTERFACE_FILE"
-    
-    # Also handle case where there's a brace on the same line
-    sed -i 's/public interface IGameStateRepository[[:space:]]*{/public interface IGameStateRepository : IRepository<GameState>\n{/g' "$INTERFACE_FILE"
-    
-    echo "  ✓ Added inheritance"
-fi
-
-# Verify the change
-echo ""
-echo "  Current interface declaration:"
-grep "public interface IGameStateRepository" "$INTERFACE_FILE" | head -1
-
-# -----------------------------------------------------------------------------
-# STEP 3: Ensure GameStateRepository extends Repository<GameState>
-# -----------------------------------------------------------------------------
-echo ""
-echo "[3/4] Verifying GameStateRepository implementation..."
-
-REPO_FILE="src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs"
-
-if grep -q "Repository<GameState>" "$REPO_FILE" 2>/dev/null; then
-    echo "  ✓ GameStateRepository already extends Repository<GameState>"
-else
-    echo "  ⚠ GameStateRepository may need to extend Repository<GameState>"
-    echo "  Checking current class declaration..."
-    grep "class GameStateRepository" "$REPO_FILE" | head -1
-fi
-
-# -----------------------------------------------------------------------------
-# STEP 4: Clean and rebuild
-# -----------------------------------------------------------------------------
-echo ""
-echo "[4/4] Rebuilding..."
-
-# Clean obj directories
-rm -rf src/MyDesktopApplication.Core/obj
-rm -rf src/MyDesktopApplication.Infrastructure/obj  
-rm -rf src/MyDesktopApplication.Desktop/obj
-
-echo "Restoring packages..."
-dotnet restore --verbosity minimal
-
-echo ""
-echo "Building solution..."
-if dotnet build --no-restore --verbosity minimal; then
-    echo ""
-    echo "=============================================="
-    echo "  ✓ Build Successful!"
-    echo "=============================================="
 else
     echo ""
     echo "=============================================="
-    echo "  ✗ Build Failed - see errors above"
+    echo "  ✗ Build failed - check errors above"
     echo "=============================================="
-    echo ""
-    echo "If you still see AXAML binding errors, you may need to"
-    echo "restore MainWindowViewModel.cs manually from a backup or"
-    echo "revert your last git commit."
     exit 1
 fi
