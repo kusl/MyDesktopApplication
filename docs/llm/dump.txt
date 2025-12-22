@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Sun Dec 21 05:59:51 PM CST 2025
+Generated: Sun Dec 21 06:07:13 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -311,8 +311,8 @@ MODIFIED: 2025-12-21 15:35:39
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 4.18 KB
-MODIFIED: 2025-12-21 16:41:27
+SIZE: 4.28 KB
+MODIFIED: 2025-12-21 18:05:32
 ================================================================================
 
 <Project>
@@ -322,14 +322,14 @@ MODIFIED: 2025-12-21 16:41:27
   </PropertyGroup>
   
   <ItemGroup Label="Avalonia">
-    <PackageVersion Include="Avalonia" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Android" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Headless" Version="11.3.0" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.0" />
+    <PackageVersion Include="Avalonia" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Headless" Version="11.3.10 " />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.10 " />
   </ItemGroup>
   
   <ItemGroup Label="MVVM">
@@ -337,29 +337,30 @@ MODIFIED: 2025-12-21 16:41:27
   </ItemGroup>
   
   <ItemGroup Label="EntityFramework">
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.1" />
     <PackageVersion Include="Dapper" Version="2.1.35" />
   </ItemGroup>
   
   <ItemGroup Label="Configuration">
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
   </ItemGroup>
   
   <ItemGroup Label="DependencyInjection">
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
   </ItemGroup>
   
   <ItemGroup Label="Logging">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
@@ -375,15 +376,15 @@ MODIFIED: 2025-12-21 16:41:27
   </ItemGroup>
   
   <ItemGroup Label="Validation">
-    <PackageVersion Include="FluentValidation" Version="11.11.0" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
   </ItemGroup>
   
   <ItemGroup Label="Testing - All BSD/MIT Licensed (Free of Cost)">
     <!-- xUnit - Apache 2.0 License -->
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     
     <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
@@ -7179,7 +7180,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Sun Dec 21 05:59:52 PM CST 2025
+EXPORT COMPLETED: Sun Dec 21 06:07:13 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)

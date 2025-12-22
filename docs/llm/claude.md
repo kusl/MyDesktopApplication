@@ -4898,5 +4898,65 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+There are all sort of things wrong with this code base. 
+Please fix all the errors as identified in output.txt and use the code in dump.txt as your starting point. 
+Please generate a single script to fix all these issues. 
+Please harmonize property names. For example, it makes no sense to call something Gdp somewhere and GdpTotal somewhere else. 
+Please make sure the build works. Do not hallucinate. 
+Please keep in mind all our instructions. Do not introduce non-free (including paid for commercial only) nuget packages. 
+Do not try to sneak in "solutions" by deleting functionality or by siloing code into desktop only vs mobile only, properly fix errors. 
+Please write a single script to fix the issues. 
+Please make sure the script is idempotent, meaning it doesn't break things if you run it multiple times. 
 Do not use pre-release packages but also do not downgrade my packages to make the code build. 
 Fix code properly instead of downgrading to older versions. 
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 8 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(14,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(15,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(29,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(30,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(44,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(45,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(60,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(61,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(63,39): error CS1061: 'TodoRepository' does not contain a definition for 'GetIncompleteAsync' and no accessible extension method 'GetIncompleteAsync' accepting a first argument of type 'TodoRepository' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Desktop net10.0 failed with 3 error(s) (0.5s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(50,27): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(51,31): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs(19,22): error CS0122: 'MainWindowViewModel.InitializeAsync()' is inaccessible due to its protection level
+Attempting to cancel the build...
+
+Build failed with 12 error(s) in 16.5s
+
+real	0m16.591s
+user	0m2.356s
+sys	0m0.678s
+Restore complete (0.8s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 8 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(14,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(15,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(29,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(30,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(44,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(45,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(60,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(61,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(63,39): error CS1061: 'TodoRepository' does not contain a definition for 'GetIncompleteAsync' and no accessible extension method 'GetIncompleteAsync' accepting a first argument of type 'TodoRepository' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Desktop net10.0 failed with 3 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs(19,22): error CS0122: 'MainWindowViewModel.InitializeAsync()' is inaccessible due to its protection level
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(50,27): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(51,31): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 12 error(s) in 1.8s
+
+real	0m1.953s
+user	0m1.687s
+sys	0m0.445s
