@@ -1,34 +1,28 @@
 <Project>
-  <!--
-    Shared Build Properties for All Projects
-    Includes optimizations for Android aapt2 issues
-  -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CS1591;CS8618</NoWarn>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-  
-  <!-- Android-specific optimizations to prevent aapt2 hangs -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
-    <!-- Disable aapt2 daemon (prevents deadlocks on Linux/macOS) -->
-    <AndroidAapt2DaemonEnabled>false</AndroidAapt2DaemonEnabled>
-    <!-- Use single-threaded aapt2 -->
-    <AndroidAapt2ParallelThread>1</AndroidAapt2ParallelThread>
-    <!-- Faster resource compilation -->
-    <AndroidEnableAapt2NoCrunch>true</AndroidEnableAapt2NoCrunch>
-    <!-- Use interpreted mode for faster debug builds -->
+
+  <!-- Android aapt2 daemon fix to prevent hangs -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
+    <Aapt2DaemonStartupTimeout>60000</Aapt2DaemonStartupTimeout>
+    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
     <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
-    <!-- Reduce logging verbosity -->
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
-  
-  <!-- Source generators for MVVM -->
+
   <PropertyGroup>
-    <EnableMSBuildToolsGeneration>true</EnableMSBuildToolsGeneration>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 </Project>

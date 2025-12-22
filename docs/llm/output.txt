@@ -165,4 +165,55 @@ Build succeeded in 3.0s
 real	0m3.184s
 user	0m2.209s
 sys	0m0.510s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-android-hang.sh 
+==============================================
+  Comprehensive Build Fix Script
+==============================================
+
+[1/7] Cleaning up stuck processes...
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+[2/7] Cleaning build artifacts...
+[3/7] Updating Directory.Build.props...
+[4/7] Fixing QuestionType.cs with extension methods...
+[5/7] Ensuring Country.cs has all required properties...
+[6/7] Fixing CountryQuizViewModel.cs...
+[7/7] Restoring packages and building...
+Restore complete (1.3s)
+
+Build succeeded in 1.4s
+
+Building desktop projects (net10.0)...
+  MyDesktopApplication.Android net10.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/obj/project.assets.json' doesn't have a target for 'net10.0'. Ensure that restore has run and that you have included 'net10.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Core net10.0 failed with 1 error(s) (1.9s)
+    /usr/lib64/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(308,5): error MSB4018: 
+      The "GenerateDepsFile" task failed unexpectedly.
+      System.IO.IOException: The process cannot access the file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.deps.json' because it is bei
+      ng used by another process.
+         at Microsoft.Win32.SafeHandles.SafeFileHandle.Init(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Int64& fileLength, UnixFileMode& filePermi
+      ssions)
+         at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& f
+      ileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+         at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+         at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
+         at System.IO.File.Create(String path)
+         at Microsoft.NET.Build.Tasks.GenerateDepsFile.WriteDepsFile(String depsFilePath)
+         at Microsoft.NET.Build.Tasks.TaskBase.Execute()
+         at Microsoft.Build.BackEnd.TaskExecutionHost.Execute()
+         at Microsoft.Build.BackEnd.TaskBuilder.ExecuteInstantiatedTask(TaskExecutionHost taskExecutionHost, TaskLoggingContext taskLoggingContext, TaskHost taskHost, ItemBucket bucket, TaskExecutionMode howToExe
+      cuteTask)
+  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+
+Build failed with 2 error(s) in 2.4s
+
+real	0m2.529s
+user	0m1.098s
+sys	0m0.235s
+
+real	0m5.566s
+user	0m2.729s
+sys	0m0.799s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
