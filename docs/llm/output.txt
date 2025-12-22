@@ -87,7 +87,7 @@ Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.
 Output file:    docs/llm/dump.txt
 Files exported: 69
 Files skipped:  0
-Output size:    386.69 KB
+Output size:    394.89 KB
 
 File types included:
   • Source code: .cs, .fs, .vb
@@ -99,348 +99,28 @@ File types included:
   • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
 
 
-real	0m0.801s
-user	0m0.395s
-sys	0m0.593s
+real	0m0.897s
+user	0m0.394s
+sys	0m0.635s
 
 Build succeeded in 0.9s
 
-real	0m1.047s
-user	0m0.823s
-sys	0m0.248s
+real	0m1.111s
+user	0m0.839s
+sys	0m0.263s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.832s
-user	0m0.950s
-sys	0m0.196s
+real	0m0.871s
+user	0m0.983s
+sys	0m0.199s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 failed with 28 error(s) (1.0s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(70,27,70,27): Avalonia error AVLN2000: Unable to resolve property or method of name 'QuestionTypes' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 70, position 27.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(94,26,94,26): Avalonia error AVLN2000: Unable to resolve property or method of name 'ScoreText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 94, position 26.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(96,28,96,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 96, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(98,28,98,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 98, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(99,28,99,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 99, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(101,28,101,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 101, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(106,24,106,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 106, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(111,24,111,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 111, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(129,29,129,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 129, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(130,29,130,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 130, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(131,29,131,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 131, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(133,29,133,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 133, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(136,40,136,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 136, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(139,40,139,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 139, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(145,40,145,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 145, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(149,40,149,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 149, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(169,29,169,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 169, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(170,29,170,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 170, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(171,29,171,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 171, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(173,29,173,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 173, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(176,40,176,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 176, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(179,40,179,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 179, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(185,40,185,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 185, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(189,40,189,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 189, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(201,21,201,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 201, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(202,28,202,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'ResultMessage' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 202, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(212,21,212,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'NextRoundCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 212, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(219,21,219,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 219, position 21.
-Attempting to cancel the build...
-
-Build failed with 28 error(s) in 6.4s
-
-real	0m6.535s
-user	0m3.718s
-sys	0m0.739s
-Restore complete (0.8s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.13]   Discovered:  MyDesktopApplication.Core.Tests
-  MyDesktopApplication.UI.Tests net10.0 failed with 11 error(s) (0.3s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(14,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Score' and no accessible extension method 'Score' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(16,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Streak' and no accessible extension method 'Streak' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(24,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(25,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(26,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(27,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'QuestionTypes' and no accessible extension method 'QuestionTypes' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(36,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(38,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1Name' and no accessible extension method 'Country1Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(39,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1Name' and no accessible extension method 'Country1Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,40): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-[xUnit.net 00:00:00.15]   Starting:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
-[xUnit.net 00:00:00.69]   Finished:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
-
-Test summary: total: 21, failed: 0, succeeded: 21, skipped: 0, duration: 1.5s
-Build failed with 11 error(s) in 3.0s
-
-real	0m3.181s
-user	0m2.474s
-sys	0m0.516s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ ps aux | grep 252822
-kushal    252822 18.0  2.1 1461570856 333272 ?   Sl   19:49   6:32 /proc/self/exe --type=utility --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none --render-node-override=/dev/dri/renderD128 --dns-result-order=ipv4first --experimental-network-inspection --inspect-port=0 --crashpad-handler-pid=252646 --enable-crash-reporter=d7543a3b-1b9b-4bdc-ac73-84177d882a41,no_channel --user-data-dir=/home/kushal/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,1779797184523728439,6541317605531481229,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708992871164437
-kushal    255190  0.3  1.1 1459519188 182828 ?   Sl   19:51   0:07 /opt/VSCode-linux-x64/code /opt/VSCode-linux-x64/resources/app/extensions/markdown-language-features/dist/serverWorkerMain --node-ipc --clientProcessId=252822
-kushal    290252  0.0  0.0 231272  2624 pts/0    S+   20:25   0:00 grep --color=auto 252822
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:25:49 up  5:36,  2 users,  load average: 1.32, 1.07, 1.05
-Tasks: 554 total,   2 running, 550 sleeping,   0 stopped,   2 zombie
-%Cpu(s): 10.1 us,  1.1 sy,  0.0 ni, 88.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    366.8 free,   7814.9 used,   7143.8 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7461.8 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 877996 148056 R 109.1   5.6  26:21.24 chrome
-   3360 kushal    20   0   11.1g 374448 171096 S  27.3   2.4  16:57.83 gnome-s+
-   9474 kushal    20   0   48.8g 305892 235400 S   9.1   2.0   1:28.25 chrome
- 290294 kushal    20   0  235400   5804   3680 R   9.1   0.0   0:00.02 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:25:57 up  5:36,  2 users,  load average: 1.51, 1.12, 1.06
-Tasks: 554 total,   2 running, 550 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  8.9 us,  1.7 sy,  0.0 ni, 88.9 id,  0.0 wa,  0.0 hi,  0.6 si,  0.0 st 
-MiB Mem :  15276.7 total,    336.1 free,   7845.6 used,   7151.9 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7431.1 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 913024 148240 R 127.3   5.8  26:32.48 chrome
-   9474 kushal    20   0   48.8g 306648 235736 S   9.1   2.0   1:28.43 chrome
-   9575 kushal    20   0   48.5g 125472 102144 S   9.1   0.8   0:23.67 chrome
- 290432 kushal    20   0  235400   5800   3684 R   9.1   0.0   0:00.02 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:01 up  5:36,  2 users,  load average: 1.47, 1.12, 1.06
-Tasks: 554 total,   2 running, 550 sleeping,   0 stopped,   2 zombie
-%Cpu(s): 10.0 us,  1.1 sy,  0.0 ni, 88.9 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    323.9 free,   7857.7 used,   7146.8 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7418.9 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 915960 148204 R 118.2   5.9  26:37.96 chrome
-   3360 kushal    20   0   11.1g 374568 171096 S  18.2   2.4  16:58.48 gnome-s+
-    867 root      20   0       0      0      0 S   9.1   0.0   0:17.66 napi/ph+
- 290460 kushal    20   0  235400   5800   3684 R   9.1   0.0   0:00.01 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:06 up  5:36,  2 users,  load average: 1.47, 1.12, 1.06
-Tasks: 554 total,   2 running, 550 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  8.5 us,  1.1 sy,  0.0 ni, 90.4 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    316.4 free,   7865.3 used,   7147.8 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7411.4 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 940076 148216 R 127.3   6.0  26:44.75 chrome
-   3360 kushal    20   0   11.1g 374568 171096 S   9.1   2.4  16:58.63 gnome-s+
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     15 root      20   0       0      0      0 S   0.0   0.0   0:00.22 ksoftir+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:10 up  5:36,  2 users,  load average: 1.51, 1.13, 1.07
-Tasks: 554 total,   4 running, 548 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  8.4 us,  1.1 sy,  0.0 ni, 89.4 id,  0.0 wa,  0.6 hi,  0.6 si,  0.0 st 
-MiB Mem :  15276.7 total,    322.1 free,   7859.5 used,   7147.7 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7417.2 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 930808 148224 R 141.7   6.0  26:50.39 chrome
-   3360 kushal    20   0   11.1g 374128 171096 S   8.3   2.4  16:58.79 gnome-s+
- 290540 kushal    20   0  235400   5732   3612 R   8.3   0.0   0:00.01 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:13 up  5:36,  2 users,  load average: 1.47, 1.13, 1.07
-Tasks: 554 total,   2 running, 550 sleeping,   0 stopped,   2 zombie
-%Cpu(s): 10.1 us,  1.7 sy,  0.0 ni, 88.2 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    325.3 free,   7856.1 used,   7147.7 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7420.6 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 933852 148232 R 145.5   6.0  26:55.00 chrome
-   3360 kushal    20   0   11.1g 373840 171096 S   9.1   2.4  16:58.92 gnome-s+
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     15 root      20   0       0      0      0 S   0.0   0.0   0:00.22 ksoftir+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:16 up  5:36,  2 users,  load average: 1.47, 1.13, 1.07
-Tasks: 549 total,   2 running, 545 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  8.4 us,  0.6 sy,  0.0 ni, 90.4 id,  0.0 wa,  0.6 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    341.4 free,   7840.0 used,   7147.7 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7436.6 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 932872 148236 R 145.5   6.0  26:58.72 chrome
-   9575 kushal    20   0   48.5g 125524 102188 S   9.1   0.8   0:23.76 chrome
- 290596 kushal    20   0  235400   5800   3680 R   9.1   0.0   0:00.02 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:18 up  5:36,  2 users,  load average: 1.43, 1.13, 1.07
-Tasks: 549 total,   2 running, 545 sleeping,   0 stopped,   2 zombie
-%Cpu(s): 10.1 us,  1.1 sy,  0.0 ni, 88.2 id,  0.0 wa,  0.6 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    357.2 free,   7824.2 used,   7147.7 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7452.5 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 931824 148244 R 136.4   6.0  27:02.51 chrome
-   3360 kushal    20   0   11.1g 373840 171096 S   9.1   2.4  16:59.03 gnome-s+
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     15 root      20   0       0      0      0 S   0.0   0.0   0:00.22 ksoftir+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:24 up  5:36,  2 users,  load average: 1.40, 1.12, 1.07
-Tasks: 549 total,   2 running, 545 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  2.8 us,  1.1 sy,  0.0 ni, 96.1 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
-MiB Mem :  15276.7 total,    377.5 free,   7803.9 used,   7148.4 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7472.8 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 934844 148140 R  41.7   6.0  27:08.74 chrome
-   3360 kushal    20   0   11.1g 374432 171096 S   8.3   2.4  16:59.45 gnome-s+
-   5618 kushal    20   0  170600  34716  30524 S   8.3   0.2   2:15.43 gsr-ui
- 286322 kushal    20   0 1530472 106452  83312 S   8.3   0.7   0:02.23 ptyxis
- 290747 kushal    20   0  235400   5872   3752 R   8.3   0.0   0:00.02 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ top -b -n 1 | head -n 20
-top - 20:26:32 up  5:36,  2 users,  load average: 1.33, 1.12, 1.06
-Tasks: 547 total,   1 running, 544 sleeping,   0 stopped,   2 zombie
-%Cpu(s):  3.8 us,  1.1 sy,  0.0 ni, 94.0 id,  0.0 wa,  0.5 hi,  0.5 si,  0.0 st 
-MiB Mem :  15276.7 total,    418.0 free,   7763.4 used,   7140.8 buff/cache     
-MiB Swap:   8192.0 total,   8191.9 free,      0.1 used.   7513.3 avail Mem 
-
-    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-  64302 kushal    20   0 1392.5g 937564 147492 S  18.2   6.0  27:15.21 chrome
-   3360 kushal    20   0   11.1g 374456 171096 S   9.1   2.4  16:59.95 gnome-s+
- 290889 kushal    20   0  235400   5868   3752 R   9.1   0.0   0:00.02 top
-      1 root      20   0   39476  21380  11512 S   0.0   0.1   0:03.30 systemd
-      2 root      20   0       0      0      0 S   0.0   0.0   0:00.13 kthreadd
-      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+
-      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-all-errors.sh 
-==============================================
-  Comprehensive Error Fix Script
-==============================================
-
-[Step 1/8] Killing stuck build processes...
-Shutting down MSBuild server...
-Shutting down VB/C# compiler server...
-VB/C# compiler server shut down successfully.
-MSBuild server shut down successfully.
-  ✓ Processes cleaned
-[Step 2/8] Cleaning build artifacts...
-  ✓ Build artifacts cleaned
-[Step 3/8] Fixing TodoItem.cs...
-  ✓ TodoItem.cs fixed
-[Step 4/8] Fixing ViewModelBase.cs...
-  ✓ ViewModelBase.cs fixed
-[Step 5/8] Fixing GameState.cs...
-  ✓ GameState.cs fixed
-[Step 6/8] Fixing CountryQuizViewModel.cs...
-  ✓ CountryQuizViewModel.cs fixed
-[Step 7/8] Fixing IGameStateRepository.cs...
-  ✓ IGameStateRepository.cs fixed
-[Step 8/8] Building and testing...
-
-  Restoring packages...
-  Building solution...
-  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.5s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.Desktop net10.0 failed with 28 error(s) (1.2s)
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(70,27,70,27): Avalonia error AVLN2000: Unable to resolve property or method of name 'QuestionTypes' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 70, position 27.
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(94,26,94,26): Avalonia error AVLN2000: Unable to resolve property or method of name 'ScoreText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 94, position 26.
@@ -472,174 +152,11 @@ MSBuild server shut down successfully.
     /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(219,21,219,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 219, position 21.
 Attempting to cancel the build...
 
-Build failed with 28 error(s) in 9.9s
+Build failed with 28 error(s) in 34.4s
 
-==============================================
-  ✗ Build failed - check errors above
-==============================================
-
-real	0m13.293s
-user	0m5.339s
-sys	0m1.180s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
-==============================================
-  Project Export for LLM Analysis
-==============================================
-
-Project Path: /home/kushal/src/dotnet/MyDesktopApplication
-Output File:  docs/llm/dump.txt
-
-Generating directory structure...
-Collecting files...
-Found 69 files to export
-
-Processing (1/69): add-migration.sh
-Processing (2/69): Directory.Build.props
-Processing (3/69): Directory.Packages.props
-Processing (4/69): export.sh
-Processing (5/69): fix-all-errors.sh
-Processing (6/69): fix-project-properly.sh
-Processing (7/69): .gitattributes
-Processing (8/69): .github/dependabot.yml
-Processing (9/69): .github/workflows/build.yml
-Processing (10/69): .github/workflows/ci.yml
-Processing (11/69): .github/workflows/release.yml
-Processing (12/69): .gitignore
-Processing (13/69): migrate.sh
-Processing (14/69): MyDesktopApplication.slnx
-Processing (15/69): README.md
-Processing (16/69): repair-project.sh
-Processing (17/69): src/MyDesktopApplication.Android/AndroidManifest.xml
-Processing (18/69): src/MyDesktopApplication.Android/App.axaml
-Processing (19/69): src/MyDesktopApplication.Android/App.cs
-Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
-Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
-Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
-Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
-Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
-Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
-Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
-Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
-Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
-Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
-Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
-Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
-Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
-Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
-Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
-Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
-Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
-Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
-Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
-Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
-Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
-Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
-Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
-Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
-Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
-Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
-Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
-==============================================
-  Export Complete!
-==============================================
-
-Output file:    docs/llm/dump.txt
-Files exported: 69
-Files skipped:  0
-Output size:    394.89 KB
-
-File types included:
-  • Source code: .cs, .fs, .vb
-  • UI/XAML: .axaml, .xaml, .paml
-  • Projects: .csproj, .slnx, .sln, .props, .targets
-  • Config: .json, .yaml, .yml, .xml, .config
-  • Docs: .md, .txt
-  • Scripts: .sh, .ps1, .cmd, .bat
-  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
-
-
-real	0m0.825s
-user	0m0.379s
-sys	0m0.637s
-
-Build succeeded in 0.9s
-
-real	0m1.036s
-user	0m0.852s
-sys	0m0.204s
-Restore complete (0.6s)
-
-Build succeeded in 0.7s
-
-real	0m0.831s
-user	0m0.952s
-sys	0m0.200s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Desktop net10.0 failed with 28 error(s) (1.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(70,27,70,27): Avalonia error AVLN2000: Unable to resolve property or method of name 'QuestionTypes' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 70, position 27.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(94,26,94,26): Avalonia error AVLN2000: Unable to resolve property or method of name 'ScoreText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 94, position 26.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(96,28,96,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 96, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(98,28,98,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'StreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 98, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(99,28,99,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 99, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(101,28,101,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'BestStreakText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 101, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(106,24,106,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 106, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(111,24,111,24): Avalonia error AVLN2000: Unable to resolve property or method of name 'AccuracyText' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 111, position 24.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(129,29,129,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 129, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(130,29,130,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry1Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 130, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(131,29,131,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 131, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(133,29,133,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 133, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(136,40,136,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 136, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(139,40,139,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 139, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(145,40,145,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 145, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(149,40,149,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 149, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(169,29,169,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Correct' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 169, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(170,29,170,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'IsCountry2Wrong' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 170, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(171,29,171,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'SelectCountryCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 171, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(173,29,173,29): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 173, position 29.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(176,40,176,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 176, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(179,40,179,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 179, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(185,40,185,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Value' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 185, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(189,40,189,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 189, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(201,21,201,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 201, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(202,28,202,28): Avalonia error AVLN2000: Unable to resolve property or method of name 'ResultMessage' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 202, position 28.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(212,21,212,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'NextRoundCommand' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 212, position 21.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(219,21,219,21): Avalonia error AVLN2000: Unable to resolve property or method of name 'HasAnswered' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 219, position 21.
-Attempting to cancel the build...
-
-Build failed with 28 error(s) in 6.5s
-
-real	0m6.694s
-user	0m3.833s
-sys	0m0.674s
+real	0m34.562s
+user	0m4.285s
+sys	0m0.904s
 Restore complete (0.8s)
   MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
@@ -648,10 +165,12 @@ Restore complete (0.8s)
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.24]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
   MyDesktopApplication.UI.Tests net10.0 failed with 11 error(s) (0.4s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(14,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Score' and no accessible extension method 'Score' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(16,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Streak' and no accessible extension method 'Streak' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
@@ -664,18 +183,16 @@ Restore complete (0.8s)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(39,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1Name' and no accessible extension method 'Country1Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
     /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(40,40): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2Name' and no accessible extension method 'Country2Name' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.70]   Finished:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.69]   Finished:    MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
 
 Test summary: total: 21, failed: 0, succeeded: 21, skipped: 0, duration: 1.5s
 Build failed with 11 error(s) in 3.0s
 
-real	0m3.121s
-user	0m2.473s
-sys	0m0.517s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test;
+real	0m3.131s
+user	0m2.615s
+sys	0m0.515s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-all-errors.sh 
