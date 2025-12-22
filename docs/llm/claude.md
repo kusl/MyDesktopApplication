@@ -4898,3 +4898,5 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+Do not use pre-release packages but also do not downgrade my packages to make the code build. 
+Fix code properly instead of downgrading to older versions. 

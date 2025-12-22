@@ -87,7 +87,7 @@ Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.
 Output file:    docs/llm/dump.txt
 Files exported: 69
 Files skipped:  0
-Output size:    419.64 KB
+Output size:    420.62 KB
 
 File types included:
   • Source code: .cs, .fs, .vb
@@ -99,142 +99,254 @@ File types included:
   • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
 
 
-real	0m0.825s
-user	0m0.405s
-sys	0m0.613s
+real	0m0.836s
+user	0m0.408s
+sys	0m0.598s
 
 Build succeeded in 0.9s
 
-real	0m1.071s
-user	0m0.842s
-sys	0m0.209s
+real	0m1.017s
+user	0m0.817s
+sys	0m0.215s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+
+Restore failed with 1 error(s) in 0.7s
+
+real	0m0.887s
+user	0m1.008s
+sys	0m0.207s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+
+Restore failed with 1 error(s) in 0.8s
+
+real	0m0.892s
+user	0m1.064s
+sys	0m0.225s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+
+Restore failed with 1 error(s) in 0.7s
+
+real	0m0.910s
+user	0m1.059s
+sys	0m0.260s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+
+Restore failed with 1 error(s) in 0.8s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.EntityFrameworkCore from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.EntityFrameworkCore (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+
+Restore failed with 4 error(s) in 1.0s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Infrastructure -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.Infrastructure -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Integration.Tests -> Microsoft.EntityFrameworkCore.InMemory 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Integration.Tests -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Infrastructure -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Infrastructure -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Infrastructure -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Infrastructure -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.UI.Tests -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.UI.Tests -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Android -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.Android -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Android -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Android -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Android -> Microsoft.EntityFrameworkCore 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Android -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Desktop -> Microsoft.EntityFrameworkCore.Design 10.0.1 -> Microsoft.Extensions.Logging (>= 10.0.1) 
+       MyDesktopApplication.Desktop -> Microsoft.Extensions.Logging (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Desktop -> Microsoft.EntityFrameworkCore.Design 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Desktop -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 10.0.0)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : error NU1109: 
+      Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 10.0.1 to centrally defined 10.0.0. Update the centrally managed package version to a higher version. 
+       MyDesktopApplication.Desktop -> Microsoft.EntityFrameworkCore.Design 10.0.1 -> Microsoft.Extensions.Caching.Memory 10.0.1 -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.1) 
+       MyDesktopApplication.Desktop -> Microsoft.Extensions.Logging.Abstractions (>= 10.0.0)
+
+Restore failed with 15 error(s) in 0.9s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package
+Restore complete (0.8s)
+
+Build succeeded in 0.9s
+Project 'MyDesktopApplication.Android' has the following package references
+   [net10.0-android36.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia                                      11.3.0      11.3.0  
+   > Avalonia.Android                              11.3.0      11.3.0  
+   > Avalonia.Themes.Fluent                        11.3.0      11.3.0  
+   > CommunityToolkit.Mvvm                         8.4.0       8.4.0   
+   > Microsoft.Extensions.DependencyInjection      10.0.1      10.0.1  
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia                                      11.3.0      11.3.0  
+   > Avalonia.Desktop                              11.3.0      11.3.0  
+   > Avalonia.Diagnostics                          11.3.0      11.3.0  
+   > Avalonia.Fonts.Inter                          11.3.0      11.3.0  
+   > Avalonia.Themes.Fluent                        11.3.0      11.3.0  
+   > CommunityToolkit.Mvvm                         8.4.0       8.4.0   
+   > Microsoft.EntityFrameworkCore.Design          10.0.1      10.0.1  
+   > Microsoft.Extensions.DependencyInjection      10.0.1      10.0.1  
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 10.0.1      10.0.1  
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.1      10.0.1  
+   > Microsoft.Extensions.DependencyInjection      10.0.1      10.0.1  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.0       8.4.0   
+   > FluentValidation           11.11.0     11.11.0 
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > NSubstitute                    5.3.0       5.3.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.5       3.1.5   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          6.0.4       6.0.4   
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.1      10.0.1  
+   > Microsoft.NET.Test.Sdk                      17.14.1     17.14.1 
+   > NSubstitute                                 5.3.0       5.3.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit                                       2.9.3       2.9.3   
+   > xunit.runner.visualstudio                   3.1.5       3.1.5   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.14.1     17.14.1 
+   > NSubstitute                    5.3.0       5.3.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.5       3.1.5   
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package --outdated
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.865s
-user	0m0.978s
-sys	0m0.205s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(35,13): error CS0117: 'Country' does not contain a definition for 'Flag'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(40,13): error CS0117: 'Country' does not contain a definition for 'PopulationDensity'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,13): error CS0117: 'Country' does not contain a definition for 'LiteracyRate'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(33,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(35,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.3s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.5s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Converters/Converters.cs(13,46): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(102,44): error CS7036: There is no argument given that corresponds to the required parameter 'userId' of 'IGameStateRepository.GetOrCreateAsync(string, CancellationToken)'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,90): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(139,25): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,53): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,39): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-Attempting to cancel the build...
+The following sources were used:
+   https://api.nuget.org/v3/index.json
 
-Build failed with 18 error(s) and 3 warning(s) in 185.8s
+Project `MyDesktopApplication.Android` has the following updates to its packages
+   [net10.0-android36.0]: 
+   Top-level Package             Requested   Resolved   Latest 
+   > Avalonia                    11.3.0      11.3.0     11.3.10
+   > Avalonia.Android            11.3.0      11.3.0     11.3.10
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0     11.3.10
 
-real	3m5.963s
-user	0m4.854s
-sys	0m1.742s
-Restore complete (0.8s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Core.Tests net10.0 failed with 9 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(16,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(17,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(33,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(35,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(49,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(51,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(35,13): error CS0117: 'Country' does not contain a definition for 'Flag'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(40,13): error CS0117: 'Country' does not contain a definition for 'PopulationDensity'
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,13): error CS0117: 'Country' does not contain a definition for 'LiteracyRate'
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs(18,14): error CS1061: 'DbContextOptionsBuilder<AppDbContext>' does not contain a definition for 'UseInMemoryDatabase' and no accessible extension method 'UseInMemoryDatabase' accepting a first argument of type 'DbContextOptionsBuilder<AppDbContext>' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Desktop net10.0 failed with 8 error(s) and 3 warning(s) (0.4s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Converters/Converters.cs(13,46): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(102,44): error CS7036: There is no argument given that corresponds to the required parameter 'userId' of 'IGameStateRepository.GetOrCreateAsync(string, CancellationToken)'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,90): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(139,25): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,53): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(151,39): warning CS0472: The result of the expression is always 'true' since a value of type 'double' is never equal to 'null' of type 'double?'
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(203,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,32): error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(208,79): error CS1061: 'double' does not contain a definition for 'Value' and no accessible extension method 'Value' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?)
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest 
+   > Avalonia                    11.3.0      11.3.0     11.3.10
+   > Avalonia.Desktop            11.3.0      11.3.0     11.3.10
+   > Avalonia.Diagnostics        11.3.0      11.3.0     11.3.10
+   > Avalonia.Fonts.Inter        11.3.0      11.3.0     11.3.10
+   > Avalonia.Themes.Fluent      11.3.0      11.3.0     11.3.10
 
-Build failed with 18 error(s) and 3 warning(s) in 1.8s
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+Project `MyDesktopApplication.Shared` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package       Requested   Resolved   Latest
+   > FluentValidation      11.11.0     11.11.0    12.1.1
 
-real	0m1.959s
-user	0m1.587s
-sys	0m0.507s
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ time sh fix-all-errors.sh 
-[5/9] Fixing Country entity...
-[6/9] Fixing QuestionType and extensions...
-[7/9] Fixing repositories and tests...
-[8/9] Fixing UI tests...
-[9/9] Restoring and building...
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > Microsoft.NET.Test.Sdk      17.14.1     17.14.1    18.0.1
 
-Restore failed with 1 error(s) in 1.3s
-  MyDesktopApplication.Integration.Tests net10.0 failed with 1 error(s) (0.1s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : error NU1010: The following PackageReference items do not define a corresponding PackageVersion item: Microsoft.EntityFrameworkCore.InMemory. Projects using Central Package Management must declare PackageReference and PackageVersion items with matching names. For more information, visit https://aka.ms/nuget/cpm/gettingstarted
-  MyDesktopApplication.Core net10.0 succeeded (2.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net10.0 failed with 8 error(s) (0.3s)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(14,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(15,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(29,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(30,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(44,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(45,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(60,15): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/GameStateTests.cs(61,15): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Desktop net10.0 failed with 3 error(s) (0.5s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(50,27): error CS1061: 'GameState' does not contain a definition for 'CurrentScore' and no accessible extension method 'CurrentScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(51,31): error CS1061: 'GameState' does not contain a definition for 'HighScore' and no accessible extension method 'HighScore' accepting a first argument of type 'GameState' could be found (are you missing a using directive or an assembly reference?)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs(19,22): error CS0122: 'MainWindowViewModel.InitializeAsync()' is inaccessible due to its protection level
-Attempting to cancel the build...
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > Microsoft.NET.Test.Sdk      17.14.1     17.14.1    18.0.1
 
-Build failed with 12 error(s) in 22.0s
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > Microsoft.NET.Test.Sdk      17.14.1     17.14.1    18.0.1
 
-==============================================
-  Fix Complete!
-==============================================
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ ^C
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ dotnet list package --outdated
+Restore complete (0.7s)
 
-The following issues were fixed:
-  • GameState: Added CurrentScore, HighScore, RecordAnswer(), Reset()
-  • Country: Added Flag, PopulationDensity, LiteracyRate aliases
-  • QuestionType: Added GetLabel(), GetValue(), FormatValue() extensions
-  • IGameStateRepository: Fixed interface with userId parameter
-  • GameStateRepository: Fixed implementation
-  • Integration.Tests: Added Microsoft.EntityFrameworkCore.InMemory package
-  • TodoRepositoryTests: Added proper using statements
-  • GameStateTests: Rewrote to use correct properties
-  • QuestionTypeTests: Fixed to use correct property names
-  • Desktop Converters: Fixed QuestionType converter
-  • MainWindowViewModel: Fixed nullable .Value calls
+Build succeeded in 0.8s
 
-Run tests with: dotnet test MyDesktopApplication.slnx
+The following sources were used:
+   https://api.nuget.org/v3/index.json
 
-real	0m23.548s
-user	0m4.242s
-sys	0m0.753s
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
