@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using MyDesktopApplication.Desktop.ViewModels;
 
 namespace MyDesktopApplication.Desktop.Views;
 
@@ -8,15 +7,14 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-    }
-    
-    protected override async void OnOpened(EventArgs e)
-    {
-        base.OnOpened(e);
         
-        if (DataContext is MainWindowViewModel vm)
+        // Initialize the ViewModel when the window loads
+        Loaded += async (_, _) =>
         {
-            await vm.InitializeAsync();
-        }
+            if (DataContext is ViewModels.MainWindowViewModel vm)
+            {
+                await vm.InitializeAsync();
+            }
+        };
     }
 }

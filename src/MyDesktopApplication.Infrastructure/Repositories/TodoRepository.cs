@@ -27,6 +27,12 @@ public class TodoRepository : Repository<TodoItem>, ITodoRepository
             .ThenByDescending(t => t.Priority)
             .ToListAsync(ct);
 
+    /// <summary>
+    /// Gets all incomplete (not completed) todo items - alias for GetPendingAsync
+    /// </summary>
+    public async Task<IReadOnlyList<TodoItem>> GetIncompleteAsync(CancellationToken ct = default)
+        => await GetPendingAsync(ct);
+
     public async Task<IReadOnlyList<TodoItem>> GetOverdueAsync(CancellationToken ct = default)
         => await DbSet.AsNoTracking()
             .Where(t => !t.IsCompleted && t.DueDate != null && t.DueDate < DateTime.UtcNow)

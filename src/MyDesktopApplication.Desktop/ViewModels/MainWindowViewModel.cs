@@ -1,7 +1,4 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
@@ -13,156 +10,194 @@ namespace MyDesktopApplication.Desktop.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly IGameStateRepository? _gameStateRepository;
-    private readonly Random _random = new();
-    private Country? _country1;
-    private Country? _country2;
-
-    [ObservableProperty] private string _questionText = "Loading...";
-    [ObservableProperty] private string _country1Name = "";
-    [ObservableProperty] private string _country2Name = "";
-    [ObservableProperty] private string _country1Value = "";
-    [ObservableProperty] private string _country2Value = "";
-    [ObservableProperty] private string _feedbackMessage = "";
-    [ObservableProperty] private bool _showValues;
-    [ObservableProperty] private bool _isCorrect;
-    [ObservableProperty] private int _score;
-    [ObservableProperty] private int _highScore;
-    [ObservableProperty] private int _streak;
-    [ObservableProperty] private int _bestStreak;
-    [ObservableProperty] private double _accuracy;
-    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    public ObservableCollection<QuestionType> QuestionTypes { get; } = new(Enum.GetValues<QuestionType>());
-
-    public MainWindowViewModel() : this(null) { }
-
-    public MainWindowViewModel(IGameStateRepository? gameStateRepository)
+    private GameState _gameState = new();
+    
+    [ObservableProperty]
+    private string _greeting = "Welcome to Country Quiz!";
+    
+    [ObservableProperty]
+    private int _currentScore;
+    
+    [ObservableProperty]
+    private int _highScore;
+    
+    [ObservableProperty]
+    private int _currentStreak;
+    
+    [ObservableProperty]
+    private int _bestStreak;
+    
+    [ObservableProperty]
+    private string _questionText = "Loading...";
+    
+    [ObservableProperty]
+    private string _feedbackMessage = "";
+    
+    [ObservableProperty]
+    private bool _showFeedback;
+    
+    [ObservableProperty]
+    private ObservableCollection<string> _answerOptions = new();
+    
+    [ObservableProperty]
+    private Country? _currentCountryA;
+    
+    [ObservableProperty]
+    private Country? _currentCountryB;
+    
+    [ObservableProperty]
+    private QuestionType _selectedQuestionType = QuestionType.Population;
+    
+    public MainWindowViewModel()
+    {
+        // Design-time constructor
+    }
+    
+    public MainWindowViewModel(IGameStateRepository gameStateRepository)
     {
         _gameStateRepository = gameStateRepository;
-        _ = InitializeAsync();
     }
-
-    private async Task InitializeAsync()
+    
+    /// <summary>
+    /// Initializes the ViewModel by loading game state
+    /// </summary>
+    public async Task InitializeAsync()
     {
         if (_gameStateRepository != null)
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            Score = state.CurrentScore;
-            HighScore = state.HighScore;
-            Streak = state.CurrentStreak;
-            BestStreak = state.BestStreak;
-            Accuracy = state.Accuracy;
+            _gameState = await _gameStateRepository.GetOrCreateAsync("default");
+            UpdateScoresFromGameState();
         }
+        
         GenerateNewQuestion();
     }
-
-    [RelayCommand]
+    
+    private void UpdateScoresFromGameState()
+    {
+        CurrentScore = _gameState.CurrentScore;
+        HighScore = _gameState.HighScore;
+        CurrentStreak = _gameState.CurrentStreak;
+        BestStreak = _gameState.BestStreak;
+    }
+    
     private void GenerateNewQuestion()
     {
-        var countries = CountryData.Countries;
+        var countries = CountryData.GetAllCountries();
+        var random = new Random();
+        
+        // Pick two different random countries
         var indices = Enumerable.Range(0, countries.Count)
-            .OrderBy(_ => _random.Next())
+            .OrderBy(_ => random.Next())
             .Take(2)
             .ToList();
-
-        _country1 = countries[indices[0]];
-        _country2 = countries[indices[1]];
-
-        Country1Name = _country1.Name;
-        Country2Name = _country2.Name;
-        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
         
-        ShowValues = false;
-        Country1Value = "";
-        Country2Value = "";
-        FeedbackMessage = "";
+        CurrentCountryA = countries[indices[0]];
+        CurrentCountryB = countries[indices[1]];
+        
+        QuestionText = GetQuestionText();
+        
+        AnswerOptions.Clear();
+        AnswerOptions.Add(CurrentCountryA.Name);
+        AnswerOptions.Add(CurrentCountryB.Name);
+        
+        ShowFeedback = false;
     }
-
-    [RelayCommand]
-    private async Task SelectCountry(int countryNumber)
+    
+    private string GetQuestionText()
     {
-        if (_country1 == null || _country2 == null || ShowValues) return;
-
-        var value1 = SelectedQuestionType.GetValue(_country1);
-        var value2 = SelectedQuestionType.GetValue(_country2);
-
-        var correctAnswer = value1 > value2 ? 1 : 2;
-        IsCorrect = countryNumber == correctAnswer;
-
-        Country1Value = SelectedQuestionType.FormatValue(value1);
-        Country2Value = SelectedQuestionType.FormatValue(value2);
-        ShowValues = true;
-
-        if (IsCorrect)
+        return SelectedQuestionType switch
         {
-            Score++;
-            Streak++;
-            if (Streak > BestStreak) BestStreak = Streak;
-            if (Score > HighScore) HighScore = Score;
-            FeedbackMessage = GetCorrectMessage(Streak, BestStreak);
-        }
-        else
+            QuestionType.Population => "Which country has a larger population?",
+            QuestionType.Area => "Which country has a larger area?",
+            QuestionType.Gdp => "Which country has a higher GDP?",
+            QuestionType.GdpPerCapita => "Which country has a higher GDP per capita?",
+            QuestionType.Density => "Which country has a higher population density?",
+            QuestionType.Literacy => "Which country has a higher literacy rate?",
+            QuestionType.Hdi => "Which country has a higher Human Development Index?",
+            QuestionType.LifeExpectancy => "Which country has a higher life expectancy?",
+            _ => "Which country has a larger population?"
+        };
+    }
+    
+    private double GetValue(Country country)
+    {
+        return SelectedQuestionType switch
         {
-            Streak = 0;
-            FeedbackMessage = GetIncorrectMessage();
-        }
-
-        // Update accuracy (simple calculation)
-        var totalAnswered = Score + (IsCorrect ? 0 : 1);
-        if (totalAnswered > 0)
-        {
-            Accuracy = (double)Score / totalAnswered * 100;
-        }
-
-        // Save state
+            QuestionType.Population => country.Population,
+            QuestionType.Area => country.Area,
+            QuestionType.Gdp => country.Gdp,
+            QuestionType.GdpPerCapita => country.GdpPerCapita,
+            QuestionType.Density => country.Density,
+            QuestionType.Literacy => country.Literacy,
+            QuestionType.Hdi => country.Hdi,
+            QuestionType.LifeExpectancy => country.LifeExpectancy,
+            _ => country.Population
+        };
+    }
+    
+    [RelayCommand]
+    private async Task SelectAnswer(string answer)
+    {
+        if (CurrentCountryA == null || CurrentCountryB == null)
+            return;
+        
+        var valueA = GetValue(CurrentCountryA);
+        var valueB = GetValue(CurrentCountryB);
+        
+        var correctCountry = valueA >= valueB ? CurrentCountryA : CurrentCountryB;
+        var isCorrect = answer == correctCountry.Name;
+        
+        _gameState.RecordAnswer(isCorrect);
+        UpdateScoresFromGameState();
+        
         if (_gameStateRepository != null)
         {
-            var state = await _gameStateRepository.GetOrCreateAsync("default");
-            state.RecordAnswer(IsCorrect);
-            await _gameStateRepository.SaveAsync(state);
+            await _gameStateRepository.UpdateAsync(_gameState);
         }
-    }
-
-    [RelayCommand]
-    private async Task Reset()
-    {
-        Score = 0;
-        Streak = 0;
-        Accuracy = 0;
-        // Note: HighScore and BestStreak are preserved
-
-        if (_gameStateRepository != null)
-        {
-            await _gameStateRepository.ResetAsync("default");
-        }
-
+        
+        FeedbackMessage = isCorrect 
+            ? GetCorrectMessage() 
+            : GetIncorrectMessage(correctCountry.Name);
+        ShowFeedback = true;
+        
+        // Wait a moment then show next question
+        await Task.Delay(1500);
         GenerateNewQuestion();
     }
-
-    private string GetCorrectMessage(int streak, int bestStreak)
-    {
-        if (streak == bestStreak && streak > 1)
-            return $"🏆 NEW RECORD! {streak} in a row!";
-        if (streak >= 10)
-            return $"🔥 UNSTOPPABLE! {streak} streak!";
-        if (streak >= 5)
-            return $"🔥 On fire! {streak} in a row!";
-        if (streak >= 3)
-            return $"✨ Nice streak! {streak} in a row!";
-        
-        var messages = new[] { "Correct! ✓", "Well done! 👍", "Right! 🎯", "Excellent! ⭐" };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private string GetIncorrectMessage()
+    
+    private string GetCorrectMessage()
     {
         var messages = new[]
         {
-            "Not quite, but keep going! 💪",
-            "Oops! Try the next one! 🔄",
-            "Close! You'll get the next one! 🌟",
-            "Learning opportunity! 📚"
+            "Correct! 🎉",
+            "Well done! 👏",
+            "You got it! ✨",
+            "Excellent! 🌟",
+            "Right on! 💪"
         };
-        return messages[_random.Next(messages.Length)];
+        
+        if (CurrentStreak >= 5)
+            return $"🔥 {CurrentStreak} in a row! Amazing!";
+        
+        return messages[new Random().Next(messages.Length)];
+    }
+    
+    private string GetIncorrectMessage(string correctAnswer)
+    {
+        return $"Not quite. The answer was {correctAnswer}. Keep going! 💪";
+    }
+    
+    [RelayCommand]
+    private async Task ResetGame()
+    {
+        _gameState.Reset();
+        UpdateScoresFromGameState();
+        
+        if (_gameStateRepository != null)
+        {
+            await _gameStateRepository.UpdateAsync(_gameState);
+        }
+        
+        GenerateNewQuestion();
     }
 }
