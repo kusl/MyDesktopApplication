@@ -5098,3 +5098,57 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+There are all sort of things wrong with this code base. 
+Please fix all the errors as identified in output.txt and use the code in dump.txt as your starting point. 
+Please generate a single script to fix all these issues. 
+Please harmonize property names. For example, it makes no sense to call something Gdp somewhere and GdpTotal somewhere else. 
+Please make sure the build works. Do not hallucinate. 
+Please keep in mind all our instructions. Do not introduce non-free (including paid for commercial only) nuget packages. 
+Do not try to sneak in "solutions" by deleting functionality or by siloing code into desktop only vs mobile only, properly fix errors. 
+Please write a single script to fix the issues. 
+Please make sure the script is idempotent, meaning it doesn't break things if you run it multiple times. 
+Do not use pre-release packages but also do not downgrade my packages to make the code build. 
+Fix code properly instead of downgrading to older versions. 
+Do not introduce new errors. 
+Fix all existing errors. 
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 6 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(20,14): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,33): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(42,27): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(43,30): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(44,31): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(53,33): error CS1061: 'QuestionType' does not contain a definition for 'FormatValue' and no accessible extension method 'FormatValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(203,20): error CS0029: Cannot implicitly convert type 'string' to 'double'
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+
+Build failed with 7 error(s) in 1.5s
+
+real	0m1.691s
+user	0m1.791s
+sys	0m0.401s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 6 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(20,14): error CS1061: 'QuestionType' does not contain a definition for 'GetLabel' and no accessible extension method 'GetLabel' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(41,33): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(42,27): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(43,30): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(44,31): error CS1061: 'QuestionType' does not contain a definition for 'GetValue' and no accessible extension method 'GetValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(53,33): error CS1061: 'QuestionType' does not contain a definition for 'FormatValue' and no accessible extension method 'FormatValue' accepting a first argument of type 'QuestionType' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(203,20): error CS0029: Cannot implicitly convert type 'string' to 'double'
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.71]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+
+Test summary: total: 3, failed: 0, succeeded: 3, skipped: 0, duration: 1.3s
+Build failed with 7 error(s) in 2.4s
