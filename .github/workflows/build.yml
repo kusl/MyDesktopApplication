@@ -104,10 +104,12 @@ jobs:
             ${{ runner.os }}-android-nuget-
 
       - name: Build Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            --output ./publish/android
+              run: |
+                dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+                  --configuration Release \
+                  -p:ApplicationVersion=${{ github.run_number }} \
+                  -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
+                  --output ./publish/android
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v6
