@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 10:36:11 PM CST 2025
+Generated: Wed Dec 24 10:37:50 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -5635,25 +5635,27 @@ MODIFIED: 2025-12-24 22:10:48
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml.cs
-SIZE: 1.65 KB
-MODIFIED: 2025-12-24 22:24:09
+SIZE: 2.15 KB
+MODIFIED: 2025-12-24 22:37:50
 ================================================================================
 
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MyDesktopApplication.Infrastructure;
-using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Shared.ViewModels;
 using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Repositories;
+using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android;
 
-// Use fully qualified Avalonia.Application to avoid conflict with Android.App.Application
 public partial class App : Avalonia.Application
 {
-    private ServiceProvider? _serviceProvider;
+    public static IServiceProvider? Services { get; private set; }
 
     public override void Initialize()
     {
@@ -5665,26 +5667,39 @@ public partial class App : Avalonia.Application
         // Set up dependency injection
         var services = new ServiceCollection();
 
-        // Get the Android-specific data directory for SQLite
-        var dataDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-        var dbPath = System.IO.Path.Combine(dataDir, "mydesktopapp.db");
+        // Get the Android-specific database path
+        var dbPath = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "countryquiz.db");
 
-        services.AddInfrastructure(dbPath);
+        // Register DbContext
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"));
+
+        // Register repositories
+        services.AddScoped<IGameStateRepository, GameStateRepository>();
+
+        // Register ViewModels
         services.AddTransient<CountryQuizViewModel>();
 
-        _serviceProvider = services.BuildServiceProvider();
+        var serviceProvider = services.BuildServiceProvider();
+        Services = serviceProvider;
 
-        // Ensure database is created
-        await _serviceProvider.EnsureDatabaseCreatedAsync();
-
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
+        // Initialize database - get DbContext and ensure created
+        using (var scope = serviceProvider.CreateScope())
         {
-            var vm = _serviceProvider.GetRequiredService<CountryQuizViewModel>();
-            await vm.InitializeAsync();
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await dbContext.Database.EnsureCreatedAsync();
+        }
 
-            singleView.MainView = new MainView
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            var viewModel = serviceProvider.GetRequiredService<CountryQuizViewModel>();
+            await viewModel.InitializeAsync();
+
+            singleViewPlatform.MainView = new MainView
             {
-                DataContext = vm
+                DataContext = viewModel
             };
         }
 
@@ -6107,8 +6122,8 @@ MODIFIED: 2025-12-24 20:00:26
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-SIZE: .95 KB
-MODIFIED: 2025-12-24 22:22:55
+SIZE: .98 KB
+MODIFIED: 2025-12-24 22:36:28
 ================================================================================
 
 using Avalonia.Controls;
@@ -6124,12 +6139,12 @@ public partial class MainView : UserControl
         InitializeComponent();
     }
 
-    // Use fully qualified Avalonia.Controls.Button to avoid conflict with Android.Widget.Button
     private void OnCountry1Click(object? sender, RoutedEventArgs e)
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.SelectCountry1Command.Execute(null);
+            // SelectCountryCommand takes a string parameter ("1" or "2")
+            vm.SelectCountryCommand.Execute("1");
         }
     }
 
@@ -6137,15 +6152,16 @@ public partial class MainView : UserControl
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.SelectCountry2Command.Execute(null);
+            vm.SelectCountryCommand.Execute("2");
         }
     }
 
-    private void OnNextQuestionClick(object? sender, RoutedEventArgs e)
+    private void OnNextClick(object? sender, RoutedEventArgs e)
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.NextQuestionCommand.Execute(null);
+            // The command is NextRoundCommand, not NextQuestionCommand
+            vm.NextRoundCommand.Execute(null);
         }
     }
 }
@@ -9075,7 +9091,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 10:36:12 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 10:37:50 PM CST 2025
 Total Files Found: 72
 Files Exported: 72
 Files Skipped: 0 (binary or large files)

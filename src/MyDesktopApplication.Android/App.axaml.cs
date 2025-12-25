@@ -25,22 +25,22 @@ public partial class App : Avalonia.Application
     {
         // Set up dependency injection
         var services = new ServiceCollection();
-        
+
         // Get the Android-specific database path
         var dbPath = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "countryquiz.db");
-        
+
         // Register DbContext
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
-        
+
         // Register repositories
         services.AddScoped<IGameStateRepository, GameStateRepository>();
-        
+
         // Register ViewModels
         services.AddTransient<CountryQuizViewModel>();
-        
+
         var serviceProvider = services.BuildServiceProvider();
         Services = serviceProvider;
 
@@ -55,7 +55,7 @@ public partial class App : Avalonia.Application
         {
             var viewModel = serviceProvider.GetRequiredService<CountryQuizViewModel>();
             await viewModel.InitializeAsync();
-            
+
             singleViewPlatform.MainView = new MainView
             {
                 DataContext = viewModel
