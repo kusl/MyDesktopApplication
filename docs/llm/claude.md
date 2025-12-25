@@ -11498,3 +11498,15 @@ This follows your principle of **"One Team, One Build"** - everyone builds every
 
 
 
+got another error 
+Run dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+ParserError: D:\a\_temp\54cf618e-d1ca-45cc-8e94-fb85c9b2f49b.ps1:5
+Line |
+   5 |    --self-contained true \
+     |      ~
+     | Missing expression after unary operator '--'.
+Error: Process completed with exit code 1.
+
+I have seen this one before 
+I need to use bash or something here. 
+shell: bash
