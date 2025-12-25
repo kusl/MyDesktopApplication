@@ -11698,3 +11698,231 @@ After the build succeeds, install the APK on your device and test. The app shoul
 
 
 
+the build is broken now 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 0.9s
+
+real	0m1.050s
+user	0m0.836s
+sys	0m0.228s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.851s
+user	0m0.945s
+sys	0m0.199s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Android net10.0-android failed with 4 error(s) (1.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(12,14): error CS0260: Missing partial modifier on declaration of type 'App'; another partial declaration of this type exists
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(13,28): error CS0104: 'Application' is an ambiguous reference between 'Android.App.Application' and 'Avalonia.Application'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(16,26): error CS0111: Type 'App' already defines a member called 'Initialize' with the same parameter types
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(21,32): error CS0111: Type 'App' already defines a member called 'OnFrameworkInitializationCompleted' with the same parameter types
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+
+Build failed with 4 error(s) in 3.0s
+
+real	0m3.143s
+user	0m3.195s
+sys	0m0.770s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.76]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.5s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
+Build succeeded in 2.5s
+
+real	0m2.605s
+user	0m1.863s
+sys	0m0.415s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.269s
+user	0m2.336s
+sys	0m0.517s
+
+real	0m8.141s
+user	0m12.860s
+sys	0m1.197s
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 71 files to export
+
+Processing (1/71): consolidate-github-actions.sh
+Processing (2/71): Directory.Build.props
+Processing (3/71): Directory.Packages.props
+Processing (4/71): export.sh
+Processing (5/71): fix-all-issues.sh
+Processing (6/71): fix-android-crash.sh
+Processing (7/71): fix-app-update.sh
+Processing (8/71): fix-github-actions.sh
+Processing (9/71): fix-ui-and-precision.sh
+Processing (10/71): fix-ui-tests.sh
+Processing (11/71): .gitattributes
+Processing (12/71): .github/dependabot.yml
+Processing (13/71): .github/workflows/build-and-release.yml
+Processing (14/71): .gitignore
+Processing (15/71): MyDesktopApplication.slnx
+Processing (16/71): README.md
+Processing (17/71): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (18/71): src/MyDesktopApplication.Android/App.axaml
+Processing (19/71): src/MyDesktopApplication.Android/App.axaml.cs
+Processing (20/71): src/MyDesktopApplication.Android/App.cs
+Processing (21/71): src/MyDesktopApplication.Android/Converters/Converters.cs
+Processing (22/71): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (23/71): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (24/71): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (25/71): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (26/71): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (27/71): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (28/71): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (29/71): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (30/71): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (31/71): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (32/71): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (33/71): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (34/71): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (35/71): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (36/71): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (37/71): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (38/71): src/MyDesktopApplication.Desktop/App.axaml
+Processing (39/71): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (40/71): src/MyDesktopApplication.Desktop/app.manifest
+Processing (41/71): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (42/71): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (43/71): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (44/71): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (45/71): src/MyDesktopApplication.Desktop/Program.cs
+Processing (46/71): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (47/71): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (48/71): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (49/71): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (50/71): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (51/71): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (52/71): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (53/71): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (54/71): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (55/71): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (56/71): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (57/71): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (58/71): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (59/71): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (60/71): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (61/71): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (62/71): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (63/71): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (64/71): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (65/71): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (66/71): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (67/71): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (68/71): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (69/71): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (70/71): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (71/71): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 71
+Files skipped:  0
+Output size:    511.72 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.762s
+user	0m0.433s
+sys	0m0.474s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+I can see the build errors clearly. The Android project has duplicate `App` class definitions - there's both an `App.cs` and an `App.axaml.cs` file, causing conflicts. Let me search the project knowledge to understand the current file structure and fix this properly.Now I understand the issue. The Android project has **duplicate App class definitions** - there's both `App.cs` and `App.axaml.cs`, and they're conflicting. Let me search for the exact contents of these files:I found the issue. Let me search for the actual current content of the Android App files:Now I have a clear picture. The problem is that there are **two separate App class files** that are conflicting:
+
+1. `App.cs` - defines `public class App`
+2. `App.axaml.cs` - defines `public partial class App` 
+
+The errors are:
+- **CS0260**: `App.cs` is missing the `partial` modifier - both files define the same class
+- **CS0104**: Ambiguous `Application` reference (Android vs Avalonia)
+- **CS0111**: Duplicate method definitions (`Initialize` and `OnFrameworkInitializationCompleted`)
+
+The solution is to **delete `App.cs`** since `App.axaml.cs` is the correct code-behind file for the XAML-based `App.axaml`. Let me create a fix script:Now run this script to fix the Android build:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-android-build.sh
+./fix-android-build.sh
+```
+
+## What This Fixes
+
+| Error | Root Cause | Fix |
+|-------|-----------|-----|
+| **CS0260**: Missing `partial` modifier | Both `App.cs` and `App.axaml.cs` define the same `App` class, but `App.cs` isn't marked `partial` | Delete `App.cs` - it's a duplicate. `App.axaml.cs` is the proper code-behind for `App.axaml` |
+| **CS0104**: `Application` is ambiguous | Both `Android.App.Application` and `Avalonia.Application` exist in scope | Use fully qualified `Avalonia.Application` as the base class |
+| **CS0111**: Duplicate `Initialize` method | Both files had `Initialize()` and `OnFrameworkInitializationCompleted()` | Solved by deleting the duplicate `App.cs` |
+| **CS0104**: `Button` is ambiguous | Both `Android.Widget.Button` and `Avalonia.Controls.Button` exist | Use explicit event handlers that don't reference Button type directly |
+
+The key insight is that Avalonia uses XAML with code-behind files (`.axaml` + `.axaml.cs`), so you should only have `App.axaml` and `App.axaml.cs` - not a separate `App.cs` file that duplicates the class.
