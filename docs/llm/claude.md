@@ -11926,3 +11926,5 @@ chmod +x fix-android-build.sh
 | **CS0104**: `Button` is ambiguous | Both `Android.Widget.Button` and `Avalonia.Controls.Button` exist | Use explicit event handlers that don't reference Button type directly |
 
 The key insight is that Avalonia uses XAML with code-behind files (`.axaml` + `.axaml.cs`), so you should only have `App.axaml` and `App.axaml.cs` - not a separate `App.cs` file that duplicates the class.
+
+

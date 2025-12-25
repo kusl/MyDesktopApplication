@@ -13,7 +13,7 @@ namespace MyDesktopApplication.Android;
 public partial class App : Avalonia.Application
 {
     private ServiceProvider? _serviceProvider;
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -23,14 +23,14 @@ public partial class App : Avalonia.Application
     {
         // Set up dependency injection
         var services = new ServiceCollection();
-        
+
         // Get the Android-specific data directory for SQLite
         var dataDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
         var dbPath = System.IO.Path.Combine(dataDir, "mydesktopapp.db");
-        
+
         services.AddInfrastructure(dbPath);
         services.AddTransient<CountryQuizViewModel>();
-        
+
         _serviceProvider = services.BuildServiceProvider();
 
         // Ensure database is created
@@ -40,7 +40,7 @@ public partial class App : Avalonia.Application
         {
             var vm = _serviceProvider.GetRequiredService<CountryQuizViewModel>();
             await vm.InitializeAsync();
-            
+
             singleView.MainView = new MainView
             {
                 DataContext = vm
