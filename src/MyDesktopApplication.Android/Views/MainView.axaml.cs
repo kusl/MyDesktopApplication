@@ -11,12 +11,12 @@ public partial class MainView : UserControl
         InitializeComponent();
     }
 
-    // Use fully qualified Avalonia.Controls.Button to avoid conflict with Android.Widget.Button
     private void OnCountry1Click(object? sender, RoutedEventArgs e)
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.SelectCountry1Command.Execute(null);
+            // SelectCountryCommand takes a string parameter ("1" or "2")
+            vm.SelectCountryCommand.Execute("1");
         }
     }
 
@@ -24,15 +24,16 @@ public partial class MainView : UserControl
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.SelectCountry2Command.Execute(null);
+            vm.SelectCountryCommand.Execute("2");
         }
     }
 
-    private void OnNextQuestionClick(object? sender, RoutedEventArgs e)
+    private void OnNextClick(object? sender, RoutedEventArgs e)
     {
         if (DataContext is CountryQuizViewModel vm)
         {
-            vm.NextQuestionCommand.Execute(null);
+            // The command is NextRoundCommand, not NextQuestionCommand
+            vm.NextRoundCommand.Execute(null);
         }
     }
 }
