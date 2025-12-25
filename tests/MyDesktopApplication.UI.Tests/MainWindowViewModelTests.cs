@@ -11,7 +11,7 @@ public class MainWindowViewModelTests
     public void NewViewModel_ShouldHaveInitialState()
     {
         var vm = new MainWindowViewModel();
-        
+
         // Use correct property names: CurrentScore, not Score
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
@@ -23,7 +23,7 @@ public class MainWindowViewModelTests
     public void QuestionTypes_ShouldContainAllTypes()
     {
         var vm = new MainWindowViewModel();
-        
+
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
@@ -34,7 +34,7 @@ public class MainWindowViewModelTests
     public void NextRound_ShouldSetCountries()
     {
         var vm = new MainWindowViewModel();
-        
+
         // Call NextRoundCommand (not GenerateNewQuestionCommand)
         vm.NextRoundCommand.Execute(null);
 

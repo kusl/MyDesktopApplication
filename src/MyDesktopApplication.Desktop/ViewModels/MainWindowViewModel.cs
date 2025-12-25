@@ -30,7 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _feedbackMessage = "";
     [ObservableProperty] private bool _showFeedback;
     [ObservableProperty] private bool _hasAnswered;
-    
+
     // Answer result properties for XAML visual feedback
     [ObservableProperty] private string _country1Value = "";
     [ObservableProperty] private string _country2Value = "";
@@ -39,7 +39,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
-    
+
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
 
     // Computed text properties for XAML binding
@@ -54,7 +54,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public ObservableCollection<QuestionType> QuestionTypes { get; } = new(Enum.GetValues<QuestionType>());
 
     // Design-time constructor
-    public MainWindowViewModel() 
+    public MainWindowViewModel()
     {
         GenerateNewQuestion();
     }
@@ -175,7 +175,7 @@ public partial class MainWindowViewModel : ViewModelBase
         CurrentStreak = 0;
         TotalQuestions = 0;
         // Note: BestStreak is preserved across resets
-        
+
         if (_gameStateRepository != null)
         {
             await _gameStateRepository.UpdateAsync(_gameState);
@@ -184,7 +184,7 @@ public partial class MainWindowViewModel : ViewModelBase
         OnPropertyChanged(nameof(ScoreText));
         OnPropertyChanged(nameof(StreakText));
         OnPropertyChanged(nameof(AccuracyText));
-        
+
         GenerateNewQuestion();
     }
 
@@ -218,7 +218,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (CurrentStreak >= 5) return "🔥 On fire! 5+ streak!";
         if (CurrentStreak >= 3) return "🔥 Nice streak!";
         if (CurrentStreak > BestStreak - CurrentStreak && BestStreak > 3) return "🏆 NEW RECORD!";
-        
+
         string[] messages = ["Correct! ✓", "Well done!", "Nice!", "Great job!", "You got it!"];
         return messages[_random.Next(messages.Length)];
     }
