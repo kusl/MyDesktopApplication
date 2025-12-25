@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Mon Dec 22 08:43:08 AM CST 2025
+Generated: Wed Dec 24 07:07:37 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -625,8 +625,8 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build.yml
-SIZE: 5.77 KB
-MODIFIED: 2025-12-22 04:32:53
+SIZE: 5.94 KB
+MODIFIED: 2025-12-24 12:15:36
 ================================================================================
 
 name: Build
@@ -735,10 +735,12 @@ jobs:
             ${{ runner.os }}-android-nuget-
 
       - name: Build Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            --output ./publish/android
+              run: |
+                dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+                  --configuration Release \
+                  -p:ApplicationVersion=${{ github.run_number }} \
+                  -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
+                  --output ./publish/android
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v6
@@ -894,8 +896,8 @@ jobs:
 
 ================================================================================
 FILE: .github/workflows/release.yml
-SIZE: 5.70 KB
-MODIFIED: 2025-12-22 04:33:25
+SIZE: 5.87 KB
+MODIFIED: 2025-12-24 12:16:13
 ================================================================================
 
 name: Release
@@ -1005,10 +1007,12 @@ jobs:
             ${{ runner.os }}-android-nuget-
 
       - name: Build Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            --output ./publish/android
+              run: |
+                dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+                  --configuration Release \
+                  -p:ApplicationVersion=${{ github.run_number }} \
+                  -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
+                  --output ./publish/android
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v6
@@ -4528,7 +4532,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Mon Dec 22 08:43:09 AM CST 2025
+EXPORT COMPLETED: Wed Dec 24 07:07:37 PM CST 2025
 Total Files Found: 65
 Files Exported: 65
 Files Skipped: 0 (binary or large files)
