@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 08:14:19 PM CST 2025
+Generated: Wed Dec 24 08:23:17 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -5465,7 +5465,7 @@ public abstract partial class ViewModelBase : ObservableObject
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
 SIZE: 8.45 KB
-MODIFIED: 2025-12-24 20:00:26
+MODIFIED: 2025-12-24 20:22:24
 ================================================================================
 
 <Window xmlns="https://github.com/avaloniaui"
@@ -5552,8 +5552,8 @@ MODIFIED: 2025-12-24 20:00:26
                             </MultiBinding>
                         </Button.Background>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
-                            <TextBlock Text="{Binding Country1Flag}" FontSize="48" TextAlignment="Center"/>
-                            <TextBlock Text="{Binding Country1Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
+                            <TextBlock Text="{Binding Country1.Flag}" FontSize="48" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country1.Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
                                         <Binding Path="IsCountry1Correct"/>
@@ -5587,8 +5587,8 @@ MODIFIED: 2025-12-24 20:00:26
                             </MultiBinding>
                         </Button.Background>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
-                            <TextBlock Text="{Binding Country2Flag}" FontSize="48" TextAlignment="Center"/>
-                            <TextBlock Text="{Binding Country2Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
+                            <TextBlock Text="{Binding Country2.Flag}" FontSize="48" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country2.Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
                                         <Binding Path="IsCountry2Correct"/>
@@ -7340,7 +7340,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 08:14:20 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 08:23:17 PM CST 2025
 Total Files Found: 67
 Files Exported: 67
 Files Skipped: 0 (binary or large files)
