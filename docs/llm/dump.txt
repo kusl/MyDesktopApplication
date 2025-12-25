@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 10:10:02 PM CST 2025
+Generated: Wed Dec 24 10:16:37 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -41,6 +41,7 @@ DIRECTORY STRUCTURE:
 │   │   │   └── MainView.axaml.cs
 │   │   ├── AndroidManifest.xml
 │   │   ├── App.axaml
+│   │   ├── App.axaml.cs
 │   │   ├── App.cs
 │   │   ├── MainActivity.cs
 │   │   └── MyDesktopApplication.Android.csproj
@@ -5065,13 +5066,14 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml
-SIZE: .25 KB
-MODIFIED: 2025-12-21 10:17:25
+SIZE: .30 KB
+MODIFIED: 2025-12-24 22:10:48
 ================================================================================
 
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="MyDesktopApplication.Android.App">
+             x:Class="MyDesktopApplication.Android.App"
+             RequestedThemeVariant="Default">
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
@@ -5079,58 +5081,138 @@ MODIFIED: 2025-12-21 10:17:25
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Android/App.cs
-SIZE: 1.39 KB
-MODIFIED: 2025-12-21 22:48:06
+FILE: src/MyDesktopApplication.Android/App.axaml.cs
+SIZE: 2.10 KB
+MODIFIED: 2025-12-24 22:16:37
 ================================================================================
 
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using MyDesktopApplication.Android.Views;
 using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Repositories;
+using MyDesktopApplication.Android.Views;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android;
 
-public class App : Avalonia.Application
+public partial class App : Application
 {
-    private IServiceProvider? _services;
+    private IServiceProvider? _serviceProvider;
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
+        // Configure services with simple DI
         var services = new ServiceCollection();
 
-        var dbPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "countryquiz.db");
+        // Register database context
+        services.AddDbContext<AppDbContext>();
 
-        services.AddInfrastructure(dbPath);
+        // Register repositories
+        services.AddScoped<IGameStateRepository, GameStateRepository>();
+
+        // Register ViewModels
         services.AddTransient<CountryQuizViewModel>();
 
-        _services = services.BuildServiceProvider();
+        _serviceProvider = services.BuildServiceProvider();
 
-        await DependencyInjection.InitializeDatabaseAsync(_services);
-
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            var vm = _services.GetRequiredService<CountryQuizViewModel>();
-            var mainView = new MainView { DataContext = vm };
-            singleViewLifetime.MainView = mainView;
+            var viewModel = _serviceProvider.GetRequiredService<CountryQuizViewModel>();
+            singleViewPlatform.MainView = new MainView
+            {
+                DataContext = viewModel
+            };
 
-            _ = vm.InitializeAsync();
+            // Initialize async without blocking
+            _ = InitializeViewModelAsync(viewModel);
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    private static async Task InitializeViewModelAsync(CountryQuizViewModel viewModel)
+    {
+        try
+        {
+            await viewModel.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error initializing ViewModel: {ex.Message}");
+        }
+    }
+
+    public App(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
+    {
+    }
+
+    public App(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
+    {
+    }
 }
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Android/App.cs
+SIZE: 1.51 KB
+MODIFIED: 2025-12-24 22:15:06
+================================================================================
+
+// using Avalonia;
+// using Avalonia.Controls.ApplicationLifetimes;
+// using Avalonia.Markup.Xaml;
+// using Microsoft.Extensions.DependencyInjection;
+// using MyDesktopApplication.Android.Views;
+// using MyDesktopApplication.Core.Interfaces;
+// using MyDesktopApplication.Infrastructure;
+// using MyDesktopApplication.Shared.ViewModels;
+
+// namespace MyDesktopApplication.Android;
+
+// public partial class App : Avalonia.Application
+// {
+//     private IServiceProvider? _services;
+
+//     // public override void Initialize()
+//     // {
+//     //     AvaloniaXamlLoader.Load(this);
+//     // }
+
+//     public override async void OnFrameworkInitializationCompleted()
+//     {
+//         var services = new ServiceCollection();
+
+//         var dbPath = Path.Combine(
+//             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+//             "countryquiz.db");
+
+//         services.AddInfrastructure(dbPath);
+//         services.AddTransient<CountryQuizViewModel>();
+
+//         _services = services.BuildServiceProvider();
+
+//         await DependencyInjection.InitializeDatabaseAsync(_services);
+
+//         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+//         {
+//             var vm = _services.GetRequiredService<CountryQuizViewModel>();
+//             var mainView = new MainView { DataContext = vm };
+//             singleViewLifetime.MainView = mainView;
+
+//             _ = vm.InitializeAsync();
+//         }
+
+//         base.OnFrameworkInitializationCompleted();
+//     }
+// }
 
 
 ================================================================================
@@ -5215,10 +5297,9 @@ public class AnswerStateToForegroundConverter : IMultiValueConverter
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MainActivity.cs
 SIZE: .58 KB
-MODIFIED: 2025-12-21 10:25:16
+MODIFIED: 2025-12-24 22:16:17
 ================================================================================
 
-using Android.App;
 using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
@@ -5226,7 +5307,7 @@ using Avalonia.Android;
 namespace MyDesktopApplication.Android;
 
 [Activity(
-    Label = "MyDesktopApplication",
+    Label = "Country Quiz",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,
@@ -5236,6 +5317,7 @@ public class MainActivity : AvaloniaMainActivity<App>
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
         return base.CustomizeAppBuilder(builder)
+            .WithInterFont()
             .LogToTrace();
     }
 }
@@ -5243,8 +5325,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 2.51 KB
-MODIFIED: 2025-12-24 21:26:18
+SIZE: 2.83 KB
+MODIFIED: 2025-12-24 22:10:48
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -5252,54 +5334,61 @@ MODIFIED: 2025-12-24 21:26:18
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
-    
-    <!-- Application identity -->
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    <ApplicationTitle>Country Quiz</ApplicationTitle>
     
-    <!-- 
-      VERSIONING FOR ANDROID UPDATES
-      
-      Android requires versionCode (ApplicationVersion) to STRICTLY INCREMENT
-      for updates to work. Using BuildNumber from CI ensures this.
-      
-      - Local builds: BuildNumber=0 (default from Directory.Build.props)
-      - CI builds: BuildNumber=${{ github.run_number }} (passed via -p:BuildNumber=X)
-      
-      This allows:
-      1. Local development with static version
-      2. CI builds with auto-incrementing versions
-      3. Obtainium/sideloading to recognize updates properly
-    -->
+    <!-- Dynamic versioning from CI -->
+    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
     
-    <!-- versionCode: Must be integer, must increment for updates -->
-    <ApplicationVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1</ApplicationVersion>
-    <ApplicationVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">$(BuildNumber)</ApplicationVersion>
+    <!-- ================================================================== -->
+    <!-- CRITICAL FIX FOR MONO CLASS-INIT CRASH                            -->
+    <!-- The crash "klass->instance_size == instance_size" happens when    -->
+    <!-- there's a mismatch between AOT-compiled code and runtime.         -->
+    <!-- SOLUTION: Disable AOT entirely and use JIT/Interpreter            -->
+    <!-- ================================================================== -->
     
-    <!-- versionName: Displayed to users in app info -->
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1.0.0-local</ApplicationDisplayVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+    <!-- Disable AOT compilation completely -->
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <PublishAot>false</PublishAot>
     
-    <!-- Android-specific build settings -->
+    <!-- Use the Mono interpreter for maximum compatibility -->
+    <UseInterpreter>true</UseInterpreter>
+    
+    <!-- Disable IL linker trimming to preserve all types -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    
+    <!-- Fix aapt2 daemon hang issues on Fedora -->
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     
-    <!-- Signing (for release builds, use environment variables) -->
-    <AndroidKeyStore Condition="'$(AndroidKeyStore)' == ''">false</AndroidKeyStore>
+    <!-- Standard settings -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
+
+  <!-- Tell the linker to preserve our assemblies completely -->
   <ItemGroup>
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
   </ItemGroup>
-  
+
   <ItemGroup>
+    <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
 
@@ -5339,18 +5428,17 @@ MODIFIED: 2025-12-21 10:17:25
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Resources/values/styles.xml
-SIZE: .40 KB
-MODIFIED: 2025-12-21 11:20:44
+SIZE: .33 KB
+MODIFIED: 2025-12-24 22:10:48
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="MyTheme" parent="Theme.AppCompat.Light">
     </style>
     <style name="MyTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 </resources>
 
@@ -8481,9 +8569,9 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 10:10:03 PM CST 2025
-Total Files Found: 70
-Files Exported: 70
+EXPORT COMPLETED: Wed Dec 24 10:16:38 PM CST 2025
+Total Files Found: 71
+Files Exported: 71
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================
