@@ -217,7 +217,7 @@ jobs:
             PRERELEASE="false"
           else
             VERSION="1.0.${{ github.run_number }}"
-            PRERELEASE="true"
+            PRERELEASE="false"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
