@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 08:32:55 PM CST 2025
+Generated: Wed Dec 24 08:41:00 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3843,8 +3843,8 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 6.92 KB
-MODIFIED: 2025-12-24 20:30:47
+SIZE: 6.94 KB
+MODIFIED: 2025-12-24 20:39:46
 ================================================================================
 
 name: Build and Release
@@ -3954,6 +3954,7 @@ jobs:
         run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
             
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
             -c Release \
@@ -7649,7 +7650,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 08:32:56 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 08:41:00 PM CST 2025
 Total Files Found: 68
 Files Exported: 68
 Files Skipped: 0 (binary or large files)
