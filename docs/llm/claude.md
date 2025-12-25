@@ -11398,3 +11398,11 @@ This should resolve all 5 CS1061 errors you're seeing in `MyDesktopApplication.U
 
 
 
+MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel
+MyDesktopApplication.Desktop.ViewModels
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+  MyDesktopApplication.Desktop net10.0 failed with 4 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(85,40,85,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Flag' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 85, position 40.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(86,40,86,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Name' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 86, position 40.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(120,40,120,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Flag' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 120, position 40.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(121,40,121,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Name' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 121, position 40.
