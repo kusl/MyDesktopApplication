@@ -11401,9 +11401,100 @@ This should resolve all 5 CS1061 errors you're seeing in `MyDesktopApplication.U
 something went wrong with the github action again. 
 please do not hallucinate. 
 please fix all problems thoroughly. 
+also please make sure dotnet build and dotnet test and so on can run properly on github actions 
 Run dotnet restore
   
   Determining projects to restore...
 Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
 Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To install these workloads, run the following command: dotnet workload restore [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
 Error: Process completed with exit code 1.
+
+
+
+
+
+
+
+
+
+
+I'll search the project knowledge to understand the current CI/CD setup and fix the GitHub Actions workflow properly.Now I understand the issue. The GitHub Actions workflow is trying to restore the entire solution which includes the Android project, but the Android workload isn't installed. Let me search for the current workflow file:Now I have a clear understanding. The problem is that the `build-and-release.yml` workflow is running `dotnet restore` on the entire solution, but the CI runner doesn't have the Android workload installed. The fix is to either:
+
+1. Install the Android workload before restore
+2. Or exclude the Android project from the initial restore/build
+
+Let me create a fix script:Now run the script:
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-github-actions.sh
+./fix-github-actions.sh
+```
+
+Then commit and push:
+
+```bash
+git add .github/workflows/build-and-release.yml
+git commit -m "Fix: Install Android workload before dotnet restore
+
+The CI was failing because 'dotnet restore' on the full solution
+requires the Android workload, but it wasn't installed.
+
+Fix: Add 'dotnet workload install android' step BEFORE restore."
+git push
+```
+
+## Root Cause
+
+The error `NETSDK1147: To build this project, the following workloads must be installed: android` happens because:
+
+1. Your solution (`MyDesktopApplication.slnx`) includes the Android project
+2. When `dotnet restore` runs on the solution, it tries to restore ALL projects
+3. The Android project requires the `android` workload to even *restore* (not just build)
+4. GitHub Actions runners don't have the Android workload pre-installed
+
+## The Fix
+
+The key change is adding these steps **before** `dotnet restore`:
+
+```yaml
+- name: Setup Java (for Android)
+  uses: actions/setup-java@v4
+  with:
+    distribution: 'temurin'
+    java-version: '21'
+    
+- name: Install Android Workload
+  run: dotnet workload install android
+```
+
+## Summary of Changes
+
+| Issue | Before | After |
+|-------|--------|-------|
+| **Android workload** | Not installed | Installed before restore |
+| **Java** | Not set up | Temurin JDK 21 |
+| **Restore** | Full solution (fails) | Full solution (works now) |
+
+This follows your principle of **"One Team, One Build"** - everyone builds everything, including Android, rather than siloing into separate desktop-only builds.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

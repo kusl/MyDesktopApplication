@@ -1,0 +1,262 @@
+#!/bin/bash
+set -e
+
+echo "=============================================="
+echo "  Fixing GitHub Actions Workflow"
+echo "=============================================="
+
+cd ~/src/dotnet/MyDesktopApplication
+
+# Create proper workflow that installs Android workload FIRST
+cat > .github/workflows/build-and-release.yml << 'WORKFLOW_EOF'
+name: Build and Release
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+    branches: [master, main]
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Setup Java (for Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Install Android Workload
+        run: dotnet workload install android
+        
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+            
+      - name: Restore
+        run: dotnet restore MyDesktopApplication.slnx
+        
+      - name: Build
+        run: dotnet build MyDesktopApplication.slnx -c Release --no-restore
+        
+      - name: Test
+        run: dotnet test MyDesktopApplication.slnx -c Release --no-build --verbosity normal
+
+  build-desktop:
+    name: Build Desktop (${{ matrix.artifact }})
+    needs: build-and-test
+    if: github.event_name == 'push'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            artifact: windows-x64
+          - os: windows-latest
+            rid: win-arm64
+            artifact: windows-arm64
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact: linux-x64
+          - os: ubuntu-latest
+            rid: linux-arm64
+            artifact: linux-arm64
+          - os: macos-latest
+            rid: osx-x64
+            artifact: macos-x64
+          - os: macos-latest
+            rid: osx-arm64
+            artifact: macos-arm64
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+            
+      - name: Restore Desktop Project
+        run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+            
+      - name: Publish
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o ./publish/${{ matrix.artifact }}
+            
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: desktop-${{ matrix.artifact }}
+          path: ./publish/${{ matrix.artifact }}
+          retention-days: 5
+
+  build-android:
+    name: Build Android
+    needs: build-and-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Install Android Workload
+        run: dotnet workload install android
+        
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            ${{ runner.os }}-android-nuget-
+            
+      - name: Restore
+        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+        
+      - name: Build APK
+        run: |
+          VERSION_CODE=${{ github.run_number }}
+          VERSION_NAME="1.0.${{ github.run_number }}"
+          dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            -c Release \
+            -p:ApplicationVersion=$VERSION_CODE \
+            -p:ApplicationDisplayVersion=$VERSION_NAME
+            
+      - name: Upload APK
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-apk
+          path: src/MyDesktopApplication.Android/bin/Release/net10.0-android/*.apk
+          retention-days: 5
+
+  release:
+    name: Create Release
+    needs: [build-desktop, build-android]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v7
+        with:
+          path: ./artifacts
+          
+      - name: Prepare release assets
+        run: |
+          mkdir -p release
+          
+          # Package desktop builds
+          for dir in artifacts/desktop-*; do
+            name=$(basename "$dir" | sed 's/desktop-//')
+            if [[ "$name" == windows-* ]]; then
+              (cd "$dir" && zip -r "../../release/MyDesktopApplication-$name.zip" .)
+            else
+              (cd "$dir" && tar -czvf "../../release/MyDesktopApplication-$name.tar.gz" .)
+            fi
+          done
+          
+          # Copy Android APK
+          cp artifacts/android-apk/*.apk release/ || true
+          
+          ls -la release/
+          
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            VERSION="${{ github.ref_name }}"
+            PRERELEASE="false"
+          else
+            VERSION="1.0.${{ github.run_number }}"
+            PRERELEASE="true"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
+          prerelease: ${{ steps.version.outputs.prerelease }}
+          generate_release_notes: true
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+WORKFLOW_EOF
+
+echo "✓ Fixed .github/workflows/build-and-release.yml"
+
+echo ""
+echo "=============================================="
+echo "  Fix Complete!"
+echo "=============================================="
+echo ""
+echo "Changes made:"
+echo "  • Added 'dotnet workload install android' BEFORE restore"
+echo "  • Using Java 21 (Temurin) for Android builds"
+echo "  • All action versions updated to latest"
+echo ""
+echo "To apply:"
+echo "  git add .github/workflows/build-and-release.yml"
+echo "  git commit -m 'Fix: Install Android workload before dotnet restore'"
+echo "  git push"
