@@ -4191,10 +4191,61 @@ File types included:
 real	0m0.746s
 user	0m0.432s
 sys	0m0.465s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-app-update.sh 
+==============================================
+  Fixing App Update Issues - All Platforms
+==============================================
+
+[STEP] 1/4 - Updating Directory.Build.props for centralized versioning...
+  ✓ Directory.Build.props updated
+[STEP] 2/4 - Updating Android project for dynamic versioning...
+  ✓ Android csproj updated with dynamic versioning
+[STEP] 3/4 - Updating Desktop project for consistent versioning...
+  ✓ Desktop csproj updated
+[STEP] 4/4 - Updating GitHub Actions workflow...
+  ✓ GitHub Actions workflow updated
+
+==============================================
+  Fix Complete!
+==============================================
+
+Changes made:
+  • Directory.Build.props: Centralized versioning with BuildNumber property
+  • Android .csproj: Dynamic ApplicationVersion based on BuildNumber
+  • Desktop .csproj: Consistent versioning
+  • GitHub Actions: Passes BuildNumber=${{ github.run_number }} to all builds
+
+How versioning now works:
+
+  Local development:
+    - BuildNumber defaults to 0
+    - Android versionCode = 1, versionName = 1.0.0-local
+    - Desktop AssemblyVersion = 1.0.0.0
+
+  CI builds (GitHub Actions):
+    - BuildNumber = github.run_number (42, 43, 44, ...)
+    - Android versionCode = 42, versionName = 1.0.42
+    - Desktop AssemblyVersion = 1.0.42.0
+    - Release tag = v1.0.42
+
+Why this fixes Android updates:
+  Android requires versionCode to strictly increase for updates.
+  github.run_number automatically increments with every push,
+  so each APK has a higher versionCode than the previous one.
+  Obtainium and manual sideloading will recognize these as updates.
+
+To apply:
+  git add -A
+  git commit -m 'Fix app update versioning for all platforms'
+  git push
+
+After the next push, the APK will have:
+  - versionCode: (next run number)
+  - versionName: 1.0.(next run number)
+
+And Android will install it as an update, no uninstall needed!
+
+real	0m0.016s
+user	0m0.003s
+sys	0m0.007s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
-
-
-
-
-
-

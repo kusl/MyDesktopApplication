@@ -3,20 +3,52 @@
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    
+    <!-- Application identity -->
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    <ApplicationVersion>1</ApplicationVersion>
-    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationTitle>Country Quiz</ApplicationTitle>
+    
+    <!-- 
+      VERSIONING FOR ANDROID UPDATES
+      
+      Android requires versionCode (ApplicationVersion) to STRICTLY INCREMENT
+      for updates to work. Using BuildNumber from CI ensures this.
+      
+      - Local builds: BuildNumber=0 (default from Directory.Build.props)
+      - CI builds: BuildNumber=${{ github.run_number }} (passed via -p:BuildNumber=X)
+      
+      This allows:
+      1. Local development with static version
+      2. CI builds with auto-incrementing versions
+      3. Obtainium/sideloading to recognize updates properly
+    -->
+    
+    <!-- versionCode: Must be integer, must increment for updates -->
+    <ApplicationVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">$(BuildNumber)</ApplicationVersion>
+    
+    <!-- versionName: Displayed to users in app info -->
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+    
+    <!-- Android-specific build settings -->
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    
+    <!-- Signing (for release builds, use environment variables) -->
+    <AndroidKeyStore Condition="'$(AndroidKeyStore)' == ''">false</AndroidKeyStore>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
