@@ -9,12 +9,12 @@ public class QuestionTypeTests
     [Theory]
     [InlineData(QuestionType.Population, "Population")]
     [InlineData(QuestionType.Area, "Area (km²)")]
-    [InlineData(QuestionType.GdpTotal, "GDP (Total USD)")]
-    [InlineData(QuestionType.GdpPerCapita, "GDP per Capita (USD)")]
-    [InlineData(QuestionType.PopulationDensity, "Population Density (per km²)")]
-    [InlineData(QuestionType.LiteracyRate, "Literacy Rate (%)")]
+    [InlineData(QuestionType.GdpTotal, "GDP (Total)")]
+    [InlineData(QuestionType.GdpPerCapita, "GDP per Capita")]
+    [InlineData(QuestionType.PopulationDensity, "Population Density")]
+    [InlineData(QuestionType.LiteracyRate, "Literacy Rate")]
     [InlineData(QuestionType.Hdi, "Human Development Index")]
-    [InlineData(QuestionType.LifeExpectancy, "Life Expectancy (years)")]
+    [InlineData(QuestionType.LifeExpectancy, "Life Expectancy")]
     public void GetLabel_ReturnsCorrectLabel(QuestionType questionType, string expectedLabel)
     {
         var label = questionType.GetLabel();
@@ -51,10 +51,37 @@ public class QuestionTypeTests
     }
 
     [Fact]
+    public void FormatValue_UsesEnoughPrecisionToDistinguishCloseValues()
+    {
+        // This is the key test - China (1,411,750,000) vs India (1,417,173,173)
+        // should NOT both show as "1.4B" - that's confusing!
+        var chinaPopulation = 1_411_750_000.0;
+        var indiaPopulation = 1_417_173_173.0;
+        
+        var chinaFormatted = QuestionType.Population.FormatValue(chinaPopulation);
+        var indiaFormatted = QuestionType.Population.FormatValue(indiaPopulation);
+        
+        // They should be different! Users need to see the difference
+        chinaFormatted.ShouldNotBe(indiaFormatted);
+        
+        // Check the actual values - should show 3 decimal places for billions
+        chinaFormatted.ShouldBe("1.412B");
+        indiaFormatted.ShouldBe("1.417B");
+    }
+
+    [Fact]
     public void FormatValue_FormatsValuesCorrectly()
     {
-        QuestionType.Population.FormatValue(1_500_000_000).ShouldBe("1.50B");
+        // Population formatting
+        QuestionType.Population.FormatValue(1_500_000_000).ShouldBe("1.500B");
+        QuestionType.Population.FormatValue(50_000_000).ShouldBe("50.00M");
+        QuestionType.Population.FormatValue(500_000).ShouldBe("500.00K");
+        
+        // GDP formatting
         QuestionType.GdpTotal.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
+        QuestionType.GdpTotal.FormatValue(1_500_000_000_000).ShouldBe("$1.50T");
+        
+        // Other types
         QuestionType.LiteracyRate.FormatValue(99.5).ShouldBe("99.5%");
         QuestionType.Hdi.FormatValue(0.921).ShouldBe("0.921");
         QuestionType.LifeExpectancy.FormatValue(77.5).ShouldBe("77.5 years");

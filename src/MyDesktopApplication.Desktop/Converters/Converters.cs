@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
+using Avalonia.Media;
 using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Desktop.Converters;
@@ -24,18 +25,18 @@ public class QuestionTypeLabelConverter : IValueConverter
     }
 }
 
-public class BoolToStringConverter : IValueConverter
+public class BoolToColorConverter : IValueConverter
 {
-    public static readonly BoolToStringConverter Instance = new();
-
+    private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));
+    private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
+    
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool b && parameter is string s)
+        if (value is true && parameter?.ToString() == "correct")
         {
-            var parts = s.Split('|');
-            return b ? parts[0] : (parts.Length > 1 ? parts[1] : "");
+            return CorrectBrush;
         }
-        return "";
+        return DefaultBrush;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

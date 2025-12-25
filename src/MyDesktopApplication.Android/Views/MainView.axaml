@@ -2,132 +2,213 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
              xmlns:conv="using:MyDesktopApplication.Android.Converters"
-             xmlns:core="using:MyDesktopApplication.Core.Entities"
              x:Class="MyDesktopApplication.Android.Views.MainView"
              x:DataType="vm:CountryQuizViewModel"
-             Background="#0f172a">
-    
+             Background="#1a1a2e">
+
     <UserControl.Resources>
         <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
     </UserControl.Resources>
-    
-    <UserControl.Styles>
-        <Style Selector="Button.country-card">
-            <Setter Property="Background" Value="#1e293b"/>
-            <Setter Property="BorderBrush" Value="#374151"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="12"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        </Style>
-        <Style Selector="Button.country-card:pointerover">
-            <Setter Property="Background" Value="#334155"/>
-        </Style>
-        <Style Selector="Button.correct">
-            <Setter Property="Background" Value="#14532d"/>
-            <Setter Property="BorderBrush" Value="#22c55e"/>
-        </Style>
-        <Style Selector="Button.wrong">
-            <Setter Property="Background" Value="#7f1d1d"/>
-            <Setter Property="BorderBrush" Value="#ef4444"/>
-        </Style>
-    </UserControl.Styles>
-    
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" Margin="12">
+
+    <!-- Main ScrollViewer to handle all screen sizes -->
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                  VerticalScrollBarVisibility="Auto">
+        
+        <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
             
-            <!-- Title -->
-            <TextBlock Grid.Row="0" Text="🌍 Country Quiz" 
-                       FontSize="24" FontWeight="Bold" Foreground="White"
-                       HorizontalAlignment="Center" Margin="0,8,0,12"/>
-            
-            <!-- Controls -->
-            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
-                <ComboBox ItemsSource="{Binding QuestionTypes}"
-                          SelectedItem="{Binding SelectedQuestionType}"
-                          Background="#1e293b" Foreground="White">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="core:QuestionType">
-                            <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Grid.Column="1" Content="Reset" 
-                        Command="{Binding ResetGameCommand}"
-                        Background="#dc2626" Foreground="White"
-                        Padding="10,6" Margin="8,0,0,0"/>
-            </Grid>
-            
-            <!-- Score -->
-            <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,0,0,8">
-                <TextBlock Foreground="White" FontSize="14" Margin="0,0,12,0">
-                    <Run Text="Score: "/><Run Text="{Binding ScoreText}" FontWeight="Bold"/>
-                </TextBlock>
-                <TextBlock Text="{Binding StreakText}" Foreground="#f97316" FontWeight="Bold"/>
-                <TextBlock Text="{Binding BestStreakText}" Foreground="#fbbf24" Margin="12,0,0,0"/>
-            </WrapPanel>
-            
-            <!-- Accuracy -->
-            <TextBlock Grid.Row="3" Text="{Binding AccuracyText}"
-                       Foreground="#94a3b8" FontSize="12"
-                       HorizontalAlignment="Center" Margin="0,0,0,12"
-                       IsVisible="{Binding AccuracyText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-            
-            <!-- Question and Cards -->
-            <StackPanel Grid.Row="4" Spacing="12">
-                <TextBlock Text="{Binding QuestionText}" Foreground="White"
-                           FontSize="16" FontWeight="SemiBold"
-                           TextWrapping="Wrap" TextAlignment="Center"/>
-                
-                <Grid ColumnDefinitions="*,Auto,*">
-                    <Button Grid.Column="0" Classes="country-card"
-                            Command="{Binding SelectCountryCommand}" CommandParameter="1"
-                            IsEnabled="{Binding !HasAnswered}">
-                        <StackPanel Spacing="6">
-                            <TextBlock Text="{Binding Country1.Flag}" FontSize="40" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding Country1.Name}" Foreground="White"
-                                       FontSize="12" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <TextBlock Text="{Binding Country1Value}" Foreground="#22c55e"
-                                       FontSize="11" HorizontalAlignment="Center"
-                                       IsVisible="{Binding HasAnswered}"/>
-                        </StackPanel>
-                    </Button>
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- ROW 0: Header with Stats and Controls                           -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <Border Grid.Row="0" Background="#16213e" CornerRadius="12" Padding="12" Margin="0,0,0,8">
+                <Grid RowDefinitions="Auto,Auto">
+                    <!-- Stats Row -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Margin="0,0,0,8">
+                        <TextBlock Grid.Column="0" Text="{Binding ScoreText}" 
+                                   Foreground="#4ade80" FontSize="14" FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding StreakText}" 
+                                   Foreground="#fbbf24" FontSize="14"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding BestStreakText}" 
+                                   Foreground="#f472b6" FontSize="14"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="{Binding AccuracyText}" 
+                                   Foreground="#94a3b8" FontSize="14"
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
                     
-                    <Border Grid.Column="1" Background="#3b82f6" CornerRadius="16"
-                            Padding="8,4" VerticalAlignment="Center" Margin="6,0">
-                        <TextBlock Text="VS" Foreground="White" FontWeight="Bold" FontSize="12"/>
-                    </Border>
-                    
-                    <Button Grid.Column="2" Classes="country-card"
-                            Command="{Binding SelectCountryCommand}" CommandParameter="2"
-                            IsEnabled="{Binding !HasAnswered}">
-                        <StackPanel Spacing="6">
-                            <TextBlock Text="{Binding Country2.Flag}" FontSize="40" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding Country2.Name}" Foreground="White"
-                                       FontSize="12" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <TextBlock Text="{Binding Country2Value}" Foreground="#22c55e"
-                                       FontSize="11" HorizontalAlignment="Center"
-                                       IsVisible="{Binding HasAnswered}"/>
-                        </StackPanel>
-                    </Button>
+                    <!-- Controls Row -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                        <ComboBox Grid.Column="0"
+                                  ItemsSource="{Binding QuestionTypes}"
+                                  SelectedItem="{Binding SelectedQuestionType}"
+                                  Background="#0f3460"
+                                  Foreground="White"
+                                  MinHeight="44"
+                                  HorizontalAlignment="Stretch"
+                                  Margin="0,0,8,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
+                                               Foreground="White" FontSize="14"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        
+                        <Button Grid.Column="1" Content="Reset" 
+                                Command="{Binding ResetGameCommand}"
+                                Background="#ef4444" Foreground="White"
+                                MinHeight="44" MinWidth="70"
+                                Padding="12,8"
+                                FontSize="14"/>
+                    </Grid>
                 </Grid>
-            </StackPanel>
-            
-            <!-- Result -->
-            <Border Grid.Row="5" Background="#1e293b" CornerRadius="8"
-                    Padding="12" Margin="0,12,0,0"
-                    IsVisible="{Binding HasAnswered}">
-                <TextBlock Text="{Binding ResultMessage}" Foreground="White"
-                           FontSize="14" TextWrapping="Wrap" TextAlignment="Center"/>
             </Border>
             
-            <!-- Next -->
-            <Button Grid.Row="6" Content="Next →"
-                    Command="{Binding NextRoundCommand}"
-                    Background="#3b82f6" Foreground="White"
-                    FontSize="14" FontWeight="SemiBold"
-                    Padding="20,10" HorizontalAlignment="Center"
-                    Margin="0,12,0,8" IsVisible="{Binding HasAnswered}"/>
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- ROW 1: Question Text                                            -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <Border Grid.Row="1" Background="#16213e" CornerRadius="12" Padding="16" Margin="0,0,0,8">
+                <TextBlock Text="{Binding QuestionText}" 
+                           Foreground="White" FontSize="18" FontWeight="SemiBold"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </Border>
+            
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- ROW 2: Country Cards (MAXIMIZED TOUCH AREA)                     -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <Grid Grid.Row="2" RowDefinitions="*,Auto,*" Margin="0,0,0,8" MinHeight="350">
+                
+                <!-- Country 1 - TOP (Full Width, Large Touch Target) -->
+                <Button Grid.Row="0" 
+                        Command="{Binding SelectCountryCommand}" 
+                        CommandParameter="1"
+                        IsEnabled="{Binding !HasAnswered}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch" 
+                        VerticalContentAlignment="Stretch"
+                        Padding="0" 
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        Margin="0,0,0,4">
+                    <Border CornerRadius="16" Padding="16"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <Border.Styles>
+                            <Style Selector="Border">
+                                <Setter Property="Background" Value="#16213e"/>
+                            </Style>
+                        </Border.Styles>
+                        <Border.Background>
+                            <MultiBinding Converter="{x:Static conv:AnswerBackgroundConverter.Instance}">
+                                <Binding Path="IsCountry1Correct"/>
+                                <Binding Path="IsCountry1Wrong"/>
+                            </MultiBinding>
+                        </Border.Background>
+                        
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <!-- Flag (Left) -->
+                            <TextBlock Grid.Column="0" Text="{Binding Country1.Flag}" 
+                                       FontSize="48" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            
+                            <!-- Country Name (Center) -->
+                            <TextBlock Grid.Column="1" Text="{Binding Country1.Name}" 
+                                       Foreground="White" FontSize="22" FontWeight="Bold"
+                                       TextWrapping="Wrap" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            
+                            <!-- Value (Right, shown after answer) -->
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" 
+                                        IsVisible="{Binding HasAnswered}">
+                                <TextBlock Text="{Binding Country1Value}"
+                                           Foreground="#60a5fa" FontSize="16" FontWeight="Bold"
+                                           HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Button>
+                
+                <!-- VS Divider -->
+                <Border Grid.Row="1" Background="#0f3460" CornerRadius="20" 
+                        Padding="16,4" HorizontalAlignment="Center" Margin="0,4">
+                    <TextBlock Text="VS" Foreground="#64748b" FontSize="16" FontWeight="Bold"/>
+                </Border>
+                
+                <!-- Country 2 - BOTTOM (Full Width, Large Touch Target) -->
+                <Button Grid.Row="2" 
+                        Command="{Binding SelectCountryCommand}" 
+                        CommandParameter="2"
+                        IsEnabled="{Binding !HasAnswered}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch" 
+                        VerticalContentAlignment="Stretch"
+                        Padding="0" 
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        Margin="0,4,0,0">
+                    <Border CornerRadius="16" Padding="16"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <Border.Styles>
+                            <Style Selector="Border">
+                                <Setter Property="Background" Value="#16213e"/>
+                            </Style>
+                        </Border.Styles>
+                        <Border.Background>
+                            <MultiBinding Converter="{x:Static conv:AnswerBackgroundConverter.Instance}">
+                                <Binding Path="IsCountry2Correct"/>
+                                <Binding Path="IsCountry2Wrong"/>
+                            </MultiBinding>
+                        </Border.Background>
+                        
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <!-- Flag (Left) -->
+                            <TextBlock Grid.Column="0" Text="{Binding Country2.Flag}" 
+                                       FontSize="48" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            
+                            <!-- Country Name (Center) -->
+                            <TextBlock Grid.Column="1" Text="{Binding Country2.Name}" 
+                                       Foreground="White" FontSize="22" FontWeight="Bold"
+                                       TextWrapping="Wrap" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            
+                            <!-- Value (Right, shown after answer) -->
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" 
+                                        IsVisible="{Binding HasAnswered}">
+                                <TextBlock Text="{Binding Country2Value}"
+                                           Foreground="#60a5fa" FontSize="16" FontWeight="Bold"
+                                           HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Button>
+            </Grid>
+            
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <!-- ROW 3: Result Message & Next Button                             -->
+            <!-- ═══════════════════════════════════════════════════════════════ -->
+            <StackPanel Grid.Row="3" Spacing="8">
+                <!-- Result Message -->
+                <Border IsVisible="{Binding HasAnswered}" 
+                        Background="#16213e" CornerRadius="12" Padding="12">
+                    <TextBlock Text="{Binding ResultMessage}" 
+                               Foreground="White" FontSize="16"
+                               TextAlignment="Center" TextWrapping="Wrap"/>
+                </Border>
+                
+                <!-- Next Round Button - LARGE TOUCH TARGET -->
+                <Button Command="{Binding NextRoundCommand}"
+                        IsVisible="{Binding HasAnswered}"
+                        Content="Next Round →"
+                        Background="#3b82f6" Foreground="White"
+                        FontSize="18" FontWeight="Bold"
+                        MinHeight="56"
+                        Padding="24,12"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"/>
+            </StackPanel>
         </Grid>
     </ScrollViewer>
 </UserControl>
