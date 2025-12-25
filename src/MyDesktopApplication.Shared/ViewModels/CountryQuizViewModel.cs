@@ -8,7 +8,8 @@ using MyDesktopApplication.Shared.Data;
 namespace MyDesktopApplication.Shared.ViewModels;
 
 /// <summary>
-/// ViewModel for the Country Quiz game
+/// ViewModel for the Country Quiz game.
+/// Shared between Desktop and Android platforms.
 /// </summary>
 public partial class CountryQuizViewModel : ViewModelBase
 {
@@ -17,33 +18,38 @@ public partial class CountryQuizViewModel : ViewModelBase
     private readonly IGameStateRepository? _gameStateRepository;
     private GameState _gameState = new();
 
-    // FIX 1: Expose Country objects so View bindings like 'Country1.Flag' work
-    [ObservableProperty]
+    // Backing fields for country references (not observable - we expose flat properties)
     private Country? _country1;
-
-    [ObservableProperty]
     private Country? _country2;
 
+    // Observable properties for UI binding
     [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _country1Name = "";
+    [ObservableProperty] private string _country2Name = "";
+    [ObservableProperty] private string _country1Flag = "";
+    [ObservableProperty] private string _country2Flag = "";
     [ObservableProperty] private string _country1Value = "";
     [ObservableProperty] private string _country2Value = "";
     [ObservableProperty] private string _resultMessage = "";
     [ObservableProperty] private bool _hasAnswered;
-
-    // Visual feedback properties
+    
+    // Answer state - FIX: Only highlight the selected answer
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
-
+    
+    // Score tracking
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _currentStreak;
     [ObservableProperty] private int _bestStreak;
     [ObservableProperty] private int _totalQuestions;
-
+    
+    // Question type selection
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
     [ObservableProperty] private ObservableCollection<QuestionType> _questionTypes = new();
 
+    // Computed properties for UI display
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
@@ -51,11 +57,17 @@ public partial class CountryQuizViewModel : ViewModelBase
         ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
 
+    /// <summary>
+    /// Constructor with dependency injection for game state persistence.
+    /// </summary>
     public CountryQuizViewModel(IGameStateRepository gameStateRepository) : this()
     {
         _gameStateRepository = gameStateRepository;
     }
 
+    /// <summary>
+    /// Parameterless constructor for design-time and default initialization.
+    /// </summary>
     public CountryQuizViewModel()
     {
         _countries = CountryData.GetAllCountries().ToList();
@@ -63,10 +75,12 @@ public partial class CountryQuizViewModel : ViewModelBase
         {
             QuestionTypes.Add(qt);
         }
-
         GenerateNewQuestion();
     }
 
+    /// <summary>
+    /// Initialize async - loads persisted game state from database.
+    /// </summary>
     public async Task InitializeAsync()
     {
         if (_gameStateRepository != null)
@@ -85,43 +99,54 @@ public partial class CountryQuizViewModel : ViewModelBase
         }
     }
 
-    // FIX 2: Change parameter to string to match XAML CommandParameter="1"
+    /// <summary>
+    /// Handle country selection.
+    /// FIX: Only highlight the answer the user selected, not both answers.
+    /// </summary>
     [RelayCommand]
     private async Task SelectCountry(string countryParam)
     {
-        // FIX for MVVMTK0034: Use public properties (Country1, Country2) instead of backing fields
-        if (HasAnswered || Country1 == null || Country2 == null)
+        if (HasAnswered || _country1 == null || _country2 == null)
             return;
 
-        // Parse the string parameter to int safely
-        if (!int.TryParse(countryParam, out int countryNumber)) return;
+        if (!int.TryParse(countryParam, out int countryNumber))
+            return;
 
         HasAnswered = true;
         TotalQuestions++;
 
-        // FIX for MVVMTK0034: Use public properties here too
-        var value1 = SelectedQuestionType.GetValue(Country1);
-        var value2 = SelectedQuestionType.GetValue(Country2);
+        var value1 = SelectedQuestionType.GetValue(_country1);
+        var value2 = SelectedQuestionType.GetValue(_country2);
 
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
 
         bool isCorrect;
+        
+        // FIX: Only highlight the selected answer
+        // Reset all states first
+        IsCountry1Correct = false;
+        IsCountry1Wrong = false;
+        IsCountry2Correct = false;
+        IsCountry2Wrong = false;
+
         if (countryNumber == 1)
         {
+            // User selected Country 1
             isCorrect = value1 >= value2;
+            // Only set state for Country 1 (the selected one)
             IsCountry1Correct = isCorrect;
             IsCountry1Wrong = !isCorrect;
-            IsCountry2Correct = !isCorrect;
-            IsCountry2Wrong = isCorrect;
+            // Do NOT set Country 2 state - leave it unhighlighted
         }
         else
         {
+            // User selected Country 2
             isCorrect = value2 >= value1;
+            // Only set state for Country 2 (the selected one)
             IsCountry2Correct = isCorrect;
             IsCountry2Wrong = !isCorrect;
-            IsCountry1Correct = !isCorrect;
-            IsCountry1Wrong = isCorrect;
+            // Do NOT set Country 1 state - leave it unhighlighted
         }
 
         if (isCorrect)
@@ -138,6 +163,7 @@ public partial class CountryQuizViewModel : ViewModelBase
             ResultMessage = GetIncorrectMessage();
         }
 
+        // Persist game state
         _gameState.CurrentScore = CurrentScore;
         _gameState.CurrentStreak = CurrentStreak;
         _gameState.BestStreak = BestStreak;
@@ -145,7 +171,14 @@ public partial class CountryQuizViewModel : ViewModelBase
 
         if (_gameStateRepository != null)
         {
-            await _gameStateRepository.SaveAsync(_gameState);
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error saving game state: {ex.Message}");
+            }
         }
 
         OnPropertyChanged(nameof(ScoreText));
@@ -154,40 +187,54 @@ public partial class CountryQuizViewModel : ViewModelBase
         OnPropertyChanged(nameof(AccuracyText));
     }
 
+    /// <summary>
+    /// Start a new round with new countries.
+    /// </summary>
     [RelayCommand]
     private void NextRound()
     {
         GenerateNewQuestion();
     }
 
-    // FIX 3: Add the missing ResetGame command
-    [RelayCommand]
-    private async Task ResetGame()
-    {
-        _gameState.Reset();
-
-        CurrentScore = _gameState.CurrentScore;
-        CurrentStreak = _gameState.CurrentStreak;
-        // BestStreak is preserved in Reset(), so we keep it UI synced
-        BestStreak = _gameState.BestStreak;
-
-        if (_gameStateRepository != null)
-        {
-            await _gameStateRepository.SaveAsync(_gameState);
-        }
-
-        OnPropertyChanged(nameof(ScoreText));
-        OnPropertyChanged(nameof(StreakText));
-        OnPropertyChanged(nameof(BestStreakText));
-        OnPropertyChanged(nameof(AccuracyText));
-
-        GenerateNewQuestion();
-    }
-
+    /// <summary>
+    /// Change the question type and generate a new question.
+    /// </summary>
     [RelayCommand]
     private void ChangeQuestionType(QuestionType newType)
     {
         SelectedQuestionType = newType;
+        GenerateNewQuestion();
+    }
+
+    /// <summary>
+    /// Reset the game to initial state.
+    /// </summary>
+    [RelayCommand]
+    private async Task ResetGame()
+    {
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalQuestions = 0;
+        
+        _gameState.CurrentScore = 0;
+        _gameState.CurrentStreak = 0;
+        
+        if (_gameStateRepository != null)
+        {
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error resetting game state: {ex.Message}");
+            }
+        }
+        
+        OnPropertyChanged(nameof(ScoreText));
+        OnPropertyChanged(nameof(StreakText));
+        OnPropertyChanged(nameof(AccuracyText));
+        
         GenerateNewQuestion();
     }
 
@@ -202,27 +249,39 @@ public partial class CountryQuizViewModel : ViewModelBase
         Country2Value = "";
         ResultMessage = "";
 
-        var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
+        // Pick two different random countries
+        var indices = Enumerable.Range(0, _countries.Count)
+            .OrderBy(_ => _random.Next())
+            .Take(2)
+            .ToList();
+        
+        _country1 = _countries[indices[0]];
+        _country2 = _countries[indices[1]];
 
-        // Setting these ObservableProperties now updates the UI correctly
-        Country1 = _countries[indices[0]];
-        Country2 = _countries[indices[1]];
+        Country1Name = _country1.Name;
+        Country2Name = _country2.Name;
+        Country1Flag = _country1.Flag;
+        Country2Flag = _country2.Flag;
 
         QuestionText = $"Which country has a higher {SelectedQuestionType.GetLabel()}?";
     }
 
+    // FIX: Remove emojis - use plain text messages instead
     private string GetCorrectMessage()
     {
         var messages = new[]
         {
-            "🎉 Correct!", "✅ Well done!", "👏 Great job!", "🌟 Excellent!",
-            CurrentStreak >= 5 ? $"🔥 {CurrentStreak} in a row!" : "💪 Keep it up!"
+            "Correct!",
+            "Well done!",
+            "Great job!",
+            "Excellent!",
+            CurrentStreak >= 5 ? $"{CurrentStreak} in a row!" : "Keep it up!"
         };
         return messages[_random.Next(messages.Length)];
     }
 
     private string GetIncorrectMessage()
     {
-        return "❌ Not quite! The correct answer is shown above.";
+        return "Not quite! The correct answer is shown above.";
     }
 }

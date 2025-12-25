@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -6,6 +7,9 @@ using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Desktop.Converters;
 
+/// <summary>
+/// Converts QuestionType enum to human-readable label.
+/// </summary>
 public class QuestionTypeLabelConverter : IValueConverter
 {
     public static readonly QuestionTypeLabelConverter Instance = new();
@@ -25,22 +29,43 @@ public class QuestionTypeLabelConverter : IValueConverter
     }
 }
 
-public class BoolToColorConverter : IValueConverter
+/// <summary>
+/// Converts answer state (IsCorrect, IsWrong) to background color.
+/// Only colors the selected answer - unselected answers stay default.
+/// </summary>
+public class AnswerStateToBackgroundConverter : IMultiValueConverter
 {
-    private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));
-    private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
+    public static readonly AnswerStateToBackgroundConverter Instance = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is true && parameter?.ToString() == "correct")
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
-            return CorrectBrush;
+            if (isCorrect)
+                return new SolidColorBrush(Color.FromRgb(76, 175, 80)); // Green #4CAF50
+            if (isWrong)
+                return new SolidColorBrush(Color.FromRgb(244, 67, 54)); // Red #F44336
         }
-        return DefaultBrush;
+        // Default - not selected or not answered yet
+        return new SolidColorBrush(Color.FromRgb(30, 58, 95)); // Dark blue #1E3A5F
     }
+}
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+/// <summary>
+/// Converts answer state to foreground (text) color.
+/// </summary>
+public class AnswerStateToForegroundConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToForegroundConverter Instance = new();
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException();
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect || isWrong)
+                return new SolidColorBrush(Colors.White);
+        }
+        // Default text color
+        return new SolidColorBrush(Colors.White);
     }
 }

@@ -11155,36 +11155,36 @@ git push
 | `Desktop/Converters/Converters.cs` | Answer state converters |
 | `.github/workflows/build-and-release.yml` | Dynamic Android versioning |
 
+Restore complete (0.8s)
+/home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/targets/Microsoft.Android.Sdk.Aot.targets(25,5): error 
+  Could not resolve SDK "Microsoft.NET.Runtime.MonoAOTCompiler.Task". Exactly one of the probing messages below indicates why we could not resolve the SDK. Investigate and resolve that message to correctly specif
+  y the SDK.
+    SDK resolver "Microsoft.DotNet.MSBuildWorkloadSdkResolver" returned null.
+    The NuGetSdkResolver did not resolve this SDK because there was no version specified in the project or global.json.
+   failed with 1 error(s) (0.0s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/targets/Microsoft.Android.Sdk.Aot.targets(25,33): error MSB4236: The SDK 'Microsoft.NET.Runtime.MonoAOTCompiler.Task' specified could not be found.
+  MyDesktopApplication.Core net10.0 succeeded (1.8s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.6s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.7s) → src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
 
+Build failed with 7 error(s) in 4.1s
 
+==============================================
+  BUILD FAILED - Check errors above
+==============================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+real	0m6.312s
+user	0m4.591s
+sys	0m1.009s
 
 
 
