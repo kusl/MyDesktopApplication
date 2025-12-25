@@ -4631,3 +4631,536 @@ real	0m0.745s
 user	0m0.436s
 sys	0m0.462s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 1.0s
+
+real	0m1.159s
+user	0m0.889s
+sys	0m0.272s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+real	0m0.846s
+user	0m0.965s
+sys	0m0.179s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (25.0s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build succeeded with 2 warning(s) in 28.8s
+
+real	0m29.013s
+user	2m3.890s
+sys	0m3.624s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.21]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.71]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.4s
+Build succeeded in 2.4s
+
+real	0m2.513s
+user	0m1.815s
+sys	0m0.379s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m4.470s
+user	0m3.394s
+sys	0m0.580s
+
+real	0m9.502s
+user	0m15.011s
+sys	0m1.320s
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 69 files to export
+
+Processing (1/69): consolidate-github-actions.sh
+Processing (2/69): Directory.Build.props
+Processing (3/69): Directory.Packages.props
+Processing (4/69): export.sh
+Processing (5/69): fix-all-issues.sh
+Processing (6/69): fix-app-update.sh
+Processing (7/69): fix-github-actions.sh
+Processing (8/69): fix-ui-and-precision.sh
+Processing (9/69): fix-ui-tests.sh
+Processing (10/69): .gitattributes
+Processing (11/69): .github/dependabot.yml
+Processing (12/69): .github/workflows/build-and-release.yml
+Processing (13/69): .gitignore
+Processing (14/69): MyDesktopApplication.slnx
+Processing (15/69): README.md
+Processing (16/69): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (17/69): src/MyDesktopApplication.Android/App.axaml
+Processing (18/69): src/MyDesktopApplication.Android/App.cs
+Processing (19/69): src/MyDesktopApplication.Android/Converters/Converters.cs
+Processing (20/69): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (21/69): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (22/69): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (23/69): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (24/69): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (25/69): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (26/69): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (27/69): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (28/69): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (29/69): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (30/69): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (31/69): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (32/69): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (33/69): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (34/69): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (35/69): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (36/69): src/MyDesktopApplication.Desktop/App.axaml
+Processing (37/69): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (38/69): src/MyDesktopApplication.Desktop/app.manifest
+Processing (39/69): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (40/69): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (41/69): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (42/69): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (43/69): src/MyDesktopApplication.Desktop/Program.cs
+Processing (44/69): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (45/69): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (46/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (47/69): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (48/69): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (49/69): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (50/69): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (51/69): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (52/69): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (53/69): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (54/69): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (55/69): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (56/69): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (57/69): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (58/69): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (59/69): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (60/69): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (61/69): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (62/69): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (63/69): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (64/69): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (65/69): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (66/69): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (67/69): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (68/69): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (69/69): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 69
+Files skipped:  0
+Output size:    498.00 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.772s
+user	0m0.439s
+sys	0m0.486s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ libinput list-devices
+Unknown key ModelClickpad in [Touchpad Fix] (local-overrides.quirks)
+Failed to load the device quirks from /usr/share/libinput and /etc/libinput/local-overrides.quirks. This will negatively affect device behavior. See https://wayland.freedesktop.org/libinput/doc/1.30.1/device-quirks.html for details.
+event5  - PIXA3848:01 093A:3848 Touchpad: kernel bug: clickpad advertising right button. See https://wayland.freedesktop.org/libinput/doc/1.30.1/clickpad-with-right-button.html for details
+Device:                  Acer Wireless Radio Control
+Kernel:                  /dev/input/event9
+Id:                      host:1025:1229
+Group:                   1
+Seat:                    seat0, default
+Capabilities:            keyboard 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  Video Bus
+Kernel:                  /dev/input/event3
+Id:                      host:0000:0006
+Group:                   2
+Seat:                    seat0, default
+Capabilities:            keyboard 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  Lid Switch
+Kernel:                  /dev/input/event1
+Id:                      host:0000:0005
+Group:                   3
+Seat:                    seat0, default
+Capabilities:            switch
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  Power Button
+Kernel:                  /dev/input/event0
+Id:                      host:0000:0001
+Group:                   4
+Seat:                    seat0, default
+Capabilities:            keyboard 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  ELAN9004:00 04F3:4185
+Kernel:                  /dev/input/event6
+Id:                      i2c:04f3:4185
+Group:                   5
+Seat:                    seat0, default
+Size:                    317x197mm
+Capabilities:            touch 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             identity matrix
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  PIXA3848:01 093A:3848 Touchpad
+Kernel:                  /dev/input/event5
+Id:                      i2c:093a:3848
+Group:                   6
+Seat:                    seat0, default
+Size:                    121x74mm
+Capabilities:            pointer gesture
+Tap-to-click:            disabled
+Tap-and-drag:            enabled
+Tap button map:          left/right/middle
+Tap drag lock:           disabled
+Left-handed:             disabled
+Nat.scrolling:           disabled
+Middle emulation:        disabled
+Calibration:             n/a
+Scroll methods:          *two-finger edge 
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           *button-areas clickfinger 
+Clickfinger button map:  left/right/middle
+Disable-w-typing:        enabled
+Disable-w-trackpointing: enabled
+Accel profiles:          flat *adaptive custom
+Rotation:                n/a
+Area rectangle:          n/a
+
+Device:                  AT Translated Set 2 keyboard
+Kernel:                  /dev/input/event2
+Id:                      serial:0001:0001
+Group:                   7
+Seat:                    seat0, default
+Capabilities:            keyboard 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  Acer WMI hotkeys
+Kernel:                  /dev/input/event11
+Id:                      host:0000:0000
+Group:                   8
+Seat:                    seat0, default
+Capabilities:            keyboard 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             n/a
+Nat.scrolling:           n/a
+Middle emulation:        n/a
+Calibration:             n/a
+Scroll methods:          none
+Scroll button:           n/a
+Scroll button lock:      n/a
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          n/a
+Rotation:                0.0
+Area rectangle:          n/a
+
+Device:                  gsr-ui virtual keyboard
+Kernel:                  /dev/input/event17
+Id:                      usb:dec0:5eba
+Group:                   9
+Seat:                    seat0, default
+Capabilities:            keyboard pointer 
+Tap-to-click:            n/a
+Tap-and-drag:            n/a
+Tap button map:          n/a
+Tap drag lock:           n/a
+Left-handed:             disabled
+Nat.scrolling:           disabled
+Middle emulation:        disabled
+Calibration:             n/a
+Scroll methods:          button
+Scroll button:           BTN_MIDDLE
+Scroll button lock:      disabled
+Click methods:           none
+Clickfinger button map:  n/a
+Disable-w-typing:        n/a
+Disable-w-trackpointing: n/a
+Accel profiles:          flat *adaptive custom
+Rotation:                0.0
+Area rectangle:          n/a
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ adb logcat -c && adb logcat | grep -iE "(mydesktop|avalonia|crash|exception|fatal)"
+* daemon not running; starting now at tcp:5037
+* daemon started successfully
+12-24 22:49:32.648 31727  4086 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:35.683 31727  4086 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:36.288  1362  1825 E LoadedApk: Exception : java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Looper.isPerfLogEnable()' on a null object reference
+12-24 22:49:36.290  1362  1825 E LoadedApk: Exception : java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Looper.isPerfLogEnable()' on a null object reference
+12-24 22:49:36.456 22167 22167 E MethodChannel#android_package_manager: java.lang.IllegalArgumentException: Unsupported value: 'kotlin.Unit' of type 'class f2.j'
+12-24 22:49:36.457 22167 22167 E DartMessenger: Uncaught exception in binary message listener
+12-24 22:49:36.457 22167 22167 E DartMessenger: java.lang.IllegalStateException: Reply already submitted
+12-24 22:49:38.694 31727  4086 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:41.716 31727 31765 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:44.728 31727  4606 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:47.738 31727  4606 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:50.749 31727 31877 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:51.636  5142  5142 I Finsky  : [2] SettingNotFoundException, fall through to G.downloadBytesOverMobileMaximum
+12-24 22:49:51.636  5142  5142 I Finsky  : [2] SettingNotFoundException, fall through to G.downloadBytesOverMobileRecommended
+12-24 22:49:51.681  5142  5142 I Finsky  : [2] VerifyApps: Install-time verification requested for package com.mydesktopapplication.app, PackageManager id = 99, Verifier id = e38206ec-6b24-4849-91c5-f634df98dd88
+12-24 22:49:51.878  5178  5178 I GOS:GameServiceReceiver:  PkgInstallStarted for com.mydesktopapplication.app UserID : 0
+12-24 22:49:51.885  5178  5240 I GOS:MainIntentService: onHandleIntent(). type(PACKAGE_CHANGED), changeType(INSTALL_STARTED), pkgName(com.mydesktopapplication.app)
+12-24 22:49:51.886  5178  5240 I GOS:SystemEventReactor: onPackageInstallStarted(). packageName: com.mydesktopapplication.app
+12-24 22:49:51.893  5142  5161 V AconfigFlags: Read Aconfig default flag value android.app.enable_fgs_timeout_crash_behavior = true
+12-24 22:49:51.898  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.allow_rescue_party_flag_resets = false
+12-24 22:49:51.898  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.enable_crashrecovery = false
+12-24 22:49:51.898  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.recoverability_detection = false
+12-24 22:49:51.898  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.reenable_settings_resets = false
+12-24 22:49:51.911  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.input.flags.a11y_crash_on_inconsistent_event_stream = false
+12-24 22:49:51.915  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.internal.telephony.flags.fix_crash_on_getting_config_when_phone_is_gone = true
+12-24 22:49:51.926  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.systemui.fix_image_wallpaper_crash_surface_already_released = false
+12-24 22:49:51.929  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.systemui.screenshot_scroll_crop_view_crash_fix = true
+12-24 22:49:51.930  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.text.flags.insert_mode_crash_when_delete = true
+12-24 22:49:51.968  5142  5161 V AconfigFlags: Read Aconfig default flag value android.app.enable_fgs_timeout_crash_behavior = true
+12-24 22:49:51.972  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.allow_rescue_party_flag_resets = false
+12-24 22:49:51.972  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.enable_crashrecovery = false
+12-24 22:49:51.972  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.recoverability_detection = false
+12-24 22:49:51.972  5142  5161 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.reenable_settings_resets = false
+12-24 22:49:51.984  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.input.flags.a11y_crash_on_inconsistent_event_stream = false
+12-24 22:49:51.987  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.internal.telephony.flags.fix_crash_on_getting_config_when_phone_is_gone = true
+12-24 22:49:51.994  5142  5161 V AconfigFlags: Read Aconfig default flag value com.android.text.flags.insert_mode_crash_when_delete = true
+12-24 22:49:52.005  5142  5161 E AconfigFlags: java.io.FileNotFoundException: /vendor/etc/aconfig_flags.pb: open failed: ENOENT (No such file or directory)
+12-24 22:49:52.005  5142  5161 E AconfigFlags: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+12-24 22:49:52.064  5244  5244 I Finsky:background: [2] [BGP] Initializing crash detector...
+12-24 22:49:52.126  5244  5269 I Finsky:background: [129] SettingNotFoundException, fall through to G.downloadBytesOverMobileMaximum
+12-24 22:49:52.129  5244  5269 I Finsky:background: [129] SettingNotFoundException, fall through to G.downloadBytesOverMobileRecommended
+12-24 22:49:52.254  5142  5161 I Finsky  : [122] VerifyApps: Anti-malware verification task started for package=com.mydesktopapplication.app
+12-24 22:49:52.576  5142  5190 I Finsky  : [140] VerifyApps: Starting APK Analysis scan for com.mydesktopapplication.app.
+12-24 22:49:52.578  5142  5190 I Finsky  : [140] Scanning package com.mydesktopapplication.app contents with client side protections. File: [QNT-OZFTm7vkS0Zpsfs1Bt59dz0rMh4-HNKguFqyANE]
+12-24 22:49:52.580  5142  5190 I Finsky  : [140] VerifyApps: APK Analysis scan finished for com.mydesktopapplication.app. Verdict: SAFE
+12-24 22:49:52.904  5142  5162 I Finsky  : [123] VerifyApps: Verification package=com.mydesktopapplication.app, id=99, response=15, upload_requested=false, enable_ecm=false
+12-24 22:49:52.924  5142  5174 I Finsky  : [135] VerifyApps: waiting for app installation for com.mydesktopapplication.app
+12-24 22:49:52.947  5142  5142 I Finsky  : [2] VerifyApps: Install-time verification complete: id=99, package_name=com.mydesktopapplication.app
+12-24 22:49:52.948  1332  2315 I PackageManager:           pkg{com.mydesktopapplication.app}
+12-24 22:49:52.977  1332  1773 W PackageManager: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+12-24 22:49:53.006  1332  1773 D PackageManager: isLocaleOptimizedPackage() -  Non optimized app: com.mydesktopapplication.app. Proceed with normal install
+12-24 22:49:53.011  1332  1773 D PackageInstallerSession: Marking session 502279282 as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+12-24 22:49:53.011  1332  1773 I PackageInstallerSession: Session [502279282] was destroyed because of [Session marked as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!]
+12-24 22:49:53.013  1332  2315 I PackageInstallerSession: result of session: -7{502279282}, Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+12-24 22:49:53.757 31727 31765 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:56.786 31727 31877 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:49:59.807 31727 31823 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:50:02.813 31727 31877 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:50:05.829 31727 31735 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:50:06.056  5388  5388 V AconfigFlags: Read Aconfig default flag value android.app.enable_fgs_timeout_crash_behavior = true
+12-24 22:50:06.057  5388  5388 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.allow_rescue_party_flag_resets = false
+12-24 22:50:06.057  5388  5388 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.enable_crashrecovery = false
+12-24 22:50:06.057  5388  5388 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.recoverability_detection = false
+12-24 22:50:06.057  5388  5388 V AconfigFlags: Read Aconfig default flag value android.crashrecovery.flags.reenable_settings_resets = false
+12-24 22:50:06.059  5388  5388 V AconfigFlags: Read Aconfig default flag value com.android.input.flags.a11y_crash_on_inconsistent_event_stream = false
+12-24 22:50:06.062  5388  5388 V AconfigFlags: Read Aconfig default flag value com.android.systemui.fix_image_wallpaper_crash_surface_already_released = false
+12-24 22:50:06.063  5388  5388 V AconfigFlags: Read Aconfig default flag value com.android.text.flags.insert_mode_crash_when_delete = true
+12-24 22:50:06.074  5388  5388 V AconfigFlags: Read Aconfig default flag value com.android.internal.telephony.flags.fix_crash_on_getting_config_when_phone_is_gone = true
+12-24 22:50:06.076  5388  5388 V AconfigFlags: Read Aconfig default flag value com.android.text.flags.insert_mode_crash_when_delete = true
+12-24 22:50:06.077  5388  5388 E AconfigFlags: java.io.FileNotFoundException: /vendor/etc/aconfig_flags.pb: open failed: ENOENT (No such file or directory)
+12-24 22:50:06.077  5388  5388 E AconfigFlags: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+12-24 22:50:06.554  2971 30761 I HoneySpace.SuggestedItemsFacade: DPS items : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:06.554  2971 30761 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:06.555  2971 30761 I HoneySpace.SuggestedItemsFacade: filteredItem : PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})
+12-24 22:50:06.561  2971 30761 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:06.568  2971 30761 I HoneySpace.SuggestedItemsFacade: getFinalItems : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:08.857 31727  4606 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:50:10.548  2971  2234 I HoneySpace.SuggestedItemsFacade: DPS items : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:10.548  2971  2234 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:10.549  2971  2234 I HoneySpace.SuggestedItemsFacade: filteredItem : PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})
+12-24 22:50:10.557  2971 30766 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:10.562  2971 30766 I HoneySpace.SuggestedItemsFacade: getFinalItems : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:10.769  2971  2234 I HoneySpace.SuggestedItemsFacade: DPS items : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:10.769  2971  2234 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:10.769  2971  2234 I HoneySpace.SuggestedItemsFacade: filteredItem : PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})
+12-24 22:50:10.776  2971  2234 I HoneySpace.FilteredItemProvider: collect filtered items m, [PK(p='com.rsupport.rs.activity.rsupport.aas2', u=UserHandle{0}), PK(p='com.mycompany.mydesktopapplication', u=UserHandle{0})]
+12-24 22:50:10.783  2971  2234 I HoneySpace.SuggestedItemsFacade: getFinalItems : MyDesktopApplication, com.mydesktopapplication.app/crc648a10417f6d1065e1.MainActivity#UserHandle{0}
+12-24 22:50:11.445  5178  5178 I GOS:GameServiceReceiver:  PkgInstallStarted for com.mydesktopapplication.app UserID : 0
+12-24 22:50:11.445  5142  5142 I Finsky  : [2] VerifyApps: Install-time verification requested for package com.mydesktopapplication.app, PackageManager id = 100, Verifier id = 60783eaa-0960-460e-b8a3-9d0714473c73
+12-24 22:50:11.451  5178  5423 I GOS:MainIntentService: onHandleIntent(). type(PACKAGE_CHANGED), changeType(INSTALL_STARTED), pkgName(com.mydesktopapplication.app)
+12-24 22:50:11.451  5178  5423 I GOS:SystemEventReactor: onPackageInstallStarted(). packageName: com.mydesktopapplication.app
+12-24 22:50:11.644  5142  5161 I Finsky  : [122] VerifyApps: Anti-malware verification task started for package=com.mydesktopapplication.app
+12-24 22:50:11.869 31727 31765 I NullBinder: NullBinder for android.net.action.RECOMMEND_NETWORKS triggering remote TransactionTooLargeException due to Service without Chimera impl, calling uid: 1000, calling pid: 0
+12-24 22:50:11.958  5142  5174 I Finsky  : [135] VerifyApps: Starting APK Analysis scan for com.mydesktopapplication.app.
+12-24 22:50:11.958  5142  5174 I Finsky  : [135] Scanning package com.mydesktopapplication.app contents with client side protections. File: [VZhIy0lgtylxX1F48tHfSZmfYtscuw93T7hycR-BRfY]
+12-24 22:50:11.959  5142  5174 I Finsky  : [135] VerifyApps: APK Analysis scan finished for com.mydesktopapplication.app. Verdict: SAFE
+12-24 22:50:12.074  5142  5162 I Finsky  : [123] VerifyApps: Verification package=com.mydesktopapplication.app, id=100, response=15, upload_requested=false, enable_ecm=false
+12-24 22:50:12.080  5142  5175 I Finsky  : [136] VerifyApps: waiting for app installation for com.mydesktopapplication.app
+12-24 22:50:12.088  1332  2315 I PackageManager:           pkg{com.mydesktopapplication.app}
+12-24 22:50:12.088  5142  5142 I Finsky  : [2] VerifyApps: Install-time verification complete: id=100, package_name=com.mydesktopapplication.app
+12-24 22:50:12.102  1332  1773 W PackageManager: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+12-24 22:50:12.120  1332  1773 D PackageManager: isLocaleOptimizedPackage() -  Non optimized app: com.mydesktopapplication.app. Proceed with normal install
+12-24 22:50:12.120  1332  1773 D PackageInstallerSession: Marking session 1647590293 as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+12-24 22:50:12.120  1332  1773 I PackageInstallerSession: Session [1647590293] was destroyed because of [Session marked as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!]
+12-24 22:50:12.121  1332  2315 I PackageInstallerSession: result of session: -7{1647590293}, Existing package com.mydesktopapplication.app signatures do not match newer version; ignoring!
+^C
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
