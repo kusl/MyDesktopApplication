@@ -11522,3 +11522,79 @@ I have fixed some errors and made some changes and uploaded the latest code in `
 one persistent problem, at least on android is updating the app still does not work. 
 I need to uninstall and install the app again. 
 can you please fix this problem for all platforms? 
+
+I'll search your project knowledge to understand the current state of the code and then investigate the app update issue.Now let me look at the actual dump.txt file to see the current state of the code:Now I have a good understanding. Let me search for the actual dump.txt content to see what specific code changes are needed:Now I understand the issue well. The problem is that the Android app updates require incrementing version codes. Let me search for the current workflow and csproj state:Based on my research, I now have a complete understanding of the issue. The app update problem on Android is caused by the version code not incrementing between builds. Let me create a comprehensive fix script:Now let me verify and enhance the script to also handle Desktop platforms properly:Here's a comprehensive script that fixes the app update issue for all platforms.
+
+## What This Script Fixes
+
+### The Problem
+Android requires the `versionCode` (an integer) to **strictly increase** with every update. Your current setup has a static `ApplicationVersion=1`, so every APK has the same version code. Android sees this as "already installed" and refuses to update.
+
+### The Solution
+The script implements a **centralized versioning strategy** using `BuildNumber`:
+
+| Environment | BuildNumber | Android versionCode | Android versionName | Desktop Version |
+|-------------|-------------|---------------------|---------------------|-----------------|
+| Local dev | 0 (default) | 1 | 1.0.0-local | 1.0.0.0 |
+| CI push #42 | 42 | 42 | 1.0.42 | 1.0.42.0 |
+| CI push #43 | 43 | 43 | 1.0.43 | 1.0.43.0 |
+
+### Files Modified
+
+1. **Directory.Build.props** - Centralized `BuildNumber` property with sensible defaults
+2. **Android .csproj** - Dynamic `ApplicationVersion` and `ApplicationDisplayVersion`
+3. **Desktop .csproj** - Consistent versioning metadata
+4. **GitHub Actions** - Passes `-p:BuildNumber=${{ github.run_number }}` to all builds
+
+### How to Run
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-app-update.sh
+./fix-app-update.sh
+
+# Then commit and push
+git add -A
+git commit -m "Fix app update versioning for all platforms"
+git push
+```
+
+### After Pushing
+
+The next GitHub Actions run will produce an APK with:
+- **versionCode**: `(run_number)` - strictly higher than previous builds
+- **versionName**: `1.0.(run_number)` - visible to users
+
+Obtainium will recognize this as an update and install it over the existing app without requiring an uninstall.
+
+### Why This Works
+
+1. **`github.run_number`** automatically increments with every push to the repository
+2. Each APK gets a unique, higher version code
+3. Android's package manager sees `versionCode 43 > versionCode 42` and allows the update
+4. No manual tag management or version bumping required
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
