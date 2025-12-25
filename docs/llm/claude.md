@@ -11598,3 +11598,6 @@ Obtainium will recognize this as an update and install it over the existing app 
 
 
 
+and now the android app crashes on launch. 
+I have the adb logs in `output.txt` and the code in `dump.txt` 
+please review them both in great detail. 
