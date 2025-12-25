@@ -1875,4 +1875,645 @@ File types included:
 real	0m0.714s
 user	0m0.413s
 sys	0m0.438s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-all-issues.sh 
+==============================================
+  MyDesktopApplication - Comprehensive Fix
+==============================================
+
+[1/8] Cleaning up stuck processes and build artifacts...
+✓ Cleanup complete
+[2/8] Updating CountryQuizViewModel (answer highlighting fix)...
+✓ CountryQuizViewModel updated
+[3/8] Updating Android MainView.axaml (remove emojis)...
+✓ Android MainView.axaml updated
+[4/8] Updating Android Converters...
+✓ Android Converters updated
+[5/8] Updating Desktop MainWindow.axaml (remove emojis)...
+✓ Desktop MainWindow.axaml updated
+[6/8] Updating Desktop Converters...
+✓ Desktop Converters updated
+[7/8] Updating Desktop MainWindowViewModel...
+✓ Desktop MainWindowViewModel updated
+[8/8] Updating GitHub Actions workflow for Android versioning...
+✓ GitHub Actions workflow updated
+
+==============================================
+  Building and Verifying...
+==============================================
+Restore complete (1.0s)
+
+Build succeeded in 1.1s
+Restore complete (0.8s)
+/home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/targets/Microsoft.Android.Sdk.Aot.targets(25,5): error 
+  Could not resolve SDK "Microsoft.NET.Runtime.MonoAOTCompiler.Task". Exactly one of the probing messages below indicates why we could not resolve the SDK. Investigate and resolve that message to correctly specif
+  y the SDK.
+    SDK resolver "Microsoft.DotNet.MSBuildWorkloadSdkResolver" returned null.
+    The NuGetSdkResolver did not resolve this SDK because there was no version specified in the project or global.json.
+   failed with 1 error(s) (0.0s)
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/targets/Microsoft.Android.Sdk.Aot.targets(25,33): error MSB4236: The SDK 'Microsoft.NET.Runtime.MonoAOTCompiler.Task' specified could not be found.
+  MyDesktopApplication.Core net10.0 succeeded (1.8s) → src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.2s) → src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.6s) → src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.7s) → src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 7 error(s) in 4.1s
+
+==============================================
+  BUILD FAILED - Check errors above
+==============================================
+
+real	0m6.312s
+user	0m4.591s
+sys	0m1.009s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 0.5s
+
+real	0m0.588s
+user	0m0.668s
+sys	0m0.128s
+Restore complete (0.7s)
+
+Build succeeded in 0.8s
+
+real	0m0.960s
+user	0m1.176s
+sys	0m0.242s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.6s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (19.0s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 5 error(s) and 2 warning(s) in 20.0s
+
+real	0m20.198s
+user	1m12.156s
+sys	0m3.106s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.0s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.64]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.2s
+Build failed with 5 error(s) in 2.0s
+
+real	0m2.172s
+user	0m1.681s
+sys	0m0.348s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.168s
+user	0m2.231s
+sys	0m0.452s
+
+real	0m8.549s
+user	0m13.944s
+sys	0m1.231s
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 66 files to export
+
+Processing (1/66): consolidate-github-actions.sh
+Processing (2/66): Directory.Build.props
+Processing (3/66): Directory.Packages.props
+Processing (4/66): export.sh
+Processing (5/66): fix-all-issues.sh
+Processing (6/66): fix-ui-and-precision.sh
+Processing (7/66): .gitattributes
+Processing (8/66): .github/dependabot.yml
+Processing (9/66): .github/workflows/build-and-release.yml
+Processing (10/66): .gitignore
+Processing (11/66): MyDesktopApplication.slnx
+Processing (12/66): README.md
+Processing (13/66): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (14/66): src/MyDesktopApplication.Android/App.axaml
+Processing (15/66): src/MyDesktopApplication.Android/App.cs
+Processing (16/66): src/MyDesktopApplication.Android/Converters/Converters.cs
+Processing (17/66): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (18/66): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (19/66): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (20/66): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (21/66): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (22/66): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (23/66): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (24/66): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (25/66): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (26/66): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (27/66): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (28/66): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (29/66): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (30/66): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (31/66): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (32/66): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (33/66): src/MyDesktopApplication.Desktop/App.axaml
+Processing (34/66): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (35/66): src/MyDesktopApplication.Desktop/app.manifest
+Processing (36/66): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (37/66): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (38/66): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (39/66): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (40/66): src/MyDesktopApplication.Desktop/Program.cs
+Processing (41/66): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (42/66): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (43/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (44/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (45/66): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (46/66): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (47/66): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (48/66): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (49/66): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (50/66): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (51/66): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (52/66): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (53/66): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (54/66): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (55/66): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (56/66): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (57/66): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (58/66): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (59/66): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (60/66): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (61/66): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (62/66): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/66): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/66): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/66): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/66): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 66
+Files skipped:  0
+Output size:    457.43 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.728s
+user	0m0.439s
+sys	0m0.436s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 0.5s
+
+real	0m0.648s
+user	0m0.739s
+sys	0m0.184s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.766s
+user	0m0.859s
+sys	0m0.193s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'NextRound' and no accessible extension method 'NextRound' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (18.7s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 5 error(s) and 2 warning(s) in 19.8s
+
+real	0m19.928s
+user	1m14.610s
+sys	0m3.023s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.0s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.63]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.2s
+Build failed with 5 error(s) in 2.0s
+
+real	0m2.102s
+user	0m1.529s
+sys	0m0.334s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.152s
+user	0m2.236s
+sys	0m0.438s
+
+real	0m8.458s
+user	0m13.606s
+sys	0m1.158s
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 66 files to export
+
+Processing (1/66): consolidate-github-actions.sh
+Processing (2/66): Directory.Build.props
+Processing (3/66): Directory.Packages.props
+Processing (4/66): export.sh
+Processing (5/66): fix-all-issues.sh
+Processing (6/66): fix-ui-and-precision.sh
+Processing (7/66): .gitattributes
+Processing (8/66): .github/dependabot.yml
+Processing (9/66): .github/workflows/build-and-release.yml
+Processing (10/66): .gitignore
+Processing (11/66): MyDesktopApplication.slnx
+Processing (12/66): README.md
+Processing (13/66): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (14/66): src/MyDesktopApplication.Android/App.axaml
+Processing (15/66): src/MyDesktopApplication.Android/App.cs
+Processing (16/66): src/MyDesktopApplication.Android/Converters/Converters.cs
+Processing (17/66): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (18/66): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (19/66): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (20/66): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (21/66): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (22/66): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (23/66): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (24/66): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (25/66): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (26/66): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (27/66): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (28/66): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (29/66): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (30/66): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (31/66): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (32/66): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (33/66): src/MyDesktopApplication.Desktop/App.axaml
+Processing (34/66): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (35/66): src/MyDesktopApplication.Desktop/app.manifest
+Processing (36/66): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (37/66): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (38/66): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (39/66): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (40/66): src/MyDesktopApplication.Desktop/Program.cs
+Processing (41/66): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (42/66): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (43/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (44/66): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (45/66): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (46/66): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (47/66): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (48/66): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (49/66): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (50/66): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (51/66): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (52/66): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (53/66): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (54/66): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (55/66): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (56/66): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (57/66): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (58/66): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (59/66): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (60/66): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (61/66): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (62/66): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (63/66): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (64/66): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (65/66): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (66/66): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 66
+Files skipped:  0
+Output size:    457.43 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.722s
+user	0m0.433s
+sys	0m0.431s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 0.5s
+
+real	0m0.609s
+user	0m0.742s
+sys	0m0.153s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.780s
+user	0m0.881s
+sys	0m0.188s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (18.8s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 5 error(s) and 2 warning(s) in 19.8s
+
+real	0m19.927s
+user	1m8.420s
+sys	0m3.096s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.63]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.2s
+Build failed with 5 error(s) in 2.0s
+
+real	0m2.170s
+user	0m1.554s
+sys	0m0.369s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.079s
+user	0m2.195s
+sys	0m0.431s
+
+real	0m7.966s
+user	0m12.641s
+sys	0m1.160s
+==============================================
+  Project Export for LLM Analysis
+==============================================
+
+Project Path: /home/kushal/src/dotnet/MyDesktopApplication
+Output File:  docs/llm/dump.txt
+
+Generating directory structure...
+Collecting files...
+Found 67 files to export
+
+Processing (1/67): consolidate-github-actions.sh
+Processing (2/67): Directory.Build.props
+Processing (3/67): Directory.Packages.props
+Processing (4/67): export.sh
+Processing (5/67): fix-all-issues.sh
+Processing (6/67): fix-ui-and-precision.sh
+Processing (7/67): fix-ui-tests.sh
+Processing (8/67): .gitattributes
+Processing (9/67): .github/dependabot.yml
+Processing (10/67): .github/workflows/build-and-release.yml
+Processing (11/67): .gitignore
+Processing (12/67): MyDesktopApplication.slnx
+Processing (13/67): README.md
+Processing (14/67): src/MyDesktopApplication.Android/AndroidManifest.xml
+Processing (15/67): src/MyDesktopApplication.Android/App.axaml
+Processing (16/67): src/MyDesktopApplication.Android/App.cs
+Processing (17/67): src/MyDesktopApplication.Android/Converters/Converters.cs
+Processing (18/67): src/MyDesktopApplication.Android/MainActivity.cs
+Processing (19/67): src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processing (20/67): src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processing (21/67): src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processing (22/67): src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processing (23/67): src/MyDesktopApplication.Android/Views/MainView.axaml
+Processing (24/67): src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processing (25/67): src/MyDesktopApplication.Core/Entities/Country.cs
+Processing (26/67): src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processing (27/67): src/MyDesktopApplication.Core/Entities/GameState.cs
+Processing (28/67): src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processing (29/67): src/MyDesktopApplication.Core/Entities/TodoItem.cs
+Processing (30/67): src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processing (31/67): src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processing (32/67): src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
+Processing (33/67): src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processing (34/67): src/MyDesktopApplication.Desktop/App.axaml
+Processing (35/67): src/MyDesktopApplication.Desktop/App.axaml.cs
+Processing (36/67): src/MyDesktopApplication.Desktop/app.manifest
+Processing (37/67): src/MyDesktopApplication.Desktop/appsettings.json
+Processing (38/67): src/MyDesktopApplication.Desktop/Assets/avalonia-logo.ico
+Processing (39/67): src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processing (40/67): src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processing (41/67): src/MyDesktopApplication.Desktop/Program.cs
+Processing (42/67): src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+Processing (43/67): src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+Processing (44/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processing (45/67): src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processing (46/67): src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processing (47/67): src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processing (48/67): src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processing (49/67): src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processing (50/67): src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processing (51/67): src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processing (52/67): src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
+Processing (53/67): src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processing (54/67): src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processing (55/67): src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
+Processing (56/67): src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processing (57/67): src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processing (58/67): src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+Processing (59/67): src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processing (60/67): tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processing (61/67): tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processing (62/67): tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processing (63/67): tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
+Processing (64/67): tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processing (65/67): tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
+Processing (66/67): tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Processing (67/67): tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+==============================================
+  Export Complete!
+==============================================
+
+Output file:    docs/llm/dump.txt
+Files exported: 67
+Files skipped:  0
+Output size:    470.75 KB
+
+File types included:
+  • Source code: .cs, .fs, .vb
+  • UI/XAML: .axaml, .xaml, .paml
+  • Projects: .csproj, .slnx, .sln, .props, .targets
+  • Config: .json, .yaml, .yml, .xml, .config
+  • Docs: .md, .txt
+  • Scripts: .sh, .ps1, .cmd, .bat
+  • Other: .sql, .resx, .css, .scss, Dockerfile, etc.
+
+
+real	0m0.723s
+user	0m0.413s
+sys	0m0.453s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
