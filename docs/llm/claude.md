@@ -11398,11 +11398,12 @@ This should resolve all 5 CS1061 errors you're seeing in `MyDesktopApplication.U
 
 
 
-MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel
-MyDesktopApplication.Desktop.ViewModels
-/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-  MyDesktopApplication.Desktop net10.0 failed with 4 error(s) (0.3s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(85,40,85,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Flag' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 85, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(86,40,86,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country1Name' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 86, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(120,40,120,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Flag' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 120, position 40.
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(121,40,121,40): Avalonia error AVLN2000: Unable to resolve property or method of name 'Country2Name' on type 'MyDesktopApplication.Desktop.ViewModels.MainWindowViewModel'. Line 121, position 40.
+something went wrong with the github action again. 
+please do not hallucinate. 
+please fix all problems thoroughly. 
+Run dotnet restore
+  
+  Determining projects to restore...
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To build this project, the following workloads must be installed: android [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/sdk/10.0.101/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.ImportWorkloads.targets(38,5): error NETSDK1147: To install these workloads, run the following command: dotnet workload restore [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: Process completed with exit code 1.
