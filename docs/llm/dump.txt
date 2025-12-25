@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 07:42:51 PM CST 2025
+Generated: Wed Dec 24 07:52:25 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -18,9 +18,7 @@ DIRECTORY STRUCTURE:
 │   └── thoughts.md
 ├── .github
 │   ├── workflows
-│   │   ├── build.yml
-│   │   ├── ci.yml
-│   │   └── release.yml
+│   │   └── build-and-release.yml
 │   └── dependabot.yml
 ├── src
 │   ├── MyDesktopApplication.Android
@@ -1814,223 +1812,26 @@ updates:
 
 
 ================================================================================
-FILE: .github/workflows/build.yml
-SIZE: 5.91 KB
-MODIFIED: 2025-12-24 19:27:15
+FILE: .github/workflows/build-and-release.yml
+SIZE: 10.53 KB
+MODIFIED: 2025-12-24 19:43:35
 ================================================================================
 
-name: Build
+# =============================================================================
+# Unified Build & Release Workflow
+# =============================================================================
+# Every push to master/main creates a full release 1.0.{run_number}
+# No git tags required - GitHub run number auto-increments
+# =============================================================================
+
+name: Build & Release
 
 on:
   push:
-    branches: [master, main, develop]
-
-env:
-  DOTNET_VERSION: '10.0.x'
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-
-jobs:
-  # Desktop builds for all platforms
-  build-desktop:
-    name: Build Desktop (${{ matrix.rid }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-latest
-            rid: win-x64
-            artifact: MyDesktopApplication-win-x64
-          - os: windows-latest
-            rid: win-arm64
-            artifact: MyDesktopApplication-win-arm64
-          - os: ubuntu-latest
-            rid: linux-x64
-            artifact: MyDesktopApplication-linux-x64
-          - os: ubuntu-latest
-            rid: linux-arm64
-            artifact: MyDesktopApplication-linux-arm64
-          - os: macos-latest
-            rid: osx-x64
-            artifact: MyDesktopApplication-osx-x64
-          - os: macos-latest
-            rid: osx-arm64
-            artifact: MyDesktopApplication-osx-arm64
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Publish
-        shell: bash
-        run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            --output ./publish/${{ matrix.artifact }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: ${{ matrix.artifact }}
-          path: ./publish/${{ matrix.artifact }}
-          retention-days: 7
-
-  # Android build
-  build-android:
-    name: Build Android
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-android-nuget-
-
-      - name: Build Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            -p:ApplicationVersion=${{ github.run_number }} \
-            -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
-            --output ./publish/android
-
-      - name: Upload Android artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: MyDesktopApplication-android
-          path: ./publish/android/*.apk
-          retention-days: 7
-          if-no-files-found: warn
-
-  # Create pre-release with all artifacts
-  pre-release:
-    name: Create Pre-release
-    needs: [build-desktop, build-android]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v7
-        with:
-          path: ./artifacts
-          merge-multiple: false
-
-      - name: Create archives
-        run: |
-          mkdir -p ./release
-          cd ./artifacts
-          
-          # Create zip for Windows
-          for dir in MyDesktopApplication-win-*; do
-            if [ -d "$dir" ]; then
-              zip -r "../release/${dir}.zip" "$dir"
-            fi
-          done
-          
-          # Create tar.gz for Linux/macOS
-          for dir in MyDesktopApplication-linux-* MyDesktopApplication-osx-*; do
-            if [ -d "$dir" ]; then
-              tar -czvf "../release/${dir}.tar.gz" "$dir"
-            fi
-          done
-          
-          # Copy Android APK
-          if [ -d "MyDesktopApplication-android" ]; then
-            cp MyDesktopApplication-android/*.apk ../release/ 2>/dev/null || true
-          fi
-
-      - name: Delete existing dev release
-        run: |
-          gh release delete dev --yes || true
-          git push origin :refs/tags/dev || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create dev pre-release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: dev
-          name: Development Build
-          prerelease: true
-          files: ./release/*
-          body: |
-            ## 🚧 Development Build
-            
-            This is an automatically generated pre-release from the latest commit on `${{ github.ref_name }}`.
-            
-            **Commit:** ${{ github.sha }}
-            **Date:** ${{ github.event.head_commit.timestamp }}
-            
-            ### Downloads
-            - **Windows x64:** MyDesktopApplication-win-x64.zip
-            - **Windows ARM64:** MyDesktopApplication-win-arm64.zip
-            - **Linux x64:** MyDesktopApplication-linux-x64.tar.gz
-            - **Linux ARM64:** MyDesktopApplication-linux-arm64.tar.gz
-            - **macOS x64:** MyDesktopApplication-osx-x64.tar.gz
-            - **macOS ARM64:** MyDesktopApplication-osx-arm64.tar.gz
-            - **Android:** com.mycompany.mydesktopapplication.apk
-            
-            ⚠️ **This is a development build and may be unstable.**
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-================================================================================
-FILE: .github/workflows/ci.yml
-SIZE: 2.24 KB
-MODIFIED: 2025-12-22 04:33:10
-================================================================================
-
-name: CI
-
-on:
-  push:
-    branches: [master, main, develop]
+    branches: [master, main]
   pull_request:
-    branches: [master, main, develop]
+    branches: [master, main]
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -2038,32 +1839,32 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+  # ===========================================================================
+  # Build & Test
+  # ===========================================================================
   build-and-test:
-    name: Build & Test (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
+    name: Build & Test
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+        
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
+          
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
-      - name: Restore (Desktop only)
+            
+      - name: Restore (Desktop + Tests only)
+        shell: bash
         run: |
           dotnet restore src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
           dotnet restore src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
@@ -2072,219 +1873,240 @@ jobs:
           dotnet restore tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
           dotnet restore tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
           dotnet restore tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-
+          
       - name: Build
+        shell: bash
         run: |
-          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj --no-restore --configuration Release
-
+          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj -c Release --no-restore
+          
       - name: Test
+        shell: bash
         run: |
-          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj --no-restore --configuration Release --verbosity normal
-          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj --no-restore --configuration Release --verbosity normal
-          dotnet test tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj --no-restore --configuration Release --verbosity normal
+          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj -c Release --no-build --verbosity normal
+          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj -c Release --no-build --verbosity normal
+          dotnet test tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj -c Release --no-build --verbosity normal
 
-
-================================================================================
-FILE: .github/workflows/release.yml
-SIZE: 5.83 KB
-MODIFIED: 2025-12-24 19:27:24
-================================================================================
-
-name: Release
-
-on:
-  push:
-    tags:
-      - 'v*'
-
-env:
-  DOTNET_VERSION: '10.0.x'
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-
-jobs:
-  # Desktop builds for all platforms
+  # ===========================================================================
+  # Build Desktop Binaries (Matrix)
+  # ===========================================================================
   build-desktop:
-    name: Build Desktop (${{ matrix.rid }})
+    name: Build ${{ matrix.name }}
+    needs: build-and-test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     runs-on: ${{ matrix.os }}
+    
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: windows-latest
+          - name: Windows x64
+            os: windows-latest
             rid: win-x64
             artifact: MyDesktopApplication-win-x64
-          - os: windows-latest
+            
+          - name: Windows ARM64
+            os: windows-latest
             rid: win-arm64
             artifact: MyDesktopApplication-win-arm64
-          - os: ubuntu-latest
+            
+          - name: Linux x64
+            os: ubuntu-latest
             rid: linux-x64
             artifact: MyDesktopApplication-linux-x64
-          - os: ubuntu-latest
+            
+          - name: Linux ARM64
+            os: ubuntu-latest
             rid: linux-arm64
             artifact: MyDesktopApplication-linux-arm64
-          - os: macos-latest
+            
+          - name: macOS x64
+            os: macos-13
             rid: osx-x64
             artifact: MyDesktopApplication-osx-x64
-          - os: macos-latest
+            
+          - name: macOS ARM64
+            os: macos-latest
             rid: osx-arm64
             artifact: MyDesktopApplication-osx-arm64
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+        
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
+          
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
+            
       - name: Publish
         shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
+            -c Release \
+            -r ${{ matrix.rid }} \
             --self-contained true \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
-            --output ./publish/${{ matrix.artifact }}
-
-      - name: Upload artifact
+            -p:Version=1.0.${{ github.run_number }} \
+            -p:AssemblyVersion=1.0.${{ github.run_number }}.0 \
+            -p:FileVersion=1.0.${{ github.run_number }}.0 \
+            -o ./publish/${{ matrix.artifact }}
+            
+      - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact }}
           path: ./publish/${{ matrix.artifact }}
-          retention-days: 90
+          retention-days: 30
 
-  # Android build
+  # ===========================================================================
+  # Build Android APK
+  # ===========================================================================
   build-android:
     name: Build Android
+    needs: build-and-test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+        
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-
+          
       - name: Setup Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
+          java-version: '17'
+          
+      - name: Install Android Workload
         run: dotnet workload install android
-
+        
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
           restore-keys: |
             ${{ runner.os }}-android-nuget-
-
+            
+      - name: Restore Android Project
+        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+        
       - name: Build Android APK
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
+            -c Release \
+            -f net10.0-android \
+            -p:AndroidPackageFormat=apk \
+            -p:AndroidUseAapt2Daemon=false \
+            -p:_Aapt2DaemonMaxInstanceCount=1 \
             -p:ApplicationVersion=${{ github.run_number }} \
-            -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
-            --output ./publish/android
-
-      - name: Upload Android artifact
+            -p:ApplicationDisplayVersion=1.0.${{ github.run_number }} \
+            -o ./publish/android
+            
+      - name: Upload Android APK
         uses: actions/upload-artifact@v6
         with:
           name: MyDesktopApplication-android
-          path: ./publish/android/*.apk
-          retention-days: 90
-          if-no-files-found: warn
+          path: ./publish/android/**/*.apk
+          retention-days: 30
 
-  # Create release with all artifacts
-  release:
-    name: Create Release
+  # ===========================================================================
+  # Create Release
+  # ===========================================================================
+  create-release:
+    name: Create Release 1.0.${{ github.run_number }}
     needs: [build-desktop, build-android]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Download all artifacts
+      - name: Download All Artifacts
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          merge-multiple: false
-
-      - name: Create archives
+          
+      - name: List Downloaded Artifacts
+        run: find ./artifacts -type f | head -50
+        
+      - name: Create Archives
+        shell: bash
         run: |
-          mkdir -p ./release
-          cd ./artifacts
+          cd artifacts
           
-          # Create zip for Windows
-          for dir in MyDesktopApplication-win-*; do
-            if [ -d "$dir" ]; then
-              zip -r "../release/${dir}.zip" "$dir"
+          # Create archives for each platform
+          for dir in */; do
+            name="${dir%/}"
+            echo "Processing: $name"
+            
+            if [[ "$name" == *"win"* ]]; then
+              # Windows: create .zip
+              zip -r "../${name}-v1.0.${{ github.run_number }}.zip" "$dir"
+            elif [[ "$name" == *"android"* ]]; then
+              # Android: copy APK directly
+              find "$dir" -name "*.apk" -exec cp {} "../MyDesktopApplication-v1.0.${{ github.run_number }}.apk" \;
+            else
+              # Linux/macOS: create .tar.gz
+              tar -czvf "../${name}-v1.0.${{ github.run_number }}.tar.gz" "$dir"
             fi
           done
           
-          # Create tar.gz for Linux/macOS
-          for dir in MyDesktopApplication-linux-* MyDesktopApplication-osx-*; do
-            if [ -d "$dir" ]; then
-              tar -czvf "../release/${dir}.tar.gz" "$dir"
-            fi
-          done
+          cd ..
+          echo ""
+          echo "Release assets:"
+          ls -la *.zip *.tar.gz *.apk 2>/dev/null || echo "(no assets found)"
           
-          # Copy Android APK
-          if [ -d "MyDesktopApplication-android" ]; then
-            cp MyDesktopApplication-android/*.apk ../release/ 2>/dev/null || true
-          fi
-
-      - name: Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./release/*
-          generate_release_notes: true
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release 1.0.${{ github.run_number }}
           body: |
-            ## 📦 Release ${{ github.ref_name }}
+            ## MyDesktopApplication v1.0.${{ github.run_number }}
+            
+            **Build:** #${{ github.run_number }}
+            **Commit:** ${{ github.sha }}
+            **Date:** ${{ github.event.head_commit.timestamp }}
             
             ### Downloads
             
-            | Platform | Architecture | Download |
-            |----------|--------------|----------|
-            | Windows | x64 | MyDesktopApplication-win-x64.zip |
-            | Windows | ARM64 | MyDesktopApplication-win-arm64.zip |
-            | Linux | x64 | MyDesktopApplication-linux-x64.tar.gz |
-            | Linux | ARM64 | MyDesktopApplication-linux-arm64.tar.gz |
-            | macOS | x64 (Intel) | MyDesktopApplication-osx-x64.tar.gz |
-            | macOS | ARM64 (Apple Silicon) | MyDesktopApplication-osx-arm64.tar.gz |
-            | Android | APK | com.mycompany.mydesktopapplication.apk |
+            | Platform | File |
+            |----------|------|
+            | Windows x64 | `MyDesktopApplication-win-x64-v1.0.${{ github.run_number }}.zip` |
+            | Windows ARM64 | `MyDesktopApplication-win-arm64-v1.0.${{ github.run_number }}.zip` |
+            | Linux x64 | `MyDesktopApplication-linux-x64-v1.0.${{ github.run_number }}.tar.gz` |
+            | Linux ARM64 | `MyDesktopApplication-linux-arm64-v1.0.${{ github.run_number }}.tar.gz` |
+            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64-v1.0.${{ github.run_number }}.tar.gz` |
+            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64-v1.0.${{ github.run_number }}.tar.gz` |
+            | Android | `MyDesktopApplication-v1.0.${{ github.run_number }}.apk` |
             
-            ### Installation
+            ### Changes
             
-            **Windows:** Extract the zip and run `MyDesktopApplication.Desktop.exe`
-            
-            **Linux:** Extract the tar.gz and run `./MyDesktopApplication.Desktop`
-            
-            **macOS:** Extract the tar.gz and run the application
-            
-            **Android:** Install the APK on your device
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            See commit history for details.
+          draft: false
+          prerelease: false
+          files: |
+            *.zip
+            *.tar.gz
+            *.apk
+          generate_release_notes: true
 
 
 ================================================================================
@@ -5799,9 +5621,9 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 07:42:52 PM CST 2025
-Total Files Found: 67
-Files Exported: 67
+EXPORT COMPLETED: Wed Dec 24 07:52:26 PM CST 2025
+Total Files Found: 65
+Files Exported: 65
 Files Skipped: 0 (binary or large files)
 Output File: /home/kushal/src/dotnet/MyDesktopApplication/docs/llm/dump.txt
 ===============================================================================

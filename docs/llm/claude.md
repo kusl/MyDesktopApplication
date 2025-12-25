@@ -11098,3 +11098,9 @@ Every push to `master` or `main` will now automatically:
 
 
 
+some changes I request: 
+1. only the answer the user selects should be highlighted. for example, if the user selects the right answer, only select that answer and highlight with green. Do not highlight the other answer and mark it as red as it is confusing. on the other hand, if the user selects the wrong answer, only select the wrong answer and mark it red, do not select the correct answer and mark it green as that confuses the user as well. 
+2. I see some placeholder like [x] style stuff in the ui for example Next Round button on my motorola stylus 2025 shows some text that looks like the emoji is not available or something. 
+3. i install binaries on my motorola stylus 2025 phone and samsung a9+ tablet using obtanium and github releases. however, I have to uninstall the app and install it every time. I can't get it to properly update like a normal app. are we hard coding version numbers in our csproj? is that what is causing this? please fix this properly as well. 
+4. please return a single shell script that updates all the files necessary. use the `dump.txt` as a starting point. please and thank you 
+
