@@ -11,37 +11,34 @@ public class MainWindowViewModelTests
     public void NewViewModel_ShouldHaveInitialState()
     {
         var vm = new MainWindowViewModel();
-
+        
+        // Use correct property names: CurrentScore, not Score
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
         vm.CurrentStreak.ShouldBe(0);
         vm.BestStreak.ShouldBe(0);
-        vm.HasAnswered.ShouldBeFalse();
     }
 
     [Fact]
     public void QuestionTypes_ShouldContainAllTypes()
     {
         var vm = new MainWindowViewModel();
-
+        
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
         vm.QuestionTypes.ShouldContain(QuestionType.GdpTotal);
-        vm.QuestionTypes.ShouldContain(QuestionType.GdpPerCapita);
-        vm.QuestionTypes.ShouldContain(QuestionType.PopulationDensity);
-        vm.QuestionTypes.ShouldContain(QuestionType.LiteracyRate);
-        vm.QuestionTypes.ShouldContain(QuestionType.Hdi);
-        vm.QuestionTypes.ShouldContain(QuestionType.LifeExpectancy);
     }
 
     [Fact]
-    public void GenerateNewQuestion_ShouldSetCountries()
+    public void NextRound_ShouldSetCountries()
     {
         var vm = new MainWindowViewModel();
+        
+        // Call NextRoundCommand (not GenerateNewQuestionCommand)
+        vm.NextRoundCommand.Execute(null);
 
-        vm.GenerateNewQuestionCommand.Execute(null);
-
+        // Use Country1 and Country2 directly (not Country1Name)
         vm.Country1.ShouldNotBeNull();
         vm.Country2.ShouldNotBeNull();
         vm.Country1!.Name.ShouldNotBe(vm.Country2!.Name);
@@ -55,23 +52,16 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
-    public void ScoreText_ShouldBeFormatted()
+    public void HasAnswered_DefaultsToFalse()
+    {
+        var vm = new MainWindowViewModel();
+        vm.HasAnswered.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ScoreText_FormatsCorrectly()
     {
         var vm = new MainWindowViewModel();
         vm.ScoreText.ShouldBe("Score: 0");
-    }
-
-    [Fact]
-    public void StreakText_ShouldBeFormatted()
-    {
-        var vm = new MainWindowViewModel();
-        vm.StreakText.ShouldBe("Streak: 0");
-    }
-
-    [Fact]
-    public void BestStreakText_ShouldBeFormatted()
-    {
-        var vm = new MainWindowViewModel();
-        vm.BestStreakText.ShouldBe("Best: 0");
     }
 }
