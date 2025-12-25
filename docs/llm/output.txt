@@ -385,4 +385,49 @@ File types included:
 real	0m0.824s
 user	0m0.451s
 sys	0m0.494s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time bash fix-android-crash.sh
+==============================================
+  Fixing Android Mono Class-Init Crash
+==============================================
+
+[1/8] Killing stuck build processes...
+[2/8] Cleaning ALL build artifacts...
+[3/8] Updating Android project configuration...
+   ✓ Updated MyDesktopApplication.Android.csproj
+[4/8] Updating MainActivity.cs...
+   ✓ Updated MainActivity.cs
+[5/8] Updating App.axaml.cs...
+   ✓ Updated App.axaml.cs
+[6/8] Updating App.axaml...
+   ✓ Updated App.axaml
+[7/8] Ensuring Android theme is correct...
+   ✓ Updated styles.xml
+[8/8] Building Android project...
+
+Restoring packages...
+Restore complete (1.1s)
+
+Build succeeded in 1.4s
+Building...
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (2.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.7s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android failed with 4 error(s) (1.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(12,14): error CS0260: Missing partial modifier on declaration of type 'App'; another partial declaration of this type exists
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(13,28): error CS0104: 'Application' is an ambiguous reference between 'Android.App.Application' and 'Avalonia.Application'
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(16,26): error CS0111: Type 'App' already defines a member called 'Initialize' with the same parameter types
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.cs(21,32): error CS0111: Type 'App' already defines a member called 'OnFrameworkInitializationCompleted' with the same parameter types
+
+Build failed with 4 error(s) in 4.9s
+
+==============================================
+  ✗ BUILD FAILED
+==============================================
+
+Please check the error messages above.
+
+real	0m8.888s
+user	0m3.564s
+sys	0m0.801s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

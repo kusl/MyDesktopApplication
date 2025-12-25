@@ -6,7 +6,7 @@ using Avalonia.Android;
 namespace MyDesktopApplication.Android;
 
 [Activity(
-    Label = "MyDesktopApplication",
+    Label = "Country Quiz",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,
@@ -16,6 +16,7 @@ public class MainActivity : AvaloniaMainActivity<App>
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
         return base.CustomizeAppBuilder(builder)
+            .WithInterFont()
             .LogToTrace();
     }
 }

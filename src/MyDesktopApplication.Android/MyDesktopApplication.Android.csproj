@@ -3,53 +3,60 @@
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
-    
-    <!-- Application identity -->
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    <ApplicationTitle>Country Quiz</ApplicationTitle>
     
-    <!-- 
-      VERSIONING FOR ANDROID UPDATES
-      
-      Android requires versionCode (ApplicationVersion) to STRICTLY INCREMENT
-      for updates to work. Using BuildNumber from CI ensures this.
-      
-      - Local builds: BuildNumber=0 (default from Directory.Build.props)
-      - CI builds: BuildNumber=${{ github.run_number }} (passed via -p:BuildNumber=X)
-      
-      This allows:
-      1. Local development with static version
-      2. CI builds with auto-incrementing versions
-      3. Obtainium/sideloading to recognize updates properly
-    -->
+    <!-- Dynamic versioning from CI -->
+    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
     
-    <!-- versionCode: Must be integer, must increment for updates -->
-    <ApplicationVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1</ApplicationVersion>
-    <ApplicationVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">$(BuildNumber)</ApplicationVersion>
+    <!-- ================================================================== -->
+    <!-- CRITICAL FIX FOR MONO CLASS-INIT CRASH                            -->
+    <!-- The crash "klass->instance_size == instance_size" happens when    -->
+    <!-- there's a mismatch between AOT-compiled code and runtime.         -->
+    <!-- SOLUTION: Disable AOT entirely and use JIT/Interpreter            -->
+    <!-- ================================================================== -->
     
-    <!-- versionName: Displayed to users in app info -->
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1.0.0-local</ApplicationDisplayVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+    <!-- Disable AOT compilation completely -->
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <PublishAot>false</PublishAot>
     
-    <!-- Android-specific build settings -->
+    <!-- Use the Mono interpreter for maximum compatibility -->
+    <UseInterpreter>true</UseInterpreter>
+    
+    <!-- Disable IL linker trimming to preserve all types -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    
+    <!-- Fix aapt2 daemon hang issues on Fedora -->
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     
-    <!-- Signing (for release builds, use environment variables) -->
-    <AndroidKeyStore Condition="'$(AndroidKeyStore)' == ''">false</AndroidKeyStore>
+    <!-- Standard settings -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
+
+  <!-- Tell the linker to preserve our assemblies completely -->
   <ItemGroup>
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
   </ItemGroup>
-  
+
   <ItemGroup>
+    <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
