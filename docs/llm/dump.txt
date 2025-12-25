@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 08:41:00 PM CST 2025
+Generated: Wed Dec 24 08:59:20 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3844,7 +3844,7 @@ updates:
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
 SIZE: 6.94 KB
-MODIFIED: 2025-12-24 20:39:46
+MODIFIED: 2025-12-24 20:58:22
 ================================================================================
 
 name: Build and Release
@@ -4066,7 +4066,7 @@ jobs:
             PRERELEASE="false"
           else
             VERSION="1.0.${{ github.run_number }}"
-            PRERELEASE="true"
+            PRERELEASE="false"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
@@ -7650,7 +7650,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 08:41:00 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 08:59:21 PM CST 2025
 Total Files Found: 68
 Files Exported: 68
 Files Skipped: 0 (binary or large files)
