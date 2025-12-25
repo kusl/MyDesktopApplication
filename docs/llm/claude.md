@@ -11217,3 +11217,184 @@ Build FAILED.
 Time Elapsed 00:00:00.65
 
 but before that 
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'NextRound' and no accessible extension method 'NextRound' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (18.7s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 5 error(s) and 2 warning(s) in 19.8s
+
+real	0m19.928s
+user	1m14.610s
+sys	0m3.023s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.0s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 failed with 5 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(43,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'GenerateNewQuestionCommand' and no accessible extension method 'GenerateNewQuestionCommand' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(45,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(46,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,12): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country1' and no accessible extension method 'Country1' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs(47,42): error CS1061: 'MainWindowViewModel' does not contain a definition for 'Country2' and no accessible extension method 'Country2' accepting a first argument of type 'MainWindowViewModel' could be found (are you missing a using directive or an assembly reference?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.63]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.2s
+Build failed with 5 error(s) in 2.0s
+
+real	0m2.102s
+user	0m1.529s
+sys	0m0.334s
+Restore complete (0.5s)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Let me search the project knowledge to understand the current state of the codebase and fix these compilation errors.Now let me search for the current MainWindowViewModelTests.cs to understand what the tests are expecting:Now let me look for the actual source files to understand what exists in the codebase:Now I have a clear picture. Let me search for the actual test file content to understand exactly what needs to be fixed:Now I have a comprehensive understanding. Based on the error messages and project knowledge, I can see the issue clearly:
+
+**The Problem:**
+1. The test file `MainWindowViewModelTests.cs` references properties that don't exist on `MainWindowViewModel`:
+   - `GenerateNewQuestionCommand` or `NextRound` - ViewModel might have a different name
+   - `Country1`, `Country2` - ViewModel has `Country1Name`, `Country2Name` or `CurrentCountryA`, `CurrentCountryB`
+   - `Score`, `Streak` - ViewModel has `CurrentScore`, `CurrentStreak`
+
+Let me create a comprehensive fix script:I've created a comprehensive fix script. Let me explain what the errors were and how this script fixes them:
+
+## Root Cause Analysis
+
+The errors in your build output show a **mismatch between what the tests expect and what the ViewModel provides**:
+
+| Test expects | ViewModel has | Fix |
+|-------------|---------------|-----|
+| `vm.NextRound()` or `vm.GenerateNewQuestionCommand` | Neither exists | Added `[RelayCommand] NextRound()` → generates `NextRoundCommand` |
+| `vm.Country1` / `vm.Country2` | `Country1Name` or `CurrentCountryA` | Changed to `[ObservableProperty] Country? _country1` → generates `Country1` |
+| `vm.Score` | `CurrentScore` | Tests updated to use `CurrentScore` |
+| `vm.Streak` | `CurrentStreak` | Tests updated to use `CurrentStreak` |
+
+## What the Script Does
+
+1. **Fixes `MainWindowViewModel.cs`**:
+   - Adds `Country1` and `Country2` as `[ObservableProperty]` fields of type `Country?`
+   - Adds `NextRoundCommand` via `[RelayCommand] private void NextRound()`
+   - Keeps all XAML-required properties: `HasAnswered`, `IsCountry1Correct`, `Country1Value`, etc.
+   - Properly implements game logic with persistence
+
+2. **Fixes `MainWindowViewModelTests.cs`**:
+   - Uses `CurrentScore` instead of `Score`
+   - Uses `CurrentStreak` instead of `Streak`
+   - Uses `Country1` / `Country2` instead of `Country1Name`
+   - Uses `NextRoundCommand` instead of `GenerateNewQuestionCommand`
+
+3. **Idempotent operations**:
+   - Kills stuck processes
+   - Cleans build artifacts
+   - Writes complete files (not patches)
+
+## To Run
+
+```bash
+chmod +x fix-ui-tests.sh
+./fix-ui-tests.sh
+```
+
+This should resolve all 5 CS1061 errors you're seeing in `MyDesktopApplication.UI.Tests`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
