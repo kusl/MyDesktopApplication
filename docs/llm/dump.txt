@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 09:22:44 PM CST 2025
+Generated: Wed Dec 24 09:24:33 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -515,47 +515,48 @@ echo ""
 
 ================================================================================
 FILE: Directory.Build.props
-SIZE: 1.46 KB
-MODIFIED: 2025-12-21 22:03:31
+SIZE: 1.57 KB
+MODIFIED: 2025-12-24 21:23:52
 ================================================================================
 
 <Project>
   <PropertyGroup>
-    <!-- Target Framework Configuration -->
+    <!-- Common project settings -->
     <TargetFramework>net10.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     
-    <!-- Central Package Management -->
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Version properties - can be overridden via MSBuild properties -->
+    <!-- Default values for local development -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
     
-    <!-- Code Quality -->
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>NU1605</WarningsAsErrors>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- Build number for CI - defaults to 0 for local builds -->
+    <BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
     
-    <!-- Build Configuration -->
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
+    <!-- Assembly versioning -->
+    <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
+    <FileVersion>1.0.$(BuildNumber).0</FileVersion>
+    <InformationalVersion>1.0.$(BuildNumber)</InformationalVersion>
+    
+    <!-- Treat warnings as errors in Release -->
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    
+    <!-- Deterministic builds for reproducibility -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    
+    <!-- Source Link for debugging -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <!-- ANDROID AAPT2 DAEMON FIX - Prevents infinite hangs on Linux -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('android'))">
-    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    <_Aapt2DaemonMaxInstanceCount>1</_Aapt2DaemonMaxInstanceCount>
-    <AndroidAapt2CompileExtraArgs>--no-crunch</AndroidAapt2CompileExtraArgs>
-    <UseInterpreter Condition="'$(Configuration)' == 'Debug'">true</UseInterpreter>
-    <AndroidResourceDesignerMaxParallelism>1</AndroidResourceDesignerMaxParallelism>
-  </PropertyGroup>
-
-  <!-- Common metadata -->
-  <PropertyGroup>
-    <Authors>Kushal</Authors>
-    <Company>MyDesktopApplication</Company>
-    <Copyright>Copyright © 2025</Copyright>
-    <RepositoryType>git</RepositoryType>
+  
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <!-- Ensure reproducible builds in CI -->
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 </Project>
 
@@ -4341,8 +4342,8 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 6.94 KB
-MODIFIED: 2025-12-24 20:58:22
+SIZE: 7.02 KB
+MODIFIED: 2025-12-24 21:23:52
 ================================================================================
 
 name: Build and Release
@@ -4350,235 +4351,224 @@ name: Build and Release
 on:
   push:
     branches: [master, main]
-    tags: ['v*']
   pull_request:
     branches: [master, main]
 
 env:
-  DOTNET_VERSION: '10.0.x'
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
+  # =============================================================================
+  # Build and Test (runs on every push/PR)
+  # =============================================================================
   build-and-test:
-    name: Build & Test (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-        
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/checkout@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          
-      - name: Setup Java (for Android)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          
-      - name: Install Android Workload
-        run: dotnet workload install android
-        
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-            
-      - name: Restore
-        run: dotnet restore MyDesktopApplication.slnx
-        
-      - name: Build
-        run: dotnet build MyDesktopApplication.slnx -c Release --no-restore
-        
-      - name: Test
-        run: dotnet test MyDesktopApplication.slnx -c Release --no-build --verbosity normal
+          fetch-depth: 0
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore -p:BuildNumber=${{ github.run_number }}
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+  # =============================================================================
+  # Build Desktop Releases (only on push to main/master, not PRs)
+  # =============================================================================
   build-desktop:
-    name: Build Desktop (${{ matrix.artifact }})
     needs: build-and-test
     if: github.event_name == 'push'
-    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
         include:
-          - os: windows-latest
-            rid: win-x64
-            artifact: windows-x64
-          - os: windows-latest
-            rid: win-arm64
-            artifact: windows-arm64
           - os: ubuntu-latest
             rid: linux-x64
             artifact: linux-x64
           - os: ubuntu-latest
             rid: linux-arm64
             artifact: linux-arm64
+          - os: windows-latest
+            rid: win-x64
+            artifact: win-x64
+          - os: windows-latest
+            rid: win-arm64
+            artifact: win-arm64
           - os: macos-latest
             rid: osx-x64
-            artifact: macos-x64
+            artifact: osx-x64
           - os: macos-latest
             rid: osx-arm64
-            artifact: macos-arm64
-    
+            artifact: osx-arm64
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-        
+        uses: actions/checkout@v4
+
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-            
-      - name: Restore Desktop Project
-        run: dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-            
+          dotnet-version: '10.0.x'
+
       - name: Publish
         shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            -c Release \
-            -r ${{ matrix.rid }} \
+            --configuration Release \
+            --runtime ${{ matrix.rid }} \
             --self-contained true \
             -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -o ./publish/${{ matrix.artifact }}
-            
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v6
+            -p:PublishTrimmed=false \
+            -p:BuildNumber=${{ github.run_number }} \
+            --output ./publish/${{ matrix.artifact }}
+
+      - name: Create archive (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd ./publish
+          tar -czvf MyDesktopApplication-${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+
+      - name: Create archive (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ./publish/${{ matrix.artifact }}/* -DestinationPath ./publish/MyDesktopApplication-${{ matrix.artifact }}.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: desktop-${{ matrix.artifact }}
-          path: ./publish/${{ matrix.artifact }}
-          retention-days: 5
+          path: |
+            ./publish/*.tar.gz
+            ./publish/*.zip
+          if-no-files-found: error
 
+  # =============================================================================
+  # Build Android APK
+  # =============================================================================
   build-android:
-    name: Build Android
     needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-        
+        uses: actions/checkout@v4
+
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          
+          dotnet-version: '10.0.x'
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
-          
-      - name: Install Android Workload
+
+      - name: Install Android workload
         run: dotnet workload install android
-        
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-android-nuget-
-            
-      - name: Restore
-        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-        
-      - name: Build APK
+
+      - name: Accept Android licenses
         run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME="1.0.${{ github.run_number }}"
-          dotnet build src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            -c Release \
-            -p:ApplicationVersion=$VERSION_CODE \
-            -p:ApplicationDisplayVersion=$VERSION_NAME
-            
-      - name: Upload APK
-        uses: actions/upload-artifact@v6
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Build Android APK
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            --configuration Release \
+            -p:BuildNumber=${{ github.run_number }} \
+            --output ./publish/android
+
+      - name: Find and rename APK
+        run: |
+          APK_PATH=$(find ./publish/android -name "*.apk" | head -1)
+          if [[ -n "$APK_PATH" ]]; then
+            cp "$APK_PATH" "./publish/MyDesktopApplication-android-${{ github.run_number }}.apk"
+          else
+            echo "No APK found!"
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: src/MyDesktopApplication.Android/bin/Release/net10.0-android/*.apk
-          retention-days: 5
+          path: ./publish/MyDesktopApplication-android-*.apk
+          if-no-files-found: error
 
+  # =============================================================================
+  # Create GitHub Release
+  # =============================================================================
   release:
-    name: Create Release
     needs: [build-desktop, build-android]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        
       - name: Download all artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v4
         with:
           path: ./artifacts
-          
-      - name: Prepare release assets
+
+      - name: Prepare release files
         run: |
-          mkdir -p release
-          
-          # Package desktop builds
-          for dir in artifacts/desktop-*; do
-            name=$(basename "$dir" | sed 's/desktop-//')
-            if [[ "$name" == windows-* ]]; then
-              (cd "$dir" && zip -r "../../release/MyDesktopApplication-$name.zip" .)
-            else
-              (cd "$dir" && tar -czvf "../../release/MyDesktopApplication-$name.tar.gz" .)
-            fi
-          done
-          
-          # Copy Android APK
-          cp artifacts/android-apk/*.apk release/ || true
-          
-          ls -la release/
-          
-      - name: Determine version
-        id: version
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
-            VERSION="${{ github.ref_name }}"
-            PRERELEASE="false"
-          else
-            VERSION="1.0.${{ github.run_number }}"
-            PRERELEASE="false"
-          fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
-          
+          mkdir -p ./release
+          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
+          ls -la ./release/
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.version }}
-          name: Release ${{ steps.version.outputs.version }}
-          prerelease: ${{ steps.version.outputs.prerelease }}
-          generate_release_notes: true
-          files: release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release 1.0.${{ github.run_number }}
+          body: |
+            ## Country Quiz v1.0.${{ github.run_number }}
+            
+            ### Downloads
+            
+            | Platform | Download |
+            |----------|----------|
+            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
+            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
+            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
+            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
+            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
+            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
+            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
+            
+            ### Android Updates
+            
+            **Version Code**: ${{ github.run_number }}
+            
+            This APK has an incrementing version code, so installing it will update
+            the existing app without requiring an uninstall.
+            
+            For Obtainium users: Point to this repository's releases.
+            
+            ### Changes
+            
+            See commit history for changes in this release.
+          draft: false
+          prerelease: false
+          files: ./release/*
 
 
 ================================================================================
@@ -4947,8 +4937,8 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: .94 KB
-MODIFIED: 2025-12-22 03:39:08
+SIZE: 2.46 KB
+MODIFIED: 2025-12-24 21:23:52
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -4956,20 +4946,52 @@ MODIFIED: 2025-12-22 03:39:08
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    
+    <!-- Application identity -->
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    <ApplicationVersion>1</ApplicationVersion>
-    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationTitle>Country Quiz</ApplicationTitle>
+    
+    <!-- 
+      VERSIONING FOR ANDROID UPDATES
+      
+      Android requires versionCode (ApplicationVersion) to STRICTLY INCREMENT
+      for updates to work. Using BuildNumber from CI ensures this.
+      
+      - Local builds: BuildNumber=0 (default from Directory.Build.props)
+      - CI builds: BuildNumber=${{ github.run_number }} (passed via -p:BuildNumber=X)
+      
+      This allows:
+      1. Local development with static version
+      2. CI builds with auto-incrementing versions
+      3. Obtainium/sideloading to recognize updates properly
+    -->
+    
+    <!-- versionCode: Must be integer, must increment for updates -->
+    <ApplicationVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">$(BuildNumber)</ApplicationVersion>
+    
+    <!-- versionName: Displayed to users in app info -->
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == '' OR '$(BuildNumber)' == '0'">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != '' AND '$(BuildNumber)' != '0'">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+    
+    <!-- Android-specific build settings -->
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    
+    <!-- Signing (for release builds, use environment variables) -->
+    <AndroidKeyStore Condition="'$(AndroidKeyStore)' == ''">false</AndroidKeyStore>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
@@ -5951,36 +5973,40 @@ public class AnswerStateToForegroundConverter : IMultiValueConverter
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.48 KB
-MODIFIED: 2025-12-21 14:28:11
+SIZE: 1.41 KB
+MODIFIED: 2025-12-24 21:23:52
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-    <ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
+    
+    <!-- Application metadata -->
+    <Product>Country Quiz</Product>
+    <Company>MyDesktopApplication</Company>
+    <Copyright>Copyright © 2025</Copyright>
+    <Description>A cross-platform country quiz game built with Avalonia UI</Description>
+    
+    <!-- 
+      Desktop versioning uses the same BuildNumber from Directory.Build.props
+      This ensures consistency across all platforms.
+    -->
   </PropertyGroup>
+  
   <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="Avalonia.Diagnostics" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
@@ -8148,7 +8174,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 09:22:45 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 09:24:33 PM CST 2025
 Total Files Found: 69
 Files Exported: 69
 Files Skipped: 0 (binary or large files)
