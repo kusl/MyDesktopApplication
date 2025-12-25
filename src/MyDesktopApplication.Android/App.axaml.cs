@@ -2,63 +2,51 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Infrastructure.Data;
-using MyDesktopApplication.Infrastructure.Repositories;
-using MyDesktopApplication.Android.Views;
 using MyDesktopApplication.Shared.ViewModels;
+using MyDesktopApplication.Android.Views;
 
 namespace MyDesktopApplication.Android;
 
-public partial class App : Application
+// Use fully qualified Avalonia.Application to avoid conflict with Android.App.Application
+public partial class App : Avalonia.Application
 {
-    private IServiceProvider? _serviceProvider;
-
+    private ServiceProvider? _serviceProvider;
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
-        // Configure services with simple DI
+        // Set up dependency injection
         var services = new ServiceCollection();
-
-        // Register database context
-        services.AddDbContext<AppDbContext>();
-
-        // Register repositories
-        services.AddScoped<IGameStateRepository, GameStateRepository>();
-
-        // Register ViewModels
+        
+        // Get the Android-specific data directory for SQLite
+        var dataDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+        var dbPath = System.IO.Path.Combine(dataDir, "mydesktopapp.db");
+        
+        services.AddInfrastructure(dbPath);
         services.AddTransient<CountryQuizViewModel>();
-
+        
         _serviceProvider = services.BuildServiceProvider();
 
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            var viewModel = _serviceProvider.GetRequiredService<CountryQuizViewModel>();
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = viewModel
-            };
+        // Ensure database is created
+        await _serviceProvider.EnsureDatabaseCreatedAsync();
 
-            // Initialize async without blocking
-            _ = InitializeViewModelAsync(viewModel);
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
+        {
+            var vm = _serviceProvider.GetRequiredService<CountryQuizViewModel>();
+            await vm.InitializeAsync();
+            
+            singleView.MainView = new MainView
+            {
+                DataContext = vm
+            };
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    private static async Task InitializeViewModelAsync(CountryQuizViewModel viewModel)
-    {
-        try
-        {
-            await viewModel.InitializeAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error initializing ViewModel: {ex.Message}");
-        }
     }
 }
