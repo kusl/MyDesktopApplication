@@ -32,19 +32,19 @@ public partial class CountryQuizViewModel : ViewModelBase
     [ObservableProperty] private string _country2Value = "";
     [ObservableProperty] private string _resultMessage = "";
     [ObservableProperty] private bool _hasAnswered;
-    
+
     // Answer state - FIX: Only highlight the selected answer
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
-    
+
     // Score tracking
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _currentStreak;
     [ObservableProperty] private int _bestStreak;
     [ObservableProperty] private int _totalQuestions;
-    
+
     // Question type selection
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
     [ObservableProperty] private ObservableCollection<QuestionType> _questionTypes = new();
@@ -122,7 +122,7 @@ public partial class CountryQuizViewModel : ViewModelBase
         Country2Value = SelectedQuestionType.FormatValue(value2);
 
         bool isCorrect;
-        
+
         // FIX: Only highlight the selected answer
         // Reset all states first
         IsCountry1Correct = false;
@@ -215,10 +215,10 @@ public partial class CountryQuizViewModel : ViewModelBase
         CurrentScore = 0;
         CurrentStreak = 0;
         TotalQuestions = 0;
-        
+
         _gameState.CurrentScore = 0;
         _gameState.CurrentStreak = 0;
-        
+
         if (_gameStateRepository != null)
         {
             try
@@ -230,11 +230,11 @@ public partial class CountryQuizViewModel : ViewModelBase
                 System.Diagnostics.Debug.WriteLine($"Error resetting game state: {ex.Message}");
             }
         }
-        
+
         OnPropertyChanged(nameof(ScoreText));
         OnPropertyChanged(nameof(StreakText));
         OnPropertyChanged(nameof(AccuracyText));
-        
+
         GenerateNewQuestion();
     }
 
@@ -254,7 +254,7 @@ public partial class CountryQuizViewModel : ViewModelBase
             .OrderBy(_ => _random.Next())
             .Take(2)
             .ToList();
-        
+
         _country1 = _countries[indices[0]];
         _country2 = _countries[indices[1]];
 

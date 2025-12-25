@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 07:58:53 PM CST 2025
+Generated: Wed Dec 24 08:02:07 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -3189,25 +3189,17 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 10.53 KB
-MODIFIED: 2025-12-24 19:43:35
+SIZE: 6.41 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
-# =============================================================================
-# Unified Build & Release Workflow
-# =============================================================================
-# Every push to master/main creates a full release 1.0.{run_number}
-# No git tags required - GitHub run number auto-increments
-# =============================================================================
-
-name: Build & Release
+name: Build and Release
 
 on:
   push:
     branches: [master, main]
   pull_request:
     branches: [master, main]
-  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -3215,273 +3207,186 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  # ===========================================================================
-  # Build & Test
-  # ===========================================================================
   build-and-test:
-    name: Build & Test
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          
+
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-            
-      - name: Restore (Desktop + Tests only)
-        shell: bash
-        run: |
-          dotnet restore src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-          dotnet restore src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-          dotnet restore src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-          dotnet restore src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-          dotnet restore tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-          dotnet restore tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-          
-      - name: Build
-        shell: bash
-        run: |
-          dotnet build src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj -c Release --no-restore
-          
-      - name: Test
-        shell: bash
-        run: |
-          dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj -c Release --no-build --verbosity normal
-          dotnet test tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj -c Release --no-build --verbosity normal
-          dotnet test tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj -c Release --no-build --verbosity normal
+          restore-keys: ${{ runner.os }}-nuget-
 
-  # ===========================================================================
-  # Build Desktop Binaries (Matrix)
-  # ===========================================================================
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
   build-desktop:
-    name: Build ${{ matrix.name }}
     needs: build-and-test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-    runs-on: ${{ matrix.os }}
-    
     strategy:
-      fail-fast: false
       matrix:
         include:
-          - name: Windows x64
-            os: windows-latest
+          - os: windows-latest
             rid: win-x64
             artifact: MyDesktopApplication-win-x64
-            
-          - name: Windows ARM64
-            os: windows-latest
+          - os: windows-latest
             rid: win-arm64
             artifact: MyDesktopApplication-win-arm64
-            
-          - name: Linux x64
-            os: ubuntu-latest
+          - os: ubuntu-latest
             rid: linux-x64
             artifact: MyDesktopApplication-linux-x64
-            
-          - name: Linux ARM64
-            os: ubuntu-latest
+          - os: ubuntu-latest
             rid: linux-arm64
             artifact: MyDesktopApplication-linux-arm64
-            
-          - name: macOS x64
-            os: macos-13
+          - os: macos-latest
             rid: osx-x64
             artifact: MyDesktopApplication-osx-x64
-            
-          - name: macOS ARM64
-            os: macos-latest
+          - os: macos-latest
             rid: osx-arm64
             artifact: MyDesktopApplication-osx-arm64
-    
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-            
+
       - name: Publish
-        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            -c Release \
-            -r ${{ matrix.rid }} \
+            --configuration Release \
+            --runtime ${{ matrix.rid }} \
             --self-contained true \
             -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:Version=1.0.${{ github.run_number }} \
             -p:AssemblyVersion=1.0.${{ github.run_number }}.0 \
             -p:FileVersion=1.0.${{ github.run_number }}.0 \
-            -o ./publish/${{ matrix.artifact }}
-            
-      - name: Upload Artifact
+            --output ./publish/${{ matrix.artifact }}
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact }}
           path: ./publish/${{ matrix.artifact }}
-          retention-days: 30
 
-  # ===========================================================================
-  # Build Android APK
-  # ===========================================================================
   build-android:
-    name: Build Android
     needs: build-and-test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
-          
-      - name: Install Android Workload
+          java-version: '21'
+
+      - name: Install Android workload
         run: dotnet workload install android
-        
-      - name: Cache NuGet packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-android-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
-          restore-keys: |
-            ${{ runner.os }}-android-nuget-
-            
-      - name: Restore Android Project
-        run: dotnet restore src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-        
+
       - name: Build Android APK
-        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            -c Release \
-            -f net10.0-android \
-            -p:AndroidPackageFormat=apk \
-            -p:AndroidUseAapt2Daemon=false \
-            -p:_Aapt2DaemonMaxInstanceCount=1 \
+            --configuration Release \
             -p:ApplicationVersion=${{ github.run_number }} \
-            -p:ApplicationDisplayVersion=1.0.${{ github.run_number }} \
-            -o ./publish/android
-            
-      - name: Upload Android APK
+            -p:ApplicationDisplayVersion="1.0.${{ github.run_number }}" \
+            --output ./publish/android
+
+      - name: Find and rename APK
+        run: |
+          mkdir -p ./publish/final
+          APK=$(find ./publish/android -name "*.apk" | head -1)
+          if [ -n "$APK" ]; then
+            cp "$APK" "./publish/final/MyDesktopApplication-1.0.${{ github.run_number }}.apk"
+          fi
+
+      - name: Upload Android artifact
         uses: actions/upload-artifact@v6
         with:
           name: MyDesktopApplication-android
-          path: ./publish/android/**/*.apk
-          retention-days: 30
+          path: ./publish/final/*.apk
 
-  # ===========================================================================
-  # Create Release
-  # ===========================================================================
-  create-release:
-    name: Create Release 1.0.${{ github.run_number }}
+  release:
     needs: [build-desktop, build-android]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
     steps:
-      - name: Download All Artifacts
+      - name: Download all artifacts
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          
-      - name: List Downloaded Artifacts
-        run: find ./artifacts -type f | head -50
-        
-      - name: Create Archives
-        shell: bash
+
+      - name: Prepare release assets
         run: |
-          cd artifacts
+          mkdir -p ./release
           
-          # Create archives for each platform
-          for dir in */; do
-            name="${dir%/}"
-            echo "Processing: $name"
-            
-            if [[ "$name" == *"win"* ]]; then
-              # Windows: create .zip
-              zip -r "../${name}-v1.0.${{ github.run_number }}.zip" "$dir"
-            elif [[ "$name" == *"android"* ]]; then
-              # Android: copy APK directly
-              find "$dir" -name "*.apk" -exec cp {} "../MyDesktopApplication-v1.0.${{ github.run_number }}.apk" \;
-            else
-              # Linux/macOS: create .tar.gz
-              tar -czvf "../${name}-v1.0.${{ github.run_number }}.tar.gz" "$dir"
+          # Package desktop builds
+          for dir in ./artifacts/MyDesktopApplication-*; do
+            if [ -d "$dir" ] && [[ "$dir" != *"android"* ]]; then
+              name=$(basename "$dir")
+              if [[ "$name" == *"win"* ]]; then
+                cd "$dir" && zip -r "../../release/${name}-1.0.${{ github.run_number }}.zip" . && cd ../..
+              else
+                cd "$dir" && tar -czvf "../../release/${name}-1.0.${{ github.run_number }}.tar.gz" . && cd ../..
+              fi
             fi
           done
           
-          cd ..
-          echo ""
-          echo "Release assets:"
-          ls -la *.zip *.tar.gz *.apk 2>/dev/null || echo "(no assets found)"
+          # Copy Android APK
+          if [ -d "./artifacts/MyDesktopApplication-android" ]; then
+            cp ./artifacts/MyDesktopApplication-android/*.apk ./release/ 2>/dev/null || true
+          fi
           
-      - name: Create GitHub Release
+          ls -la ./release/
+
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Release 1.0.${{ github.run_number }}
           body: |
-            ## MyDesktopApplication v1.0.${{ github.run_number }}
-            
-            **Build:** #${{ github.run_number }}
-            **Commit:** ${{ github.sha }}
-            **Date:** ${{ github.event.head_commit.timestamp }}
+            ## Release 1.0.${{ github.run_number }}
             
             ### Downloads
-            
-            | Platform | File |
-            |----------|------|
-            | Windows x64 | `MyDesktopApplication-win-x64-v1.0.${{ github.run_number }}.zip` |
-            | Windows ARM64 | `MyDesktopApplication-win-arm64-v1.0.${{ github.run_number }}.zip` |
-            | Linux x64 | `MyDesktopApplication-linux-x64-v1.0.${{ github.run_number }}.tar.gz` |
-            | Linux ARM64 | `MyDesktopApplication-linux-arm64-v1.0.${{ github.run_number }}.tar.gz` |
-            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64-v1.0.${{ github.run_number }}.tar.gz` |
-            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64-v1.0.${{ github.run_number }}.tar.gz` |
-            | Android | `MyDesktopApplication-v1.0.${{ github.run_number }}.apk` |
+            - **Windows x64**: MyDesktopApplication-win-x64-1.0.${{ github.run_number }}.zip
+            - **Windows ARM64**: MyDesktopApplication-win-arm64-1.0.${{ github.run_number }}.zip
+            - **Linux x64**: MyDesktopApplication-linux-x64-1.0.${{ github.run_number }}.tar.gz
+            - **Linux ARM64**: MyDesktopApplication-linux-arm64-1.0.${{ github.run_number }}.tar.gz
+            - **macOS x64**: MyDesktopApplication-osx-x64-1.0.${{ github.run_number }}.tar.gz
+            - **macOS ARM64**: MyDesktopApplication-osx-arm64-1.0.${{ github.run_number }}.tar.gz
+            - **Android**: MyDesktopApplication-1.0.${{ github.run_number }}.apk
             
             ### Changes
-            
-            See commit history for details.
+            - Auto-release from commit ${{ github.sha }}
+          files: ./release/*
           draft: false
           prerelease: false
-          files: |
-            *.zip
-            *.tar.gz
-            *.apk
           generate_release_notes: true
 
 
@@ -3743,8 +3648,8 @@ public class App : Avalonia.Application
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Converters/Converters.cs
-SIZE: 1.64 KB
-MODIFIED: 2025-12-24 19:23:13
+SIZE: 2.35 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
 using System;
@@ -3756,6 +3661,9 @@ using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Android.Converters;
 
+/// <summary>
+/// Converts QuestionType enum to human-readable label.
+/// </summary>
 public class QuestionTypeLabelConverter : IValueConverter
 {
     public static readonly QuestionTypeLabelConverter Instance = new();
@@ -3776,27 +3684,43 @@ public class QuestionTypeLabelConverter : IValueConverter
 }
 
 /// <summary>
-/// Multi-value converter that determines background color based on correct/wrong state
+/// Converts answer state (IsCorrect, IsWrong) to background color.
+/// Only colors the selected answer - unselected answers stay default.
 /// </summary>
-public class AnswerBackgroundConverter : IMultiValueConverter
+public class AnswerStateToBackgroundConverter : IMultiValueConverter
 {
-    public static readonly AnswerBackgroundConverter Instance = new();
-
-    private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
-    private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));  // Green
-    private static readonly SolidColorBrush WrongBrush = new(Color.Parse("#7f1d1d"));    // Red
+    public static readonly AnswerStateToBackgroundConverter Instance = new();
 
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count >= 2)
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
-            var isCorrect = values[0] is true;
-            var isWrong = values[1] is true;
-
-            if (isCorrect) return CorrectBrush;
-            if (isWrong) return WrongBrush;
+            if (isCorrect)
+                return new SolidColorBrush(Color.FromRgb(76, 175, 80)); // Green #4CAF50
+            if (isWrong)
+                return new SolidColorBrush(Color.FromRgb(244, 67, 54)); // Red #F44336
         }
-        return DefaultBrush;
+        // Default - not selected or not answered yet
+        return new SolidColorBrush(Color.FromRgb(45, 74, 106)); // Dark blue #2D4A6A
+    }
+}
+
+/// <summary>
+/// Converts answer state to foreground (text) color.
+/// </summary>
+public class AnswerStateToForegroundConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToForegroundConverter Instance = new();
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect || isWrong)
+                return new SolidColorBrush(Colors.White);
+        }
+        // Default text color
+        return new SolidColorBrush(Colors.White);
     }
 }
 
@@ -3913,8 +3837,8 @@ MODIFIED: 2025-12-21 11:20:44
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml
-SIZE: 12.88 KB
-MODIFIED: 2025-12-24 19:21:02
+SIZE: 8.63 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
 <UserControl xmlns="https://github.com/avaloniaui"
@@ -3922,213 +3846,174 @@ MODIFIED: 2025-12-24 19:21:02
              xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
              xmlns:conv="using:MyDesktopApplication.Android.Converters"
              x:Class="MyDesktopApplication.Android.Views.MainView"
-             x:DataType="vm:CountryQuizViewModel"
-             Background="#1a1a2e">
+             x:DataType="vm:CountryQuizViewModel">
 
     <UserControl.Resources>
         <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
+        <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
+        <conv:AnswerStateToForegroundConverter x:Key="AnswerStateFgConverter"/>
     </UserControl.Resources>
 
-    <!-- Main ScrollViewer to handle all screen sizes -->
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                  VerticalScrollBarVisibility="Auto">
-        
-        <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+    <ScrollViewer>
+        <StackPanel Margin="16" Spacing="12">
             
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- ROW 0: Header with Stats and Controls                           -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <Border Grid.Row="0" Background="#16213e" CornerRadius="12" Padding="12" Margin="0,0,0,8">
-                <Grid RowDefinitions="Auto,Auto">
-                    <!-- Stats Row -->
-                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Margin="0,0,0,8">
-                        <TextBlock Grid.Column="0" Text="{Binding ScoreText}" 
-                                   Foreground="#4ade80" FontSize="14" FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="{Binding StreakText}" 
-                                   Foreground="#fbbf24" FontSize="14"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{Binding BestStreakText}" 
-                                   Foreground="#f472b6" FontSize="14"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="3" Text="{Binding AccuracyText}" 
-                                   Foreground="#94a3b8" FontSize="14"
-                                   HorizontalAlignment="Center"/>
-                    </Grid>
-                    
-                    <!-- Controls Row -->
-                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
-                        <ComboBox Grid.Column="0"
-                                  ItemsSource="{Binding QuestionTypes}"
-                                  SelectedItem="{Binding SelectedQuestionType}"
-                                  Background="#0f3460"
-                                  Foreground="White"
-                                  MinHeight="44"
-                                  HorizontalAlignment="Stretch"
-                                  Margin="0,0,8,0">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
-                                               Foreground="White" FontSize="14"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        
-                        <Button Grid.Column="1" Content="Reset" 
-                                Command="{Binding ResetGameCommand}"
-                                Background="#ef4444" Foreground="White"
-                                MinHeight="44" MinWidth="70"
-                                Padding="12,8"
-                                FontSize="14"/>
-                    </Grid>
+            <!-- Header with Score -->
+            <Border Background="#1E3A5F" CornerRadius="12" Padding="16">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel>
+                        <TextBlock Text="Country Quiz" 
+                                   FontSize="24" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="{Binding AccuracyText}" 
+                                   FontSize="14" Foreground="#B0C4DE"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding ScoreText}" 
+                                   FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="{Binding StreakText}" 
+                                   FontSize="14" Foreground="#90EE90"/>
+                        <TextBlock Text="{Binding BestStreakText}" 
+                                   FontSize="12" Foreground="#FFD700"/>
+                    </StackPanel>
                 </Grid>
             </Border>
-            
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- ROW 1: Question Text                                            -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <Border Grid.Row="1" Background="#16213e" CornerRadius="12" Padding="16" Margin="0,0,0,8">
-                <TextBlock Text="{Binding QuestionText}" 
-                           Foreground="White" FontSize="18" FontWeight="SemiBold"
-                           TextAlignment="Center" TextWrapping="Wrap"/>
+
+            <!-- Question Type Selector -->
+            <Border Background="#2D4A6A" CornerRadius="8" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Category:" FontSize="14" Foreground="#B0C4DE" Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{Binding QuestionTypes}"
+                              SelectedItem="{Binding SelectedQuestionType}"
+                              HorizontalAlignment="Stretch"
+                              MinHeight="48">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
+                                           FontSize="16"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
             </Border>
-            
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- ROW 2: Country Cards (MAXIMIZED TOUCH AREA)                     -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <Grid Grid.Row="2" RowDefinitions="*,Auto,*" Margin="0,0,0,8" MinHeight="350">
-                
-                <!-- Country 1 - TOP (Full Width, Large Touch Target) -->
-                <Button Grid.Row="0" 
-                        Command="{Binding SelectCountryCommand}" 
-                        CommandParameter="1"
-                        IsEnabled="{Binding !HasAnswered}"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch" 
-                        VerticalContentAlignment="Stretch"
-                        Padding="0" 
-                        Background="Transparent" 
-                        BorderThickness="0"
-                        Margin="0,0,0,4">
-                    <Border CornerRadius="16" Padding="16"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
-                        <Border.Styles>
-                            <Style Selector="Border">
-                                <Setter Property="Background" Value="#16213e"/>
-                            </Style>
-                        </Border.Styles>
-                        <Border.Background>
-                            <MultiBinding Converter="{x:Static conv:AnswerBackgroundConverter.Instance}">
-                                <Binding Path="IsCountry1Correct"/>
-                                <Binding Path="IsCountry1Wrong"/>
-                            </MultiBinding>
-                        </Border.Background>
-                        
-                        <Grid ColumnDefinitions="Auto,*,Auto">
-                            <!-- Flag (Left) -->
-                            <TextBlock Grid.Column="0" Text="{Binding Country1.Flag}" 
-                                       FontSize="48" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                            
-                            <!-- Country Name (Center) -->
-                            <TextBlock Grid.Column="1" Text="{Binding Country1.Name}" 
-                                       Foreground="White" FontSize="22" FontWeight="Bold"
-                                       TextWrapping="Wrap" VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                            
-                            <!-- Value (Right, shown after answer) -->
-                            <StackPanel Grid.Column="2" VerticalAlignment="Center" 
-                                        IsVisible="{Binding HasAnswered}">
-                                <TextBlock Text="{Binding Country1Value}"
-                                           Foreground="#60a5fa" FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Right"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </Button>
-                
-                <!-- VS Divider -->
-                <Border Grid.Row="1" Background="#0f3460" CornerRadius="20" 
-                        Padding="16,4" HorizontalAlignment="Center" Margin="0,4">
-                    <TextBlock Text="VS" Foreground="#64748b" FontSize="16" FontWeight="Bold"/>
+
+            <!-- Question Text -->
+            <TextBlock Text="{Binding QuestionText}"
+                       FontSize="20" FontWeight="SemiBold"
+                       TextAlignment="Center" TextWrapping="Wrap"
+                       Foreground="White" Margin="0,8"/>
+
+            <!-- Country Cards - Full Width for Easy Tapping -->
+            <Button Command="{Binding SelectCountryCommand}"
+                    CommandParameter="1"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    MinHeight="80"
+                    Padding="0"
+                    CornerRadius="12">
+                <Button.Background>
+                    <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                        <Binding Path="IsCountry1Correct"/>
+                        <Binding Path="IsCountry1Wrong"/>
+                    </MultiBinding>
+                </Button.Background>
+                <Border Padding="16" HorizontalAlignment="Stretch">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Text="{Binding Country1Flag}" 
+                                   FontSize="40" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="16,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Country1Name}" 
+                                       FontSize="20" FontWeight="SemiBold">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
+                                        <Binding Path="IsCountry1Correct"/>
+                                        <Binding Path="IsCountry1Wrong"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Country1Value}"
+                                       FontSize="14" Foreground="#B0C4DE"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="[1]" 
+                                   FontSize="14" Foreground="#666"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
                 </Border>
-                
-                <!-- Country 2 - BOTTOM (Full Width, Large Touch Target) -->
-                <Button Grid.Row="2" 
-                        Command="{Binding SelectCountryCommand}" 
-                        CommandParameter="2"
-                        IsEnabled="{Binding !HasAnswered}"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch" 
-                        VerticalContentAlignment="Stretch"
-                        Padding="0" 
-                        Background="Transparent" 
-                        BorderThickness="0"
-                        Margin="0,4,0,0">
-                    <Border CornerRadius="16" Padding="16"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
-                        <Border.Styles>
-                            <Style Selector="Border">
-                                <Setter Property="Background" Value="#16213e"/>
-                            </Style>
-                        </Border.Styles>
-                        <Border.Background>
-                            <MultiBinding Converter="{x:Static conv:AnswerBackgroundConverter.Instance}">
-                                <Binding Path="IsCountry2Correct"/>
-                                <Binding Path="IsCountry2Wrong"/>
-                            </MultiBinding>
-                        </Border.Background>
-                        
-                        <Grid ColumnDefinitions="Auto,*,Auto">
-                            <!-- Flag (Left) -->
-                            <TextBlock Grid.Column="0" Text="{Binding Country2.Flag}" 
-                                       FontSize="48" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                            
-                            <!-- Country Name (Center) -->
-                            <TextBlock Grid.Column="1" Text="{Binding Country2.Name}" 
-                                       Foreground="White" FontSize="22" FontWeight="Bold"
-                                       TextWrapping="Wrap" VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                            
-                            <!-- Value (Right, shown after answer) -->
-                            <StackPanel Grid.Column="2" VerticalAlignment="Center" 
-                                        IsVisible="{Binding HasAnswered}">
-                                <TextBlock Text="{Binding Country2Value}"
-                                           Foreground="#60a5fa" FontSize="16" FontWeight="Bold"
-                                           HorizontalAlignment="Right"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </Button>
-            </Grid>
-            
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- ROW 3: Result Message & Next Button                             -->
-            <!-- ═══════════════════════════════════════════════════════════════ -->
-            <StackPanel Grid.Row="3" Spacing="8">
-                <!-- Result Message -->
-                <Border IsVisible="{Binding HasAnswered}" 
-                        Background="#16213e" CornerRadius="12" Padding="12">
-                    <TextBlock Text="{Binding ResultMessage}" 
-                               Foreground="White" FontSize="16"
-                               TextAlignment="Center" TextWrapping="Wrap"/>
+            </Button>
+
+            <!-- VS Separator -->
+            <TextBlock Text="VS" FontSize="16" FontWeight="Bold"
+                       TextAlignment="Center" Foreground="#666"/>
+
+            <Button Command="{Binding SelectCountryCommand}"
+                    CommandParameter="2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    MinHeight="80"
+                    Padding="0"
+                    CornerRadius="12">
+                <Button.Background>
+                    <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                        <Binding Path="IsCountry2Correct"/>
+                        <Binding Path="IsCountry2Wrong"/>
+                    </MultiBinding>
+                </Button.Background>
+                <Border Padding="16" HorizontalAlignment="Stretch">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <TextBlock Text="{Binding Country2Flag}" 
+                                   FontSize="40" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Margin="16,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Country2Name}" 
+                                       FontSize="20" FontWeight="SemiBold">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
+                                        <Binding Path="IsCountry2Correct"/>
+                                        <Binding Path="IsCountry2Wrong"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Country2Value}"
+                                       FontSize="14" Foreground="#B0C4DE"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="[2]" 
+                                   FontSize="14" Foreground="#666"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
                 </Border>
-                
-                <!-- Next Round Button - LARGE TOUCH TARGET -->
-                <Button Command="{Binding NextRoundCommand}"
-                        IsVisible="{Binding HasAnswered}"
-                        Content="Next Round →"
-                        Background="#3b82f6" Foreground="White"
-                        FontSize="18" FontWeight="Bold"
-                        MinHeight="56"
-                        Padding="24,12"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"/>
-            </StackPanel>
-        </Grid>
+            </Button>
+
+            <!-- Result Message -->
+            <TextBlock Text="{Binding ResultMessage}"
+                       FontSize="18" FontWeight="SemiBold"
+                       TextAlignment="Center"
+                       Foreground="#90EE90"
+                       IsVisible="{Binding HasAnswered}"
+                       Margin="0,8"/>
+
+            <!-- Next Round Button - NO EMOJIS -->
+            <Button Content="Next Round"
+                    Command="{Binding NextRoundCommand}"
+                    IsVisible="{Binding HasAnswered}"
+                    HorizontalAlignment="Stretch"
+                    MinHeight="56"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    CornerRadius="12"/>
+
+            <!-- Reset Button -->
+            <Button Content="Reset Game"
+                    Command="{Binding ResetGameCommand}"
+                    HorizontalAlignment="Stretch"
+                    MinHeight="48"
+                    FontSize="14"
+                    Background="#666"
+                    Foreground="White"
+                    CornerRadius="8"
+                    Margin="0,16,0,0"/>
+                    
+        </StackPanel>
     </ScrollViewer>
 </UserControl>
 
@@ -4796,11 +4681,12 @@ phٶ��5L#�4?�P��"�� �C�h�dU�#@'�(۶�M6(�h��&.ys�k- ����L��,�!E�(Ћ
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Converters/Converters.cs
-SIZE: 1.34 KB
-MODIFIED: 2025-12-24 19:23:13
+SIZE: 2.34 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -4808,6 +4694,9 @@ using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Desktop.Converters;
 
+/// <summary>
+/// Converts QuestionType enum to human-readable label.
+/// </summary>
 public class QuestionTypeLabelConverter : IValueConverter
 {
     public static readonly QuestionTypeLabelConverter Instance = new();
@@ -4827,23 +4716,44 @@ public class QuestionTypeLabelConverter : IValueConverter
     }
 }
 
-public class BoolToColorConverter : IValueConverter
+/// <summary>
+/// Converts answer state (IsCorrect, IsWrong) to background color.
+/// Only colors the selected answer - unselected answers stay default.
+/// </summary>
+public class AnswerStateToBackgroundConverter : IMultiValueConverter
 {
-    private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));
-    private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
+    public static readonly AnswerStateToBackgroundConverter Instance = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is true && parameter?.ToString() == "correct")
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
-            return CorrectBrush;
+            if (isCorrect)
+                return new SolidColorBrush(Color.FromRgb(76, 175, 80)); // Green #4CAF50
+            if (isWrong)
+                return new SolidColorBrush(Color.FromRgb(244, 67, 54)); // Red #F44336
         }
-        return DefaultBrush;
+        // Default - not selected or not answered yet
+        return new SolidColorBrush(Color.FromRgb(30, 58, 95)); // Dark blue #1E3A5F
     }
+}
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+/// <summary>
+/// Converts answer state to foreground (text) color.
+/// </summary>
+public class AnswerStateToForegroundConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToForegroundConverter Instance = new();
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException();
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect || isWrong)
+                return new SolidColorBrush(Colors.White);
+        }
+        // Default text color
+        return new SolidColorBrush(Colors.White);
     }
 }
 
@@ -4912,8 +4822,8 @@ sealed class Program
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 7.33 KB
-MODIFIED: 2025-12-21 22:48:06
+SIZE: 7.75 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -4925,176 +4835,164 @@ using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Desktop.ViewModels;
 
+/// <summary>
+/// ViewModel for the Desktop main window.
+/// Implements the same quiz logic as CountryQuizViewModel for consistency.
+/// </summary>
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly Random _random = new();
+    private readonly List<Country> _countries;
     private readonly IGameStateRepository? _gameStateRepository;
     private GameState _gameState = new();
-    private readonly Random _random = new();
 
-    // =========================================================================
-    // Observable Properties (backing fields auto-generated by CommunityToolkit)
-    // =========================================================================
+    private Country? _country1;
+    private Country? _country2;
 
     [ObservableProperty] private string _greeting = "Welcome to Country Quiz!";
-    [ObservableProperty] private int _currentScore;
-    [ObservableProperty] private int _highScore;
-    [ObservableProperty] private int _currentStreak;
-    [ObservableProperty] private int _bestStreak;
-    [ObservableProperty] private string _questionText = "Which country has higher...";
-    [ObservableProperty] private string _feedbackMessage = "";
-    [ObservableProperty] private bool _showFeedback;
-    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    // The two countries being compared
-    [ObservableProperty] private Country? _country1;
-    [ObservableProperty] private Country? _country2;
-
-    // Has the user answered the current question?
+    [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _country1Name = "";
+    [ObservableProperty] private string _country2Name = "";
+    [ObservableProperty] private string _country1Flag = "";
+    [ObservableProperty] private string _country2Flag = "";
+    [ObservableProperty] private string _country1Value = "";
+    [ObservableProperty] private string _country2Value = "";
+    [ObservableProperty] private string _resultMessage = "";
     [ObservableProperty] private bool _hasAnswered;
 
-    // Result message after answering
-    [ObservableProperty] private string _resultMessage = "";
-
-    // Visual feedback for correct/wrong answers
+    // Answer states - only highlight selected answer
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
 
-    // Formatted values shown after answering
-    [ObservableProperty] private string _country1Value = "";
-    [ObservableProperty] private string _country2Value = "";
+    // Scores
+    [ObservableProperty] private int _currentScore;
+    [ObservableProperty] private int _highScore;
+    [ObservableProperty] private int _currentStreak;
+    [ObservableProperty] private int _bestStreak;
+    [ObservableProperty] private int _totalQuestions;
 
-    // =========================================================================
-    // Computed Properties for UI Binding
-    // =========================================================================
+    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
+
+    public ObservableCollection<QuestionType> QuestionTypes { get; } = new(Enum.GetValues<QuestionType>());
 
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
-    public string AccuracyText => _gameState.TotalAnswered > 0
-        ? $"Accuracy: {_gameState.AccuracyPercentage:F1}%"
+    public string AccuracyText => TotalQuestions > 0
+        ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
-
-    // Question type dropdown options
-    public ObservableCollection<QuestionType> QuestionTypes { get; } =
-        new(Enum.GetValues<QuestionType>());
-
-    // =========================================================================
-    // Constructors
-    // =========================================================================
 
     public MainWindowViewModel()
     {
-        // Design-time / parameterless constructor
+        _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
 
-    public MainWindowViewModel(IGameStateRepository gameStateRepository)
+    public MainWindowViewModel(IGameStateRepository gameStateRepository) : this()
     {
         _gameStateRepository = gameStateRepository;
     }
-
-    // =========================================================================
-    // Initialization
-    // =========================================================================
 
     public async Task InitializeAsync()
     {
         if (_gameStateRepository != null)
         {
-            _gameState = await _gameStateRepository.GetOrCreateAsync("default");
-            UpdateScoresFromGameState();
+            try
+            {
+                _gameState = await _gameStateRepository.GetOrCreateAsync("default");
+                CurrentScore = _gameState.CurrentScore;
+                CurrentStreak = _gameState.CurrentStreak;
+                BestStreak = _gameState.BestStreak;
+                HighScore = _gameState.HighScore;
+                OnPropertyChanged(nameof(ScoreText));
+                OnPropertyChanged(nameof(StreakText));
+                OnPropertyChanged(nameof(BestStreakText));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading game state: {ex.Message}");
+            }
         }
-        GenerateNewQuestion();
-    }
-
-    private void UpdateScoresFromGameState()
-    {
-        CurrentScore = _gameState.CurrentScore;
-        HighScore = _gameState.HighScore;
-        CurrentStreak = _gameState.CurrentStreak;
-        BestStreak = _gameState.BestStreak;
-
-        OnPropertyChanged(nameof(ScoreText));
-        OnPropertyChanged(nameof(StreakText));
-        OnPropertyChanged(nameof(BestStreakText));
-        OnPropertyChanged(nameof(AccuracyText));
-    }
-
-    // =========================================================================
-    // Commands
-    // =========================================================================
-
-    [RelayCommand]
-    private void GenerateNewQuestion()
-    {
-        var countries = CountryData.GetAllCountries();
-
-        var indices = Enumerable.Range(0, countries.Count)
-            .OrderBy(_ => _random.Next())
-            .Take(2)
-            .ToList();
-
-        Country1 = countries[indices[0]];
-        Country2 = countries[indices[1]];
-
-        QuestionText = $"Which country has higher {SelectedQuestionType.GetLabel()}?";
-
-        // Reset answer state
-        HasAnswered = false;
-        ResultMessage = "";
-        IsCountry1Correct = false;
-        IsCountry1Wrong = false;
-        IsCountry2Correct = false;
-        IsCountry2Wrong = false;
-        Country1Value = "";
-        Country2Value = "";
     }
 
     [RelayCommand]
     private async Task SelectCountry(string countryParam)
     {
-        if (Country1 == null || Country2 == null || HasAnswered) return;
+        if (HasAnswered || _country1 == null || _country2 == null)
+            return;
 
-        bool selectedCountry1 = countryParam == "1";
+        if (!int.TryParse(countryParam, out int countryNumber))
+            return;
 
-        var val1 = SelectedQuestionType.GetValue(Country1);
-        var val2 = SelectedQuestionType.GetValue(Country2);
-
-        bool country1IsHigher = val1 >= val2;
-        bool isCorrect = selectedCountry1 == country1IsHigher;
-
-        // Record the answer
-        _gameState.RecordAnswer(isCorrect);
-        UpdateScoresFromGameState();
-
-        if (_gameStateRepository != null)
-        {
-            await _gameStateRepository.UpdateAsync(_gameState);
-        }
-
-        // Update UI state
         HasAnswered = true;
-        Country1Value = SelectedQuestionType.FormatValue(val1);
-        Country2Value = SelectedQuestionType.FormatValue(val2);
+        TotalQuestions++;
 
-        // Set visual feedback
-        if (country1IsHigher)
+        var value1 = SelectedQuestionType.GetValue(_country1);
+        var value2 = SelectedQuestionType.GetValue(_country2);
+
+        Country1Value = SelectedQuestionType.FormatValue(value1);
+        Country2Value = SelectedQuestionType.FormatValue(value2);
+
+        // FIX: Only highlight the selected answer
+        IsCountry1Correct = false;
+        IsCountry1Wrong = false;
+        IsCountry2Correct = false;
+        IsCountry2Wrong = false;
+
+        bool isCorrect;
+        if (countryNumber == 1)
         {
-            IsCountry1Correct = true;
-            IsCountry2Wrong = !isCorrect && !selectedCountry1;
+            isCorrect = value1 >= value2;
+            IsCountry1Correct = isCorrect;
+            IsCountry1Wrong = !isCorrect;
         }
         else
         {
-            IsCountry2Correct = true;
-            IsCountry1Wrong = !isCorrect && selectedCountry1;
+            isCorrect = value2 >= value1;
+            IsCountry2Correct = isCorrect;
+            IsCountry2Wrong = !isCorrect;
         }
 
-        // Set result message
-        ResultMessage = isCorrect
-            ? GetCorrectMessage()
-            : GetIncorrectMessage();
+        if (isCorrect)
+        {
+            CurrentScore++;
+            CurrentStreak++;
+            if (CurrentStreak > BestStreak)
+                BestStreak = CurrentStreak;
+            if (CurrentScore > HighScore)
+                HighScore = CurrentScore;
+            ResultMessage = GetCorrectMessage();
+        }
+        else
+        {
+            CurrentStreak = 0;
+            ResultMessage = GetIncorrectMessage();
+        }
+
+        _gameState.CurrentScore = CurrentScore;
+        _gameState.CurrentStreak = CurrentStreak;
+        _gameState.BestStreak = BestStreak;
+        _gameState.HighScore = HighScore;
+        _gameState.RecordAnswer(isCorrect);
+
+        if (_gameStateRepository != null)
+        {
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error saving game state: {ex.Message}");
+            }
+        }
+
+        OnPropertyChanged(nameof(ScoreText));
+        OnPropertyChanged(nameof(StreakText));
+        OnPropertyChanged(nameof(BestStreakText));
+        OnPropertyChanged(nameof(AccuracyText));
     }
 
     [RelayCommand]
@@ -5106,35 +5004,75 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task ResetGame()
     {
-        _gameState.Reset();
-        UpdateScoresFromGameState();
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalQuestions = 0;
+
+        _gameState.CurrentScore = 0;
+        _gameState.CurrentStreak = 0;
 
         if (_gameStateRepository != null)
         {
-            await _gameStateRepository.UpdateAsync(_gameState);
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error resetting game state: {ex.Message}");
+            }
         }
+
+        OnPropertyChanged(nameof(ScoreText));
+        OnPropertyChanged(nameof(StreakText));
+        OnPropertyChanged(nameof(AccuracyText));
 
         GenerateNewQuestion();
     }
 
-    // =========================================================================
-    // Helper Methods
-    // =========================================================================
+    private void GenerateNewQuestion()
+    {
+        HasAnswered = false;
+        IsCountry1Correct = false;
+        IsCountry1Wrong = false;
+        IsCountry2Correct = false;
+        IsCountry2Wrong = false;
+        Country1Value = "";
+        Country2Value = "";
+        ResultMessage = "";
+
+        var indices = Enumerable.Range(0, _countries.Count)
+            .OrderBy(_ => _random.Next())
+            .Take(2)
+            .ToList();
+
+        _country1 = _countries[indices[0]];
+        _country2 = _countries[indices[1]];
+
+        Country1Name = _country1.Name;
+        Country2Name = _country2.Name;
+        Country1Flag = _country1.Flag;
+        Country2Flag = _country2.Flag;
+
+        QuestionText = $"Which country has a higher {SelectedQuestionType.GetLabel()}?";
+    }
 
     private string GetCorrectMessage()
     {
-        if (CurrentStreak >= 10) return "🔥 UNSTOPPABLE! 10+ streak!";
-        if (CurrentStreak >= 5) return "🔥 On fire! 5+ streak!";
-        if (CurrentStreak >= 3) return "🎯 Nice streak!";
-        if (CurrentScore > _gameState.HighScore - 1) return "🏆 NEW HIGH SCORE!";
-        return "✅ Correct!";
+        var messages = new[]
+        {
+            "Correct!",
+            "Well done!",
+            "Great job!",
+            "Excellent!",
+            CurrentStreak >= 5 ? $"{CurrentStreak} in a row!" : "Keep it up!"
+        };
+        return messages[_random.Next(messages.Length)];
     }
 
     private string GetIncorrectMessage()
     {
-        if (CurrentStreak == 0 && _gameState.TotalAnswered > 5)
-            return "❌ Wrong! Keep trying!";
-        return "❌ Wrong!";
+        return "Not quite! The correct answer is shown above.";
     }
 }
 
@@ -5161,8 +5099,8 @@ public abstract partial class ViewModelBase : ObservableObject
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-SIZE: 9.56 KB
-MODIFIED: 2025-12-24 19:21:02
+SIZE: 8.45 KB
+MODIFIED: 2025-12-24 20:00:26
 ================================================================================
 
 <Window xmlns="https://github.com/avaloniaui"
@@ -5172,172 +5110,163 @@ MODIFIED: 2025-12-24 19:21:02
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Country Quiz"
-        Width="800" Height="700"
-        MinWidth="400" MinHeight="500"
+        Width="800" Height="600"
+        MinWidth="600" MinHeight="500"
         Background="#1a1a2e">
 
     <Window.Resources>
         <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
-        <conv:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
+        <conv:AnswerStateToForegroundConverter x:Key="AnswerStateFgConverter"/>
     </Window.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                  VerticalScrollBarVisibility="Auto">
-        <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="20">
-            
-            <!-- Header: Score & Stats -->
-            <Border Grid.Row="0" Background="#16213e" CornerRadius="12" Padding="16" Margin="0,0,0,16">
-                <Grid ColumnDefinitions="*,Auto,Auto,Auto">
-                    <!-- Question Type Selector -->
-                    <ComboBox Grid.Column="0"
-                              ItemsSource="{Binding QuestionTypes}"
-                              SelectedItem="{Binding SelectedQuestionType}"
-                              Background="#0f3460"
-                              Foreground="White"
-                              MinWidth="180"
-                              HorizontalAlignment="Left">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
-                                           Foreground="White"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    
-                    <!-- Stats Display -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16" Margin="16,0">
-                        <TextBlock Text="{Binding ScoreText}" Foreground="#4ade80" FontSize="16" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding StreakText}" Foreground="#fbbf24" FontSize="16"/>
-                        <TextBlock Text="{Binding BestStreakText}" Foreground="#f472b6" FontSize="16"/>
-                    </StackPanel>
-                    
-                    <TextBlock Grid.Column="2" Text="{Binding AccuracyText}" Foreground="#94a3b8" 
-                               FontSize="14" VerticalAlignment="Center" Margin="0,0,16,0"/>
-                    
-                    <!-- Reset Button -->
-                    <Button Grid.Column="3" Content="Reset" Command="{Binding ResetGameCommand}"
-                            Background="#ef4444" Foreground="White" Padding="16,8"/>
-                </Grid>
-            </Border>
-            
-            <!-- Question Text -->
-            <Border Grid.Row="1" Background="#16213e" CornerRadius="12" Padding="20" Margin="0,0,0,16">
-                <TextBlock Text="{Binding QuestionText}" 
-                           Foreground="White" FontSize="22" FontWeight="SemiBold"
-                           TextAlignment="Center" TextWrapping="Wrap"/>
-            </Border>
-            
-            <!-- Country Cards - Two columns side by side -->
-            <Grid Grid.Row="2" ColumnDefinitions="*,16,*" Margin="0,0,0,16">
-                
-                <!-- Country 1 Card -->
-                <Button Grid.Column="0" 
-                        Command="{Binding SelectCountryCommand}" 
-                        CommandParameter="1"
-                        IsEnabled="{Binding !HasAnswered}"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Padding="0" Background="Transparent" BorderThickness="0"
-                        MinHeight="200">
-                    <Border CornerRadius="16" Padding="24"
-                            Background="{Binding IsCountry1Correct, Converter={StaticResource BoolToColorConverter}, ConverterParameter=correct}"
-                            Classes.wrong="{Binding IsCountry1Wrong}">
-                        <Border.Styles>
-                            <Style Selector="Border">
-                                <Setter Property="Background" Value="#16213e"/>
-                            </Style>
-                            <Style Selector="Border.wrong">
-                                <Setter Property="Background" Value="#7f1d1d"/>
-                            </Style>
-                        </Border.Styles>
-                        <Grid RowDefinitions="Auto,*,Auto">
-                            <!-- Flag -->
-                            <TextBlock Grid.Row="0" Text="{Binding Country1.Flag}" 
-                                       FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                            
-                            <!-- Country Name -->
-                            <TextBlock Grid.Row="1" Text="{Binding Country1.Name}" 
-                                       Foreground="White" FontSize="24" FontWeight="Bold"
-                                       TextAlignment="Center" TextWrapping="Wrap"
-                                       VerticalAlignment="Center"/>
-                            
-                            <!-- Value (shown after answer) -->
-                            <TextBlock Grid.Row="2" Text="{Binding Country1Value}"
-                                       IsVisible="{Binding HasAnswered}"
-                                       Foreground="#60a5fa" FontSize="20" FontWeight="Bold"
-                                       TextAlignment="Center" Margin="0,12,0,0"/>
-                        </Grid>
-                    </Border>
-                </Button>
-                
-                <!-- VS Text -->
-                <TextBlock Grid.Column="1" Text="VS" 
-                           Foreground="#64748b" FontSize="24" FontWeight="Bold"
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                
-                <!-- Country 2 Card -->
-                <Button Grid.Column="2" 
-                        Command="{Binding SelectCountryCommand}" 
-                        CommandParameter="2"
-                        IsEnabled="{Binding !HasAnswered}"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Padding="0" Background="Transparent" BorderThickness="0"
-                        MinHeight="200">
-                    <Border CornerRadius="16" Padding="24"
-                            Background="{Binding IsCountry2Correct, Converter={StaticResource BoolToColorConverter}, ConverterParameter=correct}"
-                            Classes.wrong="{Binding IsCountry2Wrong}">
-                        <Border.Styles>
-                            <Style Selector="Border">
-                                <Setter Property="Background" Value="#16213e"/>
-                            </Style>
-                            <Style Selector="Border.wrong">
-                                <Setter Property="Background" Value="#7f1d1d"/>
-                            </Style>
-                        </Border.Styles>
-                        <Grid RowDefinitions="Auto,*,Auto">
-                            <!-- Flag -->
-                            <TextBlock Grid.Row="0" Text="{Binding Country2.Flag}" 
-                                       FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                            
-                            <!-- Country Name -->
-                            <TextBlock Grid.Row="1" Text="{Binding Country2.Name}" 
-                                       Foreground="White" FontSize="24" FontWeight="Bold"
-                                       TextAlignment="Center" TextWrapping="Wrap"
-                                       VerticalAlignment="Center"/>
-                            
-                            <!-- Value (shown after answer) -->
-                            <TextBlock Grid.Row="2" Text="{Binding Country2Value}"
-                                       IsVisible="{Binding HasAnswered}"
-                                       Foreground="#60a5fa" FontSize="20" FontWeight="Bold"
-                                       TextAlignment="Center" Margin="0,12,0,0"/>
-                        </Grid>
-                    </Border>
-                </Button>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#16213e" CornerRadius="12" Padding="20" Margin="0,0,0,16">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel>
+                    <TextBlock Text="Country Quiz" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="{Binding AccuracyText}" FontSize="14" Foreground="#a0a0a0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding ScoreText}" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="{Binding StreakText}" FontSize="14" Foreground="#90EE90"/>
+                    <TextBlock Text="{Binding BestStreakText}" FontSize="12" Foreground="#FFD700"/>
+                </StackPanel>
             </Grid>
-            
-            <!-- Result & Next Button -->
-            <StackPanel Grid.Row="3" Spacing="12">
-                <!-- Result Message -->
-                <Border IsVisible="{Binding HasAnswered}" 
-                        Background="#16213e" CornerRadius="12" Padding="16">
-                    <TextBlock Text="{Binding ResultMessage}" 
-                               Foreground="White" FontSize="18"
-                               TextAlignment="Center" TextWrapping="Wrap"/>
-                </Border>
-                
-                <!-- Next Round Button -->
-                <Button Command="{Binding NextRoundCommand}"
-                        IsVisible="{Binding HasAnswered}"
-                        Content="Next Round →"
-                        Background="#3b82f6" Foreground="White"
-                        FontSize="18" FontWeight="Bold"
-                        Padding="24,16"
-                        HorizontalAlignment="Center"
-                        HorizontalContentAlignment="Center"/>
+        </Border>
+
+        <!-- Question Type Selector -->
+        <Border Grid.Row="1" Background="#16213e" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock Text="Category:" FontSize="14" Foreground="#a0a0a0" VerticalAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding QuestionTypes}"
+                          SelectedItem="{Binding SelectedQuestionType}"
+                          MinWidth="200">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        </Border>
+
+        <!-- Main Game Area -->
+        <Border Grid.Row="2" Background="#16213e" CornerRadius="12" Padding="24">
+            <StackPanel VerticalAlignment="Center" Spacing="20">
+                
+                <!-- Question -->
+                <TextBlock Text="{Binding QuestionText}"
+                           FontSize="24" FontWeight="SemiBold"
+                           TextAlignment="Center" TextWrapping="Wrap"
+                           Foreground="White"/>
+
+                <!-- Country Cards -->
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <!-- Country 1 -->
+                    <Button Grid.Column="0"
+                            Command="{Binding SelectCountryCommand}"
+                            CommandParameter="1"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            MinHeight="150"
+                            Padding="0"
+                            CornerRadius="12">
+                        <Button.Background>
+                            <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                <Binding Path="IsCountry1Correct"/>
+                                <Binding Path="IsCountry1Wrong"/>
+                            </MultiBinding>
+                        </Button.Background>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                            <TextBlock Text="{Binding Country1Flag}" FontSize="48" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country1Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
+                                        <Binding Path="IsCountry1Correct"/>
+                                        <Binding Path="IsCountry1Wrong"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Country1Value}"
+                                       FontSize="14" Foreground="#a0a0a0" TextAlignment="Center"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- VS -->
+                    <TextBlock Grid.Column="1" Text="VS" FontSize="20" FontWeight="Bold"
+                               VerticalAlignment="Center" Foreground="#666" Margin="20,0"/>
+
+                    <!-- Country 2 -->
+                    <Button Grid.Column="2"
+                            Command="{Binding SelectCountryCommand}"
+                            CommandParameter="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            MinHeight="150"
+                            Padding="0"
+                            CornerRadius="12">
+                        <Button.Background>
+                            <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                <Binding Path="IsCountry2Correct"/>
+                                <Binding Path="IsCountry2Wrong"/>
+                            </MultiBinding>
+                        </Button.Background>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                            <TextBlock Text="{Binding Country2Flag}" FontSize="48" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Country2Name}" FontSize="20" FontWeight="SemiBold" TextAlignment="Center">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource AnswerStateFgConverter}">
+                                        <Binding Path="IsCountry2Correct"/>
+                                        <Binding Path="IsCountry2Wrong"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Country2Value}"
+                                       FontSize="14" Foreground="#a0a0a0" TextAlignment="Center"
+                                       IsVisible="{Binding HasAnswered}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!-- Result -->
+                <TextBlock Text="{Binding ResultMessage}"
+                           FontSize="20" FontWeight="SemiBold"
+                           TextAlignment="Center"
+                           Foreground="#90EE90"
+                           IsVisible="{Binding HasAnswered}"/>
+
+                <!-- Next Round Button - NO EMOJIS -->
+                <Button Content="Next Round"
+                        Command="{Binding NextRoundCommand}"
+                        IsVisible="{Binding HasAnswered}"
+                        HorizontalAlignment="Center"
+                        MinWidth="200" MinHeight="48"
+                        FontSize="16" FontWeight="SemiBold"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        CornerRadius="8"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0" Spacing="16">
+            <Button Content="Reset Game"
+                    Command="{Binding ResetGameCommand}"
+                    MinWidth="120"
+                    Background="#666"
+                    Foreground="White"/>
+        </StackPanel>
+    </Grid>
 </Window>
 
 
@@ -6072,8 +6001,8 @@ MODIFIED: 2025-12-21 12:48:54
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 7.23 KB
-MODIFIED: 2025-12-24 19:23:13
+SIZE: 8.96 KB
+MODIFIED: 2025-12-24 20:02:07
 ================================================================================
 
 using System.Collections.ObjectModel;
@@ -6086,7 +6015,8 @@ using MyDesktopApplication.Shared.Data;
 namespace MyDesktopApplication.Shared.ViewModels;
 
 /// <summary>
-/// ViewModel for the Country Quiz game
+/// ViewModel for the Country Quiz game.
+/// Shared between Desktop and Android platforms.
 /// </summary>
 public partial class CountryQuizViewModel : ViewModelBase
 {
@@ -6095,33 +6025,38 @@ public partial class CountryQuizViewModel : ViewModelBase
     private readonly IGameStateRepository? _gameStateRepository;
     private GameState _gameState = new();
 
-    // FIX 1: Expose Country objects so View bindings like 'Country1.Flag' work
-    [ObservableProperty]
+    // Backing fields for country references (not observable - we expose flat properties)
     private Country? _country1;
-
-    [ObservableProperty]
     private Country? _country2;
 
+    // Observable properties for UI binding
     [ObservableProperty] private string _questionText = "Loading...";
+    [ObservableProperty] private string _country1Name = "";
+    [ObservableProperty] private string _country2Name = "";
+    [ObservableProperty] private string _country1Flag = "";
+    [ObservableProperty] private string _country2Flag = "";
     [ObservableProperty] private string _country1Value = "";
     [ObservableProperty] private string _country2Value = "";
     [ObservableProperty] private string _resultMessage = "";
     [ObservableProperty] private bool _hasAnswered;
 
-    // Visual feedback properties
+    // Answer state - FIX: Only highlight the selected answer
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
 
+    // Score tracking
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _currentStreak;
     [ObservableProperty] private int _bestStreak;
     [ObservableProperty] private int _totalQuestions;
 
+    // Question type selection
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
     [ObservableProperty] private ObservableCollection<QuestionType> _questionTypes = new();
 
+    // Computed properties for UI display
     public string ScoreText => $"Score: {CurrentScore}";
     public string StreakText => $"Streak: {CurrentStreak}";
     public string BestStreakText => $"Best: {BestStreak}";
@@ -6129,11 +6064,17 @@ public partial class CountryQuizViewModel : ViewModelBase
         ? $"Accuracy: {(double)CurrentScore / TotalQuestions * 100:N1}%"
         : "Accuracy: --";
 
+    /// <summary>
+    /// Constructor with dependency injection for game state persistence.
+    /// </summary>
     public CountryQuizViewModel(IGameStateRepository gameStateRepository) : this()
     {
         _gameStateRepository = gameStateRepository;
     }
 
+    /// <summary>
+    /// Parameterless constructor for design-time and default initialization.
+    /// </summary>
     public CountryQuizViewModel()
     {
         _countries = CountryData.GetAllCountries().ToList();
@@ -6141,10 +6082,12 @@ public partial class CountryQuizViewModel : ViewModelBase
         {
             QuestionTypes.Add(qt);
         }
-
         GenerateNewQuestion();
     }
 
+    /// <summary>
+    /// Initialize async - loads persisted game state from database.
+    /// </summary>
     public async Task InitializeAsync()
     {
         if (_gameStateRepository != null)
@@ -6163,43 +6106,54 @@ public partial class CountryQuizViewModel : ViewModelBase
         }
     }
 
-    // FIX 2: Change parameter to string to match XAML CommandParameter="1"
+    /// <summary>
+    /// Handle country selection.
+    /// FIX: Only highlight the answer the user selected, not both answers.
+    /// </summary>
     [RelayCommand]
     private async Task SelectCountry(string countryParam)
     {
-        // FIX for MVVMTK0034: Use public properties (Country1, Country2) instead of backing fields
-        if (HasAnswered || Country1 == null || Country2 == null)
+        if (HasAnswered || _country1 == null || _country2 == null)
             return;
 
-        // Parse the string parameter to int safely
-        if (!int.TryParse(countryParam, out int countryNumber)) return;
+        if (!int.TryParse(countryParam, out int countryNumber))
+            return;
 
         HasAnswered = true;
         TotalQuestions++;
 
-        // FIX for MVVMTK0034: Use public properties here too
-        var value1 = SelectedQuestionType.GetValue(Country1);
-        var value2 = SelectedQuestionType.GetValue(Country2);
+        var value1 = SelectedQuestionType.GetValue(_country1);
+        var value2 = SelectedQuestionType.GetValue(_country2);
 
         Country1Value = SelectedQuestionType.FormatValue(value1);
         Country2Value = SelectedQuestionType.FormatValue(value2);
 
         bool isCorrect;
+
+        // FIX: Only highlight the selected answer
+        // Reset all states first
+        IsCountry1Correct = false;
+        IsCountry1Wrong = false;
+        IsCountry2Correct = false;
+        IsCountry2Wrong = false;
+
         if (countryNumber == 1)
         {
+            // User selected Country 1
             isCorrect = value1 >= value2;
+            // Only set state for Country 1 (the selected one)
             IsCountry1Correct = isCorrect;
             IsCountry1Wrong = !isCorrect;
-            IsCountry2Correct = !isCorrect;
-            IsCountry2Wrong = isCorrect;
+            // Do NOT set Country 2 state - leave it unhighlighted
         }
         else
         {
+            // User selected Country 2
             isCorrect = value2 >= value1;
+            // Only set state for Country 2 (the selected one)
             IsCountry2Correct = isCorrect;
             IsCountry2Wrong = !isCorrect;
-            IsCountry1Correct = !isCorrect;
-            IsCountry1Wrong = isCorrect;
+            // Do NOT set Country 1 state - leave it unhighlighted
         }
 
         if (isCorrect)
@@ -6216,6 +6170,7 @@ public partial class CountryQuizViewModel : ViewModelBase
             ResultMessage = GetIncorrectMessage();
         }
 
+        // Persist game state
         _gameState.CurrentScore = CurrentScore;
         _gameState.CurrentStreak = CurrentStreak;
         _gameState.BestStreak = BestStreak;
@@ -6223,7 +6178,14 @@ public partial class CountryQuizViewModel : ViewModelBase
 
         if (_gameStateRepository != null)
         {
-            await _gameStateRepository.SaveAsync(_gameState);
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error saving game state: {ex.Message}");
+            }
         }
 
         OnPropertyChanged(nameof(ScoreText));
@@ -6232,40 +6194,54 @@ public partial class CountryQuizViewModel : ViewModelBase
         OnPropertyChanged(nameof(AccuracyText));
     }
 
+    /// <summary>
+    /// Start a new round with new countries.
+    /// </summary>
     [RelayCommand]
     private void NextRound()
     {
         GenerateNewQuestion();
     }
 
-    // FIX 3: Add the missing ResetGame command
-    [RelayCommand]
-    private async Task ResetGame()
-    {
-        _gameState.Reset();
-
-        CurrentScore = _gameState.CurrentScore;
-        CurrentStreak = _gameState.CurrentStreak;
-        // BestStreak is preserved in Reset(), so we keep it UI synced
-        BestStreak = _gameState.BestStreak;
-
-        if (_gameStateRepository != null)
-        {
-            await _gameStateRepository.SaveAsync(_gameState);
-        }
-
-        OnPropertyChanged(nameof(ScoreText));
-        OnPropertyChanged(nameof(StreakText));
-        OnPropertyChanged(nameof(BestStreakText));
-        OnPropertyChanged(nameof(AccuracyText));
-
-        GenerateNewQuestion();
-    }
-
+    /// <summary>
+    /// Change the question type and generate a new question.
+    /// </summary>
     [RelayCommand]
     private void ChangeQuestionType(QuestionType newType)
     {
         SelectedQuestionType = newType;
+        GenerateNewQuestion();
+    }
+
+    /// <summary>
+    /// Reset the game to initial state.
+    /// </summary>
+    [RelayCommand]
+    private async Task ResetGame()
+    {
+        CurrentScore = 0;
+        CurrentStreak = 0;
+        TotalQuestions = 0;
+
+        _gameState.CurrentScore = 0;
+        _gameState.CurrentStreak = 0;
+
+        if (_gameStateRepository != null)
+        {
+            try
+            {
+                await _gameStateRepository.UpdateAsync(_gameState);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error resetting game state: {ex.Message}");
+            }
+        }
+
+        OnPropertyChanged(nameof(ScoreText));
+        OnPropertyChanged(nameof(StreakText));
+        OnPropertyChanged(nameof(AccuracyText));
+
         GenerateNewQuestion();
     }
 
@@ -6280,28 +6256,40 @@ public partial class CountryQuizViewModel : ViewModelBase
         Country2Value = "";
         ResultMessage = "";
 
-        var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
+        // Pick two different random countries
+        var indices = Enumerable.Range(0, _countries.Count)
+            .OrderBy(_ => _random.Next())
+            .Take(2)
+            .ToList();
 
-        // Setting these ObservableProperties now updates the UI correctly
-        Country1 = _countries[indices[0]];
-        Country2 = _countries[indices[1]];
+        _country1 = _countries[indices[0]];
+        _country2 = _countries[indices[1]];
+
+        Country1Name = _country1.Name;
+        Country2Name = _country2.Name;
+        Country1Flag = _country1.Flag;
+        Country2Flag = _country2.Flag;
 
         QuestionText = $"Which country has a higher {SelectedQuestionType.GetLabel()}?";
     }
 
+    // FIX: Remove emojis - use plain text messages instead
     private string GetCorrectMessage()
     {
         var messages = new[]
         {
-            "🎉 Correct!", "✅ Well done!", "👏 Great job!", "🌟 Excellent!",
-            CurrentStreak >= 5 ? $"🔥 {CurrentStreak} in a row!" : "💪 Keep it up!"
+            "Correct!",
+            "Well done!",
+            "Great job!",
+            "Excellent!",
+            CurrentStreak >= 5 ? $"{CurrentStreak} in a row!" : "Keep it up!"
         };
         return messages[_random.Next(messages.Length)];
     }
 
     private string GetIncorrectMessage()
     {
-        return "❌ Not quite! The correct answer is shown above.";
+        return "Not quite! The correct answer is shown above.";
     }
 }
 
@@ -6997,7 +6985,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 07:58:53 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 08:02:07 PM CST 2025
 Total Files Found: 66
 Files Exported: 66
 Files Skipped: 0 (binary or large files)
