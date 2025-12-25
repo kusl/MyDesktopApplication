@@ -11928,3 +11928,173 @@ chmod +x fix-android-build.sh
 The key insight is that Avalonia uses XAML with code-behind files (`.axaml` + `.axaml.cs`), so you should only have `App.axaml` and `App.axaml.cs` - not a separate `App.cs` file that duplicates the class.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I got more errors 
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.8s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android failed with 4 error(s) (1.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(19,16): error CS1061: 'CountryQuizViewModel' does not contain a definition for 'SelectCountry1Command' and no accessible extension method 'SelectCountry1Command' accepting a first argument of type 'CountryQuizViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(27,16): error CS1061: 'CountryQuizViewModel' does not contain a definition for 'SelectCountry2Command' and no accessible extension method 'SelectCountry2Command' accepting a first argument of type 'CountryQuizViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(35,16): error CS1061: 'CountryQuizViewModel' does not contain a definition for 'NextQuestionCommand' and no accessible extension method 'NextQuestionCommand' accepting a first argument of type 'CountryQuizViewModel' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(37,32): error CS1061: 'ServiceProvider' does not contain a definition for 'EnsureDatabaseCreatedAsync' and no accessible extension method 'EnsureDatabaseCreatedAsync' accepting a first argument of type 'ServiceProvider' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 4 error(s) in 2.2s
+
+real	0m2.342s
+user	0m2.419s
+sys	0m0.639s
+
+I'll search the project knowledge to understand the current structure and find the correct method/property names to fix these errors.Now let me look at the actual current source files to understand exactly what's happening:Now I have a clear picture. The errors are:
+
+1. **MainView.axaml.cs** is calling commands that don't exist on `CountryQuizViewModel`:
+   - `SelectCountry1Command` - should be `SelectCountryCommand` with parameter
+   - `SelectCountry2Command` - should be `SelectCountryCommand` with parameter  
+   - `NextQuestionCommand` - should be `NextRoundCommand`
+
+2. **App.axaml.cs** is calling `EnsureDatabaseCreatedAsync()` on `ServiceProvider` but that method doesn't exist there
+
+Let me create a comprehensive fix script:Run this script to fix all 4 Android build errors:
+
+```bash
+chmod +x fix-android-errors.sh
+./fix-android-errors.sh
+```
+
+## What This Fixes
+
+| Error | Problem | Fix |
+|-------|---------|-----|
+| `SelectCountry1Command` not found | MainView.axaml.cs calls a command that doesn't exist | Changed to `SelectCountryCommand.Execute("1")` |
+| `SelectCountry2Command` not found | MainView.axaml.cs calls a command that doesn't exist | Changed to `SelectCountryCommand.Execute("2")` |
+| `NextQuestionCommand` not found | MainView.axaml.cs calls wrong command name | Changed to `NextRoundCommand.Execute(null)` |
+| `EnsureDatabaseCreatedAsync` on ServiceProvider | Method called on wrong type | Get `AppDbContext` from DI container, call `Database.EnsureCreatedAsync()` on it |
+
+The script also ensures `CountryQuizViewModel` has all the required members including `InitializeAsync()`, `SelectCountryCommand`, `NextRoundCommand`, and `ResetGameCommand`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
