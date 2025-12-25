@@ -18,10 +18,10 @@ public partial class CountryQuizViewModel : ViewModelBase
     private GameState _gameState = new();
 
     // FIX 1: Expose Country objects so View bindings like 'Country1.Flag' work
-    [ObservableProperty] 
+    [ObservableProperty]
     private Country? _country1;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private Country? _country2;
 
     [ObservableProperty] private string _questionText = "Loading...";
@@ -29,18 +29,18 @@ public partial class CountryQuizViewModel : ViewModelBase
     [ObservableProperty] private string _country2Value = "";
     [ObservableProperty] private string _resultMessage = "";
     [ObservableProperty] private bool _hasAnswered;
-    
+
     // Visual feedback properties
     [ObservableProperty] private bool _isCountry1Correct;
     [ObservableProperty] private bool _isCountry1Wrong;
     [ObservableProperty] private bool _isCountry2Correct;
     [ObservableProperty] private bool _isCountry2Wrong;
-    
+
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _currentStreak;
     [ObservableProperty] private int _bestStreak;
     [ObservableProperty] private int _totalQuestions;
-    
+
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
     [ObservableProperty] private ObservableCollection<QuestionType> _questionTypes = new();
 
@@ -71,7 +71,7 @@ public partial class CountryQuizViewModel : ViewModelBase
     {
         if (_gameStateRepository != null)
         {
-            try 
+            try
             {
                 _gameState = await _gameStateRepository.GetOrCreateAsync("default");
                 CurrentScore = _gameState.CurrentScore;
@@ -87,7 +87,7 @@ public partial class CountryQuizViewModel : ViewModelBase
 
     // FIX 2: Change parameter to string to match XAML CommandParameter="1"
     [RelayCommand]
-    private async Task SelectCountry(string countryParam) 
+    private async Task SelectCountry(string countryParam)
     {
         // FIX for MVVMTK0034: Use public properties (Country1, Country2) instead of backing fields
         if (HasAnswered || Country1 == null || Country2 == null)
@@ -137,7 +137,7 @@ public partial class CountryQuizViewModel : ViewModelBase
             CurrentStreak = 0;
             ResultMessage = GetIncorrectMessage();
         }
-        
+
         _gameState.CurrentScore = CurrentScore;
         _gameState.CurrentStreak = CurrentStreak;
         _gameState.BestStreak = BestStreak;
@@ -165,7 +165,7 @@ public partial class CountryQuizViewModel : ViewModelBase
     private async Task ResetGame()
     {
         _gameState.Reset();
-        
+
         CurrentScore = _gameState.CurrentScore;
         CurrentStreak = _gameState.CurrentStreak;
         // BestStreak is preserved in Reset(), so we keep it UI synced
@@ -203,7 +203,7 @@ public partial class CountryQuizViewModel : ViewModelBase
         ResultMessage = "";
 
         var indices = Enumerable.Range(0, _countries.Count).OrderBy(_ => _random.Next()).Take(2).ToList();
-        
+
         // Setting these ObservableProperties now updates the UI correctly
         Country1 = _countries[indices[0]];
         Country2 = _countries[indices[1]];

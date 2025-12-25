@@ -67,11 +67,11 @@ public static class QuestionTypeExtensions
         if (value < 1_000) return value.ToString("N0");
         if (value < 1_000_000) return $"{value / 1_000:N2}K";  // 2 decimal places
         if (value < 1_000_000_000) return $"{value / 1_000_000:N2}M";  // 2 decimal places
-        
+
         // For billions, use 3 decimal places to distinguish close values
         // e.g., 1.412B vs 1.417B for China/India
         if (value < 1_000_000_000_000) return $"{value / 1_000_000_000:N3}B";
-        
+
         return $"{value / 1_000_000_000_000:N3}T";
     }
 

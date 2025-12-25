@@ -29,7 +29,7 @@ public class BoolToColorConverter : IValueConverter
 {
     private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));
     private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
-    
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is true && parameter?.ToString() == "correct")

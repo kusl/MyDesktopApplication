@@ -32,7 +32,7 @@ public class QuestionTypeLabelConverter : IValueConverter
 public class AnswerBackgroundConverter : IMultiValueConverter
 {
     public static readonly AnswerBackgroundConverter Instance = new();
-    
+
     private static readonly SolidColorBrush DefaultBrush = new(Color.Parse("#16213e"));
     private static readonly SolidColorBrush CorrectBrush = new(Color.Parse("#166534"));  // Green
     private static readonly SolidColorBrush WrongBrush = new(Color.Parse("#7f1d1d"));    // Red
@@ -43,7 +43,7 @@ public class AnswerBackgroundConverter : IMultiValueConverter
         {
             var isCorrect = values[0] is true;
             var isWrong = values[1] is true;
-            
+
             if (isCorrect) return CorrectBrush;
             if (isWrong) return WrongBrush;
         }

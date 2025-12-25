@@ -1,3 +1,4 @@
 cd ~/src/dotnet/MyDesktopApplication; git add -A && git commit -m "add a new build" && git push && git tag -a v1.0.3 -m "Implement country compare" && git push origin v1.0.3
 
-cd /home/kushal/src/dotnet/MyDesktopApplication; time sh export.sh; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated
+cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package --outdated; time dotnet format; time sh export.sh; 
+
