@@ -10998,3 +10998,103 @@ The script is idempotent (safe to run multiple times) and will:
 
 
 
+I would like to consolidate my github actions. 
+I don't want to manage git tags anymore. 
+Can you please give me a script that consolidates the three yaml files into a single one and that increments the build version using the github run number or something like that every time? there will be no more pre-releases. every push will build into a full release 1.0.x or something like that. please give me a shell script that accomplishes this task. 
+
+I'll search the project knowledge to understand your current GitHub Actions setup and create a consolidated workflow.Now let me check the current action versions to ensure I use the correct ones:`actions/checkout` latest version is v6.0.0, released November 20, 2025. Let me verify the other action versions:`actions/upload-artifact@v6` is the latest version, running on Node.js 24 and requiring Actions Runner v2.327.1+. Let me check download-artifact:`actions/download-artifact@v7` is the latest version, running on Node.js 24 and requiring Actions Runner v2.327.1+.
+
+Now I have all the information I need. Let me create the consolidated workflow script:Now let me save this as a file you can run:
+
+Here's the script that consolidates your three GitHub Actions workflow files into a single unified workflow.
+
+## What This Script Does
+
+1. **Removes** the old `ci.yml`, `build.yml`, and `release.yml` files
+2. **Creates** a single `build-and-release.yml` workflow
+3. **Auto-versions** using `github.run_number` (no more git tags needed!)
+4. **Every push** to master/main creates a full release `1.0.{run_number}`
+
+## Key Changes
+
+| Before | After |
+|--------|-------|
+| 3 separate workflows | 1 unified workflow |
+| Manual git tags for releases | Auto-increment via `github.run_number` |
+| Pre-releases + stable releases | Only full releases |
+| Complex tag management | Zero tag management |
+
+## Version Numbering
+
+- **Release version**: `1.0.{github.run_number}` (e.g., `1.0.42`, `1.0.43`, `1.0.44`)
+- **Android VersionCode**: `{github.run_number}` (allows seamless APK updates)
+- **AssemblyVersion/FileVersion**: `1.0.{run_number}.0`
+
+## Action Versions (Latest as of Dec 2025)
+
+| Action | Version |
+|--------|---------|
+| `actions/checkout` | v6 |
+| `actions/setup-dotnet` | v5 |
+| `actions/setup-java` | v4 |
+| `actions/cache` | v5 |
+| `actions/upload-artifact` | v6 |
+| `actions/download-artifact` | v7 |
+| `softprops/action-gh-release` | v2 |
+
+## To Apply
+
+```bash
+# Save and run the script
+chmod +x consolidate-github-actions.sh
+./consolidate-github-actions.sh
+
+# Commit and push
+git add .github/workflows/
+git commit -m "Consolidate workflows: auto-release 1.0.x on every push"
+git push
+```
+
+Every push to `master` or `main` will now automatically:
+1. Build & test
+2. Create binaries for all 7 platforms (6 desktop + Android)
+3. Create a GitHub Release with all assets attached
+4. No git tags, no pre-releases, no manual steps!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
