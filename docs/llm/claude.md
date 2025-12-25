@@ -10898,3 +10898,5 @@ Once you push this change, the *next* build (and all future ones) will have a hi
 
 
 
+The layout of the UI, at least on the Android app leaves a lot to be desired. For one thing, while it is a requirement that the whole quiz should fit in all devices of a reasonable size, we should also try to maximize the touch surface as much as possible to make it easier to select a particular answer or to select next. Also, the UI does not surface the actual exact answer for example, in one case, China population of `1411750000` and India population of `1417173173` both showed as 1.4B or something like that in the UI but obviously those two are not equal, and this leads to confused users who don't understand why 1.4B is greater than 1.4B. The code in `dump.txt` is up to date. Can you please make all the necessary changes in the code, markup, and tests to fix all these issues? Remember to return a single shell script so that script updates all files as necessary. Also delete old shell scripts and files that are no longer necessary. 
+
