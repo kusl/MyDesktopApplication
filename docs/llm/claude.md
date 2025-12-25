@@ -11104,3 +11104,114 @@ some changes I request:
 3. i install binaries on my motorola stylus 2025 phone and samsung a9+ tablet using obtanium and github releases. however, I have to uninstall the app and install it every time. I can't get it to properly update like a normal app. are we hard coding version numbers in our csproj? is that what is causing this? please fix this properly as well. 
 4. please return a single shell script that updates all the files necessary. use the `dump.txt` as a starting point. please and thank you 
 
+I'll search the project knowledge to understand the current codebase structure and find the relevant files that need to be modified.Now let me search for the actual current content of the dump.txt file to see all the existing code:Now I have a comprehensive understanding of the codebase. Let me create a complete shell script that addresses all your requirements:Here's a comprehensive shell script that addresses all your requested changes:
+
+## Summary of Fixes
+
+### 1. Answer Highlighting (Only Selected Answer)
+The `SelectCountry` method in both `CountryQuizViewModel` and `MainWindowViewModel` now:
+- Resets all answer states before determining correctness
+- Only sets `IsCountry1Correct/Wrong` if the user selected Country 1
+- Only sets `IsCountry2Correct/Wrong` if the user selected Country 2
+- The unselected answer stays neutral (no highlighting)
+
+### 2. Removed Emojis from UI
+The "Next Round" button and result messages now use plain text:
+- Button: `"Next Round"` instead of `"➡️ Next Round"`
+- Messages: `"Correct!"`, `"Well done!"`, `"Great job!"` instead of `"🎉 Correct!"`, `"✅ Well done!"`
+- No more `[x]` placeholder issues on Android devices
+
+### 3. Android Versioning for Obtanium Updates
+The GitHub Actions workflow now properly handles versioning:
+- **ApplicationVersion (VersionCode)**: Set to `github.run_number` (incrementing integer)
+- **ApplicationDisplayVersion**: Set to `1.0.{run_number}` (e.g., `1.0.42`)
+- Each push creates a new release with higher version numbers
+- Obtanium will recognize these as updates without requiring uninstall
+
+## How to Use
+
+```bash
+# Save the script
+chmod +x fix-all-issues.sh
+
+# Run it
+./fix-all-issues.sh
+
+# Deploy
+git add -A
+git commit -m "Fix answer highlighting, remove emojis, fix Android versioning"
+git push
+```
+
+## Key Files Modified
+
+| File | Changes |
+|------|---------|
+| `CountryQuizViewModel.cs` | Only highlight selected answer, remove emojis |
+| `MainWindowViewModel.cs` | Match shared patterns, only highlight selected |
+| `Android/Views/MainView.axaml` | Plain text buttons, proper converters |
+| `Android/Converters/Converters.cs` | Answer state converters |
+| `Desktop/Views/MainWindow.axaml` | Plain text buttons |
+| `Desktop/Converters/Converters.cs` | Answer state converters |
+| `.github/workflows/build-and-release.yml` | Dynamic Android versioning |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The build is broken... 
+Run dotnet test tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj -c Release --no-build --verbosity normal
+Build started 12/25/2025 01:54:00.
+Test run for /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll (.NETCoreApp,Version=v10.0)
+VSTest version 18.0.1 (x64)
+
+The argument /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll is invalid. Please use the /help option to check the list of valid arguments.
+     1>Project "/home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj" on node 1 (VSTest target(s)).
+     1>_VSTestConsole:
+         MSB4181: The "VSTestTask" task returned false but did not log an error.
+     1>Done Building Project "/home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj" (VSTest target(s)) -- FAILED.
+
+Build FAILED.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.65
