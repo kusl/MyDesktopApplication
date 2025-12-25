@@ -11510,3 +11510,15 @@ Error: Process completed with exit code 1.
 I have seen this one before 
 I need to use bash or something here. 
 shell: bash
+
+
+
+
+
+
+
+
+I have fixed some errors and made some changes and uploaded the latest code in `dump.txt` 
+one persistent problem, at least on android is updating the app still does not work. 
+I need to uninstall and install the app again. 
+can you please fix this problem for all platforms? 
