@@ -23,16 +23,16 @@ public partial class App : Application
     {
         // Configure services with simple DI
         var services = new ServiceCollection();
-        
+
         // Register database context
         services.AddDbContext<AppDbContext>();
-        
+
         // Register repositories
         services.AddScoped<IGameStateRepository, GameStateRepository>();
-        
+
         // Register ViewModels
         services.AddTransient<CountryQuizViewModel>();
-        
+
         _serviceProvider = services.BuildServiceProvider();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
@@ -42,14 +42,14 @@ public partial class App : Application
             {
                 DataContext = viewModel
             };
-            
+
             // Initialize async without blocking
             _ = InitializeViewModelAsync(viewModel);
         }
 
         base.OnFrameworkInitializationCompleted();
     }
-    
+
     private static async Task InitializeViewModelAsync(CountryQuizViewModel viewModel)
     {
         try

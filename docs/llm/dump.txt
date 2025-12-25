@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT
-Generated: Wed Dec 24 10:16:37 PM CST 2025
+Generated: Wed Dec 24 10:17:39 PM CST 2025
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -5082,8 +5082,8 @@ MODIFIED: 2025-12-24 22:10:48
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml.cs
-SIZE: 2.10 KB
-MODIFIED: 2025-12-24 22:16:37
+SIZE: 1.85 KB
+MODIFIED: 2025-12-24 22:17:39
 ================================================================================
 
 using Avalonia;
@@ -5149,70 +5149,62 @@ public partial class App : Application
             System.Diagnostics.Debug.WriteLine($"Error initializing ViewModel: {ex.Message}");
         }
     }
-
-    public App(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
-    {
-    }
-
-    public App(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
-    {
-    }
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.cs
-SIZE: 1.51 KB
-MODIFIED: 2025-12-24 22:15:06
+SIZE: 1.39 KB
+MODIFIED: 2025-12-24 22:17:18
 ================================================================================
 
-// using Avalonia;
-// using Avalonia.Controls.ApplicationLifetimes;
-// using Avalonia.Markup.Xaml;
-// using Microsoft.Extensions.DependencyInjection;
-// using MyDesktopApplication.Android.Views;
-// using MyDesktopApplication.Core.Interfaces;
-// using MyDesktopApplication.Infrastructure;
-// using MyDesktopApplication.Shared.ViewModels;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Shared.ViewModels;
 
-// namespace MyDesktopApplication.Android;
+namespace MyDesktopApplication.Android;
 
-// public partial class App : Avalonia.Application
-// {
-//     private IServiceProvider? _services;
+public class App : Avalonia.Application
+{
+    private IServiceProvider? _services;
 
-//     // public override void Initialize()
-//     // {
-//     //     AvaloniaXamlLoader.Load(this);
-//     // }
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-//     public override async void OnFrameworkInitializationCompleted()
-//     {
-//         var services = new ServiceCollection();
+    public override async void OnFrameworkInitializationCompleted()
+    {
+        var services = new ServiceCollection();
 
-//         var dbPath = Path.Combine(
-//             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-//             "countryquiz.db");
+        var dbPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "countryquiz.db");
 
-//         services.AddInfrastructure(dbPath);
-//         services.AddTransient<CountryQuizViewModel>();
+        services.AddInfrastructure(dbPath);
+        services.AddTransient<CountryQuizViewModel>();
 
-//         _services = services.BuildServiceProvider();
+        _services = services.BuildServiceProvider();
 
-//         await DependencyInjection.InitializeDatabaseAsync(_services);
+        await DependencyInjection.InitializeDatabaseAsync(_services);
 
-//         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-//         {
-//             var vm = _services.GetRequiredService<CountryQuizViewModel>();
-//             var mainView = new MainView { DataContext = vm };
-//             singleViewLifetime.MainView = mainView;
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+        {
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
+            var mainView = new MainView { DataContext = vm };
+            singleViewLifetime.MainView = mainView;
 
-//             _ = vm.InitializeAsync();
-//         }
+            _ = vm.InitializeAsync();
+        }
 
-//         base.OnFrameworkInitializationCompleted();
-//     }
-// }
+        base.OnFrameworkInitializationCompleted();
+    }
+}
 
 
 ================================================================================
@@ -5296,10 +5288,11 @@ public class AnswerStateToForegroundConverter : IMultiValueConverter
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MainActivity.cs
-SIZE: .58 KB
-MODIFIED: 2025-12-24 22:16:17
+SIZE: .60 KB
+MODIFIED: 2025-12-24 22:17:18
 ================================================================================
 
+using Android.App;
 using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
@@ -8569,7 +8562,7 @@ MODIFIED: 2025-12-21 17:58:28
 
 
 ===============================================================================
-EXPORT COMPLETED: Wed Dec 24 10:16:38 PM CST 2025
+EXPORT COMPLETED: Wed Dec 24 10:17:40 PM CST 2025
 Total Files Found: 71
 Files Exported: 71
 Files Skipped: 0 (binary or large files)
