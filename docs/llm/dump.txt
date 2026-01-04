@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 04:26:38 PM CST 2026
+Generated: Sun Jan  4 04:28:08 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -506,7 +506,7 @@ SIZE: 1.57 KB
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
     
     <!-- Build number for CI - defaults to 0 for local builds -->
-    <BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">1</BuildNumber>
     
     <!-- Assembly versioning -->
     <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
@@ -6047,11 +6047,13 @@ public class MainActivity : AvaloniaMainActivity<App>
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 2.83 KB
+SIZE: 2.97 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <ApplicationVersion>$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion>$(InformationalVersion)</ApplicationDisplayVersion>
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
