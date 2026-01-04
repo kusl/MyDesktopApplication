@@ -1,9 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Clean Project Export for LLM Analysis
-# =============================================================================
-# Only exports files tracked by Git.
-# Automatically excludes anything in .gitignore and strictly filters binaries.
+# Clean Project Export for LLM Analysis (Fixed Directory Structure)
 # =============================================================================
 
 set -e
@@ -34,12 +31,13 @@ echo "=============================================="
     echo ""
 } > "$OUTPUT_FILE"
 
-# 1. Directory Structure (Git-tracked only)
+# 1. Directory Structure (Fixed Logic)
 echo "Generating directory structure..."
 {
     echo "DIRECTORY STRUCTURE:"
     echo "==================="
-    git ls-tree -r HEAD --name-only | sed -e 's/[^/]*$//' | sort | uniq | sed -e 's/[^/]*\//  /g' -e 's/  $/\//'
+    # Uses git to list files, then formats them into a readable tree
+    git ls-files | sed -e 's/[^/]*$//' | sort | uniq | sed 's/[^/]*\//|  /g;s/|  \([^|]\)/+-- \1/;s/+/|--/'
     echo ""
 } >> "$OUTPUT_FILE"
 
@@ -51,45 +49,41 @@ echo "Collecting and cleaning file contents..."
     echo ""
 } >> "$OUTPUT_FILE"
 
-# Use git ls-files to respect .gitignore automatically
 git ls-files | while read -r FILENAME; do
     # Skip the export script itself and the output file
     if [[ "$FILENAME" == "export.sh" || "$FILENAME" == "$OUTPUT_FILE" ]]; then
         continue
     fi
 
-    # Strict Binary Check
-    # Check 1: Extension-based (fast)
-    if [[ "$FILENAME" =~ \.(ico|png|jpg|jpeg|gif|dll|exe|pdb|bin|zip|tar|gz|7z)$ ]]; then
+    # Skip specific binary extensions
+    if [[ "$FILENAME" =~ \.(ico|png|jpg|jpeg|gif|dll|exe|pdb|bin|zip|tar|gz|7z|ttf|woff|woff2)$ ]]; then
         continue
     fi
 
-    # Check 2: Content-based using 'file' but more strictly
+    # Content-based binary check
     if file --mime "$FILENAME" | grep -q "binary"; then
         continue
     fi
 
-    # Check 3: Check for Null bytes (most reliable way to detect binary in shell)
+    # Null byte check (most reliable for preventing "Unsupported Encoding" errors)
     if grep -qP '\x00' "$FILENAME" 2>/dev/null; then
         continue
     fi
 
-    # Get file info
     FILESIZE=$(stat -c%s "$FILENAME" 2>/dev/null || stat -f%z "$FILENAME" 2>/dev/null || echo "0")
     
-    # Skip very large files (>500KB)
+    # Skip large files (>500KB)
     if [ "$FILESIZE" -gt 512000 ]; then
         continue
     fi
 
-    # Append cleaned text content
     {
         echo "================================================================================"
         echo "FILE: $FILENAME"
         echo "SIZE: $(echo "scale=2; $FILESIZE/1024" | bc 2>/dev/null || echo "0.00") KB"
         echo "================================================================================"
         echo ""
-        # 'tr' removes non-printable characters that often confuse LLMs
+        # tr -d removes non-printable control characters that break LLM parsers
         cat "$FILENAME" | tr -d '\000-\010\013\014\016-\037' 
         echo ""
         echo ""
