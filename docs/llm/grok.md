@@ -168,3 +168,33 @@ The project is a promising cross-platform quiz app with clean architecture and g
 
 
 
+the build currently works just fine on github actions. 
+without causing ANY regressions on github actions CI infrastructure 
+and keeping the tradition of releasing a full build on each push
+how an we fix this error 
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Android net10.0-android failed with 2 error(s) (7.2s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/AndroidManifest.xml : error APT2140: 
+      invalid android:versionCode ''.
+      
+      This error is likely caused by an issue with the AndroidManifest.xml file or an Android manifest generation attribute in a source code file.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/AndroidManifest.xml : error APT2140: 
+      invalid android:versionCode ''.
+      
+      This error is likely caused by an issue with the AndroidManifest.xml file or an Android manifest generation attribute in a source code file.
+
+Build failed with 2 error(s) in 8.8s
+
+remember it is a non-negotiable condition that we should NOT cause any regression. 
+first, do no harm. do NOT move fast and break things. Do give a single full shell script that fixes all the issues and do explain all the hows and whys of the operation. this script will run on fedora linux. 
+
