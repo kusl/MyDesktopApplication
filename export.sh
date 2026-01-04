@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Clean Project Export for LLM Analysis (Fixed Directory Structure)
+# Clean Project Export for LLM Analysis (Final Directory Fix)
 # =============================================================================
 
 set -e
@@ -31,13 +31,28 @@ echo "=============================================="
     echo ""
 } > "$OUTPUT_FILE"
 
-# 1. Directory Structure (Fixed Logic)
+# 1. Directory Structure (Using Python for a reliable tree)
 echo "Generating directory structure..."
 {
     echo "DIRECTORY STRUCTURE:"
     echo "==================="
-    # Uses git to list files, then formats them into a readable tree
-    git ls-files | sed -e 's/[^/]*$//' | sort | uniq | sed 's/[^/]*\//|  /g;s/|  \([^|]\)/+-- \1/;s/+/|--/'
+    # This python snippet takes git-tracked files and builds a perfect visual tree
+    git ls-files | python3 -c "
+import sys
+tree = {}
+for line in sys.stdin:
+    parts = line.strip().split('/')
+    curr = tree
+    for part in parts:
+        curr = curr.setdefault(part, {})
+def print_tree(d, indent=''):
+    items = sorted(d.items())
+    for i, (name, children) in enumerate(items):
+        is_last = (i == len(items) - 1)
+        print(f'{indent}{\"└── \" if is_last else \"├── \"}{name}')
+        print_tree(children, indent + ('    ' if is_last else '│   '))
+print_tree(tree)
+"
     echo ""
 } >> "$OUTPUT_FILE"
 
@@ -65,7 +80,7 @@ git ls-files | while read -r FILENAME; do
         continue
     fi
 
-    # Null byte check (most reliable for preventing "Unsupported Encoding" errors)
+    # Null byte check (Crucial for preventing "Unsupported Encoding" in Grok)
     if grep -qP '\x00' "$FILENAME" 2>/dev/null; then
         continue
     fi
