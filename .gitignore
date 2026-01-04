@@ -38,3 +38,5 @@ appsettings.*.local.json
 
 # LLM export (optional - uncomment to ignore)
 # docs/llm/
+android.keystore
+android.keystore.base64

@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+      - name: Setup Keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -70,6 +72,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
+      - name: Setup Keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -119,6 +123,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+      - name: Setup Keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -144,7 +150,8 @@ jobs:
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
             --configuration Release \
             -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish/android
+            --output ./publish/android \
+            -p:AndroidSigningPassword=${{ secrets.ANDROID_SIGNING_PASSWORD }}
 
       - name: Find and rename APK
         run: |
