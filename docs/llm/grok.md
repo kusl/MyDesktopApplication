@@ -408,3 +408,6 @@ echo "Fix complete. Run 'sh export.sh' to update dump, then commit/push. Set Git
 
 
 
+/home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2728,2): error XA4310: `$(AndroidSigningKeyStore)` file `android.keystore` could not be found.
+Build failed with 1 error(s) and 2 warning(s) in 19.5s
+
