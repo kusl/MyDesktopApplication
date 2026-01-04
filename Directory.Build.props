@@ -12,7 +12,7 @@
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
     
     <!-- Build number for CI - defaults to 0 for local builds -->
-    <BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
+    <BuildNumber Condition="'$(BuildNumber)' == ''">1</BuildNumber>
     
     <!-- Assembly versioning -->
     <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
