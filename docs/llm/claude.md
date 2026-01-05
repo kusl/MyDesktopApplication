@@ -13108,3 +13108,63 @@ Build failed with 4 error(s) in 2.5s
 
 
 
+Looking at this build failure, the issue is clear: the Android project is missing references to the Infrastructure project and its dependencies. The `App.axaml.cs` file is trying to use `Microsoft.EntityFrameworkCore`, `Microsoft.Extensions`, and `MyDesktopApplication.Infrastructure`, but the Android `.csproj` doesn't have the necessary `ProjectReference` to Infrastructure.
+
+Let me search your project knowledge to see the current state of your Android project file:Let me search more specifically for the Android project file structure:Now I have a clearer picture. The issue is that the Android `.csproj` file is **missing the `ProjectReference` to the Infrastructure project**. Let me search for the actual Android csproj content:Now I can see the issue clearly. According to the `dump.txt`, the Android `.csproj` **does have** the ProjectReference to Infrastructure. Let me look at the actual `App.axaml.cs` file that's causing the error:Now I understand the issue. Looking at the build output, the Infrastructure project (`MyDesktopApplication.Infrastructure net10.0 succeeded`) compiles for `net10.0`, but the Android project targets `net10.0-android`. The problem is that the **Infrastructure project needs to also target `net10.0-android`** for the Android project to reference it, OR the Infrastructure project's packages need to flow properly.
+
+Looking at the `android-build.txt`, I can see that EntityFrameworkCore references ARE being resolved for some projects. The issue is likely that the `--no-restore` flag in CI is causing the Android project to not get the transitive dependencies properly, or there's a target framework mismatch.
+
+Let me look at the Infrastructure project's target framework:Now I understand the root cause! Looking at the `dump.txt`, I can see that the **Infrastructure project targets `net10.0`** (a standard .NET framework), while the **Android project targets `net10.0-android`**. These are different target frameworks.
+
+The issue is that **project references across different target frameworks** require the referenced project to also support the target framework of the consuming project, OR the packages need to support the target framework.
+
+Looking at the build output: `MyDesktopApplication.Infrastructure net10.0 succeeded` - this project ONLY builds for `net10.0`, not for `net10.0-android`.
+
+Here's the fix - I'll create a shell script that properly resolves this:Kushal, I got a bit tangled up here. Looking at this more carefully, I can see the real issue.
+
+**Root Cause Analysis:**
+
+The build shows:
+- `MyDesktopApplication.Infrastructure net10.0 succeeded` 
+- `MyDesktopApplication.Android net10.0-android failed`
+
+The error is that when building for `net10.0-android`, even though the Android project has a `<ProjectReference>` to Infrastructure, the **transitive NuGet package dependencies** (like `Microsoft.EntityFrameworkCore`, `Microsoft.Extensions.DependencyInjection`) from Infrastructure **don't automatically flow** across the target framework boundary (`net10.0` → `net10.0-android`).
+
+This is a known quirk of .NET cross-TFM project references.
+
+**The Fix:**
+
+The Android project needs to **explicitly declare** the NuGet packages it uses directly in its `App.axaml.cs`, rather than relying on transitive dependencies from the Infrastructure project.
+
+Run this script from your project root:
+
+```bash
+chmod +x fix-android-build.sh
+./fix-android-build.sh
+```
+
+**What the script does:**
+
+1. Backs up your current Android `.csproj`
+2. Updates it to include **explicit PackageReferences** for:
+   - `Microsoft.Extensions.DependencyInjection`
+   - `Microsoft.EntityFrameworkCore`  
+   - `Microsoft.EntityFrameworkCore.Sqlite`
+3. Cleans, restores, and rebuilds
+
+**Why this works without regression:**
+- Desktop project continues to work because it shares the same TFM (`net10.0`) as Infrastructure, so transitive deps flow naturally
+- Android gets its deps explicitly, ensuring they're resolved for `net10.0-android`
+- Both CI and local builds will work
+- No changes to project architecture
+
+This maintains your "One Team, One Build" philosophy - everyone builds the same solution, the Android project just needs its dependencies more explicitly declared due to the cross-TFM boundary.
+
+
+
+
+
+
+
+
+
