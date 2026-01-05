@@ -13038,3 +13038,73 @@ After running the script, commit and push. Your CI should now pass.
 
 
 
+you really screwed the pooch here, didn't you? 
+
+18s
+Run dotnet build --configuration Release --no-restore
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(5,17): error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(6,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(9,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(10,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+
+Build FAILED.
+
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(5,17): error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(6,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(9,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(10,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:17.96
+Error: Process completed with exit code 1.
+Run dotnet build --configuration Release --no-restore
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(5,17): error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(6,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(9,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(10,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+
+Build FAILED.
+
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(5,17): error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(6,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(9,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(10,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?) [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:17.96
+Error: Process completed with exit code 1.
+also failing locally 
+Restore complete (0.7s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net10.0-android failed with 4 error(s) (1.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(5,17): error CS0234: The type or namespace name 'EntityFrameworkCore' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(6,17): error CS0234: The type or namespace name 'Extensions' does not exist in the namespace 'Microsoft' (are you missing an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(9,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/App.axaml.cs(10,28): error CS0234: The type or namespace name 'Infrastructure' does not exist in the namespace 'MyDesktopApplication' (are you missing an assembly reference?)
+
+Build failed with 4 error(s) in 2.5s
+
+
+
