@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 08:03:44 PM CST 2026
+Generated: Sun Jan  4 08:15:19 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -215,7 +215,7 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 6.97 KB
+SIZE: 8.55 KB
 ================================================================================
 
 name: Build and Release
@@ -248,14 +248,50 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Install Android workload
         run: dotnet workload install android
+
+      - name: Setup Keystore
+        run: |
+          # Create keystore from secret, or create a dummy one for PR builds
+          if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
+            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
+            echo "KEYSTORE_EXISTS=true" >> "$GITHUB_ENV"
+          else
+            # For PRs from forks, create a dummy keystore for build validation
+            keytool -genkey -v -keystore android.keystore \
+              -alias myalias -keyalg RSA -keysize 2048 -validity 1 \
+              -storepass dummypassword -keypass dummypassword \
+              -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US" \
+              2>/dev/null || true
+            echo "KEYSTORE_EXISTS=false" >> "$GITHUB_ENV"
+          fi
 
       - name: Restore
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore -p:BuildNumber=${{ github.run_number }}
+        run: |
+          # Determine signing password - use real secret or dummy for PR builds
+          if [[ "${{ env.KEYSTORE_EXISTS }}" == "true" ]]; then
+            SIGN_PASS="${{ secrets.ANDROID_SIGNING_PASSWORD }}"
+          else
+            SIGN_PASS="dummypassword"
+          fi
+          
+          dotnet build --configuration Release --no-restore \
+            -p:BuildNumber=${{ github.run_number }} \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore=android.keystore \
+            -p:AndroidSigningStorePass="$SIGN_PASS" \
+            -p:AndroidSigningKeyPass="$SIGN_PASS" \
+            -p:AndroidSigningKeyAlias=myalias
 
       - name: Test
         run: dotnet test --configuration Release --no-build --verbosity normal
@@ -342,7 +378,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Keystore
-        # This recreates your local keystore file from the secret base64 string
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
 
       - name: Setup .NET
@@ -360,8 +395,7 @@ jobs:
         run: dotnet workload install android
 
       - name: Accept Android licenses
-        run: |
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Build and Sign Android APK
         run: |
@@ -370,10 +404,10 @@ jobs:
             -p:BuildNumber=${{ github.run_number }} \
             --output ./publish/android \
             -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore=../../android.keystore \
+            -p:AndroidSigningKeyStore=android.keystore \
             -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
             -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyAlias="myalias"
+            -p:AndroidSigningKeyAlias=myalias
 
       - name: Find and rename APK
         run: |
@@ -432,12 +466,18 @@ jobs:
             | Windows x64 | `MyDesktopApplication-win-x64.zip` |
             | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
             | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
+            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
+            | macOS x64 | `MyDesktopApplication-osx-x64.tar.gz` |
+            | macOS ARM64 | `MyDesktopApplication-osx-arm64.tar.gz` |
             | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
             
             Build: ${{ github.run_id }}
           draft: false
           prerelease: false
           files: ./release/*
+
+
+
 
 
 ================================================================================
@@ -2388,74 +2428,74 @@ SIZE: 15.05 KB
 
 kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
 
-Build succeeded in 1.0s
+Build succeeded in 1.2s
 
-real	0m1.172s
-user	0m0.886s
-sys	0m0.272s
-Restore complete (0.6s)
+real	0m1.413s
+user	0m1.148s
+sys	0m0.291s
+Restore complete (0.7s)
 
-Build succeeded in 0.7s
+Build succeeded in 0.9s
 
-real	0m0.853s
-user	0m0.993s
-sys	0m0.192s
-Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+real	0m1.078s
+user	0m1.166s
+sys	0m0.251s
+Restore complete (0.7s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.5s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (1.3s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.8s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
   MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (20.0s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (23.4s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
 
-Build succeeded with 2 warning(s) in 23.9s
+Build succeeded with 2 warning(s) in 25.2s
 
-real	0m24.120s
-user	1m15.863s
-sys	0m3.160s
+real	0m25.406s
+user	1m26.420s
+sys	0m3.902s
 Restore complete (0.6s)
   MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
   MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.15]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.UI.Tests
-  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
-  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
-[xUnit.net 00:00:00.71]   Finished:    MyDesktopApplication.Integration.Tests
-  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.25]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.23]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (1.0s)
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (1.0s)
+[xUnit.net 00:00:00.83]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.6s)
 
-Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.4s
-Build succeeded in 2.3s
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.6s
+Build succeeded in 2.6s
 
-real	0m2.410s
-user	0m1.723s
-sys	0m0.380s
+real	0m2.798s
+user	0m1.981s
+sys	0m0.432s
 Restore complete (0.6s)
 
-Build succeeded in 0.7s
+Build succeeded in 0.8s
 Project 'MyDesktopApplication.Android' has the following package references
    [net10.0-android36.0]: 
    Top-level Package                                  Requested    Resolved
@@ -2524,12 +2564,12 @@ Project 'MyDesktopApplication.UI.Tests' has the following package references
 
 (A) : Auto-referenced package.
 
-real	0m1.896s
-user	0m1.948s
-sys	0m0.461s
-Restore complete (0.5s)
+real	0m2.319s
+user	0m2.350s
+sys	0m0.559s
+Restore complete (0.7s)
 
-Build succeeded in 0.6s
+Build succeeded in 0.8s
 
 The following sources were used:
    https://api.nuget.org/v3/index.json
@@ -2543,13 +2583,13 @@ The given project `MyDesktopApplication.Core.Tests` has no updates given the cur
 The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
 The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 
-real	0m2.180s
-user	0m2.255s
-sys	0m0.476s
+real	0m2.737s
+user	0m2.790s
+sys	0m0.523s
 
-real	0m8.324s
-user	0m13.300s
-sys	0m1.168s
+real	0m11.043s
+user	0m16.961s
+sys	0m1.421s
 ==============================================
   Generating Clean Project Export
 ==============================================
@@ -2636,33 +2676,32 @@ Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csp
 
 Export Complete: docs/llm/dump.txt
 
-real	0m0.734s
-user	0m0.426s
-sys	0m0.442s
+real	0m0.837s
+user	0m0.424s
+sys	0m0.546s
 kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ 
 
 
 ================================================================================
 FILE: docs/memory.md
-SIZE: 4.26 KB
+SIZE: 4.44 KB
 ================================================================================
 
 Purpose & context
-Kushal is developing MyDesktopApplication, a cross-platform desktop application using Avalonia UI and .NET 10 on Fedora Linux. The project has evolved from a basic counter demo into a comprehensive Country Quiz game featuring statistical comparisons between countries across metrics like population, GDP, area, and other demographics. The application targets both desktop platforms (Windows, Linux, macOS) and Android, with a strong emphasis on maintaining a unified solution structure rather than platform-specific silos.
-The project follows Clean Architecture principles with separate Core, Infrastructure, Shared, Desktop, and Android projects. Kushal maintains strict licensing requirements, accepting only completely free dependencies (MIT, Apache-2.0, BSD, Public Domain) and explicitly rejecting packages with commercial tiers or restrictive licensing. The architecture implements Entity Framework Core with SQLite for data persistence, the Repository pattern with Unit of Work, and MVVM using CommunityToolkit.Mvvm.
+Kushal is developing "MyDesktopApplication," a cross-platform country quiz game built with Avalonia UI and .NET 10. The application challenges users to compare countries across various metrics (population, GDP, area, literacy rates, etc.) and maintains persistent game state with score tracking. The project targets multiple platforms including Windows, Linux, macOS (both x64 and ARM64), and Android, with a strong emphasis on maintaining a unified codebase rather than platform-specific silos.
+The project follows Clean Architecture principles with separate Core, Infrastructure, Shared, and platform-specific projects, using Entity Framework Core with SQLite for data persistence. Kushal operates under a strict "free of cost" philosophy, requiring all dependencies to use permissive licenses (MIT, Apache-2.0, BSD, or Public Domain) and explicitly avoiding packages with commercial licensing restrictions. The development environment is Fedora Linux, and the project uses modern .NET technologies including SLNX solution format and Central Package Management.
 Current state
-The application is actively being debugged and stabilized, with recent focus on resolving Android build issues including aapt2 daemon hangs during resource compilation and AppCompat theme compatibility problems. The desktop version is functional with a working Country Quiz game featuring 50+ countries with real statistical data, persistent game state tracking, and comprehensive unit tests.
-Current technical challenges include Android SDK configuration on Fedora Linux, Java JDK version management (preferring JDK 21/17/11 over Java 25), and Entity Framework migration setup requiring proper design-time context factories. The project uses modern .NET technologies including SLNX solution format and Central Package Management, with GitHub Actions CI/CD pipelines for automated building and testing across multiple platforms.
+The application is actively being refined through systematic debugging and optimization. Recent focus areas include resolving Android build stability issues (particularly aapt2 daemon hangs), fixing UI/UX problems with touch targets and value precision display, and maintaining proper CI/CD pipeline functionality. The project uses GitHub Actions for automated builds and releases, with Obtainium for Android app distribution.
+Current technical challenges involve managing cross-platform compatibility while maintaining code quality, ensuring proper Entity Framework migrations work correctly, and resolving occasional build hanging issues during Android resource compilation. The codebase includes comprehensive unit and integration tests, with ongoing efforts to maintain zero build errors across all platforms.
 Key learnings & principles
-Kushal has established several core principles: "One Team, One Build" approach avoiding platform-specific development silos, comprehensive automation through shell scripts rather than manual configuration, and systematic debugging using process monitoring and build artifact analysis. A critical insight is that Android builds can hang indefinitely due to aapt2 daemon deadlocks, requiring specific MSBuild properties like AndroidUseAapt2Daemon=false to resolve.
-The project has demonstrated that maintaining a single unified solution is preferable to splitting into multiple solutions, as "splitting one problem into multiple solutions creates two problems instead." Build errors should be fixed properly rather than worked around through package downgrades or functionality removal. All scripts should be idempotent and include proper cleanup of stuck processes and build artifacts.
+Kushal has established several core development principles: "One Team, One Build" approach where all developers work with the same unified solution rather than creating platform-specific development silos, systematic problem-solving through comprehensive shell scripts rather than manual fixes, and strict adherence to free/open-source licensing to avoid commercial dependencies.
+Key technical insights include understanding that Android build hangs are often caused by aapt2 daemon deadlocks requiring specific MSBuild properties (AndroidUseAapt2Daemon=false), the importance of proper Java JDK configuration (avoiding JRE-only installations), and the need for AppCompat themes when using Avalonia on Android. The project has evolved from initially using deprecated packages (Avalonia.ReactiveUI, FluentAssertions with commercial restrictions) to modern, freely-licensed alternatives.
 Approach & patterns
-Development follows a systematic approach using comprehensive bash scripts for setup, debugging, and fixes rather than manual file editing. Each script includes process cleanup (killing stuck aapt2/VBCSCompiler processes), build artifact cleaning, targeted fixes, package restoration, and verification steps with clear success/failure reporting.
-Problem-solving methodology involves using project knowledge search tools to analyze codebases systematically, starting with broad error terms then narrowing to specific class names and method signatures. Build issues are diagnosed through process monitoring, log analysis, and iterative testing. The approach emphasizes surgical fixes over comprehensive rewrites when addressing specific compilation errors.
+Kushal consistently prefers automated solutions delivered as executable shell scripts over manual step-by-step instructions, stating a strong preference for "using shell scripts instead of manually editing individual files." Problem-solving follows a systematic approach: comprehensive analysis of build errors, creation of idempotent fix scripts that can run multiple times safely, and thorough testing to ensure solutions don't introduce regressions.
+Development workflow emphasizes maintaining a single unified solution file, using GitHub's run_number for automatic versioning to enable proper Android app updates, and implementing comprehensive CI/CD pipelines with separate workflows for continuous integration, development builds, and production releases. The approach prioritizes fixing root causes rather than implementing workarounds or downgrading packages.
 Tools & resources
-The development environment centers on Fedora Linux with .NET 10, Avalonia UI framework, and Entity Framework Core with SQLite. Android development requires proper Android SDK installation (not just android-tools package) with command-line tools from Google. Java configuration management ensures JDK availability over JRE-only installations.
-Key dependencies include CommunityToolkit.Mvvm for MVVM implementation, Shouldly for testing assertions (replacing FluentAssertions), NSubstitute for mocking (replacing Moq), and Entity Framework Core with both SQLite and PostgreSQL providers. GitHub Actions workflows use latest action versions (checkout v6, setup-dotnet v5, setup-java v5 with Temurin distribution) with separate pipelines for CI, development builds, and releases.
-
+The development stack centers on .NET 10 with Avalonia UI for cross-platform desktop and mobile development, Entity Framework Core with SQLite for data persistence, and CommunityToolkit.Mvvm for MVVM patterns. Testing uses Shouldly for assertions and NSubstitute for mocking, both chosen for their permissive licensing.
+The CI/CD pipeline uses GitHub Actions with the latest action versions (checkout@v6, setup-dotnet@v5, setup-java@v5 with Temurin distribution), supporting builds for six desktop platforms plus Android. Android development requires proper SDK setup on Fedora Linux, and the project uses Obtainium for APK distribution rather than traditional app stores. Database migrations are managed through custom shell scripts that provide proper validation and error handling.Tell Claude what to remember or forget...
 
 ================================================================================
 FILE: docs/thoughts.md
