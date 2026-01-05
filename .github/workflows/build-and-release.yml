@@ -44,7 +44,7 @@ jobs:
         run: dotnet test --configuration Release --no-build --verbosity normal
 
   # =============================================================================
-  # Build Desktop Releases (only on push to main/master, not PRs)
+  # Build Desktop Releases
   # =============================================================================
   build-desktop:
     needs: build-and-test
@@ -74,9 +74,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -117,7 +114,7 @@ jobs:
           if-no-files-found: error
 
   # =============================================================================
-  # Build Android APK
+  # Build Android APK (Fixed Signing)
   # =============================================================================
   build-android:
     needs: build-and-test
@@ -148,17 +145,26 @@ jobs:
         run: |
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Build Android APK
+      - name: Build and Sign Android APK
         run: |
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
             --configuration Release \
             -p:BuildNumber=${{ github.run_number }} \
             --output ./publish/android \
-            -p:AndroidSigningPassword=${{ secrets.ANDROID_SIGNING_PASSWORD }}
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore=../../android.keystore \
+            -p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_PASSWORD }} \
+            -p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_PASSWORD }} \
+            -p:AndroidSigningKeyAlias=myalias
 
       - name: Find and rename APK
         run: |
-          APK_PATH=$(find ./publish/android -name "*.apk" | head -1)
+          # Try to find the signed APK first, then fallback to any APK
+          APK_PATH=$(find ./publish/android -name "*-Signed.apk" | head -1)
+          if [[ -z "$APK_PATH" ]]; then
+            APK_PATH=$(find ./publish/android -name "*.apk" | head -1)
+          fi
+          
           if [[ -n "$APK_PATH" ]]; then
             cp "$APK_PATH" "./publish/MyDesktopApplication-android-${{ github.run_number }}.apk"
           else
@@ -217,17 +223,8 @@ jobs:
             | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
             
             ### Android Updates
-            
             **Version Code**: ${{ github.run_number }}
-            
-            This APK has an incrementing version code, so installing it will update
-            the existing app without requiring an uninstall.
-            
-            For Obtainium users: Point to this repository's releases.
-            
-            ### Changes
-            
-            See commit history for changes in this release.
+            This APK has an incrementing version code for easy updates.
           draft: false
           prerelease: false
           files: ./release/*
