@@ -12878,3 +12878,23 @@ git push
 
 
 
+
+Invalid workflow file: .github/workflows/build-and-release.yml#L1
+(Line: 157, Col: 13): Unrecognized named-value: 'secrets'. Located at position 1 within expression: secrets.ANDROID_KEYSTORE_BASE64 != ''
+
+I see the issue. GitHub Actions doesn't allow checking `secrets` in `if:` conditions at the step level using that syntax. Let me fix this workflow.The fix moves the secret detection into a step with `id: keystore` that sets outputs, then subsequent steps check `steps.keystore.outputs.available` instead of trying to reference secrets directly in `if:` conditions.
+
+**Key changes:**
+
+1. **Removed the problematic job-level `env:`** that tried to evaluate secrets
+2. **Added a `Setup Keystore` step with `id: keystore`** that:
+   - Checks if the secret exists inside the script (where secrets *are* accessible)
+   - Sets step outputs: `available=true/false` and `path=...`
+3. **Changed conditional steps** to use `steps.keystore.outputs.available == 'true'` instead of checking secrets directly
+
+This pattern works because:
+- Secrets can be accessed inside `run:` blocks and as input values
+- Step outputs can be checked in `if:` conditions using `steps.<id>.outputs.<name>`
+- The empty string check happens at runtime inside bash, not at workflow parse time
+
+
