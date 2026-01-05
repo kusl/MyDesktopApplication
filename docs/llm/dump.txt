@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 08:26:14 PM CST 2026
+Generated: Sun Jan  4 08:32:23 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -217,7 +217,7 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 7.69 KB
+SIZE: 7.71 KB
 ================================================================================
 
 name: Build and Release
@@ -333,6 +333,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
             --configuration Release \
