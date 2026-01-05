@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>android.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
     <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
     <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
