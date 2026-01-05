@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 06:40:32 PM CST 2026
+Generated: Sun Jan  4 06:46:36 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -6320,7 +6320,7 @@ SIZE: 3.30 KB
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>android.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
     <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
     <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
