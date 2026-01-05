@@ -12698,3 +12698,103 @@ jobs:
 
 
 
+it says the keystore isn't there but of course we know the keystore isn't there. 
+there are two actions secrets 
+ANDROID_KEYSTORE_BASE64
+ANDROID_SIGNING_PASSWORD
+use those. 
+1m 43s
+Run # Determine signing password - use real secret or dummy for PR builds
+  
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/bin/Release/net10.0-***/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-arm64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-x64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error XA4310: `$(AndroidSigningKeyStore)` file `***.keystore` could not be found. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Build FAILED.
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-arm64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-x64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error XA4310: `$(AndroidSigningKeyStore)` file `***.keystore` could not be found. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    2 Warning(s)
+    1 Error(s)
+Time Elapsed 00:01:42.32
+Run # Determine signing password - use real secret or dummy for PR builds
+  
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/bin/Release/net10.0-***/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-arm64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-x64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error XA4310: `$(AndroidSigningKeyStore)` file `***.keystore` could not be found. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Build FAILED.
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-arm64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/***-x64/native/libSkiaSharp.so'. See https://developer.***.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Error: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error XA4310: `$(AndroidSigningKeyStore)` file `***.keystore` could not be found. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    2 Warning(s)
+    1 Error(s)
+Time Elapsed 00:01:42.32
+
+
+
+
+
+
+
+
+Looking at this build failure, the issue is clear: the Android build is trying to sign the APK but can't find the keystore file. The workflow needs to decode the `ANDROID_KEYSTORE_BASE64` secret into an actual keystore file before the build runs.
+
+Let me search your project knowledge to see the current workflow configuration and fix it properly.Now let me search for the current workflow file to see exactly what's happening in the `build-and-test` job:Now I can see the issue clearly. The `build-and-test` job is building the Android project as part of `dotnet build`, but it doesn't have the keystore file set up properly. The keystore setup step looks like it might have conditional logic that's failing, or the build step isn't using the signing parameters.
+
+Let me search for the exact current workflow configuration:Now I understand the issue. Looking at the error and the workflow, the problem is:
+
+1. The `build-and-test` job has conditional keystore logic that should create a dummy keystore when secrets aren't available
+2. But the build step is passing the keystore path as `android.keystore` while the Android csproj file might be looking for it relative to its own directory
+
+The error message shows: `$(AndroidSigningKeyStore)` file `***.keystore` could not be found - this means the path resolution isn't working correctly.
+
+The issue is that the keystore file is being created in the workflow root directory, but when `dotnet build` runs, the Android project is looking for it relative to the csproj file location (or using an absolute path that doesn't match).
+
+Let me create a shell script to fix this properly:The script is ready. The key fix is using `$GITHUB_WORKSPACE` to create an absolute path for the keystore file, and then using `$GITHUB_ENV` to pass that path to subsequent steps. This ensures the Android build can find the keystore regardless of the working directory context.
+
+Here's what was wrong and what the fix does:
+
+**The Problem:**
+The workflow was creating `android.keystore` in the current directory (repository root), but when `dotnet build` runs on the Android project, it couldn't resolve the relative path `android.keystore` because the path context wasn't consistent. The error `$(AndroidSigningKeyStore)` file `***.keystore` could not be found` confirms the keystore file path resolution failed.
+
+**The Fix:**
+1. Use `$GITHUB_WORKSPACE/android.keystore` as an absolute path
+2. Store the path in `$GITHUB_ENV` so it persists across steps
+3. Reference `${{ env.KEYSTORE_PATH }}` in the build command
+
+Run the script from your repository root:
+
+```bash
+chmod +x fix-android-keystore.sh
+./fix-android-keystore.sh
+git add .github/workflows/build-and-release.yml
+git commit -m "Fix Android keystore path resolution using absolute paths"
+git push
+```
+
+Make sure your GitHub secrets are configured:
+- `ANDROID_KEYSTORE_BASE64` - your keystore file encoded as base64
+- `ANDROID_SIGNING_PASSWORD` - the password for your keystore
+
+
