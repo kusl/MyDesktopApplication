@@ -2,36 +2,36 @@ kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplica
 
 Build succeeded in 1.0s
 
-real	0m1.180s
-user	0m0.896s
-sys	0m0.267s
+real	0m1.172s
+user	0m0.886s
+sys	0m0.272s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
 
-real	0m0.852s
-user	0m0.976s
-sys	0m0.186s
+real	0m0.853s
+user	0m0.993s
+sys	0m0.192s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core net10.0 succeeded (2.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.3s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
   MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (21.5s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (20.0s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
 
-Build succeeded with 2 warning(s) in 23.0s
+Build succeeded with 2 warning(s) in 23.9s
 
-real	0m23.198s
-user	1m23.325s
-sys	0m3.671s
+real	0m24.120s
+user	1m15.863s
+sys	0m3.160s
 Restore complete (0.6s)
   MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
@@ -42,29 +42,29 @@ Restore complete (0.6s)
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.15]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.13]   Starting:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
 [xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.UI.Tests
   MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.UI.Tests
-  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.72]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.71]   Finished:    MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
 
 Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.4s
 Build succeeded in 2.3s
 
-real	0m2.454s
-user	0m1.786s
-sys	0m0.385s
+real	0m2.410s
+user	0m1.723s
+sys	0m0.380s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
@@ -136,9 +136,9 @@ Project 'MyDesktopApplication.UI.Tests' has the following package references
 
 (A) : Auto-referenced package.
 
-real	0m2.016s
-user	0m2.101s
-sys	0m0.475s
+real	0m1.896s
+user	0m1.948s
+sys	0m0.461s
 Restore complete (0.5s)
 
 Build succeeded in 0.6s
@@ -155,13 +155,13 @@ The given project `MyDesktopApplication.Core.Tests` has no updates given the cur
 The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
 The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 
-real	0m2.125s
-user	0m2.193s
-sys	0m0.438s
+real	0m2.180s
+user	0m2.255s
+sys	0m0.476s
 
-real	0m8.222s
-user	0m13.207s
-sys	0m1.159s
+real	0m8.324s
+user	0m13.300s
+sys	0m1.168s
 ==============================================
   Generating Clean Project Export
 ==============================================
@@ -177,6 +177,7 @@ Processed: MyDesktopApplication.slnx
 Processed: README.md
 Processed: consolidate-github-actions.sh
 Processed: docs/llm/commands.txt
+Processed: docs/llm/gemini.md
 Processed: docs/llm/grok.md
 Processed: docs/llm/output.txt
 Processed: docs/memory.md
@@ -247,7 +248,7 @@ Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csp
 
 Export Complete: docs/llm/dump.txt
 
-real	0m0.768s
-user	0m0.402s
-sys	0m0.502s
+real	0m0.734s
+user	0m0.426s
+sys	0m0.442s
 kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ 
