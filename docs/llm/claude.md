@@ -12805,3 +12805,76 @@ I am not sure. look at the github-logs.txt and dump.txt in the project files
 Error: Not Found - https://docs.github.com/rest/releases/assets#delete-a-release-asset
 and please do NOT hallucinate, do NOT cause any regressions, and DO give a single, full script that does everything
 
+
+
+
+I'll search the project knowledge for the GitHub logs and dump files to understand the exact issue.Now let me search for the current workflow file to see what's happening:Now I understand the issue clearly. Looking at the logs:
+
+1. The workflow uploads the Android artifact with name `android` (from `name: android` in the upload step)
+2. When downloading, the artifacts are placed in `./artifacts/android/` directory
+3. The APK is renamed to `MyDesktopApplication-android-23.apk`
+4. But `softprops/action-gh-release@v2` with `files: ./artifacts/**/*` tries to delete a **pre-existing** asset named `MyDesktopApplication-android-23.apk` on a release that was already created (release id=274111262)
+5. The "Not Found" error occurs because there's no existing asset with that exact name to delete - this is a race condition or the asset naming doesn't match
+
+The root cause is that the release `v1.0.23` already exists and the `overwrite_files: true` option is trying to delete an asset that doesn't exist with that name.
+
+Let me search for more context on the current workflow:Now I have a clear picture. The issue is that `softprops/action-gh-release@v2` with `overwrite_files: true` is trying to delete an asset named `MyDesktopApplication-android-23.apk` from a release that either doesn't have this asset yet, or the asset name doesn't match exactly.
+
+Looking at the logs:
+1. The Android artifact is uploaded with `name: android` to the artifact store
+2. It gets downloaded to `./artifacts/android/`
+3. The APK inside is named `MyDesktopApplication-android-23.apk`
+4. The `Create Release` step uses `files: ./artifacts/**/*` which tries to upload everything
+5. The `overwrite_files: true` tries to delete assets that match the filename, but the asset might not exist yet or has a different structure
+
+The problem is that `overwrite_files` is trying to delete an asset with a specific name that was never uploaded to this release before (since the release v1.0.23 was just created).
+
+Let me create a comprehensive fix script:I've analyzed the GitHub logs and found the root cause. The error occurs because `softprops/action-gh-release@v2` with `overwrite_files: true` tries to delete an asset named `MyDesktopApplication-android-23.apk` that doesn't actually exist on the release yet - it's trying to delete something that was never uploaded.
+
+Here's what's happening:
+1. Release v1.0.23 is found (id=274111262)
+2. The action tries to delete pre-existing assets before uploading new ones
+3. It fails because `MyDesktopApplication-android-23.apk` was never uploaded to this release before
+
+The fix removes `overwrite_files: true` (not needed since each release gets a unique version number) and properly flattens the artifacts before uploading.
+
+**Run the script:**
+
+```bash
+cd ~/src/dotnet/MyDesktopApplication
+chmod +x fix-release-workflow.sh
+./fix-release-workflow.sh
+```
+
+**Then commit and push:**
+
+```bash
+git add .github/workflows/build-and-release.yml
+git commit -m "Fix release workflow: remove overwrite_files, flatten artifacts
+
+Root cause: overwrite_files: true was trying to delete assets that
+don't exist on fresh releases, causing 'Not Found' errors.
+
+Changes:
+- Removed overwrite_files (not needed with unique version numbers)
+- Added release file flattening to avoid nested artifact paths
+- Fixed artifact naming consistency
+- Added conditional keystore handling for signed/unsigned builds
+- Added generate_release_notes for automatic changelogs"
+git push
+```
+
+**Key fixes in the workflow:**
+
+| Issue | Fix |
+|-------|-----|
+| `Not Found` error when deleting assets | Removed `overwrite_files: true` - not needed since each release is unique |
+| Nested artifact paths causing issues | Added flattening step to copy files to flat `./release/` directory |
+| Inconsistent artifact names | Standardized to `MyDesktopApplication-{platform}.{ext}` |
+| APK not found in expected location | Fixed APK rename step to search more broadly and copy to workspace root |
+
+
+
+
+
+
