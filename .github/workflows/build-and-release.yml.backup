@@ -41,33 +41,36 @@ jobs:
         run: |
           # Create keystore from secret, or create a dummy one for PR builds
           if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
-            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
-            echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_ENV"
-            echo "SIGNING_PASSWORD=${{ secrets.ANDROID_SIGNING_PASSWORD }}" >> "$GITHUB_ENV"
+            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
+            echo "KEYSTORE_EXISTS=true" >> "$GITHUB_ENV"
           else
-            # For PRs from forks or when secrets aren't available, create a dummy keystore
-            keytool -genkey -v -keystore "$GITHUB_WORKSPACE/android.keystore" \
+            # For PRs from forks, create a dummy keystore for build validation
+            keytool -genkey -v -keystore android.keystore \
               -alias myalias -keyalg RSA -keysize 2048 -validity 1 \
               -storepass dummypassword -keypass dummypassword \
               -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US" \
               2>/dev/null || true
-            echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_ENV"
-            echo "SIGNING_PASSWORD=dummypassword" >> "$GITHUB_ENV"
+            echo "KEYSTORE_EXISTS=false" >> "$GITHUB_ENV"
           fi
-          echo "Keystore created at: $GITHUB_WORKSPACE/android.keystore"
-          ls -la "$GITHUB_WORKSPACE/android.keystore"
 
       - name: Restore
         run: dotnet restore
 
       - name: Build
         run: |
+          # Determine signing password - use real secret or dummy for PR builds
+          if [[ "${{ env.KEYSTORE_EXISTS }}" == "true" ]]; then
+            SIGN_PASS="${{ secrets.ANDROID_SIGNING_PASSWORD }}"
+          else
+            SIGN_PASS="dummypassword"
+          fi
+          
           dotnet build --configuration Release --no-restore \
             -p:BuildNumber=${{ github.run_number }} \
             -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="${{ env.KEYSTORE_PATH }}" \
-            -p:AndroidSigningStorePass="${{ env.SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyPass="${{ env.SIGNING_PASSWORD }}" \
+            -p:AndroidSigningKeyStore=android.keystore \
+            -p:AndroidSigningStorePass="$SIGN_PASS" \
+            -p:AndroidSigningKeyPass="$SIGN_PASS" \
             -p:AndroidSigningKeyAlias=myalias
 
       - name: Test
@@ -111,22 +114,37 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Publish
+        shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
             --configuration Release \
-            -r ${{ matrix.rid }} \
+            --runtime ${{ matrix.rid }} \
             --self-contained true \
             -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:PublishTrimmed=false \
             -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish
+            --output ./publish/${{ matrix.artifact }}
+
+      - name: Create archive (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd ./publish
+          tar -czvf MyDesktopApplication-${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+
+      - name: Create archive (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ./publish/${{ matrix.artifact }}/* -DestinationPath ./publish/MyDesktopApplication-${{ matrix.artifact }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: ./publish/
-          retention-days: 30
+          name: desktop-${{ matrix.artifact }}
+          path: |
+            ./publish/*.tar.gz
+            ./publish/*.zip
+          if-no-files-found: error
 
   # =============================================================================
   # Build Android APK
@@ -140,10 +158,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Keystore
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
-          echo "Keystore created at: $GITHUB_WORKSPACE/android.keystore"
-          ls -la "$GITHUB_WORKSPACE/android.keystore"
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -169,7 +184,7 @@ jobs:
             -p:BuildNumber=${{ github.run_number }} \
             --output ./publish/android \
             -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="$GITHUB_WORKSPACE/android.keystore" \
+            -p:AndroidSigningKeyStore=android.keystore \
             -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
             -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
             -p:AndroidSigningKeyAlias=myalias
@@ -183,24 +198,22 @@ jobs:
           
           if [[ -n "$APK_PATH" ]]; then
             cp "$APK_PATH" "./publish/MyDesktopApplication-android-${{ github.run_number }}.apk"
-            echo "APK renamed to: MyDesktopApplication-android-${{ github.run_number }}.apk"
           else
             echo "No APK found!"
-            find ./publish -type f -name "*.apk" || echo "No APK files anywhere"
             exit 1
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android
-          path: ./publish/MyDesktopApplication-android-${{ github.run_number }}.apk
-          retention-days: 30
+          name: android-apk
+          path: ./publish/MyDesktopApplication-android-*.apk
+          if-no-files-found: error
 
   # =============================================================================
-  # Create Release
+  # Create GitHub Release
   # =============================================================================
-  create-release:
+  release:
     needs: [build-desktop, build-android]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -212,17 +225,36 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: List artifacts
-        run: find ./artifacts -type f
+      - name: Prepare release files
+        run: |
+          mkdir -p ./release
+          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: Release v1.0.${{ github.run_number }}
-          draft: false
-          prerelease: false
-          files: |
-            ./artifacts/**/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release 1.0.${{ github.run_number }}
+          body: |
+            ## MyDesktopApplication v1.0.${{ github.run_number }}
+            
+            ### Downloads
+            | Platform | File |
+            |----------|------|
+            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
+            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
+            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
+            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
+            | macOS x64 | `MyDesktopApplication-osx-x64.tar.gz` |
+            | macOS ARM64 | `MyDesktopApplication-osx-arm64.tar.gz` |
+            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
+            
+            Build: ${{ github.run_id }}
+          draft: false
+          prerelease: false
+          files: ./release/*
+
+
+
