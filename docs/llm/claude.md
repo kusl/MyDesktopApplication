@@ -12798,3 +12798,10 @@ Make sure your GitHub secrets are configured:
 - `ANDROID_SIGNING_PASSWORD` - the password for your keystore
 
 
+I added the shell:bash thing. 
+now the next problem is I think the action renamed the apk but we are still looking for the old one? 
+I am not sure. look at the github-logs.txt and dump.txt in the project files 
+♻️ Deleting previously uploaded asset MyDesktopApplication-android-23.apk...
+Error: Not Found - https://docs.github.com/rest/releases/assets#delete-a-release-asset
+and please do NOT hallucinate, do NOT cause any regressions, and DO give a single, full script that does everything
+
