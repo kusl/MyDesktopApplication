@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <AndroidSigningPassword>android</AndroidSigningPassword>
+  </PropertyGroup>
+    <PropertyGroup>
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
+    <ApplicationVersion>$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion>$(InformationalVersion)</ApplicationDisplayVersion>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
+    
+    <!-- Dynamic versioning from CI -->
+    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+    
+    <!-- ================================================================== -->
+    <!-- CRITICAL FIX FOR MONO CLASS-INIT CRASH                            -->
+    <!-- The crash "klass->instance_size == instance_size" happens when    -->
+    <!-- there's a mismatch between AOT-compiled code and runtime.         -->
+    <!-- SOLUTION: Disable AOT entirely and use JIT/Interpreter            -->
+    <!-- ================================================================== -->
+    
+    <!-- Disable AOT compilation completely -->
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <PublishAot>false</PublishAot>
+    
+    <!-- Use the Mono interpreter for maximum compatibility -->
+    <UseInterpreter>true</UseInterpreter>
+    
+    <!-- Disable IL linker trimming to preserve all types -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    
+    <!-- Fix aapt2 daemon hang issues on Fedora -->
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+    
+    <!-- Standard settings -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- Tell the linker to preserve our assemblies completely -->
+  <ItemGroup>
+    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
