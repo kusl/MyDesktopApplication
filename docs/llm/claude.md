@@ -12898,3 +12898,83 @@ This pattern works because:
 - The empty string check happens at runtime inside bash, not at workflow parse time
 
 
+I specifically asked for no regressions 
+1m 40s
+Run dotnet build --configuration Release --no-restore
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/bin/Release/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+
+Build FAILED.
+
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    2 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:01:40.52
+Error: Process completed with exit code 1.
+Run dotnet build --configuration Release --no-restore
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/bin/Release/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+
+Build FAILED.
+
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    2 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:01:40.52
+1m 40s
+Run dotnet build --configuration Release --no-restore
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/bin/Release/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Release/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Desktop/bin/Release/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/bin/Release/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/bin/Release/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Core -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Core/bin/Release/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Shared/bin/Release/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure -> /home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/bin/Release/net10.0/MyDesktopApplication.Infrastructure.dll
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+
+Build FAILED.
+
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2378,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details. [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+/usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2697,2): error MSB4044: The "AndroidSignPackage" task was not given a value for the required parameter "KeyPass". [/home/runner/work/MyDesktopApplication/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj]
+    2 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:01:40.52
+Error: Process completed with exit code 1.
