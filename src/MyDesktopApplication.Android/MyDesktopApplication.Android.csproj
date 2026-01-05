@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <AndroidSigningPassword>android</AndroidSigningPassword>
   </PropertyGroup>
