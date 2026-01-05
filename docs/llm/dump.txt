@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 07:03:02 PM CST 2026
+Generated: Sun Jan  4 07:06:09 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -6374,10 +6374,10 @@ SIZE: 3.44 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <AndroidSigningPassword>android</AndroidSigningPassword>
   </PropertyGroup>
+    <PropertyGroup>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
     <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>

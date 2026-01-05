@@ -2,6 +2,7 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <AndroidSigningPassword>android</AndroidSigningPassword>
   </PropertyGroup>
+    <PropertyGroup>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
     <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
