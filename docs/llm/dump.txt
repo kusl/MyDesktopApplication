@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 09:02:28 PM CST 2026
+Generated: Sun Jan  4 09:05:56 PM CST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -220,7 +220,7 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 9.38 KB
+SIZE: 9.63 KB
 ================================================================================
 
 # =============================================================================
@@ -360,6 +360,8 @@ jobs:
     needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -379,14 +381,19 @@ jobs:
         run: dotnet workload install android
 
       - name: Setup Keystore
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        id: keystore
+        shell: bash
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
-          echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_ENV"
-          echo "HAS_KEYSTORE=true" >> "$GITHUB_ENV"
+          if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
+            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
+            echo "path=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_OUTPUT"
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build Android APK (Signed)
-        if: env.HAS_KEYSTORE == 'true'
+        if: steps.keystore.outputs.available == 'true'
         shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
@@ -394,7 +401,7 @@ jobs:
             -p:ApplicationVersion=${{ github.run_number }} \
             -p:ApplicationDisplayVersion=1.0.${{ github.run_number }} \
             -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="${{ env.KEYSTORE_PATH }}" \
+            -p:AndroidSigningKeyStore="${{ steps.keystore.outputs.path }}" \
             -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
             -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
             -p:AndroidSigningKeyAlias=myalias \
@@ -402,7 +409,7 @@ jobs:
             --output ./publish/android
 
       - name: Build Android APK (Unsigned)
-        if: env.HAS_KEYSTORE != 'true'
+        if: steps.keystore.outputs.available != 'true'
         shell: bash
         run: |
           dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
