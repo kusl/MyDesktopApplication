@@ -1,71 +1,70 @@
 kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
 
-Build succeeded in 1.2s
+Build succeeded in 1.0s
 
-real	0m1.387s
-user	0m1.060s
-sys	0m0.284s
-Restore complete (0.7s)
+real	0m1.180s
+user	0m0.896s
+sys	0m0.267s
+Restore complete (0.6s)
 
-Build succeeded in 0.8s
+Build succeeded in 0.7s
 
-real	0m0.945s
-user	0m1.047s
-sys	0m0.234s
-Restore complete (0.7s)
-  MyDesktopApplication.Core net10.0 succeeded (0.3s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+real	0m0.852s
+user	0m0.976s
+sys	0m0.186s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.3s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
   MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
-  MyDesktopApplication.UI.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.2s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
   MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Android net10.0-android failed with 1 error(s) and 2 warning(s) (20.0s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (21.5s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
     /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
-    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2728,2): error XA4314: `$(AndroidSigningKeyPass)` is empty. A value for `$(AndroidSigningKeyPass)` should be provided.
 
-Build failed with 1 error(s) and 2 warning(s) in 21.7s
+Build succeeded with 2 warning(s) in 23.0s
 
-real	0m21.881s
-user	1m13.405s
-sys	0m3.200s
+real	0m23.198s
+user	1m23.325s
+sys	0m3.671s
 Restore complete (0.6s)
-  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
   MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.Integration.Tests
-[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.15]   Starting:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.1)
-[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
 [xUnit.net 00:00:00.07]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
 [xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.UI.Tests
 [xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.UI.Tests
-[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.Core.Tests
-[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.UI.Tests
   MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.20]   Finished:    MyDesktopApplication.UI.Tests
   MyDesktopApplication.UI.Tests test net10.0 succeeded (0.9s)
-[xUnit.net 00:00:00.76]   Finished:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.72]   Finished:    MyDesktopApplication.Integration.Tests
   MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.4s)
 
-Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.5s
-Build succeeded in 2.4s
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.4s
+Build succeeded in 2.3s
 
-real	0m2.562s
-user	0m1.810s
-sys	0m0.404s
+real	0m2.454s
+user	0m1.786s
+sys	0m0.385s
 Restore complete (0.6s)
 
 Build succeeded in 0.7s
@@ -137,12 +136,12 @@ Project 'MyDesktopApplication.UI.Tests' has the following package references
 
 (A) : Auto-referenced package.
 
-real	0m1.964s
-user	0m2.073s
-sys	0m0.478s
-Restore complete (0.6s)
+real	0m2.016s
+user	0m2.101s
+sys	0m0.475s
+Restore complete (0.5s)
 
-Build succeeded in 0.7s
+Build succeeded in 0.6s
 
 The following sources were used:
    https://api.nuget.org/v3/index.json
@@ -156,12 +155,12 @@ The given project `MyDesktopApplication.Core.Tests` has no updates given the cur
 The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
 The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 
-real	0m2.201s
-user	0m2.359s
-sys	0m0.457s
+real	0m2.125s
+user	0m2.193s
+sys	0m0.438s
 
-real	0m8.553s
-user	0m13.728s
+real	0m8.222s
+user	0m13.207s
 sys	0m1.159s
 ==============================================
   Generating Clean Project Export
@@ -248,7 +247,7 @@ Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csp
 
 Export Complete: docs/llm/dump.txt
 
-real	0m0.753s
-user	0m0.415s
-sys	0m0.488s
+real	0m0.768s
+user	0m0.402s
+sys	0m0.502s
 kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ 
