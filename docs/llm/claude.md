@@ -12978,3 +12978,63 @@ Warning: /usr/share/dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamari
 
 Time Elapsed 00:01:40.52
 Error: Process completed with exit code 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I see the issue clearly. The Android build is failing because the `AndroidSignPackage` task requires a `KeyPass` parameter, but when you do a plain `dotnet build` (not explicitly creating an APK), the signing configuration in your csproj is still being triggered without the secrets being available.
+
+Let me search your project knowledge to understand the current signing configuration and fix this properly.Now let me search for the current Android.csproj configuration to see how signing is set up:Now I understand the full picture. The issue is that your Android project has signing configuration that **always** tries to sign, even during a plain `dotnet build --configuration Release` in CI. The signing is configured to use `$(AndroidSigningPassword)` which is only passed during `dotnet publish`, but the `build-and-test` job runs `dotnet build` without passing that parameter.
+
+The root cause: Your Android.csproj has `<AndroidKeyStore>True</AndroidKeyStore>` unconditionally, which means **every Release build** attempts to sign, including the `dotnet build` step in CI where no password is provided.
+
+The fix is to **only enable signing when the password is provided**, making signing opt-in rather than always-on for Release builds.
+
+Here's the shell script that fixes this properly:Now, let me also check if the CI workflow needs adjustment to pass the signing password properly:Looking at the workflow, I see the issue. The `build-and-test` job runs `dotnet build --configuration Release --no-restore` which includes the Android project, but no signing password is passed. The fix I created makes signing conditional on the password being provided.
+
+Let me also verify what the current workflow looks like and provide a complete fix:I now have a complete picture. The proper solution is to make Android signing **conditional** - it should only attempt to sign when the password is actually provided. This is the cleanest fix that maintains your "One Team, One Build" philosophy.
+
+Here's a comprehensive fix script:Now run this script from your repository root:
+
+```bash
+chmod +x fix-android-signing-ci.sh
+./fix-android-signing-ci.sh
+```
+
+**What This Fixes:**
+
+The core issue is that your Android.csproj has `<AndroidKeyStore>True</AndroidKeyStore>` set unconditionally, which means **every Release build** attempts to sign the APK. When the `build-and-test` job runs `dotnet build --configuration Release`, it tries to sign but has no keystore/password available.
+
+**The fix makes signing opt-in:**
+
+1. **No password provided** (`$(AndroidSigningPassword)` is empty) → `AndroidKeyStore=False` → Build produces unsigned APK, no signing task runs
+2. **Password provided** via `-p:AndroidSigningPassword=...` → `AndroidKeyStore=True` → APK gets signed
+
+This maintains your "One Team, One Build" philosophy because:
+- Everyone runs the same `dotnet build` command
+- The build-and-test job validates that **all code compiles** (including Android)
+- The build-android job produces the **signed APK** for release
+- No separate solution files, no separate build scripts, no team silos
+
+After running the script, commit and push. Your CI should now pass.
+
+
+
+
+
