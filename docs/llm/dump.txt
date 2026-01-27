@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sun Jan  4 10:17:22 PM CST 2026
+Generated: Tue Jan 27 11:30:16 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -10207,11 +10207,9 @@ SIZE: .30 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml.cs
-SIZE: 2.15 KB
+SIZE: 2.12 KB
 ================================================================================
 
-using System;
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
@@ -10281,11 +10279,9 @@ public partial class App : Avalonia.Application
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Converters/Converters.cs
-SIZE: 2.35 KB
+SIZE: 2.30 KB
 ================================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -10359,10 +10355,9 @@ public class AnswerStateToForegroundConverter : IMultiValueConverter
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MainActivity.cs
-SIZE: .60 KB
+SIZE: .58 KB
 ================================================================================
 
-using Android.App;
 using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
@@ -11268,10 +11263,9 @@ SIZE: .30 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.11 KB
+SIZE: 1.09 KB
 ================================================================================
 
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
@@ -11313,11 +11307,9 @@ public partial class App : Avalonia.Application
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Converters/Converters.cs
-SIZE: 2.34 KB
+SIZE: 2.30 KB
 ================================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -11431,11 +11423,10 @@ SIZE: 1.41 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Program.cs
-SIZE: .39 KB
+SIZE: .37 KB
 ================================================================================
 
 using Avalonia;
-using System;
 
 namespace MyDesktopApplication.Desktop;
 
@@ -11722,7 +11713,7 @@ SIZE: 8.45 KB
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Country Quiz"
-        Width="800" Height="600"
+        Width="800" Height="800"
         MinWidth="600" MinHeight="500"
         Background="#1a1a2e">
 
@@ -12939,14 +12930,13 @@ public partial class CountryQuizViewModel : ViewModelBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-SIZE: 1.85 KB
+SIZE: 1.82 KB
 ================================================================================
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
