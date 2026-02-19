@@ -14658,3 +14658,48 @@ Want me to start scaffolding that template?
 ```
 
 you have clearly failed the test that you should return full files and not make me hunt what files to change. Shame on you. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+One big problem / blind spot we have long term is that this `src/MyDesktopApplication.Shared/Data/CountryData.cs` is static. Lets do a few things: 
+1. after the person chooses an answer, lets spit out all the details we have about the two countries in two easy to read paragraphs with short sentences. 
+2. lets verify the data, update the data if necessary. 
+3. lets review which files are necessary and identify which files I can safely delete. For example, I believe I do not need files such as `/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs` anymore as we are no longer a to do app. 
+
