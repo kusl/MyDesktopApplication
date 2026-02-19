@@ -9,10 +9,10 @@ public class QuestionTypeTests
     [Theory]
     [InlineData(QuestionType.Population, "Population")]
     [InlineData(QuestionType.Area, "Area (km²)")]
-    [InlineData(QuestionType.GdpTotal, "GDP (Total)")]
+    [InlineData(QuestionType.Gdp, "GDP (Total)")]
     [InlineData(QuestionType.GdpPerCapita, "GDP per Capita")]
-    [InlineData(QuestionType.PopulationDensity, "Population Density")]
-    [InlineData(QuestionType.LiteracyRate, "Literacy Rate")]
+    [InlineData(QuestionType.Density, "Population Density")]
+    [InlineData(QuestionType.Literacy, "Literacy Rate")]
     [InlineData(QuestionType.Hdi, "Human Development Index")]
     [InlineData(QuestionType.LifeExpectancy, "Life Expectancy")]
     public void GetLabel_ReturnsCorrectLabel(QuestionType questionType, string expectedLabel)
@@ -42,10 +42,10 @@ public class QuestionTypeTests
 
         QuestionType.Population.GetValue(country).ShouldBe(331_000_000);
         QuestionType.Area.GetValue(country).ShouldBe(9_833_520);
-        QuestionType.GdpTotal.GetValue(country).ShouldBe(25_462_700_000_000);
+        QuestionType.Gdp.GetValue(country).ShouldBe(25_462_700_000_000);
         QuestionType.GdpPerCapita.GetValue(country).ShouldBe(76_330);
-        QuestionType.PopulationDensity.GetValue(country).ShouldBe(33.6);
-        QuestionType.LiteracyRate.GetValue(country).ShouldBe(99.0);
+        QuestionType.Density.GetValue(country).ShouldBe(33.6);
+        QuestionType.Literacy.GetValue(country).ShouldBe(99.0);
         QuestionType.Hdi.GetValue(country).ShouldBe(0.921);
         QuestionType.LifeExpectancy.GetValue(country).ShouldBe(77.0);
     }
@@ -78,11 +78,11 @@ public class QuestionTypeTests
         QuestionType.Population.FormatValue(500_000).ShouldBe("500.00K");
 
         // GDP formatting
-        QuestionType.GdpTotal.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
-        QuestionType.GdpTotal.FormatValue(1_500_000_000_000).ShouldBe("$1.50T");
+        QuestionType.Gdp.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
+        QuestionType.Gdp.FormatValue(1_500_000_000_000).ShouldBe("$1.50T");
 
         // Other types
-        QuestionType.LiteracyRate.FormatValue(99.5).ShouldBe("99.5%");
+        QuestionType.Literacy.FormatValue(99.5).ShouldBe("99.5%");
         QuestionType.Hdi.FormatValue(0.921).ShouldBe("0.921");
         QuestionType.LifeExpectancy.FormatValue(77.5).ShouldBe("77.5 years");
     }
