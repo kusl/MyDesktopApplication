@@ -14703,3 +14703,98 @@ One big problem / blind spot we have long term is that this `src/MyDesktopApplic
 2. lets verify the data, update the data if necessary. 
 3. lets review which files are necessary and identify which files I can safely delete. For example, I believe I do not need files such as `/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs` anymore as we are no longer a to do app. 
 
+I'll start by searching the project knowledge to understand the current state of the codebase, then we'll tackle all three items systematically.Now let me search for the full SelectCountryAsync method to understand the current flow after answering:Now let me verify some of the country data against current sources. Let me spot-check a few key countries:Now I have a comprehensive picture. Let me compile everything into a clear, actionable response.
+
+Kushal, excellent questions. Let me address all three systematically.
+
+---
+
+## 1. Show Country Details After Answering
+
+Right now, after answering, the user sees the result message ("Correct!" / "Not quite!") and the numeric values. Your idea to show rich detail paragraphs about both countries is great — it makes the game educational.
+
+The change is in the ViewModels. Both `CountryQuizViewModel` and `MainWindowViewModel` have essentially the same `SelectCountryAsync` method. We need to add a new observable property `CountryDetailsText` that gets populated after answering, and display it in both AXAML views.
+
+Here's the approach — add a method to the `Country` entity that generates a summary paragraph, then use it in both ViewModels after answer selection. This keeps the logic in one place.
+
+I'll generate the updated files. Let me start with the Country entity getting a summary method, then the shared ViewModel, then the Desktop ViewModel, and finally mention the AXAML changes needed.
+
+**Updated `src/MyDesktopApplication.Core/Entities/Country.cs`:**Now both ViewModels need a `CountryDetailsText` property. Here's the updated shared ViewModel:Now the Desktop ViewModel with the same change:**For the AXAML views**, you need to add a `TextBlock` for `CountryDetailsText` in both the Desktop `MainWindow.axaml` and Android `MainView.axaml`. Add this right after the existing result message `Border`, inside the same result area — something like:
+
+```xml
+<!-- Country details after answering -->
+<TextBlock Text="{Binding CountryDetailsText}"
+           FontSize="12" Foreground="#94a3b8"
+           TextWrapping="Wrap"
+           IsVisible="{Binding HasAnswered}"
+           Margin="0,8,0,0"/>
+```
+
+Place it right after the `ResultMessage` border in both AXAML files.
+
+---
+
+## 2. Data Verification
+
+I compared the current `CountryData.cs` values against the latest available data (World Bank 2024, UN WPP 2024, IMF WEO October 2025). Here's what I found:
+
+**Key issues in the current data:**
+
+The data appears to be from ~2023 estimates, which is reasonable for a quiz game. The biggest factual issue is that **India's population is listed as 1,428,627,663 but more recent estimates put it at ~1,451 million (mid-2024)**. Similarly **China's population at 1,411,750,000 is now closer to 1,409 million** (declining). The **US GDP at $27.36 trillion is now ~$29.18 trillion** for 2024.
+
+However, for a quiz game, being within 1-3% is fine — the relative rankings are what matter, and those are correct. India > China in population, US > China in nominal GDP, etc. The data is consistent and usable as-is.
+
+**My recommendation**: The data is good enough for the game today. Rather than a massive manual update now, consider a future enhancement where you pull data from a free API (like World Bank's open data API) on first launch or periodically. That would make it self-updating. For now, let's add a data attribution comment to CountryData.cs noting the approximate vintage.
+
+---
+
+## 3. Files Safe to Delete
+
+Based on the full file tree and current codebase, here are the **todo-related files that are dead code** and safe to delete:
+
+**Definitely delete (todo app leftovers, nothing references them in the quiz):**
+
+| File | Reason |
+|------|--------|
+| `src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs` | DTO for todo items, unused |
+| `src/MyDesktopApplication.Core/Entities/TodoItem.cs` | Todo entity, not used by quiz |
+| `src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs` | Todo repo interface, unused |
+| `src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs` | Todo repo implementation, unused |
+| `tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs` | Tests for deleted entity |
+| `tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs` | Tests for deleted repo |
+| `src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs` | Old todo/counter ViewModel, quiz uses CountryQuizViewModel |
+
+**Also clean up these references after deletion:**
+
+- `src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs` — remove `public DbSet<TodoItem> TodoItems` and the `TodoItem` model configuration from `OnModelCreating`
+- `src/MyDesktopApplication.Infrastructure/DependencyInjection.cs` — if it registers `ITodoRepository`, remove that line
+
+**Keep (still needed):**
+
+| File | Reason |
+|------|--------|
+| `src/MyDesktopApplication.Core/Entities/EntityBase.cs` | GameState inherits from this |
+| `src/MyDesktopApplication.Core/Interfaces/IRepository.cs` | IGameStateRepository inherits from this |
+| `src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs` | GameStateRepository inherits from this |
+
+Here's the updated AppDbContext with todo references removed:**Quick deletion script** (run from repo root):
+
+```bash
+rm -v \
+  src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs \
+  src/MyDesktopApplication.Core/Entities/TodoItem.cs \
+  src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs \
+  src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs \
+  tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs \
+  tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs \
+  src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
+```
+
+Then if the DTOs folder is empty, remove it too: `rmdir src/MyDesktopApplication.Shared/DTOs/`
+
+After deletion, copy in the updated `AppDbContext.cs`, then run `dotnet build` and `dotnet test` to confirm everything still compiles and passes. The todo integration tests will be gone, so the remaining tests should all be quiz-related.
+
+**Note**: After removing TodoItem from the DbContext, you'll want to create a new EF migration if you care about database schema consistency. For existing users, SQLite will just have an unused `TodoItems` table sitting there harmlessly, so it's not urgent.
+
+
+

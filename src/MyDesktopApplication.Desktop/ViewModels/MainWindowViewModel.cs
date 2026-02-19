@@ -31,6 +31,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _country2Value = "";
 
     [ObservableProperty] private string _resultMessage = "";
+    [ObservableProperty] private string _countryDetailsText = "";
     [ObservableProperty] private bool _hasAnswered;
     [ObservableProperty] private bool _isCorrectAnswer;
     [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
@@ -156,6 +157,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
+        // Show detailed country info after answering
+        CountryDetailsText = BuildCountryDetails();
+
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
@@ -208,12 +212,21 @@ public partial class MainWindowViewModel : ViewModelBase
 
     // --- Internals ---
 
+    private string BuildCountryDetails()
+    {
+        var parts = new System.Collections.Generic.List<string>();
+        if (Country1 != null) parts.Add(Country1.GetSummary());
+        if (Country2 != null) parts.Add(Country2.GetSummary());
+        return string.Join("\n\n", parts);
+    }
+
     private void GenerateNewQuestion()
     {
         HasAnswered = false;
         SelectedCountry = 0;
         IsCorrectAnswer = false;
         ResultMessage = "";
+        CountryDetailsText = "";
         Country1Value = "";
         Country2Value = "";
 

@@ -208,6 +208,13 @@
                                    TextAlignment="Center" TextWrapping="Wrap"
                                    Foreground="#e2e8f0"/>
                     </Border>
+                    
+                    <!-- Country details after answering -->
+                    <TextBlock Text="{Binding CountryDetailsText}"
+                            FontSize="12" Foreground="#94a3b8"
+                            TextWrapping="Wrap"
+                            IsVisible="{Binding HasAnswered}"
+                            Margin="0,8,0,0"/>                    
 
                     <!-- Next Round button -->
                     <Button Content="Next Round"

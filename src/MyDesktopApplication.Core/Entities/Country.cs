@@ -28,7 +28,7 @@ public class Country
     private string GetFlagEmoji()
     {
         if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
-            return "🏳️";
+            return "\U0001F3F3\uFE0F";
 
         var c1 = char.ToUpperInvariant(Iso2[0]);
         var c2 = char.ToUpperInvariant(Iso2[1]);
@@ -36,4 +36,44 @@ public class Country
         var ri2 = 0x1F1E6 + (c2 - 'A');
         return char.ConvertFromUtf32(ri1) + char.ConvertFromUtf32(ri2);
     }
+
+    /// <summary>
+    /// Generates a human-readable summary paragraph with all stats.
+    /// Short sentences, easy to read after a quiz answer.
+    /// </summary>
+    public string GetSummary()
+    {
+        var pop = FormatPopulation(Population);
+        var area = $"{Area:N0} km\u00B2";
+        var gdp = FormatGdp(GdpTotal);
+        var gdpPc = $"${GdpPerCapita:N0}";
+        var density = $"{PopulationDensity:N1} people/km\u00B2";
+        var literacy = $"{LiteracyRate:N1}%";
+        var hdi = $"{Hdi:N3}";
+        var life = $"{LifeExpectancy:N1} years";
+
+        return $"{Flag} {Name} is in {Continent}. " +
+               $"Population: {pop}. " +
+               $"Area: {area}. " +
+               $"GDP: {gdp} (${gdpPc} per capita). " +
+               $"Density: {density}. " +
+               $"Literacy: {literacy}. " +
+               $"HDI: {hdi}. " +
+               $"Life expectancy: {life}.";
+    }
+
+    private static string FormatPopulation(double value) => value switch
+    {
+        >= 1_000_000_000 => $"{value / 1_000_000_000:N2} billion",
+        >= 1_000_000 => $"{value / 1_000_000:N1} million",
+        >= 1_000 => $"{value / 1_000:N1} thousand",
+        _ => $"{value:N0}"
+    };
+
+    private static string FormatGdp(double millions) => millions switch
+    {
+        >= 1_000_000 => $"${millions / 1_000_000:N2} trillion",
+        >= 1_000 => $"${millions / 1_000:N1} billion",
+        _ => $"${millions:N0} million"
+    };
 }
