@@ -13571,3 +13571,18 @@ real	0m2.305s
 user	0m1.519s
 sys	0m0.368s
 Restore complete (0.6s)
+
+
+
+
+
+
+
+I have run the script you gave me and I have some errors. 
+Please review the latest output.txt and dump.txt
+Please do not hallucinate. 
+Please do not cause regressions. 
+Think things through. 
+Please fix things properly. 
+Don't make me come back. 
+
