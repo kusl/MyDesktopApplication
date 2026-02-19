@@ -14512,3 +14512,9 @@ here is what I have now
     </Panel>
 </Window>
 ```
+
+I can see the problem — there's a stray `</Style>` closing tag on line 55 (right after the `value-text` style block ends). It's orphaned — no matching opening tag. That's what breaks the XML parser.The only change: removed the stray `</Style>` on line 55 of your original file. In your AXAML, right after the `value-text` style block's closing `</Style>`, there was a second orphaned `</Style>` tag with no matching opening tag — that's what broke the XML parser. Everything else is identical.
+
+
+
+

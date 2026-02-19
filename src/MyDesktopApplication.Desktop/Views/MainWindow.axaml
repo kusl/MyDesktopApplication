@@ -51,8 +51,6 @@
             <Setter Property="Foreground" Value="#22c55e"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
-
-        </Style>
     </Window.Styles>
 
     <Panel>
