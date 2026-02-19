@@ -13599,3 +13599,184 @@ I need to see the exact line 116 to fix it properly. Here's a diagnostic + fix s
 
 The script also starts with diagnostics — it prints the actual content around line 116 so we can see exactly what was there. Run it with `bash` and the diagnostic output will tell us what the mystery line was, plus confirm both fixes worked.
 
+
+
+
+
+
+
+
+
+
+I am not sure what you did but looks like the issue is still there. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cat fix-all-issues.sh; time bash fix-all-issues.sh;
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd ~/src/dotnet/MyDesktopApplication
+
+VM_FILE="src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs"
+QT_FILE="src/MyDesktopApplication.Core/Entities/QuestionType.cs"
+TEST_FILE="tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs"
+
+echo "=== DIAGNOSTIC: What's actually on/around line 116? ==="
+echo "--- Line 114-118 of $VM_FILE ---"
+sed -n '114,118p' "$VM_FILE"
+echo ""
+echo "--- All reads of _gameState.SelectedQuestionType (right-hand side) ---"
+grep -n '_gameState\.SelectedQuestionType' "$VM_FILE" | grep -v '_gameState\.SelectedQuestionType ='
+echo ""
+echo "--- All occurrences of _gameState.SelectedQuestionType ---"
+grep -n '_gameState\.SelectedQuestionType' "$VM_FILE"
+echo ""
+
+# =============================================================================
+# FIX 1: CS0266 - int to QuestionType? cast
+# The issue is any place where _gameState.SelectedQuestionType (int) is used
+# where QuestionType or QuestionType? is expected.
+# We cast every READ of _gameState.SelectedQuestionType to (QuestionType).
+# We must NOT touch the WRITE side: _gameState.SelectedQuestionType = (int)value;
+# Strategy: replace pattern where _gameState.SelectedQuestionType is NOT 
+# immediately followed by ' =' (assignment target).
+# =============================================================================
+echo "[1/2] Fixing int→QuestionType cast on line 116..."
+
+# Use perl for negative lookahead - only cast when NOT followed by ' ='
+perl -i -pe 's/(?<!\(int\))_gameState\.SelectedQuestionType(?!\s*=)/(QuestionType)_gameState.SelectedQuestionType/g' "$VM_FILE"
+
+echo "  Verifying fix..."
+echo "--- Line 114-118 after fix ---"
+sed -n '114,118p' "$VM_FILE"
+echo ""
+
+# =============================================================================
+# FIX 2: FormatLargeNumber uses N1 for thousands but test expects N2 ("500.00K")
+# The implementation has: >= 1_000 => $"{value / 1_000:N1}K"
+# The test expects: "500.00K" (2 decimal places)
+# Fix: Change N1 to N2 for thousands to match the test expectation and be
+# consistent with millions (N2), billions (N3), trillions (N3).
+# =============================================================================
+echo "[2/2] Fixing FormatLargeNumber thousands precision (N1 → N2)..."
+
+sed -i 's|>= 1_000 => \$"{value / 1_000:N1}K"|>= 1_000 => $"{value / 1_000:N2}K"|' "$QT_FILE"
+
+echo "  Verifying fix..."
+grep -n 'N[0-9]}K' "$QT_FILE"
+echo ""
+
+# =============================================================================
+# Build + Test
+# =============================================================================
+echo "=== Building ==="
+time dotnet build
+
+echo ""
+echo "=== Running tests ==="
+time dotnet test
+=== DIAGNOSTIC: What's actually on/around line 116? ===
+--- Line 114-118 of src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs ---
+    partial void OnSelectedQuestionTypeChanged(QuestionType value)
+    {
+        _gameState.SelectedQuestionType = (int)value;
+        GenerateNewQuestion();
+    }
+
+--- All reads of _gameState.SelectedQuestionType (right-hand side) ---
+
+real	0m0.006s
+user	0m0.001s
+sys	0m0.006s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh; time git add .; time git commit --message "add all files";
+
+Build succeeded in 0.5s
+
+real	0m0.603s
+user	0m0.657s
+sys	0m0.157s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.759s
+user	0m0.869s
+sys	0m0.174s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(116,43): error CS0266: Cannot implicitly convert type 'int' to 'MyDesktopApplication.Core.Entities.QuestionType?'. An explicit conversion exists (are you missing a cast?)
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+
+Build failed with 1 error(s) in 1.0s
+
+real	0m1.163s
+user	0m1.490s
+sys	0m0.356s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(116,43): error CS0266: Cannot implicitly convert type 'int' to 'MyDesktopApplication.Core.Entities.QuestionType?'. An explicit conversion exists (are you missing a cast?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.18]     MyDesktopApplication.Core.Tests.QuestionTypeTests.FormatValue_FormatsValuesCorrectly [FAIL]
+[xUnit.net 00:00:00.18]       Shouldly.ShouldAssertException : QuestionType.Population.FormatValue(500_000)
+[xUnit.net 00:00:00.18]           should be
+[xUnit.net 00:00:00.18]       "500.00K"
+[xUnit.net 00:00:00.18]           but was
+[xUnit.net 00:00:00.18]       "500.0K"
+[xUnit.net 00:00:00.18]           difference
+[xUnit.net 00:00:00.18]       Difference     |                           |    |   
+[xUnit.net 00:00:00.18]                      |                          \|/  \|/  
+[xUnit.net 00:00:00.18]       Index          | 0    1    2    3    4    5    6    
+[xUnit.net 00:00:00.18]       Expected Value | 5    0    0    .    0    0    K    
+[xUnit.net 00:00:00.18]       Actual Value   | 5    0    0    .    0    K         
+[xUnit.net 00:00:00.18]       Expected Code  | 53   48   48   46   48   48   75   
+[xUnit.net 00:00:00.18]       Actual Code    | 53   48   48   46   48   75        
+[xUnit.net 00:00:00.18]       Stack Trace:
+[xUnit.net 00:00:00.18]         /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(78,0): at MyDesktopApplication.Core.Tests.QuestionTypeTests.FormatValue_FormatsValuesCorrectly()
+[xUnit.net 00:00:00.18]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.18]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 failed with 1 error(s) (0.7s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(78): error TESTERROR: 
+      MyDesktopApplication.Core.Tests.QuestionTypeTests.FormatValue_FormatsValuesCorrectly (17ms): Error Message: Shouldly.ShouldAssertException : QuestionType.Population.FormatValue(500_000)
+          should be
+      "500.00K"
+          but was
+      "500.0K"
+          difference
+      Difference     |                           |    |   
+                     |                          \|/  \|/  
+      Index          | 0    1    2    3    4    5    6    
+      Expected Value | 5    0    0    .    0    0    K    
+      Actual Value   | 5    0    0    .    0    K         
+      Expected Code  | 53   48   48   46   48   48   75   
+      Actual Code    | 53   48   48   46   48   75        
+      Stack Trace:
+         at MyDesktopApplication.Core.Tests.QuestionTypeTests.FormatValue_FormatsValuesCorrectly() in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs:line 7
+      8
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.64]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 22, failed: 1, succeeded: 21, skipped: 0, duration: 1.2s
+Build failed with 2 error(s) in 2.0s
+
+real	0m2.127s
+user	0m1.530s
+sys	0m0.329s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
