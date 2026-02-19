@@ -52,18 +52,6 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
 
-        <!-- Smaller fonts for narrow windows -->
-        <Style Selector="Window[Width=0]:lt(480) TextBlock.header-title">
-            <Setter Property="FontSize" Value="17"/>
-        </Style>
-        <Style Selector="Window[Width=0]:lt(480) TextBlock.question-text">
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-        <Style Selector="Window[Width=0]:lt(480) TextBlock.flag-text">
-            <Setter Property="FontSize" Value="36"/>
-        </Style>
-        <Style Selector="Window[Width=0]:lt(480) TextBlock.country-name">
-            <Setter Property="FontSize" Value="14"/>
         </Style>
     </Window.Styles>
 
