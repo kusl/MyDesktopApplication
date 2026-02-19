@@ -13524,4 +13524,50 @@ Build failed with 3 error(s) in 0.9s
 real	0m1.075s
 user	0m1.321s
 sys	0m0.279s
+
+
+
+
+Please do not hallucinate and fix the problems properly. 
+Restore complete (0.6s)
+
+
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(12,30): error CS0117: 'QuestionType' does not contain a definition for 'GdpTotal'
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(14,30): error CS0117: 'QuestionType' does not contain a definition for 'PopulationDensity'
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(15,30): error CS0117: 'QuestionType' does not contain a definition for 'LiteracyRate'
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.3s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(116,43): error CS0266: Cannot implicitly convert type 'int' to 'MyDesktopApplication.Core.Entities.QuestionType?'. An explicit conversion exists (are you missing a cast?)
+
+Build failed with 4 error(s) in 1.2s
+
+real	0m1.350s
+user	0m1.634s
+sys	0m0.342s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(12,30): error CS0117: 'QuestionType' does not contain a definition for 'GdpTotal'
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(14,30): error CS0117: 'QuestionType' does not contain a definition for 'PopulationDensity'
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs(15,30): error CS0117: 'QuestionType' does not contain a definition for 'LiteracyRate'
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs(116,43): error CS0266: Cannot implicitly convert type 'int' to 'MyDesktopApplication.Core.Entities.QuestionType?'. An explicit conversion exists (are you missing a cast?)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.68]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.2s)
+
+Test summary: total: 3, failed: 0, succeeded: 3, skipped: 0, duration: 1.2s
+Build failed with 4 error(s) in 2.2s
+
+real	0m2.305s
+user	0m1.519s
+sys	0m0.368s
 Restore complete (0.6s)
