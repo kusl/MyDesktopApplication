@@ -60,10 +60,10 @@ public static class QuestionTypeExtensions
     {
         QuestionType.Population => country.Population,
         QuestionType.Area => country.Area,
-        QuestionType.Gdp => country.Gdp,
+        QuestionType.Gdp => country.GdpTotal,
         QuestionType.GdpPerCapita => country.GdpPerCapita,
-        QuestionType.Density => country.Density,
-        QuestionType.Literacy => country.Literacy,
+        QuestionType.Density => country.PopulationDensity,
+        QuestionType.Literacy => country.LiteracyRate,
         QuestionType.Hdi => country.Hdi,
         QuestionType.LifeExpectancy => country.LifeExpectancy,
         _ => null

@@ -13435,3 +13435,93 @@ cd ~/src/dotnet/MyDesktopApplication
 chmod +x fix-all-issues.sh
 ./fix-all-issues.sh
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The build is now broken. 
+Please review the output.txt and dump.txt in full 
+think things though slowly and methodically 
+and fix all the issues
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(63,37): error CS1061: 'Country' does not contain a definition for 'Gdp' and no accessible extension method 'Gdp' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(65,41): error CS1061: 'Country' does not contain a definition for 'Density' and no accessible extension method 'Density' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(66,42): error CS1061: 'Country' does not contain a definition for 'Literacy' and no accessible extension method 'Literacy' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 3 error(s) in 1.1s
+
+real	0m1.241s
+user	0m1.468s
+sys	0m0.254s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 failed with 3 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(63,37): error CS1061: 'Country' does not contain a definition for 'Gdp' and no accessible extension method 'Gdp' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(65,41): error CS1061: 'Country' does not contain a definition for 'Density' and no accessible extension method 'Density' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/Entities/QuestionType.cs(66,42): error CS1061: 'Country' does not contain a definition for 'Literacy' and no accessible extension method 'Literacy' accepting a first argument of type 'Country' could be found (are you missing a using directive or an assembly reference?)
+
+Build failed with 3 error(s) in 0.9s
+
+real	0m1.075s
+user	0m1.321s
+sys	0m0.279s
+Restore complete (0.6s)
