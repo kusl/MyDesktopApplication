@@ -113,7 +113,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     partial void OnSelectedQuestionTypeChanged(QuestionType value)
     {
-        _gameState.SelectedQuestionType = (int)value;
+        _gameState.SelectedQuestionType = value;
         GenerateNewQuestion();
     }
 
@@ -140,11 +140,9 @@ public partial class MainWindowViewModel : ViewModelBase
         var isCorrect = selectedCountry?.Name == _correctCountry.Name;
         IsCorrectAnswer = isCorrect;
 
-        // Record answer in game state
         _gameState.RecordAnswer(isCorrect);
         SyncScoresFromGameState();
 
-        // Show values for both countries
         if (Country1 != null)
         {
             var v1 = SelectedQuestionType.GetValue(Country1);
@@ -158,7 +156,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
-        // Persist
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
