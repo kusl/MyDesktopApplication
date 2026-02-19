@@ -14038,3 +14038,107 @@ That said, looking at the first build output in your message, the *second* build
 
 
 
+I still have this problem. Clearly something is wrong. 
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 failed with 4 error(s) (0.7s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(56,10,56,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 56, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(59,10,59,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 59, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(62,10,62,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 62, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(65,10,65,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 65, position 10.
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (19.6s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 4 error(s) and 2 warning(s) in 20.7s
+
+real	0m20.883s
+user	1m22.532s
+sys	0m3.180s
+Restore complete (0.5s)
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time dotnet clean; time dotnet build; time dotnet test
+
+Build succeeded in 0.5s
+
+real	0m0.625s
+user	0m0.726s
+sys	0m0.215s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 failed with 4 error(s) (0.7s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(56,10,56,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 56, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(59,10,59,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 59, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(62,10,62,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 62, position 10.
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml(65,10,65,10): Avalonia error AVLN2201: Unable to parse selector: Expected an identifier, got '( Line 65, position 10.
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (19.2s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 4 error(s) and 2 warning(s) in 20.2s
+
+real	0m20.377s
+user	1m16.987s
+sys	0m3.134s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.19]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.8s)
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.11]   Starting:    MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.16]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.65]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.3s)
+
+Test summary: total: 28, failed: 0, succeeded: 28, skipped: 0, duration: 1.3s
+Build succeeded in 2.1s
+
+real	0m2.198s
+user	0m1.679s
+sys	0m0.417s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+here are the lines again 
+```xml
+        <!-- Smaller fonts for narrow windows -->
+        <Style Selector="Window[Width=0]:lt(480) TextBlock.header-title">
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+        <Style Selector="Window[Width=0]:lt(480) TextBlock.question-text">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Window[Width=0]:lt(480) TextBlock.flag-text">
+            <Setter Property="FontSize" Value="36"/>
+        </Style>
+        <Style Selector="Window[Width=0]:lt(480) TextBlock.country-name">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+```
