@@ -14142,3 +14142,373 @@ here are the lines again
             <Setter Property="FontSize" Value="14"/>
         </Style>
 ```
+
+
+
+
+
+
+Return me the full file. Don't do this sed thing because it clearly isn't working. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh; time git add .; time git commit --message "add all files";
+
+Build succeeded in 0.5s
+
+real	0m0.609s
+user	0m0.735s
+sys	0m0.195s
+Restore complete (0.5s)
+
+Build succeeded in 0.6s
+
+real	0m0.763s
+user	0m0.847s
+sys	0m0.198s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 failed with 1 error(s) (0.0s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml : Avalonia error AVLN1001: 
+      File doesn't contain valid XAML: System.Xml.XmlException: The 'Window.Styles' start tag on line 21 position 6 does not match the end tag of 'Style'. Line 55, position 11.
+         at System.Xml.XmlTextReaderImpl.Throw(Exception e)
+         at System.Xml.XmlTextReaderImpl.Throw(String res, String[] args)
+         at System.Xml.XmlTextReaderImpl.ThrowTagMismatch(NodeData startTag)
+         at System.Xml.XmlTextReaderImpl.ParseEndElement()
+         at System.Xml.XmlTextReaderImpl.ParseElementContent()
+         at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r)
+         at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options)
+         at System.Xml.Linq.XDocument.Parse(String text, LoadOptions options)
+         at Avalonia.Build.Tasks.XamlFileInfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11
+         at Avalonia.Build.Tasks.GenerateAvaloniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.cs:line 106
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (19.4s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 1 error(s) and 2 warning(s) in 20.5s
+
+real	0m20.632s
+user	1m17.703s
+sys	0m2.930s
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Desktop net10.0 failed with 1 error(s) (0.0s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml : Avalonia error AVLN1001: 
+      File doesn't contain valid XAML: System.Xml.XmlException: The 'Window.Styles' start tag on line 21 position 6 does not match the end tag of 'Style'. Line 55, position 11.
+         at System.Xml.XmlTextReaderImpl.Throw(Exception e)
+         at System.Xml.XmlTextReaderImpl.Throw(String res, String[] args)
+         at System.Xml.XmlTextReaderImpl.ThrowTagMismatch(NodeData startTag)
+         at System.Xml.XmlTextReaderImpl.ParseEndElement()
+         at System.Xml.XmlTextReaderImpl.ParseElementContent()
+         at System.Xml.Linq.XContainer.ReadContentFrom(XmlReader r)
+         at System.Xml.Linq.XDocument.Load(XmlReader reader, LoadOptions options)
+         at System.Xml.Linq.XDocument.Parse(String text, LoadOptions options)
+         at Avalonia.Build.Tasks.XamlFileInfo.Parse(String data) in /_/src/Avalonia.Build.Tasks/XamlFileInfo.cs:line 11
+         at Avalonia.Build.Tasks.GenerateAvaloniaResourcesTask.PreProcessXamlFiles(List`1 sources) in /_/src/Avalonia.Build.Tasks/GenerateAvaloniaResourcesTask.cs:line 106
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.05]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.06]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.10]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.09]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.12]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Starting:    MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.18]   Finished:    MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.7s)
+[xUnit.net 00:00:00.64]   Finished:    MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded (1.1s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.2s
+Build failed with 1 error(s) in 2.0s
+here is what I have now 
+```xml /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MyDesktopApplication.Desktop.ViewModels"
+        xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+        x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Country Quiz"
+        Width="600" Height="700"
+        MinWidth="360" MinHeight="500"
+        Background="#0f172a">
+
+    <Window.Resources>
+        <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
+        <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
+        <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
+        <conv:AnswerStateToForegroundConverter x:Key="AnswerStateFgConverter"/>
+        <conv:BoolToColorConverter x:Key="BoolToColorConverter"/>
+    </Window.Resources>
+
+    <!-- Responsive font sizes via Styles -->
+    <Window.Styles>
+        <Style Selector="TextBlock.header-title">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TextBlock.stat-text">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#94a3b8"/>
+        </Style>
+        <Style Selector="TextBlock.question-text">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#e2e8f0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.flag-text">
+            <Setter Property="FontSize" Value="48"/>
+        </Style>
+        <Style Selector="TextBlock.country-name">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.value-text">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#22c55e"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        </Style>
+    </Window.Styles>
+
+    <Panel>
+        <!-- Main content -->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
+
+                <!-- Row 0: Header with score and category selector -->
+                <Border Grid.Row="0" Background="#1e293b" CornerRadius="12" Padding="16" Margin="0,0,0,12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <!-- Score info -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Classes="header-title" Text="Country Quiz"/>
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Classes="stat-text" Text="{Binding ScoreText}"/>
+                                <TextBlock Classes="stat-text" Text="{Binding StreakText}"/>
+                                <TextBlock Classes="stat-text" Text="{Binding BestStreakText}"/>
+                            </StackPanel>
+                            <TextBlock Classes="stat-text" Text="{Binding AccuracyText}"/>
+                        </StackPanel>
+
+                        <!-- Category selector -->
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding QuestionTypes}"
+                                  SelectedItem="{Binding SelectedQuestionType}"
+                                  Background="#334155"
+                                  Foreground="White"
+                                  MinWidth="160"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
+                                               Foreground="White"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+
+                <!-- Row 1: Question text -->
+                <Border Grid.Row="1" Margin="0,0,0,12">
+                    <TextBlock Classes="question-text" Text="{Binding QuestionText}"/>
+                </Border>
+
+                <!-- Row 2: Country cards + result -->
+                <StackPanel Grid.Row="2" Spacing="12">
+
+                    <!-- Country selection buttons side-by-side -->
+                    <Grid ColumnDefinitions="*,Auto,*">
+
+                        <!-- Country 1 Button -->
+                        <Button Grid.Column="0"
+                                Command="{Binding SelectCountryCommand}"
+                                CommandParameter="1"
+                                IsEnabled="{Binding !HasAnswered}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                MinHeight="180"
+                                CornerRadius="12"
+                                Padding="0"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                    <Binding Path="IsCountry1Correct"/>
+                                    <Binding Path="IsCountry1Wrong"/>
+                                </MultiBinding>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AnswerStateBorderConverter}">
+                                    <Binding Path="IsCountry1Correct"/>
+                                    <Binding Path="IsCountry1Wrong"/>
+                                </MultiBinding>
+                            </Button.BorderBrush>
+                            <!-- Keep full opacity when disabled (after answering) -->
+                            <Button.Styles>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Style>
+                            </Button.Styles>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="8" Margin="12">
+                                <TextBlock Classes="flag-text"
+                                           Text="{Binding Country1.Flag}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Classes="country-name"
+                                           Text="{Binding Country1.Name}"
+                                           MaxWidth="140"/>
+                                <TextBlock Classes="value-text"
+                                           Text="{Binding Country1Value}"
+                                           IsVisible="{Binding HasAnswered}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- VS separator -->
+                        <TextBlock Grid.Column="1"
+                                   Text="VS"
+                                   FontSize="16" FontWeight="Bold"
+                                   Foreground="#475569"
+                                   VerticalAlignment="Center"
+                                   Margin="12,0"/>
+
+                        <!-- Country 2 Button -->
+                        <Button Grid.Column="2"
+                                Command="{Binding SelectCountryCommand}"
+                                CommandParameter="2"
+                                IsEnabled="{Binding !HasAnswered}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                MinHeight="180"
+                                CornerRadius="12"
+                                Padding="0"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                    <Binding Path="IsCountry2Correct"/>
+                                    <Binding Path="IsCountry2Wrong"/>
+                                </MultiBinding>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AnswerStateBorderConverter}">
+                                    <Binding Path="IsCountry2Correct"/>
+                                    <Binding Path="IsCountry2Wrong"/>
+                                </MultiBinding>
+                            </Button.BorderBrush>
+                            <Button.Styles>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Style>
+                            </Button.Styles>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="8" Margin="12">
+                                <TextBlock Classes="flag-text"
+                                           Text="{Binding Country2.Flag}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Classes="country-name"
+                                           Text="{Binding Country2.Name}"
+                                           MaxWidth="140"/>
+                                <TextBlock Classes="value-text"
+                                           Text="{Binding Country2Value}"
+                                           IsVisible="{Binding HasAnswered}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <!-- Result message -->
+                    <Border Background="#1e293b" CornerRadius="8" Padding="16"
+                            IsVisible="{Binding HasAnswered}">
+                        <TextBlock Text="{Binding ResultMessage}"
+                                   FontSize="18" FontWeight="SemiBold"
+                                   TextAlignment="Center" TextWrapping="Wrap"
+                                   Foreground="#e2e8f0"/>
+                    </Border>
+
+                    <!-- Next Round button -->
+                    <Button Content="Next Round"
+                            Command="{Binding NextRoundCommand}"
+                            IsVisible="{Binding HasAnswered}"
+                            HorizontalAlignment="Center"
+                            MinWidth="200" MinHeight="48"
+                            FontSize="16" FontWeight="SemiBold"
+                            Background="#3b82f6" Foreground="White"
+                            CornerRadius="8" Cursor="Hand"/>
+                </StackPanel>
+
+                <!-- Row 3: Footer with Reset -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal"
+                            HorizontalAlignment="Center" Margin="0,12,0,0" Spacing="16">
+                    <Button Content="Reset Game"
+                            Command="{Binding RequestResetGameCommand}"
+                            MinWidth="120"
+                            Background="#475569" Foreground="White"
+                            CornerRadius="6"/>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Reset confirmation overlay -->
+        <Border IsVisible="{Binding IsResetConfirmationVisible}"
+                Background="#CC000000"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <Border Background="#1e293b"
+                    CornerRadius="16"
+                    Padding="32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="300"
+                    MaxWidth="400"
+                    BorderBrush="#334155"
+                    BorderThickness="1">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Reset Game?"
+                               FontSize="22" FontWeight="Bold"
+                               Foreground="White"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="This will reset your score, streak, and all statistics. This cannot be undone."
+                               FontSize="14" Foreground="#94a3b8"
+                               TextWrapping="Wrap" TextAlignment="Center"/>
+                    <Grid ColumnDefinitions="*,16,*">
+                        <Button Grid.Column="0"
+                                Content="Cancel"
+                                Command="{Binding CancelResetGameCommand}"
+                                HorizontalAlignment="Stretch"
+                                MinHeight="44"
+                                Background="#475569" Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                CornerRadius="8"/>
+                        <Button Grid.Column="2"
+                                Content="Yes, Reset"
+                                Command="{Binding ConfirmResetGameCommand}"
+                                HorizontalAlignment="Stretch"
+                                MinHeight="44"
+                                Background="#dc2626" Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                CornerRadius="8"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Panel>
+</Window>
+```
