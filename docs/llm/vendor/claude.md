@@ -13780,3 +13780,21 @@ Restore complete (0.5s)
 
 Build succeeded in 0.6s
 
+Now I can see the problem clearly from the diagnostic output.
+
+**Line 116 is:** `_gameState.SelectedQuestionType = (int)value;`
+
+The error at column 43 points to the **right-hand side** — `(int)value`. This means `GameState.SelectedQuestionType` is typed as `QuestionType?`, not `int`. So casting `value` to `(int)` produces an `int` being assigned to a `QuestionType?` field — that's the CS0266. The fix is to **remove** the `(int)` cast, not add one.
+
+My previous fixes were all backwards — I was looking for reads to cast, but the problem is the **write** that's casting when it shouldn't be.
+
+For the FormatValue test, the `sed` pattern didn't match (likely whitespace or escaping), so the `N1` → `N2` change never applied.Two simple, surgical fixes:
+
+**Fix 1:** `GameState.SelectedQuestionType` is `QuestionType?`, not `int`. The line `_gameState.SelectedQuestionType = (int)value;` casts `value` to `int` then tries to assign that `int` to a `QuestionType?` — boom, CS0266. Fix: remove the `(int)` cast so it's just `= value;` (a `QuestionType` assigns cleanly to `QuestionType?`).
+
+**Fix 2:** Previous `sed` pattern for FormatLargeNumber was too specific and didn't match. This time I'm using `/1_000/s/:N1}K/:N2}K/` — match any line containing `1_000`, then on that line replace `:N1}K` with `:N2}K`. Much simpler, much more likely to hit.
+
+Both fixes include before/after verification so you can see exactly what changed. Run with `bash`.
+
+
+
