@@ -66,7 +66,7 @@ echo "Collecting and cleaning file contents..."
 
 git ls-files | while read -r FILENAME; do
     # Skip the export script itself and the output file
-    if [[ "$FILENAME" == "export.sh" || "$FILENAME" == "$OUTPUT_FILE" ]]; then
+    if [[ "$FILENAME" == "export.sh" || "$FILENAME" == "$OUTPUT_FILE" || "$FILENAME" == docs/llm/* ]]; then
         continue
     fi
 
