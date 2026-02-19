@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Feb 19 05:17:36 AM EST 2026
+Generated: Thu Feb 19 05:19:19 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -58,12 +58,10 @@ DIRECTORY STRUCTURE:
 │   │   │   ├── Country.cs
 │   │   │   ├── EntityBase.cs
 │   │   │   ├── GameState.cs
-│   │   │   ├── QuestionType.cs
-│   │   │   └── TodoItem.cs
+│   │   │   └── QuestionType.cs
 │   │   ├── Interfaces
 │   │   │   ├── IGameStateRepository.cs
-│   │   │   ├── IRepository.cs
-│   │   │   └── ITodoRepository.cs
+│   │   │   └── IRepository.cs
 │   │   └── MyDesktopApplication.Core.csproj
 │   ├── MyDesktopApplication.Desktop
 │   │   ├── App.axaml
@@ -90,28 +88,22 @@ DIRECTORY STRUCTURE:
 │   │   ├── MyDesktopApplication.Infrastructure.csproj
 │   │   └── Repositories
 │   │       ├── GameStateRepository.cs
-│   │       ├── Repository.cs
-│   │       └── TodoRepository.cs
+│   │       └── Repository.cs
 │   └── MyDesktopApplication.Shared
-│       ├── DTOs
-│       │   └── TodoItemDto.cs
 │       ├── Data
 │       │   ├── CountryData.cs
 │       │   └── MotivationalMessages.cs
 │       ├── MyDesktopApplication.Shared.csproj
 │       └── ViewModels
 │           ├── CountryQuizViewModel.cs
-│           ├── MainViewModel.cs
 │           └── ViewModelBase.cs
 └── tests
     ├── MyDesktopApplication.Core.Tests
     │   ├── GameStateTests.cs
     │   ├── MyDesktopApplication.Core.Tests.csproj
-    │   ├── QuestionTypeTests.cs
-    │   └── TodoItemTests.cs
+    │   └── QuestionTypeTests.cs
     ├── MyDesktopApplication.Integration.Tests
-    │   ├── MyDesktopApplication.Integration.Tests.csproj
-    │   └── TodoRepositoryTests.cs
+    │   └── MyDesktopApplication.Integration.Tests.csproj
     └── MyDesktopApplication.UI.Tests
         ├── MainWindowViewModelTests.cs
         └── MyDesktopApplication.UI.Tests.csproj
@@ -2418,13 +2410,6 @@ public static class QuestionTypeExtensions
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Core/Entities/TodoItem.cs
-SIZE: 0 KB
-================================================================================
-
-
-
-================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
 SIZE: .33 KB
 ================================================================================
@@ -2463,13 +2448,6 @@ public interface IRepository<T> where T : EntityBase
     Task DeleteAsync(T entity, CancellationToken ct = default);
     Task<bool> ExistsAsync(Guid id, CancellationToken ct = default);
 }
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-SIZE: 0 KB
-================================================================================
-
 
 
 ================================================================================
@@ -3382,7 +3360,7 @@ SIZE: .17 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
-SIZE: 1.57 KB
+SIZE: 1.15 KB
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
@@ -3406,22 +3384,11 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<GameState> GameStates => Set<GameState>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        // TodoItem configuration
-        modelBuilder.Entity<TodoItem>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.HasIndex(e => e.IsCompleted);
-            entity.HasIndex(e => e.DueDate);
-        });
 
         // GameState configuration
         modelBuilder.Entity<GameState>(entity =>
@@ -3659,20 +3626,6 @@ public class Repository<T> : IRepository<T> where T : EntityBase
     public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         => await DbSet.AnyAsync(e => e.Id == id, ct);
 }
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-SIZE: 0 KB
-================================================================================
-
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-SIZE: 0 KB
-================================================================================
-
 
 
 ================================================================================
@@ -4269,13 +4222,6 @@ public partial class CountryQuizViewModel : ObservableObject
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-SIZE: 0 KB
-================================================================================
-
-
-
-================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
 SIZE: 2.01 KB
 ================================================================================
@@ -4589,13 +4535,6 @@ public class QuestionTypeTests
 
 
 ================================================================================
-FILE: tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-SIZE: 0 KB
-================================================================================
-
-
-
-================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
 SIZE: 1.24 KB
 ================================================================================
@@ -4630,13 +4569,6 @@ SIZE: 1.24 KB
     <ProjectReference Include="../../src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
-
-
-================================================================================
-FILE: tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-SIZE: 0 KB
-================================================================================
-
 
 
 ================================================================================
