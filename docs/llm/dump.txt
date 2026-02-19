@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Feb 19 05:15:27 AM EST 2026
+Generated: Thu Feb 19 05:17:36 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -2419,32 +2419,9 @@ public static class QuestionTypeExtensions
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/TodoItem.cs
-SIZE: .54 KB
+SIZE: 0 KB
 ================================================================================
 
-namespace MyDesktopApplication.Core.Entities;
-
-public class TodoItem : EntityBase
-{
-    public required string Title { get; set; }
-    public string? Description { get; set; }
-    public int Priority { get; set; }
-    public bool IsCompleted { get; set; }
-    public DateTime? CompletedAt { get; set; }
-    public DateTime? DueDate { get; set; }
-
-    public void MarkComplete()
-    {
-        IsCompleted = true;
-        CompletedAt = DateTime.UtcNow;
-    }
-
-    public void MarkIncomplete()
-    {
-        IsCompleted = false;
-        CompletedAt = null;
-    }
-}
 
 
 ================================================================================
@@ -2490,23 +2467,9 @@ public interface IRepository<T> where T : EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/ITodoRepository.cs
-SIZE: .54 KB
+SIZE: 0 KB
 ================================================================================
 
-using MyDesktopApplication.Core.Entities;
-
-namespace MyDesktopApplication.Core.Interfaces;
-
-/// <summary>
-/// TodoItem-specific repository interface
-/// </summary>
-public interface ITodoRepository : IRepository<TodoItem>
-{
-    Task<IReadOnlyList<TodoItem>> GetCompletedAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<TodoItem>> GetPendingAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<TodoItem>> GetIncompleteAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<TodoItem>> GetOverdueAsync(CancellationToken ct = default);
-}
 
 
 ================================================================================
@@ -3700,85 +3663,16 @@ public class Repository<T> : IRepository<T> where T : EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Repositories/TodoRepository.cs
-SIZE: 1.51 KB
+SIZE: 0 KB
 ================================================================================
 
-using Microsoft.EntityFrameworkCore;
-using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Infrastructure.Data;
-
-namespace MyDesktopApplication.Infrastructure.Repositories;
-
-/// <summary>
-/// TodoItem-specific repository implementation
-/// </summary>
-public class TodoRepository : Repository<TodoItem>, ITodoRepository
-{
-    public TodoRepository(AppDbContext context) : base(context)
-    {
-    }
-
-    public async Task<IReadOnlyList<TodoItem>> GetCompletedAsync(CancellationToken ct = default)
-        => await DbSet.AsNoTracking()
-            .Where(t => t.IsCompleted)
-            .OrderByDescending(t => t.UpdatedAt)
-            .ToListAsync(ct);
-
-    public async Task<IReadOnlyList<TodoItem>> GetPendingAsync(CancellationToken ct = default)
-        => await DbSet.AsNoTracking()
-            .Where(t => !t.IsCompleted)
-            .OrderBy(t => t.DueDate)
-            .ThenByDescending(t => t.Priority)
-            .ToListAsync(ct);
-
-    /// <summary>
-    /// Gets all incomplete (not completed) todo items - alias for GetPendingAsync
-    /// </summary>
-    public async Task<IReadOnlyList<TodoItem>> GetIncompleteAsync(CancellationToken ct = default)
-        => await GetPendingAsync(ct);
-
-    public async Task<IReadOnlyList<TodoItem>> GetOverdueAsync(CancellationToken ct = default)
-        => await DbSet.AsNoTracking()
-            .Where(t => !t.IsCompleted && t.DueDate != null && t.DueDate < DateTime.UtcNow)
-            .OrderBy(t => t.DueDate)
-            .ToListAsync(ct);
-}
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/DTOs/TodoItemDto.cs
-SIZE: .64 KB
+SIZE: 0 KB
 ================================================================================
 
-using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace MyDesktopApplication.Shared.DTOs;
-
-/// <summary>
-/// Data transfer object for TodoItem, used in ViewModels
-/// </summary>
-public partial class TodoItemDto : ObservableObject
-{
-    public Guid Id { get; set; }
-
-    [ObservableProperty]
-    private string _title = string.Empty;
-
-    [ObservableProperty]
-    private string? _description;
-
-    [ObservableProperty]
-    private bool _isCompleted;
-
-    [ObservableProperty]
-    private DateTime? _dueDate;
-
-    [ObservableProperty]
-    private int _priority;
-
-    public bool IsOverdue => DueDate.HasValue && DueDate.Value < DateTime.UtcNow && !IsCompleted;
-}
 
 
 ================================================================================
@@ -4376,89 +4270,9 @@ public partial class CountryQuizViewModel : ObservableObject
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/MainViewModel.cs
-SIZE: 1.82 KB
+SIZE: 0 KB
 ================================================================================
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using MyDesktopApplication.Core.Entities;
-using System.Collections.ObjectModel;
-
-namespace MyDesktopApplication.Shared.ViewModels;
-
-/// <summary>
-/// Main ViewModel shared between Desktop and Android
-/// </summary>
-public partial class MainViewModel : ViewModelBase
-{
-    [ObservableProperty]
-    private string _greeting = "Welcome to Avalonia!";
-
-    [ObservableProperty]
-    private int _counter;
-
-    [ObservableProperty]
-    private ObservableCollection<TodoItem> _todoItems = [];
-
-    [ObservableProperty]
-    private string _newTodoTitle = string.Empty;
-
-    [RelayCommand]
-    private void IncrementCounter()
-    {
-        Counter++;
-        Greeting = Counter switch
-        {
-            1 => "You clicked once!",
-            < 5 => $"You clicked {Counter} times",
-            < 10 => $"Wow, {Counter} clicks! Keep going!",
-            _ => $"Amazing! {Counter} clicks!"
-        };
-    }
-
-    [RelayCommand]
-    private async Task LoadDataAsync()
-    {
-        IsBusy = true;
-        ClearError();
-        try
-        {
-            // Simulate loading
-            await Task.Delay(1000);
-        }
-        catch (System.Exception ex)
-        {
-            SetError($"Failed to load: {ex.Message}");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    [RelayCommand]
-    private void AddTodo()
-    {
-        if (string.IsNullOrWhiteSpace(NewTodoTitle))
-            return;
-
-        var todo = new TodoItem { Title = NewTodoTitle.Trim() };
-        TodoItems.Add(todo);
-        NewTodoTitle = string.Empty;
-    }
-
-    [RelayCommand]
-    private void ToggleTodo(TodoItem? todo)
-    {
-        if (todo is null)
-            return;
-
-        if (todo.IsCompleted)
-            todo.MarkIncomplete();
-        else
-            todo.MarkComplete();
-    }
-}
 
 
 ================================================================================
@@ -4776,49 +4590,9 @@ public class QuestionTypeTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/TodoItemTests.cs
-SIZE: .86 KB
+SIZE: 0 KB
 ================================================================================
 
-using MyDesktopApplication.Core.Entities;
-using Shouldly;
-using Xunit;
-
-namespace MyDesktopApplication.Core.Tests;
-
-public class TodoItemTests
-{
-    [Fact]
-    public void NewTodoItem_ShouldBeIncomplete()
-    {
-        var todo = new TodoItem { Title = "Test" };
-
-        todo.IsCompleted.ShouldBeFalse();
-        todo.CompletedAt.ShouldBeNull();
-    }
-
-    [Fact]
-    public void MarkComplete_ShouldSetCompletedAtAndIsCompleted()
-    {
-        var todo = new TodoItem { Title = "Test" };
-
-        todo.MarkComplete();
-
-        todo.IsCompleted.ShouldBeTrue();
-        todo.CompletedAt.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void MarkIncomplete_ShouldClearCompletedAt()
-    {
-        var todo = new TodoItem { Title = "Test" };
-        todo.MarkComplete();
-
-        todo.MarkIncomplete();
-
-        todo.IsCompleted.ShouldBeFalse();
-        todo.CompletedAt.ShouldBeNull();
-    }
-}
 
 
 ================================================================================
@@ -4860,76 +4634,9 @@ SIZE: 1.24 KB
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/TodoRepositoryTests.cs
-SIZE: 2.09 KB
+SIZE: 0 KB
 ================================================================================
 
-using Microsoft.EntityFrameworkCore;
-using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Infrastructure.Data;
-using MyDesktopApplication.Infrastructure.Repositories;
-using Shouldly;
-using Xunit;
-
-namespace MyDesktopApplication.Integration.Tests;
-
-public class TodoRepositoryTests : IDisposable
-{
-    private readonly AppDbContext _context;
-    private readonly TodoRepository _repository;
-
-    public TodoRepositoryTests()
-    {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
-
-        _context = new AppDbContext(options);
-        _repository = new TodoRepository(_context);
-    }
-
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
-
-    [Fact]
-    public async Task AddAsync_AddsTodoItem()
-    {
-        var todo = new TodoItem { Title = "Test Todo" };
-
-        var result = await _repository.AddAsync(todo);
-
-        result.ShouldNotBeNull();
-        result.Id.ShouldNotBe(Guid.Empty);
-        result.Title.ShouldBe("Test Todo");
-    }
-
-    [Fact]
-    public async Task GetCompletedAsync_ReturnsOnlyCompletedItems()
-    {
-        await _repository.AddAsync(new TodoItem { Title = "Todo 1", IsCompleted = true });
-        await _repository.AddAsync(new TodoItem { Title = "Todo 2", IsCompleted = false });
-        await _repository.AddAsync(new TodoItem { Title = "Todo 3", IsCompleted = true });
-
-        var completed = await _repository.GetCompletedAsync();
-
-        completed.Count.ShouldBe(2);
-        completed.All(t => t.IsCompleted).ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task GetIncompleteAsync_ReturnsOnlyIncompleteItems()
-    {
-        await _repository.AddAsync(new TodoItem { Title = "Todo 1", IsCompleted = true });
-        await _repository.AddAsync(new TodoItem { Title = "Todo 2", IsCompleted = false });
-        await _repository.AddAsync(new TodoItem { Title = "Todo 3", IsCompleted = false });
-
-        var incomplete = await _repository.GetIncompleteAsync();
-
-        incomplete.Count.ShouldBe(2);
-        incomplete.All(t => !t.IsCompleted).ShouldBeTrue();
-    }
-}
 
 
 ================================================================================

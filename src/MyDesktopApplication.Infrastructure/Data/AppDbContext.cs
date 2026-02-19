@@ -19,22 +19,11 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<GameState> GameStates => Set<GameState>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        // TodoItem configuration
-        modelBuilder.Entity<TodoItem>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.HasIndex(e => e.IsCompleted);
-            entity.HasIndex(e => e.DueDate);
-        });
 
         // GameState configuration
         modelBuilder.Entity<GameState>(entity =>
