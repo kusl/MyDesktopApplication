@@ -13586,3 +13586,16 @@ Think things through.
 Please fix things properly. 
 Don't make me come back. 
 
+Good — I can see from the output that my first fix (QuestionTypeTests.cs) **worked** (Core.Tests now succeeds), but there are **2 remaining issues**:
+
+1. **CS0266 on line 116** — my `sed` pattern didn't match the actual line. The text isn't exactly `= _gameState.SelectedQuestionType;` — it's likely in a more complex expression (ternary, Enum.IsDefined, etc.).
+2. **New test failure** — `FormatValue_FormatsValuesCorrectly` expects `"500.00K"` but `FormatLargeNumber` uses `N1` for thousands, producing `"500.0K"`.
+
+I need to see the exact line 116 to fix it properly. Here's a diagnostic + fix script:This script takes a different approach:
+
+**Fix 1 (CS0266):** Instead of relying on an exact line match, it uses `perl` with a negative lookahead — it casts every *read* of `_gameState.SelectedQuestionType` to `(QuestionType)` while leaving *writes* (where it's followed by ` =`) untouched. This handles whatever expression is actually on line 116, whether it's a ternary, Enum.IsDefined, direct assignment, or anything else.
+
+**Fix 2 (test failure):** The `FormatLargeNumber` method uses `N1` for thousands (producing `"500.0K"`) but the test expects `"500.00K"`. Changing `N1` to `N2` makes the thousands formatting consistent with millions (`N2`) and billions/trillions (`N3`).
+
+The script also starts with diagnostics — it prints the actual content around line 116 so we can see exactly what was there. Run it with `bash` and the diagnostic output will tell us what the mystery line was, plus confirm both fixes worked.
+
