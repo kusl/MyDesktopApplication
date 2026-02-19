@@ -13798,3 +13798,121 @@ Both fixes include before/after verification so you can see exactly what changed
 
 
 
+Lets switch gears because this isn't working. 
+Instead of giving me bash scripts, please give me full files so I can copy paste to replace the files. 
+Rememeber to give me the file path as well so things are not ambiguous. 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cat fix-all-issues.sh; time bash fix-all-issues.sh;
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd ~/src/dotnet/MyDesktopApplication
+
+VM_FILE="src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs"
+QT_FILE="src/MyDesktopApplication.Core/Entities/QuestionType.cs"
+
+# =============================================================================
+# FIX 1: CS0266 on line 116
+#
+# GameState.SelectedQuestionType is QuestionType? (not int).
+# The code does: _gameState.SelectedQuestionType = (int)value;
+# That casts QuestionType to int, then tries to assign int to QuestionType?
+# → CS0266: Cannot implicitly convert int to QuestionType?
+#
+# Fix: just assign directly: _gameState.SelectedQuestionType = value;
+# =============================================================================
+echo "[1/2] Fixing CS0266: removing incorrect (int) cast..."
+echo "  Before:"
+grep -n '(int)value' "$VM_FILE" || echo "  (pattern not found - checking alternate forms)"
+grep -n 'SelectedQuestionType' "$VM_FILE"
+
+sed -i 's/_gameState\.SelectedQuestionType = (int)value;/_gameState.SelectedQuestionType = value;/' "$VM_FILE"
+
+echo "  After:"
+grep -n 'SelectedQuestionType' "$VM_FILE"
+echo ""
+
+# =============================================================================
+# FIX 2: FormatLargeNumber thousands: N1 → N2
+#
+# Test expects "500.00K" but code produces "500.0K" (uses N1 for thousands).
+# Previous sed failed to match - using simpler pattern this time.
+# =============================================================================
+echo "[2/2] Fixing FormatLargeNumber thousands precision..."
+echo "  Before:"
+grep -n ':N1' "$QT_FILE"
+
+# Target: the line with 1_000 and N1 and K
+sed -i '/1_000/s/:N1}K/:N2}K/' "$QT_FILE"
+
+echo "  After:"
+grep -n ':N[0-9]}K' "$QT_FILE"
+echo ""
+
+# =============================================================================
+# Build + Test
+# =============================================================================
+echo "=== Building ==="
+time dotnet build
+
+echo ""
+echo "=== Running tests ==="
+time dotnet test
+[1/2] Fixing CS0266: removing incorrect (int) cast...
+  Before:
+116:        _gameState.SelectedQuestionType = (int)value;
+114:    partial void OnSelectedQuestionTypeChanged(QuestionType value)
+116:        _gameState.SelectedQuestionType = (int)value;
+148:            var v1 = SelectedQuestionType.GetValue(Country1);
+149:            Country1Value = v1.HasValue ? SelectedQuestionType.FormatValue(v1) : "N/A";
+153:            var v2 = SelectedQuestionType.GetValue(Country2);
+154:            Country2Value = v2.HasValue ? SelectedQuestionType.FormatValue(v2) : "N/A";
+225:        QuestionText = SelectedQuestionType.GetQuestion();
+227:        var v1 = SelectedQuestionType.GetValue(Country1);
+228:        var v2 = SelectedQuestionType.GetValue(Country2);
+  After:
+114:    partial void OnSelectedQuestionTypeChanged(QuestionType value)
+116:        _gameState.SelectedQuestionType = value;
+148:            var v1 = SelectedQuestionType.GetValue(Country1);
+149:            Country1Value = v1.HasValue ? SelectedQuestionType.FormatValue(v1) : "N/A";
+153:            var v2 = SelectedQuestionType.GetValue(Country2);
+154:            Country2Value = v2.HasValue ? SelectedQuestionType.FormatValue(v2) : "N/A";
+225:        QuestionText = SelectedQuestionType.GetQuestion();
+227:        var v1 = SelectedQuestionType.GetValue(Country1);
+228:        var v2 = SelectedQuestionType.GetValue(Country2);
+
+[2/2] Fixing FormatLargeNumber thousands precision...
+  Before:
+87:            QuestionType.Density => $"{v:N1}/km²",
+88:            QuestionType.Literacy => $"{v:N1}%",
+90:            QuestionType.LifeExpectancy => $"{v:N1} years",
+102:            >= 1_000 => $"{value / 1_000:N1}K",
+  After:
+102:            >= 1_000 => $"{value / 1_000:N2}K",
+
+=== Building ===
+Restore complete (0.5s)
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net10.0 failed with 1 error(s) (0.4s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs(116,43): error CS0266: Cannot implicitly convert type 'int' to 'MyDesktopApplication.Core.Entities.QuestionType?'. An explicit conversion exists (are you missing a cast?)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded with 2 warning(s) (21.2s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-arm64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+    /home/kushal/.dotnet/packs/Microsoft.Android.Sdk.Linux/36.1.2/tools/Xamarin.Android.Common.targets(2502,3): warning XA0141: Android 16 will require 16 KB page sizes, shared library 'libSkiaSharp.so' does not have a 16 KB page size. Please inform the authors of the NuGet package 'SkiaSharp.NativeAssets.Android' version '2.88.9' which contains 'runtimes/android-x64/native/libSkiaSharp.so'. See https://developer.android.com/guide/practices/page-sizes for more details.
+
+Build failed with 1 error(s) and 2 warning(s) in 22.5s
+
+real	0m22.618s
+user	1m35.929s
+sys	0m3.512s
+
+real	0m22.629s
+user	1m35.933s
+sys	0m3.518s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
