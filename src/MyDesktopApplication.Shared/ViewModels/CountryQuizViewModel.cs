@@ -113,7 +113,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     partial void OnSelectedQuestionTypeChanged(QuestionType value)
     {
-        _gameState.SelectedQuestionType = (int)value;
+        _gameState.SelectedQuestionType = value;
         GenerateNewQuestion();
     }
 

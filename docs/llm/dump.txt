@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Wed Feb 18 09:00:59 PM EST 2026
+Generated: Wed Feb 18 09:03:13 PM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -9622,68 +9622,6 @@ so it gets fixed as quickly as possible.
 
 
 ================================================================================
-FILE: fix-all-issues.sh
-SIZE: 1.95 KB
-================================================================================
-
-#!/usr/bin/env bash
-set -euo pipefail
-
-cd ~/src/dotnet/MyDesktopApplication
-
-VM_FILE="src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs"
-QT_FILE="src/MyDesktopApplication.Core/Entities/QuestionType.cs"
-
-# =============================================================================
-# FIX 1: CS0266 on line 116
-#
-# GameState.SelectedQuestionType is QuestionType? (not int).
-# The code does: _gameState.SelectedQuestionType = (int)value;
-# That casts QuestionType to int, then tries to assign int to QuestionType?
-# → CS0266: Cannot implicitly convert int to QuestionType?
-#
-# Fix: just assign directly: _gameState.SelectedQuestionType = value;
-# =============================================================================
-echo "[1/2] Fixing CS0266: removing incorrect (int) cast..."
-echo "  Before:"
-grep -n '(int)value' "$VM_FILE" || echo "  (pattern not found - checking alternate forms)"
-grep -n 'SelectedQuestionType' "$VM_FILE"
-
-sed -i 's/_gameState\.SelectedQuestionType = (int)value;/_gameState.SelectedQuestionType = value;/' "$VM_FILE"
-
-echo "  After:"
-grep -n 'SelectedQuestionType' "$VM_FILE"
-echo ""
-
-# =============================================================================
-# FIX 2: FormatLargeNumber thousands: N1 → N2
-#
-# Test expects "500.00K" but code produces "500.0K" (uses N1 for thousands).
-# Previous sed failed to match - using simpler pattern this time.
-# =============================================================================
-echo "[2/2] Fixing FormatLargeNumber thousands precision..."
-echo "  Before:"
-grep -n ':N1' "$QT_FILE"
-
-# Target: the line with 1_000 and N1 and K
-sed -i '/1_000/s/:N1}K/:N2}K/' "$QT_FILE"
-
-echo "  After:"
-grep -n ':N[0-9]}K' "$QT_FILE"
-echo ""
-
-# =============================================================================
-# Build + Test
-# =============================================================================
-echo "=== Building ==="
-time dotnet build
-
-echo ""
-echo "=== Running tests ==="
-time dotnet test
-
-
-================================================================================
 FILE: src/MyDesktopApplication.Android/AndroidManifest.xml
 SIZE: .49 KB
 ================================================================================
@@ -10699,7 +10637,7 @@ public static class QuestionTypeExtensions
             >= 1_000_000_000_000 => $"{value / 1_000_000_000_000:N3}T",
             >= 1_000_000_000 => $"{value / 1_000_000_000:N3}B",
             >= 1_000_000 => $"{value / 1_000_000:N2}M",
-            >= 1_000 => $"{value / 1_000:N1}K",
+            >= 1_000 => $"{value / 1_000:N2}K",
             _ => $"{value:N0}"
         };
     }
@@ -12513,7 +12451,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     partial void OnSelectedQuestionTypeChanged(QuestionType value)
     {
-        _gameState.SelectedQuestionType = (int)value;
+        _gameState.SelectedQuestionType = value;
         GenerateNewQuestion();
     }
 
