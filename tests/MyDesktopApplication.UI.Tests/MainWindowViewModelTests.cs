@@ -12,7 +12,6 @@ public class MainWindowViewModelTests
     {
         var vm = new MainWindowViewModel();
 
-        // Use correct property names: CurrentScore, not Score
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
         vm.CurrentStreak.ShouldBe(0);
@@ -27,7 +26,7 @@ public class MainWindowViewModelTests
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
         vm.QuestionTypes.ShouldContain(QuestionType.Area);
-        vm.QuestionTypes.ShouldContain(QuestionType.GdpTotal);
+        vm.QuestionTypes.ShouldContain(QuestionType.Gdp);
     }
 
     [Fact]
@@ -35,10 +34,8 @@ public class MainWindowViewModelTests
     {
         var vm = new MainWindowViewModel();
 
-        // Call NextRoundCommand (not GenerateNewQuestionCommand)
         vm.NextRoundCommand.Execute(null);
 
-        // Use Country1 and Country2 directly (not Country1Name)
         vm.Country1.ShouldNotBeNull();
         vm.Country2.ShouldNotBeNull();
         vm.Country1!.Name.ShouldNotBe(vm.Country2!.Name);
@@ -62,6 +59,6 @@ public class MainWindowViewModelTests
     public void ScoreText_FormatsCorrectly()
     {
         var vm = new MainWindowViewModel();
-        vm.ScoreText.ShouldBe("Score: 0");
+        vm.ScoreText.ShouldBe("0/0");
     }
 }

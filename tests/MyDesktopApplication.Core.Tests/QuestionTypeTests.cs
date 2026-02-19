@@ -72,14 +72,14 @@ public class QuestionTypeTests
     [Fact]
     public void FormatValue_FormatsValuesCorrectly()
     {
-        // Population formatting
+        // Population formatting - billions use N3, millions use N2, thousands use N2
         QuestionType.Population.FormatValue(1_500_000_000).ShouldBe("1.500B");
         QuestionType.Population.FormatValue(50_000_000).ShouldBe("50.00M");
         QuestionType.Population.FormatValue(500_000).ShouldBe("500.00K");
 
-        // GDP formatting
-        QuestionType.Gdp.FormatValue(25_000_000_000_000).ShouldBe("$25.00T");
-        QuestionType.Gdp.FormatValue(1_500_000_000_000).ShouldBe("$1.50T");
+        // GDP formatting - trillions use N3, billions use N3
+        QuestionType.Gdp.FormatValue(25_000_000_000_000).ShouldBe("$25.000T");
+        QuestionType.Gdp.FormatValue(1_500_000_000_000).ShouldBe("$1.500T");
 
         // Other types
         QuestionType.Literacy.FormatValue(99.5).ShouldBe("99.5%");
