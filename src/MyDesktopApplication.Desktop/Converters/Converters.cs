@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
@@ -15,21 +17,18 @@ public class QuestionTypeLabelConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is QuestionType qt)
-        {
             return qt.GetLabel();
-        }
         return value?.ToString() ?? "";
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotSupportedException();
-    }
+        => throw new NotSupportedException();
 }
 
 /// <summary>
-/// Converts answer state (IsCorrect, IsWrong) to background color.
-/// Only colors the selected answer - unselected answers stay default.
+/// Converts (IsCorrect, IsWrong) booleans to a background color.
+/// ONLY the selected button will have IsCorrect=true or IsWrong=true.
+/// Unselected buttons will have both as false → default color.
 /// </summary>
 public class AnswerStateToBackgroundConverter : IMultiValueConverter
 {
@@ -40,17 +39,37 @@ public class AnswerStateToBackgroundConverter : IMultiValueConverter
         if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
             if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(76, 175, 80)); // Green #4CAF50
+                return new SolidColorBrush(Color.FromRgb(34, 139, 34));   // Green - correct selected
             if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(244, 67, 54)); // Red #F44336
+                return new SolidColorBrush(Color.FromRgb(220, 53, 69));   // Red - wrong selected
         }
-        // Default - not selected or not answered yet
-        return new SolidColorBrush(Color.FromRgb(30, 58, 95)); // Dark blue #1E3A5F
+        // Default: unselected or not yet answered
+        return new SolidColorBrush(Color.FromRgb(30, 41, 59)); // Slate-800 (#1e293b)
     }
 }
 
 /// <summary>
-/// Converts answer state to foreground (text) color.
+/// Converts (IsCorrect, IsWrong) booleans to a border color.
+/// </summary>
+public class AnswerStateToBorderConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToBorderConverter Instance = new();
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect)
+                return new SolidColorBrush(Color.FromRgb(34, 197, 94));   // Bright green border
+            if (isWrong)
+                return new SolidColorBrush(Color.FromRgb(239, 68, 68));   // Bright red border
+        }
+        return new SolidColorBrush(Color.FromRgb(55, 65, 81)); // Gray border default
+    }
+}
+
+/// <summary>
+/// Converts answer state to text foreground color.
 /// </summary>
 public class AnswerStateToForegroundConverter : IMultiValueConverter
 {
@@ -58,12 +77,29 @@ public class AnswerStateToForegroundConverter : IMultiValueConverter
 
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
-        {
-            if (isCorrect || isWrong)
-                return new SolidColorBrush(Colors.White);
-        }
-        // Default text color
+        // Always white text
         return new SolidColorBrush(Colors.White);
     }
+}
+
+/// <summary>
+/// Simple bool to color converter using ConverterParameter format: "TrueColor|FalseColor"
+/// </summary>
+public class BoolToColorConverter : IValueConverter
+{
+    public static readonly BoolToColorConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool b && parameter is string s)
+        {
+            var parts = s.Split('|');
+            var colorStr = b ? parts[0] : (parts.Length > 1 ? parts[1] : "#FFFFFF");
+            return new SolidColorBrush(Color.Parse(colorStr));
+        }
+        return new SolidColorBrush(Colors.White);
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotSupportedException();
 }
