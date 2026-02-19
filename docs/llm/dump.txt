@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Feb 19 04:50:25 AM EST 2026
+Generated: Thu Feb 19 05:15:27 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1865,7 +1865,7 @@ SIZE: .33 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml
-SIZE: 11.79 KB
+SIZE: 12.13 KB
 ================================================================================
 
 <UserControl xmlns="https://github.com/avaloniaui"
@@ -2021,6 +2021,13 @@ SIZE: 11.79 KB
                                    TextAlignment="Center" TextWrapping="Wrap"/>
                     </Border>
 
+                    <!-- Country details after answering -->
+                    <TextBlock Text="{Binding CountryDetailsText}"
+                            FontSize="12" Foreground="#94a3b8"
+                            TextWrapping="Wrap"
+                            IsVisible="{Binding HasAnswered}"
+                            Margin="0,8,0,0"/>
+
                     <!-- Next Round -->
                     <Button Content="Next Round"
                             Command="{Binding NextRoundCommand}"
@@ -2135,7 +2142,7 @@ public partial class MainView : UserControl
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/Entities/Country.cs
-SIZE: 1.26 KB
+SIZE: 2.69 KB
 ================================================================================
 
 namespace MyDesktopApplication.Core.Entities;
@@ -2168,7 +2175,7 @@ public class Country
     private string GetFlagEmoji()
     {
         if (string.IsNullOrEmpty(Iso2) || Iso2.Length != 2)
-            return "🏳️";
+            return "\U0001F3F3\uFE0F";
 
         var c1 = char.ToUpperInvariant(Iso2[0]);
         var c2 = char.ToUpperInvariant(Iso2[1]);
@@ -2176,6 +2183,46 @@ public class Country
         var ri2 = 0x1F1E6 + (c2 - 'A');
         return char.ConvertFromUtf32(ri1) + char.ConvertFromUtf32(ri2);
     }
+
+    /// <summary>
+    /// Generates a human-readable summary paragraph with all stats.
+    /// Short sentences, easy to read after a quiz answer.
+    /// </summary>
+    public string GetSummary()
+    {
+        var pop = FormatPopulation(Population);
+        var area = $"{Area:N0} km\u00B2";
+        var gdp = FormatGdp(GdpTotal);
+        var gdpPc = $"${GdpPerCapita:N0}";
+        var density = $"{PopulationDensity:N1} people/km\u00B2";
+        var literacy = $"{LiteracyRate:N1}%";
+        var hdi = $"{Hdi:N3}";
+        var life = $"{LifeExpectancy:N1} years";
+
+        return $"{Flag} {Name} is in {Continent}. " +
+               $"Population: {pop}. " +
+               $"Area: {area}. " +
+               $"GDP: {gdp} (${gdpPc} per capita). " +
+               $"Density: {density}. " +
+               $"Literacy: {literacy}. " +
+               $"HDI: {hdi}. " +
+               $"Life expectancy: {life}.";
+    }
+
+    private static string FormatPopulation(double value) => value switch
+    {
+        >= 1_000_000_000 => $"{value / 1_000_000_000:N2} billion",
+        >= 1_000_000 => $"{value / 1_000_000:N1} million",
+        >= 1_000 => $"{value / 1_000:N1} thousand",
+        _ => $"{value:N0}"
+    };
+
+    private static string FormatGdp(double millions) => millions switch
+    {
+        >= 1_000_000 => $"${millions / 1_000_000:N2} trillion",
+        >= 1_000 => $"${millions / 1_000:N1} billion",
+        _ => $"${millions:N0} million"
+    };
 }
 
 
@@ -2712,7 +2759,7 @@ sealed class Program
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 8.30 KB
+SIZE: 8.79 KB
 ================================================================================
 
 using System;
@@ -2748,6 +2795,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _country2Value = "";
 
     [ObservableProperty] private string _resultMessage = "";
+    [ObservableProperty] private string _countryDetailsText = "";
     [ObservableProperty] private bool _hasAnswered;
     [ObservableProperty] private bool _isCorrectAnswer;
     [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
@@ -2873,6 +2921,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
+        // Show detailed country info after answering
+        CountryDetailsText = BuildCountryDetails();
+
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
@@ -2925,12 +2976,21 @@ public partial class MainWindowViewModel : ViewModelBase
 
     // --- Internals ---
 
+    private string BuildCountryDetails()
+    {
+        var parts = new System.Collections.Generic.List<string>();
+        if (Country1 != null) parts.Add(Country1.GetSummary());
+        if (Country2 != null) parts.Add(Country2.GetSummary());
+        return string.Join("\n\n", parts);
+    }
+
     private void GenerateNewQuestion()
     {
         HasAnswered = false;
         SelectedCountry = 0;
         IsCorrectAnswer = false;
         ResultMessage = "";
+        CountryDetailsText = "";
         Country1Value = "";
         Country2Value = "";
 
@@ -2995,7 +3055,7 @@ public abstract partial class ViewModelBase : ObservableObject
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-SIZE: 14.34 KB
+SIZE: 14.72 KB
 ================================================================================
 
 <Window xmlns="https://github.com/avaloniaui"
@@ -3208,6 +3268,13 @@ SIZE: 14.34 KB
                                    TextAlignment="Center" TextWrapping="Wrap"
                                    Foreground="#e2e8f0"/>
                     </Border>
+                    
+                    <!-- Country details after answering -->
+                    <TextBlock Text="{Binding CountryDetailsText}"
+                            FontSize="12" Foreground="#94a3b8"
+                            TextWrapping="Wrap"
+                            IsVisible="{Binding HasAnswered}"
+                            Margin="0,8,0,0"/>                    
 
                     <!-- Next Round button -->
                     <Button Content="Next Round"
@@ -4042,7 +4109,7 @@ SIZE: .45 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 8.08 KB
+SIZE: 8.54 KB
 ================================================================================
 
 using System;
@@ -4080,6 +4147,7 @@ public partial class CountryQuizViewModel : ObservableObject
     [ObservableProperty] private string _country2Value = "";
 
     [ObservableProperty] private string _resultMessage = "";
+    [ObservableProperty] private string _countryDetailsText = "";
     [ObservableProperty] private bool _hasAnswered;
     [ObservableProperty] private bool _isCorrectAnswer;
     [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
@@ -4203,6 +4271,9 @@ public partial class CountryQuizViewModel : ObservableObject
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
+        // Show detailed country info after answering
+        CountryDetailsText = BuildCountryDetails();
+
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
@@ -4246,12 +4317,21 @@ public partial class CountryQuizViewModel : ObservableObject
 
     // --- Internals ---
 
+    private string BuildCountryDetails()
+    {
+        var parts = new List<string>();
+        if (Country1 != null) parts.Add(Country1.GetSummary());
+        if (Country2 != null) parts.Add(Country2.GetSummary());
+        return string.Join("\n\n", parts);
+    }
+
     private void GenerateNewQuestion()
     {
         HasAnswered = false;
         SelectedCountry = 0;
         IsCorrectAnswer = false;
         ResultMessage = "";
+        CountryDetailsText = "";
         Country1Value = "";
         Country2Value = "";
 
