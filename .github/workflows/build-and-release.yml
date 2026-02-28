@@ -119,7 +119,7 @@ jobs:
           Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: |
@@ -212,7 +212,7 @@ jobs:
           fi
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android
           path: ./MyDesktopApplication-android-${{ github.run_number }}.apk
