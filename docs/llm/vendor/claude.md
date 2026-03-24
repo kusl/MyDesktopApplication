@@ -14798,3 +14798,264 @@ After deletion, copy in the updated `AppDbContext.cs`, then run `dotnet build` a
 
 
 
+Update all nuget packages 
+use variables to group them together where possible 
+please do not halluciante 
+roject 'MyDesktopApplication.Android' has the following package references
+   [net10.0-android36.0]: 
+   Top-level Package                                  Requested    Resolved
+   > Avalonia                                         11.3.12      11.3.12 
+   > Avalonia.Android                                 11.3.12      11.3.12 
+   > Avalonia.Fonts.Inter                             11.3.12      11.3.12 
+   > Avalonia.Themes.Fluent                           11.3.12      11.3.12 
+   > CommunityToolkit.Mvvm                            8.4.0        8.4.0   
+   > Microsoft.EntityFrameworkCore                    10.0.3       10.0.3  
+   > Microsoft.EntityFrameworkCore.Sqlite             10.0.3       10.0.3  
+   > Microsoft.Extensions.DependencyInjection         10.0.3       10.0.3  
+   > Microsoft.NET.ILLink.Tasks                 (A)   [10.0.4, )   10.0.4  
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia.Desktop                              11.3.12     11.3.12 
+   > Avalonia.Diagnostics                          11.3.12     11.3.12 
+   > Avalonia.Fonts.Inter                          11.3.12     11.3.12 
+   > Avalonia.Themes.Fluent                        11.3.12     11.3.12 
+   > Microsoft.Extensions.DependencyInjection      10.0.3      10.0.3  
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 10.0.3      10.0.3  
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.3      10.0.3  
+   > Microsoft.Extensions.DependencyInjection      10.0.3      10.0.3  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.0       8.4.0   
+   > FluentValidation           12.1.1      12.1.1  
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             8.0.0       8.0.0   
+   > Microsoft.NET.Test.Sdk         18.0.1      18.0.1  
+   > NSubstitute                    5.3.0       5.3.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.5       3.1.5   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          8.0.0       8.0.0   
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.3      10.0.3  
+   > Microsoft.NET.Test.Sdk                      18.0.1      18.0.1  
+   > NSubstitute                                 5.3.0       5.3.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit                                       2.9.3       2.9.3   
+   > xunit.runner.visualstudio                   3.1.5       3.1.5   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             8.0.0       8.0.0   
+   > Microsoft.NET.Test.Sdk         18.0.1      18.0.1  
+   > NSubstitute                    5.3.0       5.3.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit                          2.9.3       2.9.3   
+   > xunit.runner.visualstudio      3.1.5       3.1.5   
+
+(A) : Auto-referenced package.
+
+real	0m1.923s
+user	0m1.959s
+sys	0m0.492s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Android` has the following updates to its packages
+   [net10.0-android36.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > CommunityToolkit.Mvvm                         8.4.0       8.4.0      8.4.1 
+   > Microsoft.EntityFrameworkCore                 10.0.3      10.0.3     10.0.5
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.3      10.0.3     10.0.5
+   > Microsoft.Extensions.DependencyInjection      10.0.3      10.0.3     10.0.5
+
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.Extensions.DependencyInjection      10.0.3      10.0.3     10.0.5
+
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.EntityFrameworkCore                 10.0.3      10.0.3     10.0.5
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.3      10.0.3     10.0.5
+   > Microsoft.Extensions.DependencyInjection      10.0.3      10.0.3     10.0.5
+
+Project `MyDesktopApplication.Shared` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package            Requested   Resolved   Latest
+   > CommunityToolkit.Mvvm      8.4.0       8.4.0      8.4.1 
+
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > coverlet.collector          8.0.0       8.0.0      8.0.1 
+   > Microsoft.NET.Test.Sdk      18.0.1      18.0.1     18.3.0
+
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved   Latest
+   > coverlet.collector                          8.0.0       8.0.0      8.0.1 
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.3      10.0.3     10.0.5
+   > Microsoft.NET.Test.Sdk                      18.0.1      18.0.1     18.3.0
+
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > coverlet.collector          8.0.0       8.0.0      8.0.1 
+   > Microsoft.NET.Test.Sdk      18.0.1      18.0.1     18.3.0
+
+```xml
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  
+  <ItemGroup Label="Avalonia">
+    <PackageVersion Include="Avalonia" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Android" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Headless" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="11.3.12" />
+  </ItemGroup>
+  
+  <ItemGroup Label="MVVM">
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+  </ItemGroup>
+  
+  <ItemGroup Label="EntityFramework">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
+    <PackageVersion Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Configuration">
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.3" />
+  </ItemGroup>
+  
+  <ItemGroup Label="DependencyInjection">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Logging">
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.3" />
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup Label="OpenTelemetry">
+    <PackageVersion Include="OpenTelemetry" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.11.0" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Testing - All BSD/MIT Licensed (Free of Cost)">
+    <!-- xUnit - Apache 2.0 License -->
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    
+    <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    
+    <!-- NSubstitute - BSD-3-Clause License -->
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    
+    <!-- Bogus - MIT License -->
+    <PackageVersion Include="Bogus" Version="35.6.1" />
+    
+    <!-- Testcontainers - MIT License -->
+    <PackageVersion Include="Testcontainers" Version="4.3.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="4.3.0" />
+    
+    <!-- Coverage -->
+    <PackageVersion Include="coverlet.collector" Version="8.0.0" />
+  </ItemGroup>
+</Project>
+```
+please return the full file for easy copy pasting 
+
+00
+32
+
+Kushal, great to see you continuing to refine MyDesktopApplication! Let me search the project knowledge first to make sure I have the current state of your `Directory.Packages.props`, then I'll update everything.I found the current file. Now let me check if there are any newer versions available for the packages you haven't listed updates for (like Serilog, OpenTelemetry, etc.) to make sure I'm not hallucinating versions.Now let me check the remaining packages I need to verify — Dapper, Bogus, Serilog sinks, and the Avalonia/xUnit/Shouldly/NSubstitute versions to make sure I don't need to update those too.Good. Now I have all the information I need. Let me also quickly check the remaining packages that had updates listed.Now I have all the verified latest versions. Here's a summary of the changes and the updated file:
+
+**Updates applied (all verified from NuGet):**
+- `Microsoft.EntityFrameworkCore.*` and `Microsoft.Extensions.*`: 10.0.3 → **10.0.5**
+- `CommunityToolkit.Mvvm`: 8.4.0 → **8.4.1**
+- `coverlet.collector`: 8.0.0 → **8.0.1**
+- `Microsoft.NET.Test.Sdk`: 18.0.1 → **18.3.0**
+- `OpenTelemetry.*`: 1.11.2/1.11.0 → **1.15.0** (all aligned)
+- `Serilog`: 4.2.0 → **4.3.1**
+- `Serilog.Extensions.Logging`: 9.0.0 → **10.0.0**
+- `Npgsql.EntityFrameworkCore.PostgreSQL`: 10.0.3 → **10.0.1** (this is actually the latest stable — note Npgsql EFCore versioning differs from Microsoft EFCore)
+- `Testcontainers*`: 4.3.0 → **4.11.0**
+
+**No updates available (already latest):**
+- Avalonia 11.3.12 (12.0 is RC/prerelease only)
+- xunit 2.9.3, xunit.runner.visualstudio 3.1.5
+- NSubstitute 5.3.0, Shouldly 4.3.0, Bogus 35.6.1
+- Dapper 2.1.35, FluentValidation 12.1.1
+- Serilog.Sinks.Console 6.0.0, Serilog.Sinks.File 6.0.0
+
+I also introduced MSBuild variables (`<MicrosoftExtensionsVersion>`, `<EFCoreVersion>`, `<OpenTelemetryVersion>`, `<AvaloniaVersion>`) to group related versions together.Here's the full updated `Directory.Packages.props` ready for copy-paste. Summary of what changed:
+
+**Version variables added** to reduce duplication and make future upgrades easier: `AvaloniaVersion`, `EFCoreVersion`, `MicrosoftExtensionsVersion`, `OpenTelemetryVersion`, `SerilogVersion`, `TestcontainersVersion`.
+
+**Packages updated:**
+- `Microsoft.EntityFrameworkCore.*` + `Microsoft.Extensions.*`: **10.0.3 → 10.0.5**
+- `CommunityToolkit.Mvvm`: **8.4.0 → 8.4.1**
+- `OpenTelemetry.*`: **1.11.x → 1.15.0** (all aligned)
+- `Serilog`: **4.2.0 → 4.3.1**
+- `Serilog.Extensions.Logging`: **9.0.0 → 10.0.0**
+- `Npgsql.EntityFrameworkCore.PostgreSQL`: **10.0.3 → 10.0.1** (Npgsql's own versioning — 10.0.1 is the latest stable release, it depends on EFCore >= 10.0.4)
+- `Testcontainers` + `Testcontainers.PostgreSql`: **4.3.0 → 4.11.0**
+- `coverlet.collector`: **8.0.0 → 8.0.1**
+- `Microsoft.NET.Test.Sdk`: **18.0.1 → 18.3.0**
+
+**No change needed** (already latest stable): Avalonia 11.3.12, xunit 2.9.3, xunit.runner.visualstudio 3.1.5, NSubstitute 5.3.0, Shouldly 4.3.0, Bogus 35.6.1, Dapper 2.1.35, FluentValidation 12.1.1, Serilog.Sinks.Console 6.0.0, Serilog.Sinks.File 6.0.0.
+
+All packages remain free and open source (MIT, Apache-2.0, BSD, or PostgreSQL license). After copying, run `dotnet restore` followed by `dotnet build` to verify everything resolves cleanly.
