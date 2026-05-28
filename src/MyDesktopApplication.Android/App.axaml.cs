@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
@@ -19,47 +20,61 @@ public partial class App : Avalonia.Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
-        // Set up dependency injection
+        // Set up dependency injection (runs once for the application).
         var services = new ServiceCollection();
 
-        // Get the Android-specific database path
+        // Get the Android-specific database path.
         var dbPath = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "countryquiz.db");
 
-        // Register DbContext
+        // Register DbContext.
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
 
-        // Register repositories
+        // Register repositories.
         services.AddScoped<IGameStateRepository, GameStateRepository>();
 
-        // Register ViewModels
+        // Register ViewModels.
         services.AddTransient<CountryQuizViewModel>();
 
         var serviceProvider = services.BuildServiceProvider();
         Services = serviceProvider;
 
-        // Initialize database - get DbContext and ensure created
+        // Initialize the database synchronously here so the view factory
+        // (which Android may call multiple times) never races on schema creation.
         using (var scope = serviceProvider.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            await dbContext.Database.EnsureCreatedAsync();
+            dbContext.Database.EnsureCreated();
         }
 
-        if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        // Avalonia 12: Android uses IActivityApplicationLifetime with a
+        // MainViewFactory (Func<Control>) instead of a single MainView instance,
+        // because the activity can be created more than once during the app lifetime.
+        if (ApplicationLifetime is IActivityApplicationLifetime activityLifetime)
         {
-            var viewModel = serviceProvider.GetRequiredService<CountryQuizViewModel>();
-            await viewModel.InitializeAsync();
-
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = viewModel
-            };
+            activityLifetime.MainViewFactory = CreateMainView;
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private static Control CreateMainView()
+    {
+        var viewModel = Services!.GetRequiredService<CountryQuizViewModel>();
+
+        var view = new MainView
+        {
+            DataContext = viewModel
+        };
+
+        // Kick off async view-model initialization without blocking the UI thread.
+        // Avalonia marshals the continuation back appropriately for bound properties.
+        _ = viewModel.InitializeAsync();
+
+        return view;
     }
 }

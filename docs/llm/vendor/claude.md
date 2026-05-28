@@ -15603,3 +15603,198 @@ Run `dotnet restore && dotnet build` on the whole `.slnx` and `dotnet test` once
 
 I see errors after the update. 
 I think you missed the Android project? 
+
+You're right — I missed it. The error is from the Avalonia 12 breaking change to `MainActivity`:
+
+```
+MainActivity.cs(13,29): error CS0308: The non-generic type 'AvaloniaMainActivity' cannot be used with type arguments
+```
+
+In Avalonia 11, `MainActivity` inherited from `AvaloniaMainActivity<App>` (generic). In Avalonia 12, `AvaloniaMainActivity` is no longer generic. Let me read your actual file to fix it precisely.Let me confirm the exact Avalonia 12 pattern before writing the fix, since the migration moved `App` to a property override rather than a generic type parameter.Now I have the exact migration pattern. Avalonia 12 changed Android app initialization fundamentally:
+
+Change your main activity to inherit from AvaloniaMainActivity (non-generic) instead of AvaloniaMainActivity<TApp> (generic). Add a new class deriving from AvaloniaAndroidApplication<TApp> and apply the [Android.App.Application] attribute to it.
+
+Crucially: The CreateAppBuilder() and CustomizeAppBuilder(AppBuilder) virtual methods have been removed from AvaloniaMainActivity. App initialization is now handled entirely through AvaloniaAndroidApplication<TApp>.
+
+So your `CustomizeAppBuilder` override (the `.WithInterFont().LogToTrace()` part) can't live in `MainActivity` anymore — it moves to the new application class. `MainActivity` becomes empty.
+
+Here is the corrected file plus one new file. Two files total for the Android fix.
+
+**File 1 (replace): `src/MyDesktopApplication.Android/MainActivity.cs`**
+
+```csharp
+using Android.Content.PM;
+using Avalonia.Android;
+
+namespace MyDesktopApplication.Android;
+
+[Activity(
+    Label = "Country Quiz",
+    Theme = "@style/MyTheme.NoActionBar",
+    Icon = "@drawable/icon",
+    MainLauncher = true,
+    ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
+public class MainActivity : AvaloniaMainActivity
+{
+}
+```
+
+**File 2 (new): `src/MyDesktopApplication.Android/AndroidApp.cs`**
+
+```csharp
+using Android.App;
+using Android.Runtime;
+using Avalonia;
+using Avalonia.Android;
+
+namespace MyDesktopApplication.Android;
+
+[Application]
+public class AndroidApp : AvaloniaAndroidApplication<App>
+{
+    public AndroidApp(IntPtr javaReference, JniHandleOwnership transfer)
+        : base(javaReference, transfer)
+    {
+    }
+
+    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
+    {
+        return base.CustomizeAppBuilder(builder)
+            .WithInterFont()
+            .LogToTrace();
+    }
+}
+```
+
+A couple of things to verify on your end against your specific `App.axaml.cs`, because Avalonia 12 also changed the Android lifecycle:
+
+Your Android `App.axaml.cs` likely implements `ISingleViewApplicationLifetime` and sets `singleView.MainView`. In Avalonia 12, Android now uses IActivityApplicationLifetime instead of ISingleViewApplicationLifetime; this provides a MainViewFactory property (a Func<Control>) instead of a single MainView instance, because Android can create multiple activity instances during the app's lifetime. If your `OnFrameworkInitializationCompleted` casts to `ISingleViewApplicationLifetime`, that path may still work for single-activity apps, but the recommended Avalonia 12 form is:
+
+```csharp
+if (ApplicationLifetime is IActivityApplicationLifetime activity)
+{
+    activity.MainViewFactory = () => new MainView { DataContext = ... };
+}
+```
+
+Let me check your Android `App.axaml.cs` to see whether it needs that change too, so this build actually goes green and I'm fixing all instances per your rule.Your `App.axaml.cs` does cast to `ISingleViewApplicationLifetime` and set `MainView`. That compiled (the only error was `MainActivity`), so the interface still exists in 12 — but the Avalonia 12 recommended path is `IActivityApplicationLifetime` with a `MainViewFactory`, because Android can recreate the activity (rotation, process death) and a single cached `MainView` instance can't be reattached to a second activity. With `ConfigChanges.Orientation` set, you've suppressed the most common recreation, so the single-view path will likely run today — but it's fragile exactly in the scenarios (process death/restore) your users will hit.
+
+Since your rule is "fix it properly, not a bandaid," here's the corrected `App.axaml.cs` using the new factory. Note one important consequence: the factory can be invoked more than once, so the `async` DI/database setup must move out of the lifetime branch (it should run once), and the per-view async `InitializeAsync()` needs handling that doesn't rely on `async void`.
+
+**File 3 (replace): `src/MyDesktopApplication.Android/App.axaml.cs`**
+
+```csharp
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Repositories;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Android;
+
+public partial class App : Avalonia.Application
+{
+    public static IServiceProvider? Services { get; private set; }
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        // Set up dependency injection (runs once for the application).
+        var services = new ServiceCollection();
+
+        // Get the Android-specific database path.
+        var dbPath = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "countryquiz.db");
+
+        // Register DbContext.
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"));
+
+        // Register repositories.
+        services.AddScoped<IGameStateRepository, GameStateRepository>();
+
+        // Register ViewModels.
+        services.AddTransient<CountryQuizViewModel>();
+
+        var serviceProvider = services.BuildServiceProvider();
+        Services = serviceProvider;
+
+        // Initialize the database synchronously here so the view factory
+        // (which Android may call multiple times) never races on schema creation.
+        using (var scope = serviceProvider.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.EnsureCreated();
+        }
+
+        // Avalonia 12: Android uses IActivityApplicationLifetime with a
+        // MainViewFactory (Func<Control>) instead of a single MainView instance,
+        // because the activity can be created more than once during the app lifetime.
+        if (ApplicationLifetime is IActivityApplicationLifetime activityLifetime)
+        {
+            activityLifetime.MainViewFactory = CreateMainView;
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private static Control CreateMainView()
+    {
+        var viewModel = Services!.GetRequiredService<CountryQuizViewModel>();
+
+        var view = new MainView
+        {
+            DataContext = viewModel
+        };
+
+        // Kick off async view-model initialization without blocking the UI thread.
+        // Avalonia marshals the continuation back appropriately for bound properties.
+        _ = viewModel.InitializeAsync();
+
+        return view;
+    }
+}
+```
+
+I want to be upfront about one thing I can't fully verify from here: whether `IActivityApplicationLifetime` and `MainViewFactory` are the exact final names in the 12.0.4 release assembly (the docs reflect the 12.0 release line, and they match the third-party migration guide). If the build complains that `IActivityApplicationLifetime` isn't found, the fastest confirmation is:
+
+```bash
+grep -rl "IActivityApplicationLifetime\|MainViewFactory" ~/.nuget/packages/avalonia.android/12.0.4/
+```
+
+If for any reason that type isn't present in your exact patch, the minimal green-build fix is just Files 1 and 2 (the `MainActivity` + `AndroidApp` split) while leaving your existing `ISingleViewApplicationLifetime` code as-is — that addresses the actual CS0308 compile error. File 3 is the proper-fix upgrade on top.
+
+Recommended order: apply Files 1 and 2, run `dotnet build`, confirm Android compiles, then apply File 3 and rebuild. Run the full `dotnet test` after — your 22 tests are desktop/core/UI and shouldn't be affected, but your One Team One Build rule says everyone runs everything.
+
+10
+09
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
