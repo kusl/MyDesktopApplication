@@ -15062,3 +15062,199 @@ All packages remain free and open source (MIT, Apache-2.0, BSD, or PostgreSQL li
 
 07
 33
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+00
+08
+
+I need to update all the dependencies to the latest vesions
+Please give me FULL files for ALL files that need to change for easy copy pasting 
+Use variables where possible 
+```xml
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    
+    <!-- Version variables for grouped packages -->
+    <AvaloniaVersion>11.3.12</AvaloniaVersion>
+    <EFCoreVersion>10.0.5</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.5</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
+    <SerilogVersion>4.3.1</SerilogVersion>
+    <TestcontainersVersion>4.11.0</TestcontainersVersion>
+  </PropertyGroup>
+  
+  <ItemGroup Label="Avalonia">
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup Label="MVVM">
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.1" />
+  </ItemGroup>
+  
+  <ItemGroup Label="EntityFramework">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageVersion Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Configuration">
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup Label="DependencyInjection">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Logging">
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Serilog" Version="$(SerilogVersion)" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup Label="OpenTelemetry">
+    <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
+    <!-- xUnit - Apache 2.0 License -->
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    
+    <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    
+    <!-- NSubstitute - BSD-3-Clause License -->
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    
+    <!-- Bogus - MIT License -->
+    <PackageVersion Include="Bogus" Version="35.6.1" />
+    
+    <!-- Testcontainers - MIT License -->
+    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    
+    <!-- Coverage -->
+    <PackageVersion Include="coverlet.collector" Version="8.0.1" />
+  </ItemGroup>
+</Project>
+```
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Android` has the following updates to its packages
+   [net10.0-android36.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Avalonia                                      11.3.12     11.3.12    12.0.4
+   > Avalonia.Android                              11.3.12     11.3.12    12.0.4
+   > Avalonia.Fonts.Inter                          11.3.12     11.3.12    12.0.4
+   > Avalonia.Themes.Fluent                        11.3.12     11.3.12    12.0.4
+   > CommunityToolkit.Mvvm                         8.4.1       8.4.1      8.4.2 
+   > Microsoft.EntityFrameworkCore                 10.0.5      10.0.5     10.0.8
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.5      10.0.5     10.0.8
+   > Microsoft.Extensions.DependencyInjection      10.0.5      10.0.5     10.0.8
+
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+Project `MyDesktopApplication.Desktop` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest 
+   > Avalonia.Desktop                              11.3.12     11.3.12    12.0.4 
+   > Avalonia.Diagnostics                          11.3.12     11.3.12    11.3.17
+   > Avalonia.Fonts.Inter                          11.3.12     11.3.12    12.0.4 
+   > Avalonia.Themes.Fluent                        11.3.12     11.3.12    12.0.4 
+   > Microsoft.Extensions.DependencyInjection      10.0.5      10.0.5     10.0.8 
+
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved   Latest
+   > Microsoft.EntityFrameworkCore                 10.0.5      10.0.5     10.0.8
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.5      10.0.5     10.0.8
+   > Microsoft.Extensions.DependencyInjection      10.0.5      10.0.5     10.0.8
+
+Project `MyDesktopApplication.Shared` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package            Requested   Resolved   Latest
+   > CommunityToolkit.Mvvm      8.4.1       8.4.1      8.4.2 
+
+Project `MyDesktopApplication.Core.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > coverlet.collector          8.0.1       8.0.1      10.0.1
+   > Microsoft.NET.Test.Sdk      18.3.0      18.3.0     18.6.0
+
+Project `MyDesktopApplication.Integration.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved   Latest
+   > coverlet.collector                          8.0.1       8.0.1      10.0.1
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.5      10.0.5     10.0.8
+   > Microsoft.NET.Test.Sdk                      18.3.0      18.3.0     18.6.0
+
+Project `MyDesktopApplication.UI.Tests` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package             Requested   Resolved   Latest
+   > coverlet.collector          8.0.1       8.0.1      10.0.1
+   > Microsoft.NET.Test.Sdk      18.3.0      18.3.0     18.6.0
