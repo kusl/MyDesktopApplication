@@ -15598,3 +15598,8 @@ Run `dotnet restore && dotnet build` on the whole `.slnx` and `dotnet test` once
 
 
 
+07
+08
+
+I see errors after the update. 
+I think you missed the Android project? 

@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu May 28 06:12:03 PM EDT 2026
+Generated: Thu May 28 06:21:19 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1097,38 +1097,44 @@ SIZE: 1.57 KB
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 5.10 KB
+SIZE: 5.39 KB
 ================================================================================
 
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    
+
     <!-- Version variables for grouped packages -->
-    <AvaloniaVersion>11.3.12</AvaloniaVersion>
-    <EFCoreVersion>10.0.5</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.5</MicrosoftExtensionsVersion>
+    <AvaloniaVersion>12.0.4</AvaloniaVersion>
+    <EFCoreVersion>10.0.8</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.8</MicrosoftExtensionsVersion>
     <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
     <SerilogVersion>4.3.1</SerilogVersion>
     <TestcontainersVersion>4.11.0</TestcontainersVersion>
+    <FluentValidationVersion>12.1.1</FluentValidationVersion>
   </PropertyGroup>
-  
+
+  <!--
+    NOTE: Avalonia.Diagnostics was REMOVED in Avalonia 12. Its replacement
+    (AvaloniaUI.DiagnosticsSupport + Avalonia Plus Dev Tools) is a commercial
+    product, which violates our FOSS-only rule. We therefore ship without an
+    in-app visual tree inspector. Use logging/OpenTelemetry for diagnostics.
+  -->
   <ItemGroup Label="Avalonia">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup Label="MVVM">
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
-  
+
   <ItemGroup Label="EntityFramework">
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
@@ -1137,19 +1143,19 @@ SIZE: 5.10 KB
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     <PackageVersion Include="Dapper" Version="2.1.35" />
   </ItemGroup>
-  
+
   <ItemGroup Label="Configuration">
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup Label="DependencyInjection">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup Label="Logging">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
@@ -1159,7 +1165,7 @@ SIZE: 5.10 KB
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
-  
+
   <ItemGroup Label="OpenTelemetry">
     <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
@@ -1167,33 +1173,33 @@ SIZE: 5.10 KB
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup Label="Validation">
-    <PackageVersion Include="FluentValidation" Version="12.1.1" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
   </ItemGroup>
-  
+
   <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
     <!-- xUnit - Apache 2.0 License -->
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-    
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+
     <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    
+
     <!-- NSubstitute - BSD-3-Clause License -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    
+
     <!-- Bogus - MIT License -->
     <PackageVersion Include="Bogus" Version="35.6.1" />
-    
+
     <!-- Testcontainers - MIT License -->
     <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
-    
+
     <!-- Coverage -->
-    <PackageVersion Include="coverlet.collector" Version="8.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
   </ItemGroup>
 </Project>
 
@@ -2645,7 +2651,7 @@ public class BoolToColorConverter : IValueConverter
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.41 KB
+SIZE: 1.30 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -2654,30 +2660,29 @@ SIZE: 1.41 KB
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-    
+
     <!-- Application metadata -->
     <Product>Country Quiz</Product>
     <Company>MyDesktopApplication</Company>
     <Copyright>Copyright © 2025</Copyright>
     <Description>A cross-platform country quiz game built with Avalonia UI</Description>
-    
-    <!-- 
+
+    <!--
       Desktop versioning uses the same BuildNumber from Directory.Build.props
       This ensures consistency across all platforms.
     -->
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
-    <PackageReference Include="Avalonia.Diagnostics" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
