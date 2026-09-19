@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sat Sep 19 05:02:12 PM EDT 2026
+Generated: Sat Sep 19 05:07:11 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -31,7 +31,6 @@ DIRECTORY STRUCTURE:
 │   │       └── memory.md
 │   └── thoughts.md
 ├── export.sh
-├── fix-all-issues.sh
 ├── src
 │   ├── MyDesktopApplication.Android
 │   │   ├── AndroidApp.cs
