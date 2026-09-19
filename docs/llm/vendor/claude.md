@@ -17340,3 +17340,7 @@ DO NOT UNDO IT!
 I have uploaded the latest dump.txt here 
 and also pushed it to git. 
 Please continue 
+yes, lets remove all dead code 
+also remember to NEVER add any code comments 
+we are already in search mode 
+
