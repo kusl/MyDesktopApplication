@@ -15819,3 +15819,32 @@ https://github.com/kusl/MyDesktopApplication
 if we can somehow make dump.txt smaller so it fits in claude context without spilling over to search mode 
 that would be ideal 
 since this application is fairly small 
+
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.10]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.16]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.19]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded with 1 warning(s) (0.7s)
+    /usr/lib64/dotnet/sdk/10.0.111/Microsoft.TestPlatform.targets(48,5): warning No test is available in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll. Make sure that test discoverer & executors are registered and platform & framework version settings are appropriate and try again.
+[xUnit.net 00:00:00.25]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.0s
+Build succeeded with 1 warning(s) in 2.0s
