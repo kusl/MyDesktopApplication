@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:MyDesktopApplication.Desktop.ViewModels"
+        xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
         xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
+        x:DataType="vm:CountryQuizViewModel"
         Title="Country Quiz"
         Width="600" Height="700"
         MinWidth="360" MinHeight="500"
@@ -13,8 +13,6 @@
         <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
         <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
         <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
-        <conv:AnswerStateToForegroundConverter x:Key="AnswerStateFgConverter"/>
-        <conv:BoolToColorConverter x:Key="BoolToColorConverter"/>
     </Window.Resources>
 
     <!-- Responsive font sizes via Styles -->

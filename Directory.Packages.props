@@ -25,8 +25,6 @@
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
   <ItemGroup Label="MVVM">
@@ -78,8 +76,10 @@
   </ItemGroup>
 
   <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
-    <!-- xUnit - Apache 2.0 License -->
-    <PackageVersion Include="xunit" Version="2.9.3" />
+    <!-- xUnit.net v3 - Apache 2.0 License. v3 test projects are self-executing
+         (OutputType=Exe, set centrally in Directory.Build.props). The visualstudio
+         runner 4.x runs v1/v2/v3 under `dotnet test` (VSTest), so no CI change. -->
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
 

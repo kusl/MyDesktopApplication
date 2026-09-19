@@ -37,4 +37,13 @@
     <!-- Ensure reproducible builds in CI -->
     <Deterministic>true</Deterministic>
   </PropertyGroup>
+
+  <!--
+    xUnit.net v3 test projects are self-executing programs, so they must be
+    built as executables. We set this once here for every project whose name
+    ends in ".Tests" instead of repeating it in each test .csproj.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
 </Project>

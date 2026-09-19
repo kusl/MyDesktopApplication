@@ -1,9 +1,9 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using MyDesktopApplication.Desktop.ViewModels;
 using MyDesktopApplication.Desktop.Views;
 using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop;
 
@@ -20,7 +20,7 @@ public partial class App : Avalonia.Application
     {
         var services = new ServiceCollection();
         services.AddInfrastructure();
-        services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<CountryQuizViewModel>();
 
         _services = services.BuildServiceProvider();
 
@@ -28,7 +28,7 @@ public partial class App : Avalonia.Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var vm = _services.GetRequiredService<MainWindowViewModel>();
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
             desktop.MainWindow = new MainWindow { DataContext = vm };
         }
 

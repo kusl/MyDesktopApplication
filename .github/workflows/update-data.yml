@@ -1,0 +1,61 @@
+# =============================================================================
+# Scheduled Country Data Refresh
+# =============================================================================
+# Runs the World Bank data generator on a schedule and opens a pull request when
+# the bundled data changes. The app still ships the data in the repo, so it never
+# needs a network connection at runtime - this only keeps the committed data
+# current, with a human reviewing every refresh via the PR.
+#
+# Repo setting required (one time):
+#   Settings -> Actions -> General -> Workflow permissions ->
+#     "Allow GitHub Actions to create and approve pull requests"
+# =============================================================================
+
+name: Update Country Data
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"   # 06:00 UTC on the 1st of every month
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Refresh country data
+        run: python3 scripts/update_country_data.py
+
+      - name: Open pull request if data changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- src/MyDesktopApplication.Shared/Data/CountryData.cs; then
+            echo "No data changes - nothing to do."
+            exit 0
+          fi
+
+          BRANCH="data/refresh-${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/MyDesktopApplication.Shared/Data/CountryData.cs
+          git commit -m "chore(data): refresh country statistics from World Bank"
+          git push --set-upstream origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(data): monthly country statistics refresh" \
+            --body "Automated refresh of bundled country statistics from the World Bank API via \`scripts/update_country_data.py\`. HDI and identity fields are untouched. Please review the diff before merging." \
+            --base master \
+            --head "$BRANCH"
