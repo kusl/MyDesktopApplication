@@ -4,9 +4,9 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
     <!-- Version variables for grouped packages -->
-    <AvaloniaVersion>12.0.4</AvaloniaVersion>
+    <AvaloniaVersion>12.1.2</AvaloniaVersion>
     <EFCoreVersion>10.0.8</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.8</MicrosoftExtensionsVersion>
+    <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
     <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
     <SerilogVersion>4.3.1</SerilogVersion>
     <TestcontainersVersion>4.11.0</TestcontainersVersion>
@@ -80,14 +80,14 @@
   <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
     <!-- xUnit - Apache 2.0 License -->
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
 
     <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
 
     <!-- NSubstitute - BSD-3-Clause License -->
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
 
     <!-- Bogus - MIT License -->
     <PackageVersion Include="Bogus" Version="35.6.1" />
