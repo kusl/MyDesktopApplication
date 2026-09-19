@@ -231,4 +231,18 @@ Export Complete: docs/llm/dump.txt
 real	0m0.669s
 user	0m0.332s
 sys	0m0.448s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm .github/workflows/build-and-release.yml.backup
+rm '.github/workflows/build-and-release.yml.backup'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm .github/workflows/build-and-release.yml.backup.20260104_205859
+rm '.github/workflows/build-and-release.yml.backup.20260104_205859'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup
+rm 'src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623
+rm 'src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+rm 'src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+rm 'src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+rm 'tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs'
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
