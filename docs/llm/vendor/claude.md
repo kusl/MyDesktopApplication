@@ -17340,7 +17340,9 @@ DO NOT UNDO IT!
 I have uploaded the latest dump.txt here 
 and also pushed it to git. 
 Please continue 
+yes, lets wire up telemetry properly 
+so we can serve as a sample project for anyone who wishes to learn avalonia 
 yes, lets remove all dead code 
 also remember to NEVER add any code comments 
 we are already in search mode 
-
+remember FULL files for all files that need to change 
