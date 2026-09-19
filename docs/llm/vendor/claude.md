@@ -17331,3 +17331,12 @@ Dry run - no file written.
 real	0m50.558s
 user	0m0.084s
 sys	0m0.020s
+
+I have added global.json and 
+    <OutputType>Exe</OutputType>
+which you thought about but didn't implement as far as I can tell 
+DO NOT UNDO IT! 
+
+I have uploaded the latest dump.txt here 
+and also pushed it to git. 
+Please continue 

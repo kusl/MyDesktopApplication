@@ -598,3 +598,303 @@ kushal@fedora:~/src/dotnet/MyDesktopApplication$
 
 
 
+kushal@fedora:~$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 1.2s
+
+real	0m1.349s
+user	0m1.035s
+sys	0m0.393s
+Restore complete (0.7s)
+
+Build succeeded in 0.8s
+
+real	0m0.928s
+user	0m1.016s
+sys	0m0.245s
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.2s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.4s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.4s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.5s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (1.4s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net10.0-android succeeded (23.7s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+
+Build succeeded in 25.3s
+
+real	0m25.533s
+user	1m38.216s
+sys	0m4.583s
+Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64)
+Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64)
+Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64) passed (654ms)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64) passed (733ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64) passed (1s 150ms)
+
+Test run summary: Passed!
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64) passed (1s 150ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64) passed (733ms)
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64) passed (654ms)
+
+  total: 26
+  failed: 0
+  succeeded: 26
+  skipped: 0
+  duration: 1s 455ms
+
+real	0m2.825s
+user	0m5.013s
+sys	0m0.825s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+Project 'MyDesktopApplication.Android' has the following package references
+   [net10.0-android36.0]: 
+   Top-level Package                                  Requested     Resolved
+   > Avalonia                                         12.1.2        12.1.2  
+   > Avalonia.Android                                 12.1.2        12.1.2  
+   > Avalonia.Fonts.Inter                             12.1.2        12.1.2  
+   > Avalonia.Themes.Fluent                           12.1.2        12.1.2  
+   > CommunityToolkit.Mvvm                            8.4.2         8.4.2   
+   > Microsoft.EntityFrameworkCore                    10.0.12       10.0.12 
+   > Microsoft.EntityFrameworkCore.Sqlite             10.0.12       10.0.12 
+   > Microsoft.Extensions.DependencyInjection         10.0.12       10.0.12 
+   > Microsoft.NET.ILLink.Tasks                 (A)   [10.0.11, )   10.0.11 
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia.Desktop                              12.1.2      12.1.2  
+   > Avalonia.Fonts.Inter                          12.1.2      12.1.2  
+   > Avalonia.Themes.Fluent                        12.1.2      12.1.2  
+   > Microsoft.Extensions.DependencyInjection      10.0.12     10.0.12 
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 10.0.12     10.0.12 
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.12     10.0.12 
+   > Microsoft.Extensions.DependencyInjection      10.0.12     10.0.12 
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.2       8.4.2   
+   > FluentValidation           12.1.1      12.1.1  
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.0.1      10.0.1  
+   > Microsoft.NET.Test.Sdk         18.10.1     18.10.1 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.0       4.0.0   
+   > xunit.v3                       4.0.1       4.0.1   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          10.0.1      10.0.1  
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.12     10.0.12 
+   > Microsoft.NET.Test.Sdk                      18.10.1     18.10.1 
+   > NSubstitute                                 6.2.0       6.2.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit.runner.visualstudio                   4.0.0       4.0.0   
+   > xunit.v3                                    4.0.1       4.0.1   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.0.1      10.0.1  
+   > Microsoft.NET.Test.Sdk         18.10.1     18.10.1 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.0       4.0.0   
+   > xunit.v3                       4.0.1       4.0.1   
+
+(A) : Auto-referenced package.
+
+real	0m2.110s
+user	0m2.083s
+sys	0m0.562s
+Restore complete (0.6s)
+
+Build succeeded in 0.7s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.660s
+user	0m2.834s
+sys	0m0.517s
+
+real	0m9.664s
+user	0m17.596s
+sys	0m1.335s
+==============================================
+  Generating Clean Project Export
+==============================================
+Generating directory structure...
+Collecting and cleaning file contents...
+Processed: .gitattributes
+Processed: .github/dependabot.yml
+Processed: .github/workflows/build-and-release.yml
+Processed: .github/workflows/update-data.yml
+Processed: .gitignore
+Processed: Directory.Build.props
+Processed: Directory.Packages.props
+Processed: MyDesktopApplication.slnx
+Processed: README.md
+Processed: docs/thoughts.md
+Processed: global.json
+Processed: scripts/update_country_data.py
+Processed: src/MyDesktopApplication.Android/AndroidApp.cs
+Processed: src/MyDesktopApplication.Android/AndroidManifest.xml
+Processed: src/MyDesktopApplication.Android/App.axaml
+Processed: src/MyDesktopApplication.Android/App.axaml.cs
+Processed: src/MyDesktopApplication.Android/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Android/MainActivity.cs
+Processed: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processed: src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processed: src/MyDesktopApplication.Core/Entities/Country.cs
+Processed: src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processed: src/MyDesktopApplication.Core/Entities/GameState.cs
+Processed: src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processed: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processed: src/MyDesktopApplication.Desktop/App.axaml
+Processed: src/MyDesktopApplication.Desktop/App.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processed: src/MyDesktopApplication.Desktop/Program.cs
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/app.manifest
+Processed: src/MyDesktopApplication.Desktop/appsettings.json
+Processed: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processed: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processed: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processed: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processed: src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processed: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processed: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processed: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processed: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Processed: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processed: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processed: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processed: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+Export Complete: docs/llm/dump.txt
+
+real	0m0.669s
+user	0m0.312s
+sys	0m0.447s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

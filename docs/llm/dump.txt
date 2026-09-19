@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sat Sep 19 05:51:02 PM EDT 2026
+Generated: Sat Sep 19 05:54:55 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -30,6 +30,7 @@ DIRECTORY STRUCTURE:
 │   │       └── memory.md
 │   └── thoughts.md
 ├── export.sh
+├── global.json
 ├── scripts
 │   └── update_country_data.py
 ├── src
@@ -922,6 +923,22 @@ everyone should suffer
 not because we are masochists 
 but because we want everyone to know when stuff is broken 
 so it gets fixed as quickly as possible. 
+
+
+================================================================================
+FILE: global.json
+SIZE: .13 KB
+================================================================================
+
+{
+  "sdk": {
+    "version": "10.0.104",
+    "rollForward": "latestFeature"
+  },
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
+  }
+}
 
 
 ================================================================================
@@ -3755,7 +3772,7 @@ public class GameStateTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-SIZE: 1.05 KB
+SIZE: 1.08 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -3765,6 +3782,7 @@ SIZE: 1.05 KB
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -3999,7 +4017,7 @@ public class GameStateRepositoryTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-SIZE: 1.25 KB
+SIZE: 1.28 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -4009,6 +4027,7 @@ SIZE: 1.25 KB
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -4110,7 +4129,7 @@ public class CountryQuizViewModelTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 1.36 KB
+SIZE: 1.39 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -4120,6 +4139,7 @@ SIZE: 1.36 KB
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
