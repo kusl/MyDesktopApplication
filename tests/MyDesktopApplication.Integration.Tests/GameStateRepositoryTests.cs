@@ -25,7 +25,7 @@ public class GameStateRepositoryTests
         await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
         var repository = new GameStateRepository(context);
 
-        var state = await repository.GetOrCreateAsync("player-1");
+        var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
 
         state.ShouldNotBeNull();
         state.UserId.ShouldBe("player-1");
@@ -39,8 +39,8 @@ public class GameStateRepositoryTests
         await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
         var repository = new GameStateRepository(context);
 
-        var first = await repository.GetOrCreateAsync("player-1");
-        var second = await repository.GetOrCreateAsync("player-1");
+        var first = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+        var second = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
 
         second.Id.ShouldBe(first.Id);
     }
@@ -55,15 +55,15 @@ public class GameStateRepositoryTests
         await using (var context = new AppDbContext(Options(databaseName)))
         {
             var repository = new GameStateRepository(context);
-            var state = await repository.GetOrCreateAsync("player-1");
+            var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
             state.RecordAnswer(isCorrect: true);
-            await repository.UpdateAsync(state);
+            await repository.UpdateAsync(state, TestContext.Current.CancellationToken);
         }
 
         await using (var context = new AppDbContext(Options(databaseName)))
         {
             var repository = new GameStateRepository(context);
-            var reloaded = await repository.GetOrCreateAsync("player-1");
+            var reloaded = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
 
             reloaded.CurrentScore.ShouldBe(1);
             reloaded.TotalCorrect.ShouldBe(1);
@@ -80,22 +80,22 @@ public class GameStateRepositoryTests
         await using (var context = new AppDbContext(Options(databaseName)))
         {
             var repository = new GameStateRepository(context);
-            var state = await repository.GetOrCreateAsync("player-1");
+            var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
             state.RecordAnswer(isCorrect: true);
             state.RecordAnswer(isCorrect: true);
-            await repository.UpdateAsync(state);
+            await repository.UpdateAsync(state, TestContext.Current.CancellationToken);
         }
 
         await using (var context = new AppDbContext(Options(databaseName)))
         {
             var repository = new GameStateRepository(context);
-            await repository.ResetAsync("player-1");
+            await repository.ResetAsync("player-1", TestContext.Current.CancellationToken);
         }
 
         await using (var context = new AppDbContext(Options(databaseName)))
         {
             var repository = new GameStateRepository(context);
-            var reloaded = await repository.GetOrCreateAsync("player-1");
+            var reloaded = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
 
             reloaded.CurrentScore.ShouldBe(0);
             reloaded.CurrentStreak.ShouldBe(0);

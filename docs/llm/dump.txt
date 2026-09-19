@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sat Sep 19 05:07:11 PM EDT 2026
+Generated: Sat Sep 19 05:51:02 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -11,8 +11,7 @@ DIRECTORY STRUCTURE:
 │   ├── dependabot.yml
 │   └── workflows
 │       ├── build-and-release.yml
-│       ├── build-and-release.yml.backup
-│       └── build-and-release.yml.backup.20260104_205859
+│       └── update-data.yml
 ├── .gitignore
 ├── Directory.Build.props
 ├── Directory.Packages.props
@@ -31,6 +30,8 @@ DIRECTORY STRUCTURE:
 │   │       └── memory.md
 │   └── thoughts.md
 ├── export.sh
+├── scripts
+│   └── update_country_data.py
 ├── src
 │   ├── MyDesktopApplication.Android
 │   │   ├── AndroidApp.cs
@@ -41,8 +42,6 @@ DIRECTORY STRUCTURE:
 │   │   │   └── Converters.cs
 │   │   ├── MainActivity.cs
 │   │   ├── MyDesktopApplication.Android.csproj
-│   │   ├── MyDesktopApplication.Android.csproj.backup
-│   │   ├── MyDesktopApplication.Android.csproj.backup.20260104213623
 │   │   ├── Resources
 │   │   │   ├── drawable
 │   │   │   │   ├── icon.png
@@ -72,9 +71,6 @@ DIRECTORY STRUCTURE:
 │   │   │   └── Converters.cs
 │   │   ├── MyDesktopApplication.Desktop.csproj
 │   │   ├── Program.cs
-│   │   ├── ViewModels
-│   │   │   ├── MainWindowViewModel.cs
-│   │   │   └── ViewModelBase.cs
 │   │   ├── Views
 │   │   │   ├── MainWindow.axaml
 │   │   │   └── MainWindow.axaml.cs
@@ -103,9 +99,10 @@ DIRECTORY STRUCTURE:
     │   ├── MyDesktopApplication.Core.Tests.csproj
     │   └── QuestionTypeTests.cs
     ├── MyDesktopApplication.Integration.Tests
+    │   ├── GameStateRepositoryTests.cs
     │   └── MyDesktopApplication.Integration.Tests.csproj
     └── MyDesktopApplication.UI.Tests
-        ├── MainWindowViewModelTests.cs
+        ├── CountryQuizViewModelTests.cs
         └── MyDesktopApplication.UI.Tests.csproj
 
 FILE CONTENTS:
@@ -497,506 +494,71 @@ jobs:
 
 
 ================================================================================
-FILE: .github/workflows/build-and-release.yml.backup
-SIZE: 8.55 KB
+FILE: .github/workflows/update-data.yml
+SIZE: 2.33 KB
 ================================================================================
 
-name: Build and Release
+# =============================================================================
+# Scheduled Country Data Refresh
+# =============================================================================
+# Runs the World Bank data generator on a schedule and opens a pull request when
+# the bundled data changes. The app still ships the data in the repo, so it never
+# needs a network connection at runtime - this only keeps the committed data
+# current, with a human reviewing every refresh via the PR.
+#
+# Repo setting required (one time):
+#   Settings -> Actions -> General -> Workflow permissions ->
+#     "Allow GitHub Actions to create and approve pull requests"
+# =============================================================================
+
+name: Update Country Data
 
 on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
+  schedule:
+    - cron: "0 6 1 * *"   # 06:00 UTC on the 1st of every month
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
 
-env:
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  # =============================================================================
-  # Build and Test (runs on every push/PR)
-  # =============================================================================
-  build-and-test:
+  refresh-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
-          fetch-depth: 0
+          python-version: "3.12"
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
+      - name: Refresh country data
+        run: python3 scripts/update_country_data.py
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Setup Keystore
-        run: |
-          # Create keystore from secret, or create a dummy one for PR builds
-          if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
-            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
-            echo "KEYSTORE_EXISTS=true" >> "$GITHUB_ENV"
-          else
-            # For PRs from forks, create a dummy keystore for build validation
-            keytool -genkey -v -keystore android.keystore \
-              -alias myalias -keyalg RSA -keysize 2048 -validity 1 \
-              -storepass dummypassword -keypass dummypassword \
-              -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US" \
-              2>/dev/null || true
-            echo "KEYSTORE_EXISTS=false" >> "$GITHUB_ENV"
-          fi
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build
-        run: |
-          # Determine signing password - use real secret or dummy for PR builds
-          if [[ "${{ env.KEYSTORE_EXISTS }}" == "true" ]]; then
-            SIGN_PASS="${{ secrets.ANDROID_SIGNING_PASSWORD }}"
-          else
-            SIGN_PASS="dummypassword"
-          fi
-          
-          dotnet build --configuration Release --no-restore \
-            -p:BuildNumber=${{ github.run_number }} \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore=android.keystore \
-            -p:AndroidSigningStorePass="$SIGN_PASS" \
-            -p:AndroidSigningKeyPass="$SIGN_PASS" \
-            -p:AndroidSigningKeyAlias=myalias
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build --verbosity normal
-
-  # =============================================================================
-  # Build Desktop Releases
-  # =============================================================================
-  build-desktop:
-    needs: build-and-test
-    if: github.event_name == 'push'
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            rid: linux-x64
-            artifact: linux-x64
-          - os: ubuntu-latest
-            rid: linux-arm64
-            artifact: linux-arm64
-          - os: windows-latest
-            rid: win-x64
-            artifact: win-x64
-          - os: windows-latest
-            rid: win-arm64
-            artifact: win-arm64
-          - os: macos-latest
-            rid: osx-x64
-            artifact: osx-x64
-          - os: macos-latest
-            rid: osx-arm64
-            artifact: osx-arm64
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Publish
-        shell: bash
-        run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            --runtime ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:PublishTrimmed=false \
-            -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish/${{ matrix.artifact }}
-
-      - name: Create archive (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          cd ./publish
-          tar -czvf MyDesktopApplication-${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
-
-      - name: Create archive (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./publish/${{ matrix.artifact }}/* -DestinationPath ./publish/MyDesktopApplication-${{ matrix.artifact }}.zip
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktop-${{ matrix.artifact }}
-          path: |
-            ./publish/*.tar.gz
-            ./publish/*.zip
-          if-no-files-found: error
-
-  # =============================================================================
-  # Build Android APK
-  # =============================================================================
-  build-android:
-    needs: build-and-test
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Accept Android licenses
-        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Build and Sign Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish/android \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore=android.keystore \
-            -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyAlias=myalias
-
-      - name: Find and rename APK
-        run: |
-          APK_PATH=$(find ./publish/android -name "*-Signed.apk" | head -1)
-          if [[ -z "$APK_PATH" ]]; then
-            APK_PATH=$(find ./publish/android -name "*.apk" | head -1)
-          fi
-          
-          if [[ -n "$APK_PATH" ]]; then
-            cp "$APK_PATH" "./publish/MyDesktopApplication-android-${{ github.run_number }}.apk"
-          else
-            echo "No APK found!"
-            exit 1
-          fi
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: ./publish/MyDesktopApplication-android-*.apk
-          if-no-files-found: error
-
-  # =============================================================================
-  # Create GitHub Release
-  # =============================================================================
-  release:
-    needs: [build-desktop, build-android]
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-
-      - name: Prepare release files
-        run: |
-          mkdir -p ./release
-          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Open pull request if data changed
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: Release 1.0.${{ github.run_number }}
-          body: |
-            ## MyDesktopApplication v1.0.${{ github.run_number }}
-            
-            ### Downloads
-            | Platform | File |
-            |----------|------|
-            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
-            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
-            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
-            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
-            | macOS x64 | `MyDesktopApplication-osx-x64.tar.gz` |
-            | macOS ARM64 | `MyDesktopApplication-osx-arm64.tar.gz` |
-            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
-            
-            Build: ${{ github.run_id }}
-          draft: false
-          prerelease: false
-          files: ./release/*
-
-
-
-
-
-================================================================================
-FILE: .github/workflows/build-and-release.yml.backup.20260104_205859
-SIZE: 7.71 KB
-================================================================================
-
-name: Build and Release
-
-on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
-
-env:
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-
-jobs:
-  # =============================================================================
-  # Build and Test (runs on every push/PR)
-  # =============================================================================
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Setup Keystore
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Create keystore from secret, or create a dummy one for PR builds
-          if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
-            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
-            echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_ENV"
-            echo "SIGNING_PASSWORD=${{ secrets.ANDROID_SIGNING_PASSWORD }}" >> "$GITHUB_ENV"
-          else
-            # For PRs from forks or when secrets aren't available, create a dummy keystore
-            keytool -genkey -v -keystore "$GITHUB_WORKSPACE/android.keystore" \
-              -alias myalias -keyalg RSA -keysize 2048 -validity 1 \
-              -storepass dummypassword -keypass dummypassword \
-              -dname "CN=Dummy, OU=Dummy, O=Dummy, L=Dummy, ST=Dummy, C=US" \
-              2>/dev/null || true
-            echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_ENV"
-            echo "SIGNING_PASSWORD=dummypassword" >> "$GITHUB_ENV"
-          fi
-          echo "Keystore created at: $GITHUB_WORKSPACE/android.keystore"
-          ls -la "$GITHUB_WORKSPACE/android.keystore"
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build
-        run: |
-          dotnet build --configuration Release --no-restore \
-            -p:BuildNumber=${{ github.run_number }} \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="${{ env.KEYSTORE_PATH }}" \
-            -p:AndroidSigningStorePass="${{ env.SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyPass="${{ env.SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyAlias=myalias
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build --verbosity normal
-
-  # =============================================================================
-  # Build Desktop Releases
-  # =============================================================================
-  build-desktop:
-    needs: build-and-test
-    if: github.event_name == 'push'
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            rid: linux-x64
-            artifact: linux-x64
-          - os: ubuntu-latest
-            rid: linux-arm64
-            artifact: linux-arm64
-          - os: windows-latest
-            rid: win-x64
-            artifact: win-x64
-          - os: windows-latest
-            rid: win-arm64
-            artifact: win-arm64
-          - os: macos-latest
-            rid: osx-x64
-            artifact: osx-x64
-          - os: macos-latest
-            rid: osx-arm64
-            artifact: osx-arm64
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Publish
-        shell: bash
-        run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            -r ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact }}
-          path: ./publish/
-          retention-days: 30
-
-  # =============================================================================
-  # Build Android APK
-  # =============================================================================
-  build-android:
-    needs: build-and-test
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Keystore
-        run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
-          echo "Keystore created at: $GITHUB_WORKSPACE/android.keystore"
-          ls -la "$GITHUB_WORKSPACE/android.keystore"
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install Android workload
-        run: dotnet workload install android
-
-      - name: Accept Android licenses
-        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Build and Sign Android APK
-        run: |
-          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
-            --configuration Release \
-            -p:BuildNumber=${{ github.run_number }} \
-            --output ./publish/android \
-            -p:AndroidKeyStore=true \
-            -p:AndroidSigningKeyStore="$GITHUB_WORKSPACE/android.keystore" \
-            -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
-            -p:AndroidSigningKeyAlias=myalias
-
-      - name: Find and rename APK
-        run: |
-          APK_PATH=$(find ./publish/android -name "*-Signed.apk" | head -1)
-          if [[ -z "$APK_PATH" ]]; then
-            APK_PATH=$(find ./publish/android -name "*.apk" | head -1)
-          fi
-          
-          if [[ -n "$APK_PATH" ]]; then
-            cp "$APK_PATH" "./publish/MyDesktopApplication-android-${{ github.run_number }}.apk"
-            echo "APK renamed to: MyDesktopApplication-android-${{ github.run_number }}.apk"
-          else
-            echo "No APK found!"
-            find ./publish -type f -name "*.apk" || echo "No APK files anywhere"
-            exit 1
+          if git diff --quiet -- src/MyDesktopApplication.Shared/Data/CountryData.cs; then
+            echo "No data changes - nothing to do."
+            exit 0
           fi
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android
-          path: ./publish/MyDesktopApplication-android-${{ github.run_number }}.apk
-          retention-days: 30
+          BRANCH="data/refresh-${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/MyDesktopApplication.Shared/Data/CountryData.cs
+          git commit -m "chore(data): refresh country statistics from World Bank"
+          git push --set-upstream origin "$BRANCH"
 
-  # =============================================================================
-  # Create Release
-  # =============================================================================
-  create-release:
-    needs: [build-desktop, build-android]
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-
-      - name: List artifacts
-        run: find ./artifacts -type f
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: Release v1.0.${{ github.run_number }}
-          draft: false
-          prerelease: false
-          files: |
-            ./artifacts/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh pr create \
+            --title "chore(data): monthly country statistics refresh" \
+            --body "Automated refresh of bundled country statistics from the World Bank API via \`scripts/update_country_data.py\`. HDI and identity fields are untouched. Please review the diff before merging." \
+            --base master \
+            --head "$BRANCH"
 
 
 ================================================================================
@@ -1050,7 +612,7 @@ android.keystore.base64
 
 ================================================================================
 FILE: Directory.Build.props
-SIZE: 1.57 KB
+SIZE: 1.92 KB
 ================================================================================
 
 <Project>
@@ -1092,12 +654,21 @@ SIZE: 1.57 KB
     <!-- Ensure reproducible builds in CI -->
     <Deterministic>true</Deterministic>
   </PropertyGroup>
+
+  <!--
+    xUnit.net v3 test projects are self-executing programs, so they must be
+    built as executables. We set this once here for every project whose name
+    ends in ".Tests" instead of repeating it in each test .csproj.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
 </Project>
 
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 5.39 KB
+SIZE: 5.44 KB
 ================================================================================
 
 <Project>
@@ -1127,8 +698,6 @@ SIZE: 5.39 KB
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
   <ItemGroup Label="MVVM">
@@ -1180,8 +749,10 @@ SIZE: 5.39 KB
   </ItemGroup>
 
   <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
-    <!-- xUnit - Apache 2.0 License -->
-    <PackageVersion Include="xunit" Version="2.9.3" />
+    <!-- xUnit.net v3 - Apache 2.0 License. v3 test projects are self-executing
+         (OutputType=Exe, set centrally in Directory.Build.props). The visualstudio
+         runner 4.x runs v1/v2/v3 under `dotnet test` (VSTest), so no CI change. -->
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
 
@@ -1351,6 +922,185 @@ everyone should suffer
 not because we are masochists 
 but because we want everyone to know when stuff is broken 
 so it gets fixed as quickly as possible. 
+
+
+================================================================================
+FILE: scripts/update_country_data.py
+SIZE: 5.90 KB
+================================================================================
+
+#!/usr/bin/env python3
+"""
+Refresh the bundled country statistics in CountryData.cs from the free,
+key-less World Bank API (https://api.worldbank.org).
+
+WHY THIS EXISTS
+---------------
+The app must run with no network connection, so the data is *bundled* as a
+compiled C# list (fast, trim-safe, offline). "Keeping it up to date" therefore
+means regenerating that bundled file in the repo - not fetching at runtime.
+This script does exactly that: it reads the existing CountryData.cs, refreshes
+the numeric fields in place, and writes the file back. A human reviews the
+`git diff` and commits it (or the scheduled GitHub Action opens a PR).
+
+WHAT IT UPDATES (World Bank indicator -> field)
+    SP.POP.TOTL     -> Population
+    AG.LND.TOTL.K2  -> Area (land area, km^2)
+    NY.GDP.MKTP.CD  -> GdpTotal (converted USD -> millions USD)
+    NY.GDP.PCAP.CD  -> GdpPerCapita (USD)
+    EN.POP.DNST     -> PopulationDensity (people / km^2)
+    SE.ADT.LITR.ZS  -> LiteracyRate (%)
+    SP.DYN.LE00.IN  -> LifeExpectancy (years)
+
+WHAT IT LEAVES ALONE
+    Code, Name, Iso2, Continent  -> identity fields, curated by hand.
+    Hdi                          -> no free, stable API; update from the annual
+                                    UNDP Human Development Report by hand.
+    Any field World Bank has no recent value for -> the existing value is kept.
+
+USAGE
+    python3 scripts/update_country_data.py            # refresh + write
+    python3 scripts/update_country_data.py --dry-run  # report changes only
+
+NOTE
+    Only the Python standard library is used (urllib), so there is nothing to
+    install. Run it once and eyeball the diff before committing - data coverage
+    on some indicators is patchy, which is exactly why we keep existing values
+    on gaps.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+import urllib.request
+from pathlib import Path
+
+# Path is relative to the repository root (where the script is run from).
+DATA_FILE = Path("src/MyDesktopApplication.Shared/Data/CountryData.cs")
+
+WORLD_BANK_BASE = "https://api.worldbank.org/v2"
+
+
+# field name in CountryData.cs -> (World Bank indicator, formatter)
+def _as_int(value: float) -> str:
+    return str(int(round(value)))
+
+def _as_millions(value: float) -> str:
+    return str(int(round(value / 1_000_000)))
+
+def _one_dp(value: float) -> str:
+    return f"{value:.1f}"
+
+FIELDS = {
+    "Population": ("SP.POP.TOTL", _as_int),
+    "Area": ("AG.LND.TOTL.K2", _as_int),
+    "GdpTotal": ("NY.GDP.MKTP.CD", _as_millions),
+    "GdpPerCapita": ("NY.GDP.PCAP.CD", _as_int),
+    "PopulationDensity": ("EN.POP.DNST", _one_dp),
+    "LiteracyRate": ("SE.ADT.LITR.ZS", _one_dp),
+    "LifeExpectancy": ("SP.DYN.LE00.IN", _one_dp),
+}
+
+
+def fetch_indicator(indicator: str) -> dict[str, float]:
+    """Return {iso3: most_recent_non_empty_value} for every country."""
+    values: dict[str, float] = {}
+    page = 1
+    while True:
+        url = (
+            f"{WORLD_BANK_BASE}/country/all/indicator/{indicator}"
+            f"?format=json&mrnev=1&per_page=400&page={page}"
+        )
+        with urllib.request.urlopen(url, timeout=60) as response:
+            payload = json.load(response)
+
+        if not isinstance(payload, list) or len(payload) < 2 or payload[1] is None:
+            break
+
+        meta, rows = payload[0], payload[1]
+        for row in rows:
+            iso3 = row.get("countryiso3code")
+            value = row.get("value")
+            if iso3 and value is not None:
+                values[iso3] = float(value)
+
+        total_pages = int(meta.get("pages", 1))
+        if page >= total_pages:
+            break
+        page += 1
+
+    return values
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report what would change without writing the file.",
+    )
+    args = parser.parse_args()
+
+    if not DATA_FILE.exists():
+        print(f"ERROR: {DATA_FILE} not found. Run this from the repo root.", file=sys.stderr)
+        return 1
+
+    text = DATA_FILE.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=True)
+
+    # Download every indicator once for all countries (a handful of requests).
+    print("Fetching indicators from the World Bank API...")
+    indicator_values: dict[str, dict[str, float]] = {}
+    for field, (indicator, _) in FIELDS.items():
+        print(f"  {field:<18} <- {indicator}")
+        try:
+            indicator_values[field] = fetch_indicator(indicator)
+        except Exception as error:  # noqa: BLE001 - report and keep existing values
+            print(f"    WARNING: failed to fetch {indicator}: {error}", file=sys.stderr)
+            indicator_values[field] = {}
+
+    country_line = re.compile(r'new\(\)\s*\{\s*Code\s*=\s*"([A-Z]{3})"')
+    changes = 0
+    countries = 0
+
+    for i, line in enumerate(lines):
+        match = country_line.search(line)
+        if not match:
+            continue
+        countries += 1
+        iso3 = match.group(1)
+        new_line = line
+
+        for field, (_, formatter) in FIELDS.items():
+            value = indicator_values[field].get(iso3)
+            if value is None:
+                continue  # no fresh data -> keep whatever is in the file
+            formatted = formatter(value)
+            # Replace exactly this field's number on this country's line.
+            pattern = re.compile(rf"({re.escape(field)}\s*=\s*)(-?\d+(?:\.\d+)?)")
+            replaced, n = pattern.subn(rf"\g<1>{formatted}", new_line, count=1)
+            if n == 1 and replaced != new_line:
+                new_line = replaced
+                changes += 1
+
+        lines[i] = new_line
+
+    print(f"\nScanned {countries} countries; {changes} field value(s) changed.")
+
+    if args.dry_run:
+        print("Dry run - no file written.")
+        return 0
+
+    DATA_FILE.write_text("".join(lines), encoding="utf-8")
+    print(f"Wrote {DATA_FILE}. Review `git diff` before committing.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
 
 
 ================================================================================
@@ -1702,159 +1452,6 @@ SIZE: 5.11 KB
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
-  </ItemGroup>
-</Project>
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup
-SIZE: 3.44 KB
-================================================================================
-
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <AndroidSigningPassword>android</AndroidSigningPassword>
-  </PropertyGroup>
-    <PropertyGroup>
-    <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
-    <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
-    <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
-    <ApplicationVersion>$(BuildNumber)</ApplicationVersion>
-    <ApplicationDisplayVersion>$(InformationalVersion)</ApplicationDisplayVersion>
-    <TargetFramework>net10.0-android</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
-    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    
-    <!-- Dynamic versioning from CI -->
-    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
-    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
-    
-    <!-- ================================================================== -->
-    <!-- CRITICAL FIX FOR MONO CLASS-INIT CRASH                            -->
-    <!-- The crash "klass->instance_size == instance_size" happens when    -->
-    <!-- there's a mismatch between AOT-compiled code and runtime.         -->
-    <!-- SOLUTION: Disable AOT entirely and use JIT/Interpreter            -->
-    <!-- ================================================================== -->
-    
-    <!-- Disable AOT compilation completely -->
-    <RunAOTCompilation>false</RunAOTCompilation>
-    <PublishAot>false</PublishAot>
-    
-    <!-- Use the Mono interpreter for maximum compatibility -->
-    <UseInterpreter>true</UseInterpreter>
-    
-    <!-- Disable IL linker trimming to preserve all types -->
-    <PublishTrimmed>false</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
-    
-    <!-- Fix aapt2 daemon hang issues on Fedora -->
-    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    
-    <!-- Standard settings -->
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-
-  <!-- Tell the linker to preserve our assemblies completely -->
-  <ItemGroup>
-    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <PackageReference Include="Avalonia.Fonts.Inter" />
-    <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
-    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
-  </ItemGroup>
-</Project>
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623
-SIZE: 3.45 KB
-================================================================================
-
-<Project Sdk="Microsoft.NET.Sdk">
-  <!-- =================================================================== -->
-  <!-- SIGNING CONFIGURATION                                               -->
-  <!-- Signing is ONLY enabled when AndroidSigningPassword is provided.    -->
-  <!-- This allows:                                                        -->
-  <!-- - CI build-and-test: validates code compiles without signing        -->
-  <!-- - CI build-android: signs when password is passed                   -->
-  <!-- - Local debug: uses hardcoded password for convenience              -->
-  <!-- =================================================================== -->
-  
-  <!-- Debug builds: use hardcoded password for local development -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <AndroidSigningPassword>android</AndroidSigningPassword>
-  </PropertyGroup>
-  
-  <!-- Only enable signing when password is provided -->
-  <PropertyGroup Condition="'$(AndroidSigningPassword)' != ''">
-    <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
-    <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
-    <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
-  </PropertyGroup>
-  
-  <!-- Explicitly disable signing when no password provided -->
-  <PropertyGroup Condition="'$(AndroidSigningPassword)' == ''">
-    <AndroidKeyStore>False</AndroidKeyStore>
-  </PropertyGroup>
-  
-  <!-- =================================================================== -->
-  <!-- MAIN PROJECT CONFIGURATION                                          -->
-  <!-- =================================================================== -->
-  <PropertyGroup>
-    <TargetFramework>net10.0-android</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
-    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    
-    <!-- Dynamic versioning from CI -->
-    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
-    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
-    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
-    
-    <!-- =================================================================== -->
-    <!-- CRITICAL FIX FOR MONO CLASS-INIT CRASH                             -->
-    <!-- The crash "klass->instance_size == instance_size" happens when     -->
-    <!-- there's a mismatch between AOT-compiled code and runtime.          -->
-    <!-- Disabling AOT for Debug prevents this crash.                       -->
-    <!-- =================================================================== -->
-    <RunAOTCompilation Condition="'$(Configuration)' == 'Debug'">false</RunAOTCompilation>
-    
-    <!-- Disable aapt2 daemon to prevent CI hangs -->
-    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    
-    <!-- Use AppCompat theme for Avalonia compatibility -->
-    <AndroidEnableAppCompatTheme>true</AndroidEnableAppCompatTheme>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Avalonia.Android" />
   </ItemGroup>
 </Project>
 
@@ -2532,15 +2129,15 @@ SIZE: .30 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.09 KB
+SIZE: 1.10 KB
 ================================================================================
 
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using MyDesktopApplication.Desktop.ViewModels;
 using MyDesktopApplication.Desktop.Views;
 using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop;
 
@@ -2557,7 +2154,7 @@ public partial class App : Avalonia.Application
     {
         var services = new ServiceCollection();
         services.AddInfrastructure();
-        services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<CountryQuizViewModel>();
 
         _services = services.BuildServiceProvider();
 
@@ -2565,7 +2162,7 @@ public partial class App : Avalonia.Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var vm = _services.GetRequiredService<MainWindowViewModel>();
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
             desktop.MainWindow = new MainWindow { DataContext = vm };
         }
 
@@ -2749,312 +2346,16 @@ sealed class Program
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
-SIZE: 8.79 KB
-================================================================================
-
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Core.Interfaces;
-using MyDesktopApplication.Shared.Data;
-
-namespace MyDesktopApplication.Desktop.ViewModels;
-
-/// <summary>
-/// ViewModel for the Desktop main window.
-/// </summary>
-public partial class MainWindowViewModel : ViewModelBase
-{
-    private readonly IGameStateRepository? _gameStateRepository;
-    private readonly Random _random = new();
-    private GameState _gameState = new();
-    private Country? _correctCountry;
-
-    // --- Observable properties ---
-
-    [ObservableProperty] private string _questionText = "Loading...";
-
-    [ObservableProperty] private Country? _country1;
-    [ObservableProperty] private Country? _country2;
-
-    [ObservableProperty] private string _country1Value = "";
-    [ObservableProperty] private string _country2Value = "";
-
-    [ObservableProperty] private string _resultMessage = "";
-    [ObservableProperty] private string _countryDetailsText = "";
-    [ObservableProperty] private bool _hasAnswered;
-    [ObservableProperty] private bool _isCorrectAnswer;
-    [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
-
-    [ObservableProperty] private int _currentScore;
-    [ObservableProperty] private int _highScore;
-    [ObservableProperty] private int _currentStreak;
-    [ObservableProperty] private int _bestStreak;
-
-    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
-
-    // Reset confirmation overlay
-    [ObservableProperty] private bool _isResetConfirmationVisible;
-
-    // --- Computed properties for button coloring ---
-    // CRITICAL: Only the SELECTED button gets colored. Unselected stays default.
-
-    public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
-    public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
-    public bool IsCountry2Correct => HasAnswered && SelectedCountry == 2 && IsCorrectAnswer;
-    public bool IsCountry2Wrong => HasAnswered && SelectedCountry == 2 && !IsCorrectAnswer;
-
-    // Formatted text properties
-    public string ScoreText => $"{_gameState.CurrentScore}/{_gameState.TotalAnswered}";
-    public string StreakText => _gameState.CurrentStreak > 0 ? $"Streak: {_gameState.CurrentStreak}" : "";
-    public string BestStreakText => _gameState.BestStreak > 0 ? $"Best: {_gameState.BestStreak}" : "";
-    public string AccuracyText => _gameState.TotalAnswered > 0
-        ? $"Accuracy: {_gameState.AccuracyPercentage:F1}%"
-        : "Accuracy: --";
-
-    public ObservableCollection<QuestionType> QuestionTypes { get; } =
-        new(Enum.GetValues<QuestionType>());
-
-    // --- Constructors ---
-
-    public MainWindowViewModel()
-    {
-        GenerateNewQuestion();
-    }
-
-    public MainWindowViewModel(IGameStateRepository gameStateRepository)
-    {
-        _gameStateRepository = gameStateRepository;
-    }
-
-    // --- Initialization ---
-
-    public async Task InitializeAsync()
-    {
-        if (_gameStateRepository != null)
-        {
-            _gameState = await _gameStateRepository.GetOrCreateAsync("default");
-            SyncScoresFromGameState();
-        }
-        GenerateNewQuestion();
-    }
-
-    private void SyncScoresFromGameState()
-    {
-        CurrentScore = _gameState.CurrentScore;
-        HighScore = _gameState.HighScore;
-        CurrentStreak = _gameState.CurrentStreak;
-        BestStreak = _gameState.BestStreak;
-        RefreshTextProperties();
-    }
-
-    private void RefreshTextProperties()
-    {
-        OnPropertyChanged(nameof(ScoreText));
-        OnPropertyChanged(nameof(StreakText));
-        OnPropertyChanged(nameof(BestStreakText));
-        OnPropertyChanged(nameof(AccuracyText));
-    }
-
-    // --- Property change notifications for computed properties ---
-
-    partial void OnHasAnsweredChanged(bool value) => RefreshButtonStates();
-    partial void OnSelectedCountryChanged(int value) => RefreshButtonStates();
-    partial void OnIsCorrectAnswerChanged(bool value) => RefreshButtonStates();
-
-    partial void OnSelectedQuestionTypeChanged(QuestionType value)
-    {
-        _gameState.SelectedQuestionType = value;
-        GenerateNewQuestion();
-    }
-
-    private void RefreshButtonStates()
-    {
-        OnPropertyChanged(nameof(IsCountry1Correct));
-        OnPropertyChanged(nameof(IsCountry1Wrong));
-        OnPropertyChanged(nameof(IsCountry2Correct));
-        OnPropertyChanged(nameof(IsCountry2Wrong));
-    }
-
-    // --- Commands ---
-
-    [RelayCommand]
-    private async Task SelectCountryAsync(string countryNumberStr)
-    {
-        if (!int.TryParse(countryNumberStr, out var countryNumber)) return;
-        if (HasAnswered || _correctCountry == null) return;
-
-        HasAnswered = true;
-        SelectedCountry = countryNumber;
-
-        var selectedCountry = countryNumber == 1 ? Country1 : Country2;
-        var isCorrect = selectedCountry?.Name == _correctCountry.Name;
-        IsCorrectAnswer = isCorrect;
-
-        _gameState.RecordAnswer(isCorrect);
-        SyncScoresFromGameState();
-
-        if (Country1 != null)
-        {
-            var v1 = SelectedQuestionType.GetValue(Country1);
-            Country1Value = v1.HasValue ? SelectedQuestionType.FormatValue(v1) : "N/A";
-        }
-        if (Country2 != null)
-        {
-            var v2 = SelectedQuestionType.GetValue(Country2);
-            Country2Value = v2.HasValue ? SelectedQuestionType.FormatValue(v2) : "N/A";
-        }
-
-        ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
-
-        // Show detailed country info after answering
-        CountryDetailsText = BuildCountryDetails();
-
-        if (_gameStateRepository != null)
-        {
-            try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
-        }
-    }
-
-    [RelayCommand]
-    private void NextRound()
-    {
-        GenerateNewQuestion();
-    }
-
-    /// <summary>
-    /// Shows the reset confirmation overlay instead of immediately resetting.
-    /// </summary>
-    [RelayCommand]
-    private void RequestResetGame()
-    {
-        IsResetConfirmationVisible = true;
-    }
-
-    /// <summary>
-    /// User confirmed: reset the game.
-    /// </summary>
-    [RelayCommand]
-    private async Task ConfirmResetGameAsync()
-    {
-        IsResetConfirmationVisible = false;
-
-        _gameState.Reset();
-        SyncScoresFromGameState();
-        GenerateNewQuestion();
-
-        if (_gameStateRepository != null)
-        {
-            try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
-        }
-    }
-
-    /// <summary>
-    /// User cancelled: hide the confirmation overlay.
-    /// </summary>
-    [RelayCommand]
-    private void CancelResetGame()
-    {
-        IsResetConfirmationVisible = false;
-    }
-
-    // --- Internals ---
-
-    private string BuildCountryDetails()
-    {
-        var parts = new System.Collections.Generic.List<string>();
-        if (Country1 != null) parts.Add(Country1.GetSummary());
-        if (Country2 != null) parts.Add(Country2.GetSummary());
-        return string.Join("\n\n", parts);
-    }
-
-    private void GenerateNewQuestion()
-    {
-        HasAnswered = false;
-        SelectedCountry = 0;
-        IsCorrectAnswer = false;
-        ResultMessage = "";
-        CountryDetailsText = "";
-        Country1Value = "";
-        Country2Value = "";
-
-        var countries = CountryData.GetAllCountries();
-        if (countries.Count < 2)
-        {
-            QuestionText = "Not enough countries loaded.";
-            return;
-        }
-
-        var indices = Enumerable.Range(0, countries.Count)
-            .OrderBy(_ => _random.Next())
-            .Take(2)
-            .ToList();
-
-        Country1 = countries[indices[0]];
-        Country2 = countries[indices[1]];
-
-        QuestionText = SelectedQuestionType.GetQuestion();
-
-        var v1 = SelectedQuestionType.GetValue(Country1);
-        var v2 = SelectedQuestionType.GetValue(Country2);
-        _correctCountry = (v1 ?? 0) >= (v2 ?? 0) ? Country1 : Country2;
-    }
-
-    private string GetCorrectMessage()
-    {
-        if (_gameState.CurrentStreak >= 10) return "UNSTOPPABLE! 10+ streak!";
-        if (_gameState.CurrentStreak >= 5) return $"On fire! {_gameState.CurrentStreak} in a row!";
-        if (_gameState.CurrentStreak >= 3) return $"Great streak! {_gameState.CurrentStreak} correct!";
-
-        var messages = new[] { "Correct!", "Well done!", "Nice one!", "You got it!", "Excellent!" };
-        return messages[_random.Next(messages.Length)];
-    }
-
-    private string GetIncorrectMessage()
-    {
-        var messages = new[] { "Not quite!", "Oops!", "Close one!", "Now you know!", "Learn something new!" };
-        return messages[_random.Next(messages.Length)];
-    }
-}
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
-SIZE: .26 KB
-================================================================================
-
-using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace MyDesktopApplication.Desktop.ViewModels;
-
-public abstract partial class ViewModelBase : ObservableObject
-{
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
-    private string? _errorMessage;
-}
-
-
-================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-SIZE: 14.72 KB
+SIZE: 14.58 KB
 ================================================================================
 
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:MyDesktopApplication.Desktop.ViewModels"
+        xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
         xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
+        x:DataType="vm:CountryQuizViewModel"
         Title="Country Quiz"
         Width="600" Height="700"
         MinWidth="360" MinHeight="500"
@@ -3064,8 +2365,6 @@ SIZE: 14.72 KB
         <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
         <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
         <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
-        <conv:AnswerStateToForegroundConverter x:Key="AnswerStateFgConverter"/>
-        <conv:BoolToColorConverter x:Key="BoolToColorConverter"/>
     </Window.Resources>
 
     <!-- Responsive font sizes via Styles -->
@@ -3339,10 +2638,11 @@ SIZE: 14.72 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-SIZE: .42 KB
+SIZE: .46 KB
 ================================================================================
 
 using Avalonia.Controls;
+using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop.Views;
 
@@ -3355,7 +2655,7 @@ public partial class MainWindow : Window
         // Initialize the ViewModel when the window loads
         Loaded += async (_, _) =>
         {
-            if (DataContext is ViewModels.MainWindowViewModel vm)
+            if (DataContext is CountryQuizViewModel vm)
             {
                 await vm.InitializeAsync();
             }
@@ -4469,7 +3769,7 @@ SIZE: 1.05 KB
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -4585,8 +3885,121 @@ public class QuestionTypeTests
 
 
 ================================================================================
+FILE: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+SIZE: 4.16 KB
+================================================================================
+
+using Microsoft.EntityFrameworkCore;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Repositories;
+using Shouldly;
+using Xunit;
+
+namespace MyDesktopApplication.Integration.Tests;
+
+/// <summary>
+/// Integration tests that exercise <see cref="GameStateRepository"/> against a real
+/// <see cref="AppDbContext"/> (EF Core in-memory provider). These run in milliseconds
+/// so they are safe to run after every change.
+/// </summary>
+public class GameStateRepositoryTests
+{
+    private static DbContextOptions<AppDbContext> Options(string databaseName) =>
+        new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+    [Fact]
+    public async Task GetOrCreateAsync_CreatesNewState_WhenNoneExists()
+    {
+        await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
+        var repository = new GameStateRepository(context);
+
+        var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+
+        state.ShouldNotBeNull();
+        state.UserId.ShouldBe("player-1");
+        state.CurrentScore.ShouldBe(0);
+        state.TotalAnswered.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task GetOrCreateAsync_ReturnsSameState_OnSecondCall()
+    {
+        await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
+        var repository = new GameStateRepository(context);
+
+        var first = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+        var second = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+
+        second.Id.ShouldBe(first.Id);
+    }
+
+    [Fact]
+    public async Task RecordedAnswer_IsPersisted_AndReadableFromAFreshContext()
+    {
+        // Contexts that share an in-memory database name share the same store,
+        // which lets us prove the write actually persisted (not just cached).
+        var databaseName = Guid.NewGuid().ToString();
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+            state.RecordAnswer(isCorrect: true);
+            await repository.UpdateAsync(state, TestContext.Current.CancellationToken);
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var reloaded = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+
+            reloaded.CurrentScore.ShouldBe(1);
+            reloaded.TotalCorrect.ShouldBe(1);
+            reloaded.TotalAnswered.ShouldBe(1);
+            reloaded.CurrentStreak.ShouldBe(1);
+        }
+    }
+
+    [Fact]
+    public async Task Reset_ClearsCurrentScore_ButKeepsHighScore()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var state = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+            state.RecordAnswer(isCorrect: true);
+            state.RecordAnswer(isCorrect: true);
+            await repository.UpdateAsync(state, TestContext.Current.CancellationToken);
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            await repository.ResetAsync("player-1", TestContext.Current.CancellationToken);
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var reloaded = await repository.GetOrCreateAsync("player-1", TestContext.Current.CancellationToken);
+
+            reloaded.CurrentScore.ShouldBe(0);
+            reloaded.CurrentStreak.ShouldBe(0);
+            reloaded.HighScore.ShouldBe(2);
+            reloaded.BestStreak.ShouldBe(2);
+        }
+    }
+}
+
+
+================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-SIZE: 1.24 KB
+SIZE: 1.25 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -4600,7 +4013,7 @@ SIZE: 1.24 KB
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -4622,23 +4035,26 @@ SIZE: 1.24 KB
 
 
 ================================================================================
-FILE: tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
-SIZE: 1.57 KB
+FILE: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+SIZE: 1.70 KB
 ================================================================================
 
 using MyDesktopApplication.Core.Entities;
-using MyDesktopApplication.Desktop.ViewModels;
+using MyDesktopApplication.Shared.ViewModels;
 using Shouldly;
 using Xunit;
 
 namespace MyDesktopApplication.UI.Tests;
 
-public class MainWindowViewModelTests
+/// <summary>
+/// Tests for the shared quiz ViewModel used by every platform head (Desktop, Android, ...).
+/// </summary>
+public class CountryQuizViewModelTests
 {
     [Fact]
     public void NewViewModel_ShouldHaveInitialState()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
 
         vm.CurrentScore.ShouldBe(0);
         vm.HighScore.ShouldBe(0);
@@ -4649,7 +4065,7 @@ public class MainWindowViewModelTests
     [Fact]
     public void QuestionTypes_ShouldContainAllTypes()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
 
         vm.QuestionTypes.Count.ShouldBe(8);
         vm.QuestionTypes.ShouldContain(QuestionType.Population);
@@ -4660,7 +4076,7 @@ public class MainWindowViewModelTests
     [Fact]
     public void NextRound_ShouldSetCountries()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
 
         vm.NextRoundCommand.Execute(null);
 
@@ -4672,21 +4088,21 @@ public class MainWindowViewModelTests
     [Fact]
     public void SelectedQuestionType_DefaultsToPopulation()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
         vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
     }
 
     [Fact]
     public void HasAnswered_DefaultsToFalse()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
         vm.HasAnswered.ShouldBeFalse();
     }
 
     [Fact]
     public void ScoreText_FormatsCorrectly()
     {
-        var vm = new MainWindowViewModel();
+        var vm = new CountryQuizViewModel();
         vm.ScoreText.ShouldBe("0/0");
     }
 }
@@ -4694,7 +4110,7 @@ public class MainWindowViewModelTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 1.26 KB
+SIZE: 1.36 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -4708,7 +4124,7 @@ SIZE: 1.26 KB
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -4721,9 +4137,13 @@ SIZE: 1.26 KB
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
 
+  <!--
+    The quiz ViewModel now lives in the Shared project (one implementation for
+    every platform), so these tests reference Shared + Core and no longer need a
+    reference to the Desktop head.
+  -->
   <ItemGroup>
     <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
-    <ProjectReference Include="../../src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj" />
     <ProjectReference Include="../../src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
   </ItemGroup>
 </Project>
