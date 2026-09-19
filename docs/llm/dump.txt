@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu May 28 06:28:10 PM EDT 2026
+Generated: Sat Sep 19 04:45:18 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -34,6 +34,7 @@ DIRECTORY STRUCTURE:
 ├── fix-all-issues.sh
 ├── src
 │   ├── MyDesktopApplication.Android
+│   │   ├── AndroidApp.cs
 │   │   ├── AndroidManifest.xml
 │   │   ├── App.axaml
 │   │   ├── App.axaml.cs
@@ -1351,6 +1352,35 @@ everyone should suffer
 not because we are masochists 
 but because we want everyone to know when stuff is broken 
 so it gets fixed as quickly as possible. 
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Android/AndroidApp.cs
+SIZE: .50 KB
+================================================================================
+
+using Android.App;
+using Android.Runtime;
+using Avalonia;
+using Avalonia.Android;
+
+namespace MyDesktopApplication.Android;
+
+[Application]
+public class AndroidApp : AvaloniaAndroidApplication<App>
+{
+    public AndroidApp(IntPtr javaReference, JniHandleOwnership transfer)
+        : base(javaReference, transfer)
+    {
+    }
+
+    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
+    {
+        return base.CustomizeAppBuilder(builder)
+            .WithInterFont()
+            .LogToTrace();
+    }
+}
 
 
 ================================================================================
