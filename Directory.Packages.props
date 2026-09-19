@@ -5,7 +5,7 @@
 
     <!-- Version variables for grouped packages -->
     <AvaloniaVersion>12.1.2</AvaloniaVersion>
-    <EFCoreVersion>10.0.8</EFCoreVersion>
+    <EFCoreVersion>10.0.12</EFCoreVersion>
     <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
     <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
     <SerilogVersion>4.3.1</SerilogVersion>
