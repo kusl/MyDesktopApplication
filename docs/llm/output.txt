@@ -245,4 +245,20 @@ kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication
 rm 'src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs'
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
 rm 'tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs'
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time python3 scripts/update_country_data.py --dry-run
+Fetching indicators from the World Bank API...
+  Population         <- SP.POP.TOTL
+  Area               <- AG.LND.TOTL.K2
+  GdpTotal           <- NY.GDP.MKTP.CD
+  GdpPerCapita       <- NY.GDP.PCAP.CD
+  PopulationDensity  <- EN.POP.DNST
+  LiteracyRate       <- SE.ADT.LITR.ZS
+  LifeExpectancy     <- SP.DYN.LE00.IN
+
+Scanned 192 countries; 1281 field value(s) changed.
+Dry run - no file written.
+
+real	0m50.558s
+user	0m0.084s
+sys	0m0.020s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
