@@ -15802,3 +15802,13 @@ Recommended order: apply Files 1 and 2, run `dotnet build`, confirm Android comp
 29
 
 Please review the entire `dump.txt` and `output.txt` in the project files. 
+Please give me FULL files for all files that need to change. 
+If we have updated data, please give me the latest data as well 
+not sure how we can keep this data up to date going forward 
+I don't want the application to need a network connection to work 
+so the data must stay local somehow 
+but I am sure there are other things we can fix 
+for example, can we use xunit.v3 4.x now with avalonia? 
+if so, please make this change as well 
+remember, FULL files for ALL files that need to change 
+please and thank you 
