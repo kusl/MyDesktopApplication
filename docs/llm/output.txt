@@ -898,3 +898,303 @@ kushal@fedora:~/src/dotnet/MyDesktopApplication$
 
 
 
+kushal@fedora:~/src/ts/learnsignal.github.io$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+
+Build succeeded in 1.4s
+
+real	0m1.682s
+user	0m1.434s
+sys	0m0.442s
+Restore succeeded with 4 warning(s) in 1.4s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+
+Build succeeded with 4 warning(s) in 1.6s
+
+real	0m1.731s
+user	0m2.046s
+sys	0m0.401s
+Restore succeeded with 4 warning(s) in 0.8s
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Core net10.0 succeeded (2.9s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded with 1 warning(s) (0.5s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.6s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.8s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded with 1 warning(s) (0.5s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.4s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded with 1 warning(s) (1.5s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Core net10.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded with 1 warning(s) (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Android net10.0-android android-x64 succeeded with 1 warning(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Android net10.0-android android-arm64 succeeded with 1 warning(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+  MyDesktopApplication.Android net10.0-android succeeded with 1 warning(s) (25.9s) → src/MyDesktopApplication.Android/bin/Debug/net10.0-android/MyDesktopApplication.Android.dll
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+
+Build succeeded with 11 warning(s) in 30.9s
+
+real	0m31.070s
+user	1m45.569s
+sys	0m5.074s
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64)
+Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64)
+Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64) passed (641ms)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64) passed (609ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64) passed (1s 186ms)
+
+Test run summary: Passed!
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll (net10.0|x64) passed (1s 186ms)
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll (net10.0|x64) passed (641ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll (net10.0|x64) passed (609ms)
+
+  total: 26
+  failed: 0
+  succeeded: 26
+  skipped: 0
+  duration: 1s 428ms
+
+real	0m2.921s
+user	0m5.192s
+sys	0m0.815s
+Restore succeeded with 4 warning(s) in 0.7s
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+
+Build succeeded with 4 warning(s) in 0.8s
+Project 'MyDesktopApplication.Android' has the following package references
+   [net10.0-android36.0]: 
+   Top-level Package                                  Requested     Resolved
+   > Avalonia                                         12.1.2        12.1.2  
+   > Avalonia.Android                                 12.1.2        12.1.2  
+   > Avalonia.Fonts.Inter                             12.1.2        12.1.2  
+   > Avalonia.Themes.Fluent                           12.1.2        12.1.2  
+   > CommunityToolkit.Mvvm                            8.4.2         8.4.2   
+   > Microsoft.EntityFrameworkCore                    10.0.12       10.0.12 
+   > Microsoft.EntityFrameworkCore.Sqlite             10.0.12       10.0.12 
+   > Microsoft.Extensions.DependencyInjection         10.0.12       10.0.12 
+   > Microsoft.Extensions.Logging                     10.0.12       10.0.12 
+   > Microsoft.NET.ILLink.Tasks                 (A)   [10.0.11, )   10.0.11 
+   > OpenTelemetry                                    1.15.0        1.15.0  
+   > OpenTelemetry.Exporter.Console                   1.15.0        1.15.0  
+   > OpenTelemetry.Extensions.Hosting                 1.15.0        1.15.0  
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net10.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia.Desktop                              12.1.2      12.1.2  
+   > Avalonia.Fonts.Inter                          12.1.2      12.1.2  
+   > Avalonia.Themes.Fluent                        12.1.2      12.1.2  
+   > Microsoft.Extensions.DependencyInjection      10.0.12     10.0.12 
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net10.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 10.0.12     10.0.12 
+   > Microsoft.EntityFrameworkCore.Sqlite          10.0.12     10.0.12 
+   > Microsoft.Extensions.DependencyInjection      10.0.12     10.0.12 
+   > Microsoft.Extensions.Logging                  10.0.12     10.0.12 
+   > OpenTelemetry                                 1.15.0      1.15.0  
+   > OpenTelemetry.Exporter.Console                1.15.0      1.15.0  
+   > OpenTelemetry.Extensions.Hosting              1.15.0      1.15.0  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net10.0]: 
+   Top-level Package            Requested   Resolved
+   > CommunityToolkit.Mvvm      8.4.2       8.4.2   
+   > FluentValidation           12.1.1      12.1.1  
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.0.1      10.0.1  
+   > Microsoft.NET.Test.Sdk         18.10.1     18.10.1 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.0       4.0.0   
+   > xunit.v3                       4.0.1       4.0.1   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          10.0.1      10.0.1  
+   > Microsoft.EntityFrameworkCore.InMemory      10.0.12     10.0.12 
+   > Microsoft.NET.Test.Sdk                      18.10.1     18.10.1 
+   > NSubstitute                                 6.2.0       6.2.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit.runner.visualstudio                   4.0.0       4.0.0   
+   > xunit.v3                                    4.0.1       4.0.1   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net10.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.0.1      10.0.1  
+   > Microsoft.NET.Test.Sdk         18.10.1     18.10.1 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.0       4.0.0   
+   > xunit.v3                       4.0.1       4.0.1   
+
+(A) : Auto-referenced package.
+
+real	0m2.699s
+user	0m2.733s
+sys	0m0.608s
+Restore succeeded with 4 warning(s) in 0.7s
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj : warning NU1902: Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j
+
+Build succeeded with 4 warning(s) in 0.8s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `MyDesktopApplication.Android` has the following updates to its packages
+   [net10.0-android36.0]: 
+   Top-level Package                       Requested   Resolved   Latest
+   > OpenTelemetry                         1.15.0      1.15.0     1.19.0
+   > OpenTelemetry.Exporter.Console        1.15.0      1.15.0     1.19.0
+   > OpenTelemetry.Extensions.Hosting      1.15.0      1.15.0     1.19.0
+
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+Project `MyDesktopApplication.Infrastructure` has the following updates to its packages
+   [net10.0]: 
+   Top-level Package                       Requested   Resolved   Latest
+   > OpenTelemetry                         1.15.0      1.15.0     1.19.0
+   > OpenTelemetry.Exporter.Console        1.15.0      1.15.0     1.19.0
+   > OpenTelemetry.Extensions.Hosting      1.15.0      1.15.0     1.19.0
+
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m4.802s
+user	0m4.434s
+sys	0m0.729s
+Warnings were encountered while loading the workspace. Set the verbosity option to the 'diagnostic' level to log warnings.
+
+real	0m10.399s
+user	0m15.981s
+sys	0m1.516s
+==============================================
+  Generating Clean Project Export
+==============================================
+Generating directory structure...
+Collecting and cleaning file contents...
+Processed: .gitattributes
+Processed: .github/dependabot.yml
+Processed: .github/workflows/build-and-release.yml
+Processed: .github/workflows/update-data.yml
+Processed: .gitignore
+Processed: Directory.Build.props
+Processed: Directory.Packages.props
+Processed: MyDesktopApplication.slnx
+Processed: README.md
+Processed: docs/thoughts.md
+Processed: global.json
+Processed: scripts/update_country_data.py
+Processed: src/MyDesktopApplication.Android/AndroidApp.cs
+Processed: src/MyDesktopApplication.Android/AndroidManifest.xml
+Processed: src/MyDesktopApplication.Android/App.axaml
+Processed: src/MyDesktopApplication.Android/App.axaml.cs
+Processed: src/MyDesktopApplication.Android/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Android/MainActivity.cs
+Processed: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processed: src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processed: src/MyDesktopApplication.Core/Entities/Country.cs
+Processed: src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processed: src/MyDesktopApplication.Core/Entities/GameState.cs
+Processed: src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processed: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processed: src/MyDesktopApplication.Desktop/App.axaml
+Processed: src/MyDesktopApplication.Desktop/App.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processed: src/MyDesktopApplication.Desktop/Program.cs
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/app.manifest
+Processed: src/MyDesktopApplication.Desktop/appsettings.json
+Processed: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processed: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processed: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processed: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processed: src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processed: src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processed: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processed: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processed: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processed: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processed: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processed: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processed: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+Export Complete: docs/llm/dump.txt
+
+real	0m0.691s
+user	0m0.348s
+sys	0m0.460s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

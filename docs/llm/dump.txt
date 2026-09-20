@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sat Sep 19 05:54:55 PM EDT 2026
+Generated: Sat Sep 19 10:35:00 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -61,6 +61,7 @@ DIRECTORY STRUCTURE:
 │   │   │   └── QuestionType.cs
 │   │   ├── Interfaces
 │   │   │   ├── IGameStateRepository.cs
+│   │   │   ├── IGameTelemetry.cs
 │   │   │   └── IRepository.cs
 │   │   └── MyDesktopApplication.Core.csproj
 │   ├── MyDesktopApplication.Desktop
@@ -83,6 +84,10 @@ DIRECTORY STRUCTURE:
 │   │   │   └── DesignTimeDbContextFactory.cs
 │   │   ├── DependencyInjection.cs
 │   │   ├── MyDesktopApplication.Infrastructure.csproj
+│   │   ├── Observability
+│   │   │   ├── AppTelemetry.cs
+│   │   │   ├── GameTelemetry.cs
+│   │   │   └── ObservabilityExtensions.cs
 │   │   └── Repositories
 │   │       ├── GameStateRepository.cs
 │   │       └── Repository.cs
@@ -92,8 +97,7 @@ DIRECTORY STRUCTURE:
 │       │   └── MotivationalMessages.cs
 │       ├── MyDesktopApplication.Shared.csproj
 │       └── ViewModels
-│           ├── CountryQuizViewModel.cs
-│           └── ViewModelBase.cs
+│           └── CountryQuizViewModel.cs
 └── tests
     ├── MyDesktopApplication.Core.Tests
     │   ├── GameStateTests.cs
@@ -1185,18 +1189,17 @@ SIZE: .30 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml.cs
-SIZE: 2.74 KB
+SIZE: 1.87 KB
 ================================================================================
 
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MyDesktopApplication.Android.Views;
-using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Infrastructure.Data;
-using MyDesktopApplication.Infrastructure.Repositories;
+using MyDesktopApplication.Infrastructure.Observability;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android;
@@ -1212,38 +1215,25 @@ public partial class App : Avalonia.Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Set up dependency injection (runs once for the application).
-        var services = new ServiceCollection();
-
-        // Get the Android-specific database path.
         var dbPath = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "countryquiz.db");
 
-        // Register DbContext.
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite($"Data Source={dbPath}"));
-
-        // Register repositories.
-        services.AddScoped<IGameStateRepository, GameStateRepository>();
-
-        // Register ViewModels.
+        var services = new ServiceCollection();
+        services.AddInfrastructure(dbPath);
+        services.AddObservability();
         services.AddTransient<CountryQuizViewModel>();
 
         var serviceProvider = services.BuildServiceProvider();
         Services = serviceProvider;
+        serviceProvider.StartObservability();
 
-        // Initialize the database synchronously here so the view factory
-        // (which Android may call multiple times) never races on schema creation.
         using (var scope = serviceProvider.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             dbContext.Database.EnsureCreated();
         }
 
-        // Avalonia 12: Android uses IActivityApplicationLifetime with a
-        // MainViewFactory (Func<Control>) instead of a single MainView instance,
-        // because the activity can be created more than once during the app lifetime.
         if (ApplicationLifetime is IActivityApplicationLifetime activityLifetime)
         {
             activityLifetime.MainViewFactory = CreateMainView;
@@ -1261,8 +1251,6 @@ public partial class App : Avalonia.Application
             DataContext = viewModel
         };
 
-        // Kick off async view-model initialization without blocking the UI thread.
-        // Avalonia marshals the continuation back appropriately for bound properties.
         _ = viewModel.InitializeAsync();
 
         return view;
@@ -1368,21 +1356,14 @@ public class MainActivity : AvaloniaMainActivity
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 5.11 KB
+SIZE: 3.04 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- =================================================================== -->
-  <!-- SIGNING CONFIGURATION                                               -->
-  <!-- Signing is ONLY enabled when AndroidSigningPassword is provided.    -->
-  <!-- =================================================================== -->
-  
-  <!-- Debug builds: use hardcoded password for local development -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <AndroidSigningPassword>android</AndroidSigningPassword>
   </PropertyGroup>
-  
-  <!-- Only enable signing when password is provided -->
+
   <PropertyGroup Condition="'$(AndroidSigningPassword)' != ''">
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
@@ -1390,81 +1371,56 @@ SIZE: 5.11 KB
     <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
     <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
   </PropertyGroup>
-  
-  <!-- Explicitly disable signing when no password provided -->
+
   <PropertyGroup Condition="'$(AndroidSigningPassword)' == ''">
     <AndroidKeyStore>False</AndroidKeyStore>
   </PropertyGroup>
-  
-  <!-- =================================================================== -->
-  <!-- MAIN PROJECT CONFIGURATION                                          -->
-  <!-- =================================================================== -->
+
   <PropertyGroup>
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    
-    <!-- Dynamic versioning from CI -->
+
     <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
     <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
-    
-    <!-- =================================================================== -->
-    <!-- MONO RUNTIME SETTINGS                                              -->
-    <!-- Disable AOT to avoid class-init crashes; use JIT/Interpreter       -->
-    <!-- =================================================================== -->
+
     <RunAOTCompilation>false</RunAOTCompilation>
     <PublishAot>false</PublishAot>
     <UseInterpreter>true</UseInterpreter>
     <PublishTrimmed>false</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
-    
-    <!-- Fix aapt2 daemon hang issues on Fedora -->
+
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    
-    <!-- Standard settings -->
+
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <!-- Tell the linker to preserve our assemblies completely -->
   <ItemGroup>
     <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
     <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
     <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
   </ItemGroup>
 
-  <!-- =================================================================== -->
-  <!-- PACKAGE REFERENCES                                                  -->
-  <!-- =================================================================== -->
-  <!-- CRITICAL: These packages MUST be explicitly referenced here because -->
-  <!-- transitive dependencies from net10.0 projects don't automatically   -->
-  <!-- flow to net10.0-android builds. Without these, you get CS0234       -->
-  <!-- errors for Microsoft.EntityFrameworkCore and Microsoft.Extensions   -->
-  <!-- =================================================================== -->
   <ItemGroup>
-    <!-- Avalonia packages -->
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
-    
-    <!-- MVVM toolkit -->
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    
-    <!-- EXPLICIT: These are needed because Infrastructure project is net10.0 -->
-    <!-- and its transitive dependencies don't flow to net10.0-android -->
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
   </ItemGroup>
 
-  <!-- =================================================================== -->
-  <!-- PROJECT REFERENCES                                                  -->
-  <!-- =================================================================== -->
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
@@ -1753,12 +1709,10 @@ SIZE: 12.13 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-SIZE: .98 KB
+SIZE: .18 KB
 ================================================================================
 
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android.Views;
 
@@ -1767,32 +1721,6 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-    }
-
-    private void OnCountry1Click(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is CountryQuizViewModel vm)
-        {
-            // SelectCountryCommand takes a string parameter ("1" or "2")
-            vm.SelectCountryCommand.Execute("1");
-        }
-    }
-
-    private void OnCountry2Click(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is CountryQuizViewModel vm)
-        {
-            vm.SelectCountryCommand.Execute("2");
-        }
-    }
-
-    private void OnNextClick(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is CountryQuizViewModel vm)
-        {
-            // The command is NextRoundCommand, not NextQuestionCommand
-            vm.NextRoundCommand.Execute(null);
-        }
     }
 }
 
@@ -2091,6 +2019,23 @@ public interface IGameStateRepository : IRepository<GameState>
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+SIZE: .27 KB
+================================================================================
+
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Core.Interfaces;
+
+public interface IGameTelemetry
+{
+    void RecordQuestionGenerated(QuestionType questionType);
+    void RecordAnswer(bool isCorrect, QuestionType questionType);
+    void RecordGameReset();
+}
+
+
+================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
 SIZE: .74 KB
 ================================================================================
@@ -2146,7 +2091,7 @@ SIZE: .30 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.10 KB
+SIZE: 1.23 KB
 ================================================================================
 
 using Avalonia.Controls.ApplicationLifetimes;
@@ -2154,6 +2099,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using MyDesktopApplication.Desktop.Views;
 using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Infrastructure.Observability;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop;
@@ -2171,9 +2117,11 @@ public partial class App : Avalonia.Application
     {
         var services = new ServiceCollection();
         services.AddInfrastructure();
+        services.AddObservability();
         services.AddTransient<CountryQuizViewModel>();
 
         _services = services.BuildServiceProvider();
+        _services.StartObservability();
 
         await DependencyInjection.InitializeDatabaseAsync(_services);
 
@@ -2190,7 +2138,7 @@ public partial class App : Avalonia.Application
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Converters/Converters.cs
-SIZE: 3.77 KB
+SIZE: 1.96 KB
 ================================================================================
 
 using System;
@@ -2202,9 +2150,6 @@ using MyDesktopApplication.Core.Entities;
 
 namespace MyDesktopApplication.Desktop.Converters;
 
-/// <summary>
-/// Converts QuestionType enum to human-readable label.
-/// </summary>
 public class QuestionTypeLabelConverter : IValueConverter
 {
     public static readonly QuestionTypeLabelConverter Instance = new();
@@ -2220,11 +2165,6 @@ public class QuestionTypeLabelConverter : IValueConverter
         => throw new NotSupportedException();
 }
 
-/// <summary>
-/// Converts (IsCorrect, IsWrong) booleans to a background color.
-/// ONLY the selected button will have IsCorrect=true or IsWrong=true.
-/// Unselected buttons will have both as false → default color.
-/// </summary>
 public class AnswerStateToBackgroundConverter : IMultiValueConverter
 {
     public static readonly AnswerStateToBackgroundConverter Instance = new();
@@ -2234,18 +2174,14 @@ public class AnswerStateToBackgroundConverter : IMultiValueConverter
         if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
             if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 139, 34));   // Green - correct selected
+                return new SolidColorBrush(Color.FromRgb(34, 139, 34));
             if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(220, 53, 69));   // Red - wrong selected
+                return new SolidColorBrush(Color.FromRgb(220, 53, 69));
         }
-        // Default: unselected or not yet answered
-        return new SolidColorBrush(Color.FromRgb(30, 41, 59)); // Slate-800 (#1e293b)
+        return new SolidColorBrush(Color.FromRgb(30, 41, 59));
     }
 }
 
-/// <summary>
-/// Converts (IsCorrect, IsWrong) booleans to a border color.
-/// </summary>
 public class AnswerStateToBorderConverter : IMultiValueConverter
 {
     public static readonly AnswerStateToBorderConverter Instance = new();
@@ -2255,48 +2191,12 @@ public class AnswerStateToBorderConverter : IMultiValueConverter
         if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
         {
             if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 197, 94));   // Bright green border
+                return new SolidColorBrush(Color.FromRgb(34, 197, 94));
             if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(239, 68, 68));   // Bright red border
+                return new SolidColorBrush(Color.FromRgb(239, 68, 68));
         }
-        return new SolidColorBrush(Color.FromRgb(55, 65, 81)); // Gray border default
+        return new SolidColorBrush(Color.FromRgb(55, 65, 81));
     }
-}
-
-/// <summary>
-/// Converts answer state to text foreground color.
-/// </summary>
-public class AnswerStateToForegroundConverter : IMultiValueConverter
-{
-    public static readonly AnswerStateToForegroundConverter Instance = new();
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        // Always white text
-        return new SolidColorBrush(Colors.White);
-    }
-}
-
-/// <summary>
-/// Simple bool to color converter using ConverterParameter format: "TrueColor|FalseColor"
-/// </summary>
-public class BoolToColorConverter : IValueConverter
-{
-    public static readonly BoolToColorConverter Instance = new();
-
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (value is bool b && parameter is string s)
-        {
-            var parts = s.Split('|');
-            var colorStr = b ? parts[0] : (parts.Length > 1 ? parts[1] : "#FFFFFF");
-            return new SolidColorBrush(Color.Parse(colorStr));
-        }
-        return new SolidColorBrush(Colors.White);
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
 }
 
 
@@ -2858,7 +2758,7 @@ public static class DependencyInjection
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-SIZE: .55 KB
+SIZE: .80 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -2874,36 +2774,195 @@ SIZE: .55 KB
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
   </ItemGroup>
 </Project>
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+SIZE: .53 KB
+================================================================================
+
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Reflection;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public static class AppTelemetry
+{
+    public const string ServiceName = "MyDesktopApplication";
+
+    public static string ServiceVersion { get; } =
+        typeof(AppTelemetry).Assembly.GetName().Version?.ToString() ?? "0.0.0";
+
+    public static readonly ActivitySource ActivitySource = new(ServiceName, ServiceVersion);
+
+    public static readonly Meter Meter = new(ServiceName, ServiceVersion);
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+SIZE: 1.50 KB
+================================================================================
+
+using System.Diagnostics.Metrics;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public sealed class GameTelemetry : IGameTelemetry
+{
+    private readonly Counter<long> _questions;
+    private readonly Counter<long> _answers;
+    private readonly Counter<long> _resets;
+
+    public GameTelemetry()
+    {
+        _questions = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.questions_generated",
+            unit: "{question}",
+            description: "Number of quiz questions generated.");
+
+        _answers = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.answers_submitted",
+            unit: "{answer}",
+            description: "Number of answers submitted.");
+
+        _resets = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.games_reset",
+            unit: "{reset}",
+            description: "Number of times the game was reset.");
+    }
+
+    public void RecordQuestionGenerated(QuestionType questionType)
+    {
+        _questions.Add(1, new KeyValuePair<string, object?>("question_type", questionType.ToString()));
+    }
+
+    public void RecordAnswer(bool isCorrect, QuestionType questionType)
+    {
+        _answers.Add(
+            1,
+            new KeyValuePair<string, object?>("correct", isCorrect),
+            new KeyValuePair<string, object?>("question_type", questionType.ToString()));
+    }
+
+    public void RecordGameReset()
+    {
+        _resets.Add(1);
+    }
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+SIZE: 1.74 KB
+================================================================================
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MyDesktopApplication.Core.Interfaces;
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public static class ObservabilityExtensions
+{
+    public static IServiceCollection AddObservability(this IServiceCollection services)
+    {
+        services.AddSingleton<IGameTelemetry, GameTelemetry>();
+
+        services.AddLogging(logging =>
+        {
+            logging.AddOpenTelemetry(options =>
+            {
+                options.SetResourceBuilder(BuildResource());
+                options.IncludeScopes = true;
+                options.IncludeFormattedMessage = true;
+                options.AddConsoleExporter();
+            });
+        });
+
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(AppTelemetry.ServiceName, serviceVersion: AppTelemetry.ServiceVersion))
+            .WithTracing(tracing => tracing
+                .AddSource(AppTelemetry.ServiceName)
+                .AddConsoleExporter())
+            .WithMetrics(metrics => metrics
+                .AddMeter(AppTelemetry.ServiceName)
+                .AddConsoleExporter());
+
+        return services;
+    }
+
+    public static void StartObservability(this IServiceProvider services)
+    {
+        _ = services.GetService<TracerProvider>();
+        _ = services.GetService<MeterProvider>();
+        _ = services.GetService<ILoggerFactory>();
+    }
+
+    private static ResourceBuilder BuildResource() => ResourceBuilder.CreateDefault()
+        .AddService(AppTelemetry.ServiceName, serviceVersion: AppTelemetry.ServiceVersion);
+}
+
+
+================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
-SIZE: 1.47 KB
+SIZE: 2.40 KB
 ================================================================================
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using MyDesktopApplication.Core.Entities;
 using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Observability;
 
 namespace MyDesktopApplication.Infrastructure.Repositories;
 
 public class GameStateRepository : Repository<GameState>, IGameStateRepository
 {
-    public GameStateRepository(AppDbContext context) : base(context)
+    private readonly ILogger<GameStateRepository> _logger;
+
+    public GameStateRepository(AppDbContext context, ILogger<GameStateRepository>? logger = null)
+        : base(context)
     {
+        _logger = logger ?? NullLogger<GameStateRepository>.Instance;
     }
 
     public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
     {
+        using var activity = AppTelemetry.ActivitySource.StartActivity("GameState.GetOrCreate");
+        activity?.SetTag("user.id", userId);
+
         var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
         if (state == null)
         {
             state = new GameState { UserId = userId };
             await AddAsync(state, ct);
+            activity?.SetTag("gamestate.created", true);
+            _logger.LogInformation("Created new game state for user {UserId}", userId);
         }
+        else
+        {
+            activity?.SetTag("gamestate.created", false);
+            _logger.LogDebug("Loaded game state for user {UserId} with score {Score}", userId, state.CurrentScore);
+        }
+
         return state;
     }
 
@@ -2914,7 +2973,6 @@ public class GameStateRepository : Repository<GameState>, IGameStateRepository
 
     public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
     {
-        // If the entity is new (Id is empty Guid), add it; otherwise update it
         if (gameState.Id == Guid.Empty)
         {
             await AddAsync(gameState, ct);
@@ -2927,9 +2985,13 @@ public class GameStateRepository : Repository<GameState>, IGameStateRepository
 
     public async Task ResetAsync(string userId, CancellationToken ct = default)
     {
+        using var activity = AppTelemetry.ActivitySource.StartActivity("GameState.Reset");
+        activity?.SetTag("user.id", userId);
+
         var state = await GetOrCreateAsync(userId, ct);
         state.Reset();
         await UpdateAsync(state, ct);
+        _logger.LogInformation("Reset game state for user {UserId}", userId);
     }
 }
 
@@ -3323,7 +3385,7 @@ SIZE: .45 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 8.54 KB
+SIZE: 8.18 KB
 ================================================================================
 
 using System;
@@ -3338,19 +3400,14 @@ using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
-/// <summary>
-/// Shared ViewModel for the Country Quiz game.
-/// Used by Android (and potentially other platforms).
-/// </summary>
 public partial class CountryQuizViewModel : ObservableObject
 {
     private readonly IGameStateRepository? _gameStateRepository;
+    private readonly IGameTelemetry? _telemetry;
     private readonly Random _random = new();
     private readonly List<Country> _countries;
     private GameState _gameState = new();
     private Country? _correctCountry;
-
-    // --- Observable properties ---
 
     [ObservableProperty] private string _questionText = "Loading...";
 
@@ -3364,7 +3421,7 @@ public partial class CountryQuizViewModel : ObservableObject
     [ObservableProperty] private string _countryDetailsText = "";
     [ObservableProperty] private bool _hasAnswered;
     [ObservableProperty] private bool _isCorrectAnswer;
-    [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
+    [ObservableProperty] private int _selectedCountry;
 
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _highScore;
@@ -3373,11 +3430,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
 
-    // Reset confirmation
     [ObservableProperty] private bool _isResetConfirmationVisible;
-
-    // --- Computed properties for button coloring ---
-    // CRITICAL: Only the SELECTED button gets colored. Unselected stays default.
 
     public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
     public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
@@ -3394,18 +3447,15 @@ public partial class CountryQuizViewModel : ObservableObject
     public ObservableCollection<QuestionType> QuestionTypes { get; } =
         new(Enum.GetValues<QuestionType>());
 
-    // --- Constructors ---
+    public CountryQuizViewModel() : this(null, null) { }
 
-    public CountryQuizViewModel() : this(null) { }
-
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
+    public CountryQuizViewModel(IGameStateRepository? gameStateRepository, IGameTelemetry? telemetry = null)
     {
         _gameStateRepository = gameStateRepository;
+        _telemetry = telemetry;
         _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
-
-    // --- Initialization ---
 
     public async Task InitializeAsync()
     {
@@ -3434,8 +3484,6 @@ public partial class CountryQuizViewModel : ObservableObject
         OnPropertyChanged(nameof(AccuracyText));
     }
 
-    // --- Property change handlers ---
-
     partial void OnHasAnsweredChanged(bool value) => RefreshButtonStates();
     partial void OnSelectedCountryChanged(int value) => RefreshButtonStates();
     partial void OnIsCorrectAnswerChanged(bool value) => RefreshButtonStates();
@@ -3454,8 +3502,6 @@ public partial class CountryQuizViewModel : ObservableObject
         OnPropertyChanged(nameof(IsCountry2Wrong));
     }
 
-    // --- Commands ---
-
     [RelayCommand]
     private async Task SelectCountryAsync(string countryNumberStr)
     {
@@ -3470,6 +3516,7 @@ public partial class CountryQuizViewModel : ObservableObject
         IsCorrectAnswer = isCorrect;
 
         _gameState.RecordAnswer(isCorrect);
+        _telemetry?.RecordAnswer(isCorrect, SelectedQuestionType);
         SyncScoresFromGameState();
 
         if (Country1 != null)
@@ -3485,13 +3532,12 @@ public partial class CountryQuizViewModel : ObservableObject
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
-        // Show detailed country info after answering
         CountryDetailsText = BuildCountryDetails();
 
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
+            catch { }
         }
     }
 
@@ -3513,13 +3559,14 @@ public partial class CountryQuizViewModel : ObservableObject
         IsResetConfirmationVisible = false;
 
         _gameState.Reset();
+        _telemetry?.RecordGameReset();
         SyncScoresFromGameState();
         GenerateNewQuestion();
 
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
+            catch { }
         }
     }
 
@@ -3528,8 +3575,6 @@ public partial class CountryQuizViewModel : ObservableObject
     {
         IsResetConfirmationVisible = false;
     }
-
-    // --- Internals ---
 
     private string BuildCountryDetails()
     {
@@ -3568,6 +3613,8 @@ public partial class CountryQuizViewModel : ObservableObject
         var v1 = SelectedQuestionType.GetValue(Country1);
         var v2 = SelectedQuestionType.GetValue(Country2);
         _correctCountry = (v1 ?? 0) >= (v2 ?? 0) ? Country1 : Country2;
+
+        _telemetry?.RecordQuestionGenerated(SelectedQuestionType);
     }
 
     private string GetCorrectMessage()
@@ -3584,100 +3631,6 @@ public partial class CountryQuizViewModel : ObservableObject
     {
         var messages = new[] { "Not quite!", "Oops!", "Close one!", "Now you know!", "Learn something new!" };
         return messages[_random.Next(messages.Length)];
-    }
-}
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
-SIZE: 2.01 KB
-================================================================================
-
-using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace MyDesktopApplication.Shared.ViewModels;
-
-/// <summary>
-/// Base class for all ViewModels providing common functionality
-/// </summary>
-public abstract partial class ViewModelBase : ObservableObject
-{
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
-    private string? _errorMessage;
-
-    [ObservableProperty]
-    private bool _hasError;
-
-    /// <summary>
-    /// Sets an error message and marks HasError as true
-    /// </summary>
-    protected void SetError(string message)
-    {
-        ErrorMessage = message;
-        HasError = true;
-    }
-
-    /// <summary>
-    /// Clears the error message and marks HasError as false
-    /// </summary>
-    protected void ClearError()
-    {
-        ErrorMessage = null;
-        HasError = false;
-    }
-
-    /// <summary>
-    /// Executes an async operation with busy state management and error handling
-    /// </summary>
-    protected async Task ExecuteAsync(Func<Task> operation, string? errorContext = null)
-    {
-        if (IsBusy) return;
-
-        try
-        {
-            IsBusy = true;
-            ClearError();
-            await operation();
-        }
-        catch (Exception ex)
-        {
-            SetError(errorContext != null
-                ? $"{errorContext}: {ex.Message}"
-                : ex.Message);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    /// <summary>
-    /// Executes an async operation that returns a result
-    /// </summary>
-    protected async Task<T?> ExecuteAsync<T>(Func<Task<T>> operation, string? errorContext = null)
-    {
-        if (IsBusy) return default;
-
-        try
-        {
-            IsBusy = true;
-            ClearError();
-            return await operation();
-        }
-        catch (Exception ex)
-        {
-            SetError(errorContext != null
-                ? $"{errorContext}: {ex.Message}"
-                : ex.Message);
-            return default;
-        }
-        finally
-        {
-            IsBusy = false;
-        }
     }
 }
 
