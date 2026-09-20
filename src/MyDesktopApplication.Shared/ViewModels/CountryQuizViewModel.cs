@@ -10,19 +10,14 @@ using MyDesktopApplication.Shared.Data;
 
 namespace MyDesktopApplication.Shared.ViewModels;
 
-/// <summary>
-/// Shared ViewModel for the Country Quiz game.
-/// Used by Android (and potentially other platforms).
-/// </summary>
 public partial class CountryQuizViewModel : ObservableObject
 {
     private readonly IGameStateRepository? _gameStateRepository;
+    private readonly IGameTelemetry? _telemetry;
     private readonly Random _random = new();
     private readonly List<Country> _countries;
     private GameState _gameState = new();
     private Country? _correctCountry;
-
-    // --- Observable properties ---
 
     [ObservableProperty] private string _questionText = "Loading...";
 
@@ -36,7 +31,7 @@ public partial class CountryQuizViewModel : ObservableObject
     [ObservableProperty] private string _countryDetailsText = "";
     [ObservableProperty] private bool _hasAnswered;
     [ObservableProperty] private bool _isCorrectAnswer;
-    [ObservableProperty] private int _selectedCountry; // 0=none, 1=country1, 2=country2
+    [ObservableProperty] private int _selectedCountry;
 
     [ObservableProperty] private int _currentScore;
     [ObservableProperty] private int _highScore;
@@ -45,11 +40,7 @@ public partial class CountryQuizViewModel : ObservableObject
 
     [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
 
-    // Reset confirmation
     [ObservableProperty] private bool _isResetConfirmationVisible;
-
-    // --- Computed properties for button coloring ---
-    // CRITICAL: Only the SELECTED button gets colored. Unselected stays default.
 
     public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
     public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
@@ -66,18 +57,15 @@ public partial class CountryQuizViewModel : ObservableObject
     public ObservableCollection<QuestionType> QuestionTypes { get; } =
         new(Enum.GetValues<QuestionType>());
 
-    // --- Constructors ---
+    public CountryQuizViewModel() : this(null, null) { }
 
-    public CountryQuizViewModel() : this(null) { }
-
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository)
+    public CountryQuizViewModel(IGameStateRepository? gameStateRepository, IGameTelemetry? telemetry = null)
     {
         _gameStateRepository = gameStateRepository;
+        _telemetry = telemetry;
         _countries = CountryData.GetAllCountries().ToList();
         GenerateNewQuestion();
     }
-
-    // --- Initialization ---
 
     public async Task InitializeAsync()
     {
@@ -106,8 +94,6 @@ public partial class CountryQuizViewModel : ObservableObject
         OnPropertyChanged(nameof(AccuracyText));
     }
 
-    // --- Property change handlers ---
-
     partial void OnHasAnsweredChanged(bool value) => RefreshButtonStates();
     partial void OnSelectedCountryChanged(int value) => RefreshButtonStates();
     partial void OnIsCorrectAnswerChanged(bool value) => RefreshButtonStates();
@@ -126,8 +112,6 @@ public partial class CountryQuizViewModel : ObservableObject
         OnPropertyChanged(nameof(IsCountry2Wrong));
     }
 
-    // --- Commands ---
-
     [RelayCommand]
     private async Task SelectCountryAsync(string countryNumberStr)
     {
@@ -142,6 +126,7 @@ public partial class CountryQuizViewModel : ObservableObject
         IsCorrectAnswer = isCorrect;
 
         _gameState.RecordAnswer(isCorrect);
+        _telemetry?.RecordAnswer(isCorrect, SelectedQuestionType);
         SyncScoresFromGameState();
 
         if (Country1 != null)
@@ -157,13 +142,12 @@ public partial class CountryQuizViewModel : ObservableObject
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
 
-        // Show detailed country info after answering
         CountryDetailsText = BuildCountryDetails();
 
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
+            catch { }
         }
     }
 
@@ -185,13 +169,14 @@ public partial class CountryQuizViewModel : ObservableObject
         IsResetConfirmationVisible = false;
 
         _gameState.Reset();
+        _telemetry?.RecordGameReset();
         SyncScoresFromGameState();
         GenerateNewQuestion();
 
         if (_gameStateRepository != null)
         {
             try { await _gameStateRepository.UpdateAsync(_gameState); }
-            catch { /* Silently handle persistence failures */ }
+            catch { }
         }
     }
 
@@ -200,8 +185,6 @@ public partial class CountryQuizViewModel : ObservableObject
     {
         IsResetConfirmationVisible = false;
     }
-
-    // --- Internals ---
 
     private string BuildCountryDetails()
     {
@@ -240,6 +223,8 @@ public partial class CountryQuizViewModel : ObservableObject
         var v1 = SelectedQuestionType.GetValue(Country1);
         var v2 = SelectedQuestionType.GetValue(Country2);
         _correctCountry = (v1 ?? 0) >= (v2 ?? 0) ? Country1 : Country2;
+
+        _telemetry?.RecordQuestionGenerated(SelectedQuestionType);
     }
 
     private string GetCorrectMessage()

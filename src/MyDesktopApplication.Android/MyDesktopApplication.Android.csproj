@@ -1,15 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- =================================================================== -->
-  <!-- SIGNING CONFIGURATION                                               -->
-  <!-- Signing is ONLY enabled when AndroidSigningPassword is provided.    -->
-  <!-- =================================================================== -->
-  
-  <!-- Debug builds: use hardcoded password for local development -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <AndroidSigningPassword>android</AndroidSigningPassword>
   </PropertyGroup>
-  
-  <!-- Only enable signing when password is provided -->
+
   <PropertyGroup Condition="'$(AndroidSigningPassword)' != ''">
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
@@ -17,81 +10,56 @@
     <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
     <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
   </PropertyGroup>
-  
-  <!-- Explicitly disable signing when no password provided -->
+
   <PropertyGroup Condition="'$(AndroidSigningPassword)' == ''">
     <AndroidKeyStore>False</AndroidKeyStore>
   </PropertyGroup>
-  
-  <!-- =================================================================== -->
-  <!-- MAIN PROJECT CONFIGURATION                                          -->
-  <!-- =================================================================== -->
+
   <PropertyGroup>
     <TargetFramework>net10.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
-    
-    <!-- Dynamic versioning from CI -->
+
     <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
     <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
-    
-    <!-- =================================================================== -->
-    <!-- MONO RUNTIME SETTINGS                                              -->
-    <!-- Disable AOT to avoid class-init crashes; use JIT/Interpreter       -->
-    <!-- =================================================================== -->
+
     <RunAOTCompilation>false</RunAOTCompilation>
     <PublishAot>false</PublishAot>
     <UseInterpreter>true</UseInterpreter>
     <PublishTrimmed>false</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
-    
-    <!-- Fix aapt2 daemon hang issues on Fedora -->
+
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-    
-    <!-- Standard settings -->
+
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <!-- Tell the linker to preserve our assemblies completely -->
   <ItemGroup>
     <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
     <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
     <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
   </ItemGroup>
 
-  <!-- =================================================================== -->
-  <!-- PACKAGE REFERENCES                                                  -->
-  <!-- =================================================================== -->
-  <!-- CRITICAL: These packages MUST be explicitly referenced here because -->
-  <!-- transitive dependencies from net10.0 projects don't automatically   -->
-  <!-- flow to net10.0-android builds. Without these, you get CS0234       -->
-  <!-- errors for Microsoft.EntityFrameworkCore and Microsoft.Extensions   -->
-  <!-- =================================================================== -->
   <ItemGroup>
-    <!-- Avalonia packages -->
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
-    
-    <!-- MVVM toolkit -->
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    
-    <!-- EXPLICIT: These are needed because Infrastructure project is net10.0 -->
-    <!-- and its transitive dependencies don't flow to net10.0-android -->
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
   </ItemGroup>
 
-  <!-- =================================================================== -->
-  <!-- PROJECT REFERENCES                                                  -->
-  <!-- =================================================================== -->
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
