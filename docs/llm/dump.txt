@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Sat Sep 19 10:35:00 PM EDT 2026
+Generated: Sat Sep 19 10:37:29 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -685,7 +685,7 @@ SIZE: 5.44 KB
     <AvaloniaVersion>12.1.2</AvaloniaVersion>
     <EFCoreVersion>10.0.12</EFCoreVersion>
     <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
+    <OpenTelemetryVersion>1.19.0</OpenTelemetryVersion>
     <SerilogVersion>4.3.1</SerilogVersion>
     <TestcontainersVersion>4.11.0</TestcontainersVersion>
     <FluentValidationVersion>12.1.1</FluentValidationVersion>
