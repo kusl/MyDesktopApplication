@@ -18798,3 +18798,2003 @@ Claude is AI and can make mistakes. Please double-check responses.
 
 
 
+
+/
+Claude is responding
+Please review the entire dump.txt and output.txt in the project files. 
+Please give me FULL files for all files that need to change. 
+If we have updated data, please give me the latest data as well 
+not sure how we can keep this data up to date going forward 
+I don't want the application to need a network connection to work 
+so the data must stay local somehow 
+but I am sure there are other things we can fix 
+for example, can we use xunit.v3 4.x now with avalonia? 
+if so, please make this change as well 
+remember, FULL files for ALL files that need to change 
+please and thank you 
+also please review export.sh 
+is there something we can remove from dump.txt without removing essential context for you? 
+remember, the full source code is always available for free of cost at 
+https://github.com/kusl/MyDesktopApplication 
+if we can somehow make dump.txt smaller so it fits in claude context without spilling over to search mode 
+that would be ideal 
+since this application is fairly small 
+
+Restore complete (0.6s)
+  MyDesktopApplication.Core net10.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net10.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Shared net10.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net10.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Infrastructure net10.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net10.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net10.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Desktop net10.0 succeeded (0.1s) → src/MyDesktopApplication.Desktop/bin/Debug/net10.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.UI.Tests net10.0 succeeded (0.1s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net10.0/MyDesktopApplication.UI.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.10]   Discovering: MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.16]   Discovered:  MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.10]   Discovering: MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.11]   Discovered:  MyDesktopApplication.Integration.Tests
+[xUnit.net 00:00:00.19]   Starting:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v4.0.0+05679a7ab5 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.08]   Discovering: MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Integration.Tests test net10.0 succeeded with 1 warning(s) (0.7s)
+    /usr/lib64/dotnet/sdk/10.0.111/Microsoft.TestPlatform.targets(48,5): warning No test is available in /home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/bin/Debug/net10.0/MyDesktopApplication.Integration.Tests.dll. Make sure that test discoverer & executors are registered and platform & framework version settings are appropriate and try again.
+[xUnit.net 00:00:00.25]   Finished:    MyDesktopApplication.Core.Tests
+[xUnit.net 00:00:00.12]   Discovered:  MyDesktopApplication.UI.Tests
+[xUnit.net 00:00:00.14]   Starting:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.Core.Tests test net10.0 succeeded (0.9s)
+[xUnit.net 00:00:00.22]   Finished:    MyDesktopApplication.UI.Tests
+  MyDesktopApplication.UI.Tests test net10.0 succeeded (0.8s)
+
+Test summary: total: 22, failed: 0, succeeded: 22, skipped: 0, duration: 1.0s
+Build succeeded with 1 warning(s) in 2.0s
+
+Read 3 files, ran 4 commands
+I now have the complete picture. Before writing any version numbers or the xunit v3 change, I need to verify current package versions (per my standing rule — never trust memory for versions). Let me also fetch export.sh, which isn't in the dump. Let me research in parallel.
+
+Searched the web
+xunit.v3 is at 4.0.1 and the runner they already have (4.0.0) supports v3. Their dotnet list package --outdated shows everything else is already current. Let me confirm the Avalonia headless-xunit3 package and Avalonia's current version, then fetch export.sh.
+
+Searched the web, ran 2 commands, read a page
+I have the authoritative answer: xunit v3 test projects must set <OutputType>Exe</OutputType> (they're self-executing now), while dotnet test keeps working via the v3-capable xunit.runner.visualstudio 4.0.0 they already have. Let me do a final scan to confirm the blast radius of the ViewModel consolidation and confirm nothing else references the Desktop-only types.
+
+Ran a command
+please continue
+
+Locating precise file boundaries within the dump text.
+Confirmed — the ViewModel consolidation touches exactly the files I expected, and AccuracyText (the one property unique to the Desktop VM's bindings) exists in CountryQuizViewModel, so the swap is safe. To guarantee fidelity on the large MainWindow.axaml, I'll extract it verbatim from the dump and apply only the needed edits in the container rather than retyping it.
+
+Edited a file, ran 2 commands
+The MainWindow.axaml is now exactly right. Let me build the remaining changed files in the container (extracting the config files verbatim where they're large, to avoid transcription errors), then present everything.
+
+Created 8 files, ran 3 commands, edited 2 files
+Now the data-refresh tooling. This is the answer to "how do we keep data fresh without the app needing a network" — the data stays bundled in the repo (app is always offline), and a maintainer-run script (wired to a scheduled Action that opens a PR) refreshes the numbers from the free World Bank API:
+
+Created 2 files, ran a command
+All files are syntactically valid. Let me verify my assumption about the World Bank API response shape (the generator can't hit it from here — that domain isn't allowlisted — so I'll confirm the format via search to be sure the parser is right).
+
+Ran a command
+Confirmed the World Bank domain isn't reachable from here (as flagged in the script's caveat). The API v2 response shape my parser targets — [metadata, [rows]] with countryiso3code/value — is long-standing and stable, and the script keeps existing values on any gap, so a bad fetch can't corrupt data. Let me pull the final content of the three files I edited in-place so I can hand them to you verbatim.
+
+Ran 2 commands
+I've reviewed the whole codebase, verified every version against NuGet, fetched export.sh from GitHub (it isn't in the dump), and validated the syntax of everything below. Here's what I found and changed.
+
+The short answers to your direct questions
+xunit.v3 4.x with Avalonia? Yes for your tests — but with a catch worth knowing. Your "UI.Tests" project doesn't actually use Avalonia headless testing (no [AvaloniaFact]; it's plain xUnit + Shouldly), so nothing blocks v3. The catch: there is no Avalonia.Headless.XUnit3 package — Avalonia's headless xUnit helper is stuck on xUnit v2. So I migrated everything to xunit.v3 4.0.1 (your runner, xunit.runner.visualstudio 4.0.0, already runs v1/v2/v3 under dotnet test) and removed the unused Avalonia.Headless / Avalonia.Headless.XUnit declarations, since keeping them would imply a headless-testing path that can't coexist with v3.
+
+export.sh review: it already excludes itself and docs/llm/*, but it does not exclude the four *.backup files — that's why they're bloating the dump. Fixed.
+
+Shrinking dump.txt: the biggest free win is deleting the 4 backup files from git (~656 lines / ~24 KB). I also gave export.sh an editable exclude list, with an optional (commented) line to drop CountryData.cs (~210 more lines of pure data — recoverable any time from GitHub). Together with the de-duplication below, the dump drops from 4,731 lines to roughly 3,700–3,900.
+
+Everything else is already current — your dotnet list package --outdated shows no updates, so I bumped nothing except adding xunit.v3.
+
+The biggest issue I found: you're siloing yourself
+src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs (8.79 KB) and src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs (8.54 KB) are near-identical copies of the same view model — Desktop maintains its own while Android uses the shared one. That's the exact "two teams, two builds" split your instructions rail against, hiding inside one repo. I verified the binding surface matches (including AccuracyText, the only property unique to Desktop's bindings), so Desktop can use the shared VM and the duplicate can be deleted.
+
+I did not wire up OpenTelemetry/Serilog/logging (declared but used nowhere), and I did not hand-edit the 192 country rows — reasons and the proper fix for both are at the end.
+
+1. Delete these files (git)
+bash
+# Backup files polluting the dump (biggest dump-size win)
+git rm .github/workflows/build-and-release.yml.backup
+git rm .github/workflows/build-and-release.yml.backup.20260104_205859
+git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup
+git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623
+
+# The duplicated Desktop view model (now uses the Shared one)
+git rm src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+git rm src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+
+# Old test file (replaced by CountryQuizViewModelTests.cs below)
+git rm tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+Going forward, backups should never be tracked. Consider adding to .gitignore: *.backup, *.backup.*, *.orig, *.rej.
+
+2. export.sh (full file)
+Adds an editable exclude list and skips backup files. Everything else (the Python tree, binary/size guards) is preserved.
+
+bash
+#!/bin/bash
+# =============================================================================
+# Clean Project Export for LLM Analysis
+# =============================================================================
+# Produces docs/llm/dump.txt: a single-file snapshot of the git-tracked source
+# so an LLM can read the whole project at once without spilling into search mode.
+#
+# To keep the dump small and free of noise, edit EXCLUDE_GLOBS below. Anything
+# excluded here is still in git and always available at:
+#   https://github.com/kusl/MyDesktopApplication
+# so it can be fetched on demand when it is actually needed.
+# =============================================================================
+
+set -e
+
+OUTPUT_DIR="docs/llm"
+OUTPUT_FILE="$OUTPUT_DIR/dump.txt"
+PROJECT_PATH="$(pwd)"
+
+# -----------------------------------------------------------------------------
+# Files to leave OUT of the dump (shell glob patterns, matched against the
+# git path). Add or remove lines freely.
+# -----------------------------------------------------------------------------
+EXCLUDE_GLOBS=(
+    "export.sh"          # this script
+    "$OUTPUT_FILE"       # the dump itself
+    "docs/llm/*"         # generated dumps + vendor notes (claude.md, gemini.md, ...)
+    "*.backup"           # editor/tooling backups - pure noise
+    "*.backup.*"         # timestamped backups, e.g. *.csproj.backup.20260104213623
+    "*.orig"             # merge leftovers
+    "*.rej"              # patch rejects
+    "*~"                 # emacs/vim backups
+
+    # --- Optional: uncomment to drop the bundled country dataset from the dump ---
+    # It is ~46 KB of pure data rows (not architecture) and is regenerated by
+    # scripts/update_country_data.py, so the diff lives in git, not here.
+    # "src/MyDesktopApplication.Shared/Data/CountryData.cs"
+)
+
+matches_exclude() {
+    local name="$1"
+    local pattern
+    for pattern in "${EXCLUDE_GLOBS[@]}"; do
+        # shellcheck disable=SC2053
+        [[ "$name" == $pattern ]] && return 0
+    done
+    return 1
+}
+
+# Ensure we are in a git repository
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "Error: This script must be run inside a Git repository."
+    exit 1
+fi
+
+mkdir -p "$OUTPUT_DIR"
+
+echo "=============================================="
+echo "  Generating Clean Project Export"
+echo "=============================================="
+
+# Start output file with header
+{
+    echo "==============================================================================="
+    echo "PROJECT EXPORT (GIT TRACKED ONLY)"
+    echo "Generated: $(date)"
+    echo "Project Path: $PROJECT_PATH"
+    echo "==============================================================================="
+    echo ""
+} > "$OUTPUT_FILE"
+
+# 1. Directory Structure (Using Python for a reliable tree)
+echo "Generating directory structure..."
+{
+    echo "DIRECTORY STRUCTURE:"
+    echo "==================="
+    # This python snippet takes git-tracked files and builds a perfect visual tree
+    git ls-files | python3 -c "
+import sys
+tree = {}
+for line in sys.stdin:
+    parts = line.strip().split('/')
+    curr = tree
+    for part in parts:
+        curr = curr.setdefault(part, {})
+def print_tree(d, indent=''):
+    items = sorted(d.items())
+    for i, (name, children) in enumerate(items):
+        is_last = (i == len(items) - 1)
+        print(f'{indent}{\"└── \" if is_last else \"├── \"}{name}')
+        print_tree(children, indent + ('    ' if is_last else '│   '))
+print_tree(tree)
+"
+    echo ""
+} >> "$OUTPUT_FILE"
+
+# 2. Collect and Process Files
+echo "Collecting and cleaning file contents..."
+{
+    echo "FILE CONTENTS:"
+    echo "=============="
+    echo ""
+} >> "$OUTPUT_FILE"
+
+git ls-files | while read -r FILENAME; do
+    # Skip anything on the exclude list
+    if matches_exclude "$FILENAME"; then
+        continue
+    fi
+
+    # Skip specific binary extensions
+    if [[ "$FILENAME" =~ \.(ico|png|jpg|jpeg|gif|dll|exe|pdb|bin|zip|tar|gz|7z|ttf|woff|woff2)$ ]]; then
+        continue
+    fi
+
+    # Content-based binary check
+    if file --mime "$FILENAME" | grep -q "binary"; then
+        continue
+    fi
+
+    # Null byte check (Crucial for preventing "Unsupported Encoding" in some tools)
+    if grep -qP '\x00' "$FILENAME" 2>/dev/null; then
+        continue
+    fi
+
+    FILESIZE=$(stat -c%s "$FILENAME" 2>/dev/null || stat -f%z "$FILENAME" 2>/dev/null || echo "0")
+
+    # Skip large files (>500KB)
+    if [ "$FILESIZE" -gt 512000 ]; then
+        continue
+    fi
+
+    {
+        echo "================================================================================"
+        echo "FILE: $FILENAME"
+        echo "SIZE: $(echo "scale=2; $FILESIZE/1024" | bc 2>/dev/null || echo "0.00") KB"
+        echo "================================================================================"
+        echo ""
+        # tr -d removes non-printable control characters that break LLM parsers
+        cat "$FILENAME" | tr -d '\000-\010\013\014\016-\037'
+        echo ""
+        echo ""
+    } >> "$OUTPUT_FILE"
+
+    echo "Processed: $FILENAME"
+done
+
+echo ""
+echo "Export Complete: $OUTPUT_FILE"
+3. xUnit v3 migration
+Directory.Packages.props (full file)
+xml
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+
+    <!-- Version variables for grouped packages -->
+    <AvaloniaVersion>12.1.2</AvaloniaVersion>
+    <EFCoreVersion>10.0.12</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.15.0</OpenTelemetryVersion>
+    <SerilogVersion>4.3.1</SerilogVersion>
+    <TestcontainersVersion>4.11.0</TestcontainersVersion>
+    <FluentValidationVersion>12.1.1</FluentValidationVersion>
+  </PropertyGroup>
+
+  <!--
+    NOTE: Avalonia.Diagnostics was REMOVED in Avalonia 12. Its replacement
+    (AvaloniaUI.DiagnosticsSupport + Avalonia Plus Dev Tools) is a commercial
+    product, which violates our FOSS-only rule. We therefore ship without an
+    in-app visual tree inspector. Use logging/OpenTelemetry for diagnostics.
+  -->
+  <ItemGroup Label="Avalonia">
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="MVVM">
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <ItemGroup Label="EntityFramework">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageVersion Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+
+  <ItemGroup Label="Configuration">
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="DependencyInjection">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Logging">
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Serilog" Version="$(SerilogVersion)" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="OpenTelemetry">
+    <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
+    <!-- xUnit.net v3 - Apache 2.0 License. v3 test projects are self-executing
+         (OutputType=Exe, set centrally in Directory.Build.props). The visualstudio
+         runner 4.x runs v1/v2/v3 under `dotnet test` (VSTest), so no CI change. -->
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+
+    <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+
+    <!-- NSubstitute - BSD-3-Clause License -->
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+
+    <!-- Bogus - MIT License -->
+    <PackageVersion Include="Bogus" Version="35.6.1" />
+
+    <!-- Testcontainers - MIT License -->
+    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+
+    <!-- Coverage -->
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+  </ItemGroup>
+</Project>
+Directory.Build.props (full file)
+The only change is the trailing PropertyGroup — v3 test projects must be executables, set once here for all *.Tests projects.
+
+xml
+<Project>
+  <PropertyGroup>
+    <!-- Common project settings -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    
+    <!-- Version properties - can be overridden via MSBuild properties -->
+    <!-- Default values for local development -->
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
+    
+    <!-- Build number for CI - defaults to 0 for local builds -->
+    <BuildNumber Condition="'$(BuildNumber)' == ''">1</BuildNumber>
+    
+    <!-- Assembly versioning -->
+    <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
+    <FileVersion>1.0.$(BuildNumber).0</FileVersion>
+    <InformationalVersion>1.0.$(BuildNumber)</InformationalVersion>
+    
+    <!-- Treat warnings as errors in Release -->
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    
+    <!-- Deterministic builds for reproducibility -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    
+    <!-- Source Link for debugging -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <!-- Ensure reproducible builds in CI -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <!--
+    xUnit.net v3 test projects are self-executing programs, so they must be
+    built as executables. We set this once here for every project whose name
+    ends in ".Tests" instead of repeating it in each test .csproj.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+</Project>
+tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj (full file)
+xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="NSubstitute" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+  </ItemGroup>
+</Project>
+tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj (full file)
+xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="../../src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
+tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj (full file)
+The Desktop project reference is dropped — the VM being tested now lives in Shared.
+
+xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="NSubstitute" />
+  </ItemGroup>
+
+  <!--
+    The quiz ViewModel now lives in the Shared project (one implementation for
+    every platform), so these tests reference Shared + Core and no longer need a
+    reference to the Desktop head.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="../../src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
+  </ItemGroup>
+</Project>
+Your GameStateTests.cs and QuestionTypeTests.cs need no changes — using Xunit; and [Fact]/[Theory]/[InlineData] are identical in v3.
+
+4. A real integration test
+Your Integration.Tests project has no tests, which is why every run prints warning No test is available… and why "integration tests should be automated" isn't actually true yet. This exercises the repository against a real AppDbContext.
+
+tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs (new file)
+csharp
+using Microsoft.EntityFrameworkCore;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Repositories;
+using Shouldly;
+using Xunit;
+
+namespace MyDesktopApplication.Integration.Tests;
+
+/// <summary>
+/// Integration tests that exercise <see cref="GameStateRepository"/> against a real
+/// <see cref="AppDbContext"/> (EF Core in-memory provider). These run in milliseconds
+/// so they are safe to run after every change.
+/// </summary>
+public class GameStateRepositoryTests
+{
+    private static DbContextOptions<AppDbContext> Options(string databaseName) =>
+        new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+    [Fact]
+    public async Task GetOrCreateAsync_CreatesNewState_WhenNoneExists()
+    {
+        await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
+        var repository = new GameStateRepository(context);
+
+        var state = await repository.GetOrCreateAsync("player-1");
+
+        state.ShouldNotBeNull();
+        state.UserId.ShouldBe("player-1");
+        state.CurrentScore.ShouldBe(0);
+        state.TotalAnswered.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task GetOrCreateAsync_ReturnsSameState_OnSecondCall()
+    {
+        await using var context = new AppDbContext(Options(Guid.NewGuid().ToString()));
+        var repository = new GameStateRepository(context);
+
+        var first = await repository.GetOrCreateAsync("player-1");
+        var second = await repository.GetOrCreateAsync("player-1");
+
+        second.Id.ShouldBe(first.Id);
+    }
+
+    [Fact]
+    public async Task RecordedAnswer_IsPersisted_AndReadableFromAFreshContext()
+    {
+        // Contexts that share an in-memory database name share the same store,
+        // which lets us prove the write actually persisted (not just cached).
+        var databaseName = Guid.NewGuid().ToString();
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var state = await repository.GetOrCreateAsync("player-1");
+            state.RecordAnswer(isCorrect: true);
+            await repository.UpdateAsync(state);
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var reloaded = await repository.GetOrCreateAsync("player-1");
+
+            reloaded.CurrentScore.ShouldBe(1);
+            reloaded.TotalCorrect.ShouldBe(1);
+            reloaded.TotalAnswered.ShouldBe(1);
+            reloaded.CurrentStreak.ShouldBe(1);
+        }
+    }
+
+    [Fact]
+    public async Task Reset_ClearsCurrentScore_ButKeepsHighScore()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var state = await repository.GetOrCreateAsync("player-1");
+            state.RecordAnswer(isCorrect: true);
+            state.RecordAnswer(isCorrect: true);
+            await repository.UpdateAsync(state);
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            await repository.ResetAsync("player-1");
+        }
+
+        await using (var context = new AppDbContext(Options(databaseName)))
+        {
+            var repository = new GameStateRepository(context);
+            var reloaded = await repository.GetOrCreateAsync("player-1");
+
+            reloaded.CurrentScore.ShouldBe(0);
+            reloaded.CurrentStreak.ShouldBe(0);
+            reloaded.HighScore.ShouldBe(2);
+            reloaded.BestStreak.ShouldBe(2);
+        }
+    }
+}
+For heavier realism against actual SQL later, this is exactly where your already-declared Testcontainers.PostgreSql earns its keep.
+
+5. Kill the duplicated view model
+Desktop now uses the shared CountryQuizViewModel that Android already uses. (The Shared VM is unchanged, so Android is completely unaffected.)
+
+src/MyDesktopApplication.Desktop/App.axaml.cs (full file)
+csharp
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Desktop.Views;
+using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Desktop;
+
+public partial class App : Avalonia.Application
+{
+    private IServiceProvider? _services;
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override async void OnFrameworkInitializationCompleted()
+    {
+        var services = new ServiceCollection();
+        services.AddInfrastructure();
+        services.AddTransient<CountryQuizViewModel>();
+
+        _services = services.BuildServiceProvider();
+
+        await DependencyInjection.InitializeDatabaseAsync(_services);
+
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
+            desktop.MainWindow = new MainWindow { DataContext = vm };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs (full file)
+csharp
+using Avalonia.Controls;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Desktop.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        // Initialize the ViewModel when the window loads
+        Loaded += async (_, _) =>
+        {
+            if (DataContext is CountryQuizViewModel vm)
+            {
+                await vm.InitializeAsync();
+            }
+        };
+    }
+}
+src/MyDesktopApplication.Desktop/Views/MainWindow.axaml (full file)
+Only three things changed: xmlns:vm points to Shared, x:DataType is CountryQuizViewModel, and the two unused converter resources (AnswerStateFgConverter, BoolToColorConverter) are removed. Converters still live in the Desktop namespace (see the deferred note at the end).
+
+xml
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
+        xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+        x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
+        x:DataType="vm:CountryQuizViewModel"
+        Title="Country Quiz"
+        Width="600" Height="700"
+        MinWidth="360" MinHeight="500"
+        Background="#0f172a">
+
+    <Window.Resources>
+        <conv:QuestionTypeLabelConverter x:Key="QuestionTypeLabelConverter"/>
+        <conv:AnswerStateToBackgroundConverter x:Key="AnswerStateBgConverter"/>
+        <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
+    </Window.Resources>
+
+    <!-- Responsive font sizes via Styles -->
+    <Window.Styles>
+        <Style Selector="TextBlock.header-title">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TextBlock.stat-text">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#94a3b8"/>
+        </Style>
+        <Style Selector="TextBlock.question-text">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#e2e8f0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.flag-text">
+            <Setter Property="FontSize" Value="48"/>
+        </Style>
+        <Style Selector="TextBlock.country-name">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.value-text">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#22c55e"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </Window.Styles>
+
+    <Panel>
+        <!-- Main content -->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
+
+                <!-- Row 0: Header with score and category selector -->
+                <Border Grid.Row="0" Background="#1e293b" CornerRadius="12" Padding="16" Margin="0,0,0,12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <!-- Score info -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Classes="header-title" Text="Country Quiz"/>
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Classes="stat-text" Text="{Binding ScoreText}"/>
+                                <TextBlock Classes="stat-text" Text="{Binding StreakText}"/>
+                                <TextBlock Classes="stat-text" Text="{Binding BestStreakText}"/>
+                            </StackPanel>
+                            <TextBlock Classes="stat-text" Text="{Binding AccuracyText}"/>
+                        </StackPanel>
+
+                        <!-- Category selector -->
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding QuestionTypes}"
+                                  SelectedItem="{Binding SelectedQuestionType}"
+                                  Background="#334155"
+                                  Foreground="White"
+                                  MinWidth="160"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource QuestionTypeLabelConverter}}"
+                                               Foreground="White"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                </Border>
+
+                <!-- Row 1: Question text -->
+                <Border Grid.Row="1" Margin="0,0,0,12">
+                    <TextBlock Classes="question-text" Text="{Binding QuestionText}"/>
+                </Border>
+
+                <!-- Row 2: Country cards + result -->
+                <StackPanel Grid.Row="2" Spacing="12">
+
+                    <!-- Country selection buttons side-by-side -->
+                    <Grid ColumnDefinitions="*,Auto,*">
+
+                        <!-- Country 1 Button -->
+                        <Button Grid.Column="0"
+                                Command="{Binding SelectCountryCommand}"
+                                CommandParameter="1"
+                                IsEnabled="{Binding !HasAnswered}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                MinHeight="180"
+                                CornerRadius="12"
+                                Padding="0"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                    <Binding Path="IsCountry1Correct"/>
+                                    <Binding Path="IsCountry1Wrong"/>
+                                </MultiBinding>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AnswerStateBorderConverter}">
+                                    <Binding Path="IsCountry1Correct"/>
+                                    <Binding Path="IsCountry1Wrong"/>
+                                </MultiBinding>
+                            </Button.BorderBrush>
+                            <!-- Keep full opacity when disabled (after answering) -->
+                            <Button.Styles>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Style>
+                            </Button.Styles>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="8" Margin="12">
+                                <TextBlock Classes="flag-text"
+                                           Text="{Binding Country1.Flag}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Classes="country-name"
+                                           Text="{Binding Country1.Name}"
+                                           MaxWidth="140"/>
+                                <TextBlock Classes="value-text"
+                                           Text="{Binding Country1Value}"
+                                           IsVisible="{Binding HasAnswered}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- VS separator -->
+                        <TextBlock Grid.Column="1"
+                                   Text="VS"
+                                   FontSize="16" FontWeight="Bold"
+                                   Foreground="#475569"
+                                   VerticalAlignment="Center"
+                                   Margin="12,0"/>
+
+                        <!-- Country 2 Button -->
+                        <Button Grid.Column="2"
+                                Command="{Binding SelectCountryCommand}"
+                                CommandParameter="2"
+                                IsEnabled="{Binding !HasAnswered}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                MinHeight="180"
+                                CornerRadius="12"
+                                Padding="0"
+                                BorderThickness="2"
+                                Cursor="Hand">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource AnswerStateBgConverter}">
+                                    <Binding Path="IsCountry2Correct"/>
+                                    <Binding Path="IsCountry2Wrong"/>
+                                </MultiBinding>
+                            </Button.Background>
+                            <Button.BorderBrush>
+                                <MultiBinding Converter="{StaticResource AnswerStateBorderConverter}">
+                                    <Binding Path="IsCountry2Correct"/>
+                                    <Binding Path="IsCountry2Wrong"/>
+                                </MultiBinding>
+                            </Button.BorderBrush>
+                            <Button.Styles>
+                                <Style Selector="Button:disabled">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Style>
+                            </Button.Styles>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="8" Margin="12">
+                                <TextBlock Classes="flag-text"
+                                           Text="{Binding Country2.Flag}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Classes="country-name"
+                                           Text="{Binding Country2.Name}"
+                                           MaxWidth="140"/>
+                                <TextBlock Classes="value-text"
+                                           Text="{Binding Country2Value}"
+                                           IsVisible="{Binding HasAnswered}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <!-- Result message -->
+                    <Border Background="#1e293b" CornerRadius="8" Padding="16"
+                            IsVisible="{Binding HasAnswered}">
+                        <TextBlock Text="{Binding ResultMessage}"
+                                   FontSize="18" FontWeight="SemiBold"
+                                   TextAlignment="Center" TextWrapping="Wrap"
+                                   Foreground="#e2e8f0"/>
+                    </Border>
+                    
+                    <!-- Country details after answering -->
+                    <TextBlock Text="{Binding CountryDetailsText}"
+                            FontSize="12" Foreground="#94a3b8"
+                            TextWrapping="Wrap"
+                            IsVisible="{Binding HasAnswered}"
+                            Margin="0,8,0,0"/>                    
+
+                    <!-- Next Round button -->
+                    <Button Content="Next Round"
+                            Command="{Binding NextRoundCommand}"
+                            IsVisible="{Binding HasAnswered}"
+                            HorizontalAlignment="Center"
+                            MinWidth="200" MinHeight="48"
+                            FontSize="16" FontWeight="SemiBold"
+                            Background="#3b82f6" Foreground="White"
+                            CornerRadius="8" Cursor="Hand"/>
+                </StackPanel>
+
+                <!-- Row 3: Footer with Reset -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal"
+                            HorizontalAlignment="Center" Margin="0,12,0,0" Spacing="16">
+                    <Button Content="Reset Game"
+                            Command="{Binding RequestResetGameCommand}"
+                            MinWidth="120"
+                            Background="#475569" Foreground="White"
+                            CornerRadius="6"/>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Reset confirmation overlay -->
+        <Border IsVisible="{Binding IsResetConfirmationVisible}"
+                Background="#CC000000"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <Border Background="#1e293b"
+                    CornerRadius="16"
+                    Padding="32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="300"
+                    MaxWidth="400"
+                    BorderBrush="#334155"
+                    BorderThickness="1">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="Reset Game?"
+                               FontSize="22" FontWeight="Bold"
+                               Foreground="White"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="This will reset your score, streak, and all statistics. This cannot be undone."
+                               FontSize="14" Foreground="#94a3b8"
+                               TextWrapping="Wrap" TextAlignment="Center"/>
+                    <Grid ColumnDefinitions="*,16,*">
+                        <Button Grid.Column="0"
+                                Content="Cancel"
+                                Command="{Binding CancelResetGameCommand}"
+                                HorizontalAlignment="Stretch"
+                                MinHeight="44"
+                                Background="#475569" Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                CornerRadius="8"/>
+                        <Button Grid.Column="2"
+                                Content="Yes, Reset"
+                                Command="{Binding ConfirmResetGameCommand}"
+                                HorizontalAlignment="Stretch"
+                                MinHeight="44"
+                                Background="#dc2626" Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                CornerRadius="8"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Panel>
+</Window>
+tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs (new file, replaces the deleted MainWindowViewModelTests.cs)
+csharp
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Shared.ViewModels;
+using Shouldly;
+using Xunit;
+
+namespace MyDesktopApplication.UI.Tests;
+
+/// <summary>
+/// Tests for the shared quiz ViewModel used by every platform head (Desktop, Android, ...).
+/// </summary>
+public class CountryQuizViewModelTests
+{
+    [Fact]
+    public void NewViewModel_ShouldHaveInitialState()
+    {
+        var vm = new CountryQuizViewModel();
+
+        vm.CurrentScore.ShouldBe(0);
+        vm.HighScore.ShouldBe(0);
+        vm.CurrentStreak.ShouldBe(0);
+        vm.BestStreak.ShouldBe(0);
+    }
+
+    [Fact]
+    public void QuestionTypes_ShouldContainAllTypes()
+    {
+        var vm = new CountryQuizViewModel();
+
+        vm.QuestionTypes.Count.ShouldBe(8);
+        vm.QuestionTypes.ShouldContain(QuestionType.Population);
+        vm.QuestionTypes.ShouldContain(QuestionType.Area);
+        vm.QuestionTypes.ShouldContain(QuestionType.Gdp);
+    }
+
+    [Fact]
+    public void NextRound_ShouldSetCountries()
+    {
+        var vm = new CountryQuizViewModel();
+
+        vm.NextRoundCommand.Execute(null);
+
+        vm.Country1.ShouldNotBeNull();
+        vm.Country2.ShouldNotBeNull();
+        vm.Country1!.Name.ShouldNotBe(vm.Country2!.Name);
+    }
+
+    [Fact]
+    public void SelectedQuestionType_DefaultsToPopulation()
+    {
+        var vm = new CountryQuizViewModel();
+        vm.SelectedQuestionType.ShouldBe(QuestionType.Population);
+    }
+
+    [Fact]
+    public void HasAnswered_DefaultsToFalse()
+    {
+        var vm = new CountryQuizViewModel();
+        vm.HasAnswered.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void ScoreText_FormatsCorrectly()
+    {
+        var vm = new CountryQuizViewModel();
+        vm.ScoreText.ShouldBe("0/0");
+    }
+}
+6. Keeping the country data fresh — without a runtime network
+Here's the design that satisfies all your constraints at once: the data stays committed in the repo as compiled C# (so the app is always fully offline, fast, and trim-safe on Android — no JSON parsing, no embedded-resource risk), and "up to date" means regenerating that committed file, reviewed via PR. The refresh pulls from the World Bank API (free, no API key, stable for a decade).
+
+I deliberately did not rewrite the 192 rows by hand — I can't produce accurate current figures for 192 countries from memory without risking fabricated numbers, which would be worse than your current internally-consistent (~2022) dataset. The script below is the honest answer to "how do we keep it up to date."
+
+One field stays manual: HDI has no clean free API, so the script preserves the existing HDI values; refresh those once a year from the UNDP Human Development Report.
+
+scripts/update_country_data.py (new file)
+python
+#!/usr/bin/env python3
+"""
+Refresh the bundled country statistics in CountryData.cs from the free,
+key-less World Bank API (https://api.worldbank.org).
+
+WHY THIS EXISTS
+---------------
+The app must run with no network connection, so the data is *bundled* as a
+compiled C# list (fast, trim-safe, offline). "Keeping it up to date" therefore
+means regenerating that bundled file in the repo - not fetching at runtime.
+This script does exactly that: it reads the existing CountryData.cs, refreshes
+the numeric fields in place, and writes the file back. A human reviews the
+`git diff` and commits it (or the scheduled GitHub Action opens a PR).
+
+WHAT IT UPDATES (World Bank indicator -> field)
+    SP.POP.TOTL     -> Population
+    AG.LND.TOTL.K2  -> Area (land area, km^2)
+    NY.GDP.MKTP.CD  -> GdpTotal (converted USD -> millions USD)
+    NY.GDP.PCAP.CD  -> GdpPerCapita (USD)
+    EN.POP.DNST     -> PopulationDensity (people / km^2)
+    SE.ADT.LITR.ZS  -> LiteracyRate (%)
+    SP.DYN.LE00.IN  -> LifeExpectancy (years)
+
+WHAT IT LEAVES ALONE
+    Code, Name, Iso2, Continent  -> identity fields, curated by hand.
+    Hdi                          -> no free, stable API; update from the annual
+                                    UNDP Human Development Report by hand.
+    Any field World Bank has no recent value for -> the existing value is kept.
+
+USAGE
+    python3 scripts/update_country_data.py            # refresh + write
+    python3 scripts/update_country_data.py --dry-run  # report changes only
+
+NOTE
+    Only the Python standard library is used (urllib), so there is nothing to
+    install. Run it once and eyeball the diff before committing - data coverage
+    on some indicators is patchy, which is exactly why we keep existing values
+    on gaps.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+import urllib.request
+from pathlib import Path
+
+# Path is relative to the repository root (where the script is run from).
+DATA_FILE = Path("src/MyDesktopApplication.Shared/Data/CountryData.cs")
+
+WORLD_BANK_BASE = "https://api.worldbank.org/v2"
+
+
+# field name in CountryData.cs -> (World Bank indicator, formatter)
+def _as_int(value: float) -> str:
+    return str(int(round(value)))
+
+def _as_millions(value: float) -> str:
+    return str(int(round(value / 1_000_000)))
+
+def _one_dp(value: float) -> str:
+    return f"{value:.1f}"
+
+FIELDS = {
+    "Population": ("SP.POP.TOTL", _as_int),
+    "Area": ("AG.LND.TOTL.K2", _as_int),
+    "GdpTotal": ("NY.GDP.MKTP.CD", _as_millions),
+    "GdpPerCapita": ("NY.GDP.PCAP.CD", _as_int),
+    "PopulationDensity": ("EN.POP.DNST", _one_dp),
+    "LiteracyRate": ("SE.ADT.LITR.ZS", _one_dp),
+    "LifeExpectancy": ("SP.DYN.LE00.IN", _one_dp),
+}
+
+
+def fetch_indicator(indicator: str) -> dict[str, float]:
+    """Return {iso3: most_recent_non_empty_value} for every country."""
+    values: dict[str, float] = {}
+    page = 1
+    while True:
+        url = (
+            f"{WORLD_BANK_BASE}/country/all/indicator/{indicator}"
+            f"?format=json&mrnev=1&per_page=400&page={page}"
+        )
+        with urllib.request.urlopen(url, timeout=60) as response:
+            payload = json.load(response)
+
+        if not isinstance(payload, list) or len(payload) < 2 or payload[1] is None:
+            break
+
+        meta, rows = payload[0], payload[1]
+        for row in rows:
+            iso3 = row.get("countryiso3code")
+            value = row.get("value")
+            if iso3 and value is not None:
+                values[iso3] = float(value)
+
+        total_pages = int(meta.get("pages", 1))
+        if page >= total_pages:
+            break
+        page += 1
+
+    return values
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report what would change without writing the file.",
+    )
+    args = parser.parse_args()
+
+    if not DATA_FILE.exists():
+        print(f"ERROR: {DATA_FILE} not found. Run this from the repo root.", file=sys.stderr)
+        return 1
+
+    text = DATA_FILE.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=True)
+
+    # Download every indicator once for all countries (a handful of requests).
+    print("Fetching indicators from the World Bank API...")
+    indicator_values: dict[str, dict[str, float]] = {}
+    for field, (indicator, _) in FIELDS.items():
+        print(f"  {field:<18} <- {indicator}")
+        try:
+            indicator_values[field] = fetch_indicator(indicator)
+        except Exception as error:  # noqa: BLE001 - report and keep existing values
+            print(f"    WARNING: failed to fetch {indicator}: {error}", file=sys.stderr)
+            indicator_values[field] = {}
+
+    country_line = re.compile(r'new\(\)\s*\{\s*Code\s*=\s*"([A-Z]{3})"')
+    changes = 0
+    countries = 0
+
+    for i, line in enumerate(lines):
+        match = country_line.search(line)
+        if not match:
+            continue
+        countries += 1
+        iso3 = match.group(1)
+        new_line = line
+
+        for field, (_, formatter) in FIELDS.items():
+            value = indicator_values[field].get(iso3)
+            if value is None:
+                continue  # no fresh data -> keep whatever is in the file
+            formatted = formatter(value)
+            # Replace exactly this field's number on this country's line.
+            pattern = re.compile(rf"({re.escape(field)}\s*=\s*)(-?\d+(?:\.\d+)?)")
+            replaced, n = pattern.subn(rf"\g<1>{formatted}", new_line, count=1)
+            if n == 1 and replaced != new_line:
+                new_line = replaced
+                changes += 1
+
+        lines[i] = new_line
+
+    print(f"\nScanned {countries} countries; {changes} field value(s) changed.")
+
+    if args.dry_run:
+        print("Dry run - no file written.")
+        return 0
+
+    DATA_FILE.write_text("".join(lines), encoding="utf-8")
+    print(f"Wrote {DATA_FILE}. Review `git diff` before committing.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+.github/workflows/update-data.yml (new file)
+Runs monthly, opens a PR only when data changed, using the built-in gh CLI (no third-party action).
+
+yaml
+# =============================================================================
+# Scheduled Country Data Refresh
+# =============================================================================
+# Runs the World Bank data generator on a schedule and opens a pull request when
+# the bundled data changes. The app still ships the data in the repo, so it never
+# needs a network connection at runtime - this only keeps the committed data
+# current, with a human reviewing every refresh via the PR.
+#
+# Repo setting required (one time):
+#   Settings -> Actions -> General -> Workflow permissions ->
+#     "Allow GitHub Actions to create and approve pull requests"
+# =============================================================================
+
+name: Update Country Data
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"   # 06:00 UTC on the 1st of every month
+  workflow_dispatch: {}     # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Refresh country data
+        run: python3 scripts/update_country_data.py
+
+      - name: Open pull request if data changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- src/MyDesktopApplication.Shared/Data/CountryData.cs; then
+            echo "No data changes - nothing to do."
+            exit 0
+          fi
+
+          BRANCH="data/refresh-${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/MyDesktopApplication.Shared/Data/CountryData.cs
+          git commit -m "chore(data): refresh country statistics from World Bank"
+          git push --set-upstream origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(data): monthly country statistics refresh" \
+            --body "Automated refresh of bundled country statistics from the World Bank API via \`scripts/update_country_data.py\`. HDI and identity fields are untouched. Please review the diff before merging." \
+            --base master \
+            --head "$BRANCH"
+Please run python3 scripts/update_country_data.py --dry-run locally once and check the diff before trusting the automation — I can't reach api.worldbank.org from here to prove the numbers end-to-end (only stdlib and the well-established v2 response shape are used, and gaps keep existing values, so a failed fetch can't corrupt data).
+
+What I intentionally left for a focused follow-up
+Logging / OpenTelemetry. You declare Serilog, OpenTelemetry (5 packages), and Microsoft.Extensions.Logging, but grep confirms none are used anywhere — "extensive logging, metrics using OpenTelemetry" isn't real yet. I didn't wire it in this pass on purpose: doing it in Infrastructure means adding explicit Microsoft.Extensions.Logging(.Console) PackageReferences to the Android csproj (the cross-framework transitive gap you already documented), and I can't verify the Android build here. It's the #1 thing to do next, and it's a self-contained change — happy to do it carefully in a follow-up.
+
+Converter duplication. Desktop/Converters/Converters.cs and Android/Converters/Converters.cs are also duplicated. I didn't merge them, because the clean way (moving them to Shared) would couple your currently UI-agnostic Shared project to Avalonia. The better fix is a small new MyDesktopApplication.Presentation project (Avalonia + Shared) that both heads reference — a nice follow-up, but more than a converter dedupe warrants today.
+
+Minor dead code (optional, harmless to leave): Shared/ViewModels/ViewModelBase.cs is unused (nothing derives from it); the two removed converters (AnswerStateToForegroundConverter, BoolToColorConverter) still sit in Desktop/Converters/Converters.cs; and Android/Views/MainView.axaml.cs has three On…Click handlers the XAML never wires up.
+
+If you'd like, my next focused pass can be "wire up logging + OpenTelemetry properly across all three heads (including the Android explicit refs), verified against the build."
+
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm .github/workflows/build-and-release.yml.backup
+rm '.github/workflows/build-and-release.yml.backup'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm .github/workflows/build-and-release.yml.backup.20260104_205859
+rm '.github/workflows/build-and-release.yml.backup.20260104_205859'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup
+rm 'src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623
+rm 'src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj.backup.20260104213623'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs
+rm 'src/MyDesktopApplication.Desktop/ViewModels/MainWindowViewModel.cs'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs
+rm 'src/MyDesktopApplication.Desktop/ViewModels/ViewModelBase.cs'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ git rm tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs
+rm 'tests/MyDesktopApplication.UI.Tests/MainWindowViewModelTests.cs'
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ time python3 scripts/update_country_data.py --dry-run
+Fetching indicators from the World Bank API...
+  Population         <- SP.POP.TOTL
+  Area               <- AG.LND.TOTL.K2
+  GdpTotal           <- NY.GDP.MKTP.CD
+  GdpPerCapita       <- NY.GDP.PCAP.CD
+  PopulationDensity  <- EN.POP.DNST
+  LiteracyRate       <- SE.ADT.LITR.ZS
+  LifeExpectancy     <- SP.DYN.LE00.IN
+
+Scanned 192 countries; 1281 field value(s) changed.
+Dry run - no file written.
+
+real    0m50.558s
+user    0m0.084s
+sys    0m0.020s
+
+I have added global.json and 
+    <OutputType>Exe</OutputType>
+which you thought about but didn't implement as far as I can tell 
+DO NOT UNDO IT! 
+
+I have uploaded the latest dump.txt here 
+and also pushed it to git. 
+Please continue 
+yes, lets wire up telemetry properly 
+so we can serve as a sample project for anyone who wishes to learn avalonia 
+yes, lets remove all dead code 
+also remember to NEVER add any code comments 
+we are already in search mode 
+remember FULL files for all files that need to change
+
+Fetching current project files directly from the repository.
+Excellent — the generator works against the live World Bank API (1281 real updates), the deletions are done, and you've added global.json + OutputType. Before I write the telemetry wiring, I need the current state of the code (post your changes), so I don't clobber your global.json/OutputType work. Let me find the latest dump you uploaded.
+
+Ran a command
+please continue
+
+Searching project files for relevant configuration references.
+Searching project files for relevant configuration references.
+The uploads folder is empty, but /mnt/project/dump.txt was refreshed at 5:54 PM (195 KB, down from 216 KB — the backup removal worked) and contains xunit.v3/global.json/OutputType. So the current state is on disk. Let me map it and read the files I need for telemetry.
+
+Ran a command
+My previous changes are all in place. Now let me read the current state of the files I need to wire telemetry through — config, Core, Infrastructure, and both app entry points.
+
+Reading global.json, Directory.Build.props, Directory.Packages.props
+This is important: your global.json opts into Microsoft.Testing.Platform as the test runner ("test": { "runner": "Microsoft.Testing.Platform" }), which is a real change from the VSTest path my csproj files assumed. Let me verify the correct xunit.v3 + MTP setup so I don't break dotnet test, then read the rest of the code.
+
+Searched the web
+Now I understand the test setup — your global.json uses MTP, which is fine; my telemetry changes keep the repository constructor backward-compatible so no test project needs touching. Let me read Core, Infrastructure, and the app entry points.
+
+Read 6 files, ran a command
+This all fits together. ViewModelBase.cs is dead (nothing derives from it), the three On*Click handlers in MainView.axaml.cs are dead (the XAML uses Command bindings), and the two extra Desktop converters are dead. Now let me verify the exact OpenTelemetry 1.15 API surface (logging + metrics + traces) so the sample actually compiles, since I can't build it here.
+
+Searched the web
+OTel 1.15 API confirmed (including the non-host startup approach — resolving the providers manually, which is the key trick for Avalonia/Blazor-style apps). Now I'll build every file in the container, comment-free per your instruction, and validate.
+
+Created 12 files, ran 2 commands
+Everything validates and is comment-free. Let me do a final safety grep against the current dump to confirm nothing else references the code I'm deleting (the dead converters, ViewModelBase, and the dead click handlers).
+
+Ran a command
+All clean. ViewModelBase, the two Desktop converters, and the three click handlers are only ever referenced by their own definitions — nothing depends on them. And GetByUserIdAsync/ResetAsync aren't on the interface, so adding a logger to the concrete repository breaks no contract.
+
+Here's the full set. Telemetry is wired as all three OpenTelemetry signals (traces, metrics, logs) exported to console, plus the dead code removed. Every file is comment-free.
+
+One deletion first
+bash
+git rm src/MyDesktopApplication.Shared/ViewModels/ViewModelBase.cs
+Nothing derives from it — CountryQuizViewModel extends ObservableObject directly.
+
+New telemetry files
+src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+
+csharp
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Core.Interfaces;
+
+public interface IGameTelemetry
+{
+    void RecordQuestionGenerated(QuestionType questionType);
+    void RecordAnswer(bool isCorrect, QuestionType questionType);
+    void RecordGameReset();
+}
+The abstraction lives in Core so Shared and the ViewModel stay free of any telemetry package — they only see an interface.
+
+src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+
+csharp
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Reflection;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public static class AppTelemetry
+{
+    public const string ServiceName = "MyDesktopApplication";
+
+    public static string ServiceVersion { get; } =
+        typeof(AppTelemetry).Assembly.GetName().Version?.ToString() ?? "0.0.0";
+
+    public static readonly ActivitySource ActivitySource = new(ServiceName, ServiceVersion);
+
+    public static readonly Meter Meter = new(ServiceName, ServiceVersion);
+}
+src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+
+csharp
+using System.Diagnostics.Metrics;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public sealed class GameTelemetry : IGameTelemetry
+{
+    private readonly Counter<long> _questions;
+    private readonly Counter<long> _answers;
+    private readonly Counter<long> _resets;
+
+    public GameTelemetry()
+    {
+        _questions = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.questions_generated",
+            unit: "{question}",
+            description: "Number of quiz questions generated.");
+
+        _answers = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.answers_submitted",
+            unit: "{answer}",
+            description: "Number of answers submitted.");
+
+        _resets = AppTelemetry.Meter.CreateCounter<long>(
+            "countryquiz.games_reset",
+            unit: "{reset}",
+            description: "Number of times the game was reset.");
+    }
+
+    public void RecordQuestionGenerated(QuestionType questionType)
+    {
+        _questions.Add(1, new KeyValuePair<string, object?>("question_type", questionType.ToString()));
+    }
+
+    public void RecordAnswer(bool isCorrect, QuestionType questionType)
+    {
+        _answers.Add(
+            1,
+            new KeyValuePair<string, object?>("correct", isCorrect),
+            new KeyValuePair<string, object?>("question_type", questionType.ToString()));
+    }
+
+    public void RecordGameReset()
+    {
+        _resets.Add(1);
+    }
+}
+src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+
+csharp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MyDesktopApplication.Core.Interfaces;
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+namespace MyDesktopApplication.Infrastructure.Observability;
+
+public static class ObservabilityExtensions
+{
+    public static IServiceCollection AddObservability(this IServiceCollection services)
+    {
+        services.AddSingleton<IGameTelemetry, GameTelemetry>();
+
+        services.AddLogging(logging =>
+        {
+            logging.AddOpenTelemetry(options =>
+            {
+                options.SetResourceBuilder(BuildResource());
+                options.IncludeScopes = true;
+                options.IncludeFormattedMessage = true;
+                options.AddConsoleExporter();
+            });
+        });
+
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(AppTelemetry.ServiceName, serviceVersion: AppTelemetry.ServiceVersion))
+            .WithTracing(tracing => tracing
+                .AddSource(AppTelemetry.ServiceName)
+                .AddConsoleExporter())
+            .WithMetrics(metrics => metrics
+                .AddMeter(AppTelemetry.ServiceName)
+                .AddConsoleExporter());
+
+        return services;
+    }
+
+    public static void StartObservability(this IServiceProvider services)
+    {
+        _ = services.GetService<TracerProvider>();
+        _ = services.GetService<MeterProvider>();
+        _ = services.GetService<ILoggerFactory>();
+    }
+
+    private static ResourceBuilder BuildResource() => ResourceBuilder.CreateDefault()
+        .AddService(AppTelemetry.ServiceName, serviceVersion: AppTelemetry.ServiceVersion);
+}
+StartObservability is the important bit for a learning sample: OpenTelemetry's AddOpenTelemetry() normally relies on a IHostedService (from the Generic Host) to build and start the providers. Avalonia has no host, so nothing would ever start the SDK. Resolving TracerProvider and MeterProvider forces them to build, which subscribes to your ActivitySource and Meter by name. This is the same manual-init pattern the OTel docs prescribe for Blazor.
+
+Modified for telemetry
+src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+
+csharp
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Observability;
+
+namespace MyDesktopApplication.Infrastructure.Repositories;
+
+public class GameStateRepository : Repository<GameState>, IGameStateRepository
+{
+    private readonly ILogger<GameStateRepository> _logger;
+
+    public GameStateRepository(AppDbContext context, ILogger<GameStateRepository>? logger = null)
+        : base(context)
+    {
+        _logger = logger ?? NullLogger<GameStateRepository>.Instance;
+    }
+
+    public async Task<GameState> GetOrCreateAsync(string userId, CancellationToken ct = default)
+    {
+        using var activity = AppTelemetry.ActivitySource.StartActivity("GameState.GetOrCreate");
+        activity?.SetTag("user.id", userId);
+
+        var state = await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+        if (state == null)
+        {
+            state = new GameState { UserId = userId };
+            await AddAsync(state, ct);
+            activity?.SetTag("gamestate.created", true);
+            _logger.LogInformation("Created new game state for user {UserId}", userId);
+        }
+        else
+        {
+            activity?.SetTag("gamestate.created", false);
+            _logger.LogDebug("Loaded game state for user {UserId} with score {Score}", userId, state.CurrentScore);
+        }
+
+        return state;
+    }
+
+    public async Task<GameState?> GetByUserIdAsync(string userId, CancellationToken ct = default)
+    {
+        return await DbSet.FirstOrDefaultAsync(g => g.UserId == userId, ct);
+    }
+
+    public async Task SaveAsync(GameState gameState, CancellationToken ct = default)
+    {
+        if (gameState.Id == Guid.Empty)
+        {
+            await AddAsync(gameState, ct);
+        }
+        else
+        {
+            await UpdateAsync(gameState, ct);
+        }
+    }
+
+    public async Task ResetAsync(string userId, CancellationToken ct = default)
+    {
+        using var activity = AppTelemetry.ActivitySource.StartActivity("GameState.Reset");
+        activity?.SetTag("user.id", userId);
+
+        var state = await GetOrCreateAsync(userId, ct);
+        state.Reset();
+        await UpdateAsync(state, ct);
+        _logger.LogInformation("Reset game state for user {UserId}", userId);
+    }
+}
+The logger is an optional constructor parameter defaulting to NullLogger, so your integration test's new GameStateRepository(context) keeps compiling and running unchanged, while DI injects the real logger at runtime.
+
+src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+
+xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
+  </ItemGroup>
+</Project>
+src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+
+xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <AndroidSigningPassword>android</AndroidSigningPassword>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AndroidSigningPassword)' != ''">
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>../../android.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>myalias</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>$(AndroidSigningPassword)</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>$(AndroidSigningPassword)</AndroidSigningStorePass>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AndroidSigningPassword)' == ''">
+    <AndroidKeyStore>False</AndroidKeyStore>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <ApplicationId>com.mydesktopapplication.app</ApplicationId>
+
+    <ApplicationVersion Condition="'$(BuildNumber)' == ''">1</ApplicationVersion>
+    <ApplicationVersion Condition="'$(BuildNumber)' != ''">$(BuildNumber)</ApplicationVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
+
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <PublishAot>false</PublishAot>
+    <UseInterpreter>true</UseInterpreter>
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+
+    <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
+
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
+    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Android" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
+The three OpenTelemetry packages plus Microsoft.Extensions.Logging are listed explicitly here because transitive dependencies from the net10.0 Infrastructure project don't flow to the net10.0-android head — the same reason EF Core is already listed. Desktop needs no such change: it shares the net10.0 TFM, so it picks these up transitively through the Infrastructure reference.
+
+src/MyDesktopApplication.Desktop/App.axaml.cs
+
+csharp
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Desktop.Views;
+using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Desktop;
+
+public partial class App : Avalonia.Application
+{
+    private IServiceProvider? _services;
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override async void OnFrameworkInitializationCompleted()
+    {
+        var services = new ServiceCollection();
+        services.AddInfrastructure();
+        services.AddObservability();
+        services.AddTransient<CountryQuizViewModel>();
+
+        _services = services.BuildServiceProvider();
+        _services.StartObservability();
+
+        await DependencyInjection.InitializeDatabaseAsync(_services);
+
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var vm = _services.GetRequiredService<CountryQuizViewModel>();
+            desktop.MainWindow = new MainWindow { DataContext = vm };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+src/MyDesktopApplication.Android/App.axaml.cs
+
+csharp
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Infrastructure;
+using MyDesktopApplication.Infrastructure.Data;
+using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Android;
+
+public partial class App : Avalonia.Application
+{
+    public static IServiceProvider? Services { get; private set; }
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        var dbPath = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "countryquiz.db");
+
+        var services = new ServiceCollection();
+        services.AddInfrastructure(dbPath);
+        services.AddObservability();
+        services.AddTransient<CountryQuizViewModel>();
+
+        var serviceProvider = services.BuildServiceProvider();
+        Services = serviceProvider;
+        serviceProvider.StartObservability();
+
+        using (var scope = serviceProvider.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.EnsureCreated();
+        }
+
+        if (ApplicationLifetime is IActivityApplicationLifetime activityLifetime)
+        {
+            activityLifetime.MainViewFactory = CreateMainView;
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private static Control CreateMainView()
+    {
+        var viewModel = Services!.GetRequiredService<CountryQuizViewModel>();
+
+        var view = new MainView
+        {
+            DataContext = viewModel
+        };
+
+        _ = viewModel.InitializeAsync();
+
+        return view;
+    }
+}
+Android previously hand-registered the DbContext and repository. It now calls AddInfrastructure(dbPath) — the same registration path Desktop uses — so the two heads no longer drift. The Android-specific database location is preserved by passing it in. It keeps the synchronous EnsureCreated on purpose, since the activity (and its view factory) can be created more than once.
+
+src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+
+csharp
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MyDesktopApplication.Core.Entities;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Shared.Data;
+
+namespace MyDesktopApplication.Shared.ViewModels;
+
+public partial class CountryQuizViewModel : ObservableObject
+{
+    private readonly IGameStateRepository? _gameStateRepository;
+    private readonly IGameTelemetry? _telemetry;
+    private readonly Random _random = new();
+    private readonly List<Country> _countries;
+    private GameState _gameState = new();
+    private Country? _correctCountry;
+
+    [ObservableProperty] private string _questionText = "Loading...";
+
+    [ObservableProperty] private Country? _country1;
+    [ObservableProperty] private Country? _country2;
+
+    [ObservableProperty] private string _country1Value = "";
+    [ObservableProperty] private string _country2Value = "";
+
+    [ObservableProperty] private string _resultMessage = "";
+    [ObservableProperty] private string _countryDetailsText = "";
+    [ObservableProperty] private bool _hasAnswered;
+    [ObservableProperty] private bool _isCorrectAnswer;
+    [ObservableProperty] private int _selectedCountry;
+
+    [ObservableProperty] private int _currentScore;
+    [ObservableProperty] private int _highScore;
+    [ObservableProperty] private int _currentStreak;
+    [ObservableProperty] private int _bestStreak;
+
+    [ObservableProperty] private QuestionType _selectedQuestionType = QuestionType.Population;
+
+    [ObservableProperty] private bool _isResetConfirmationVisible;
+
+    public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
+    public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
+    public bool IsCountry2Correct => HasAnswered && SelectedCountry == 2 && IsCorrectAnswer;
+    public bool IsCountry2Wrong => HasAnswered && SelectedCountry == 2 && !IsCorrectAnswer;
+
+    public string ScoreText => $"{_gameState.CurrentScore}/{_gameState.TotalAnswered}";
+    public string StreakText => _gameState.CurrentStreak > 0 ? $"Streak: {_gameState.CurrentStreak}" : "";
+    public string BestStreakText => _gameState.BestStreak > 0 ? $"Best: {_gameState.BestStreak}" : "";
+    public string AccuracyText => _gameState.TotalAnswered > 0
+        ? $"Accuracy: {_gameState.AccuracyPercentage:F1}%"
+        : "Accuracy: --";
+
+    public ObservableCollection<QuestionType> QuestionTypes { get; } =
+        new(Enum.GetValues<QuestionType>());
+
+    public CountryQuizViewModel() : this(null, null) { }
+
+    public CountryQuizViewModel(IGameStateRepository? gameStateRepository, IGameTelemetry? telemetry = null)
+    {
+        _gameStateRepository = gameStateRepository;
+        _telemetry = telemetry;
+        _countries = CountryData.GetAllCountries().ToList();
+        GenerateNewQuestion();
+    }
+
+    public async Task InitializeAsync()
+    {
+        if (_gameStateRepository != null)
+        {
+            _gameState = await _gameStateRepository.GetOrCreateAsync("default");
+            SyncScoresFromGameState();
+        }
+        GenerateNewQuestion();
+    }
+
+    private void SyncScoresFromGameState()
+    {
+        CurrentScore = _gameState.CurrentScore;
+        HighScore = _gameState.HighScore;
+        CurrentStreak = _gameState.CurrentStreak;
+        BestStreak = _gameState.BestStreak;
+        RefreshTextProperties();
+    }
+
+    private void RefreshTextProperties()
+    {
+        OnPropertyChanged(nameof(ScoreText));
+        OnPropertyChanged(nameof(StreakText));
+        OnPropertyChanged(nameof(BestStreakText));
+        OnPropertyChanged(nameof(AccuracyText));
+    }
+
+    partial void OnHasAnsweredChanged(bool value) => RefreshButtonStates();
+    partial void OnSelectedCountryChanged(int value) => RefreshButtonStates();
+    partial void OnIsCorrectAnswerChanged(bool value) => RefreshButtonStates();
+
+    partial void OnSelectedQuestionTypeChanged(QuestionType value)
+    {
+        _gameState.SelectedQuestionType = value;
+        GenerateNewQuestion();
+    }
+
+    private void RefreshButtonStates()
+    {
+        OnPropertyChanged(nameof(IsCountry1Correct));
+        OnPropertyChanged(nameof(IsCountry1Wrong));
+        OnPropertyChanged(nameof(IsCountry2Correct));
+        OnPropertyChanged(nameof(IsCountry2Wrong));
+    }
+
+    [RelayCommand]
+    private async Task SelectCountryAsync(string countryNumberStr)
+    {
+        if (!int.TryParse(countryNumberStr, out var countryNumber)) return;
+        if (HasAnswered || _correctCountry == null) return;
+
+        HasAnswered = true;
+        SelectedCountry = countryNumber;
+
+        var selectedCountry = countryNumber == 1 ? Country1 : Country2;
+        var isCorrect = selectedCountry?.Name == _correctCountry.Name;
+        IsCorrectAnswer = isCorrect;
+
+        _gameState.RecordAnswer(isCorrect);
+        _telemetry?.RecordAnswer(isCorrect, SelectedQuestionType);
+        SyncScoresFromGameState();
+
+        if (Country1 != null)
+        {
+            var v1 = SelectedQuestionType.GetValue(Country1);
+            Country1Value = v1.HasValue ? SelectedQuestionType.FormatValue(v1) : "N/A";
+        }
+
+
+Want to be notified when Claude responds?
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
+
+67
+07
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
