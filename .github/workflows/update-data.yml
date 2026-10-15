@@ -1,22 +1,9 @@
-# =============================================================================
-# Scheduled Country Data Refresh
-# =============================================================================
-# Runs the World Bank data generator on a schedule and opens a pull request when
-# the bundled data changes. The app still ships the data in the repo, so it never
-# needs a network connection at runtime - this only keeps the committed data
-# current, with a human reviewing every refresh via the PR.
-#
-# Repo setting required (one time):
-#   Settings -> Actions -> General -> Workflow permissions ->
-#     "Allow GitHub Actions to create and approve pull requests"
-# =============================================================================
-
 name: Update Country Data
 
 on:
   schedule:
-    - cron: "0 6 1 * *"   # 06:00 UTC on the 1st of every month
-  workflow_dispatch: {}     # allow manual runs from the Actions tab
+    - cron: "0 6 1 * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -27,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 

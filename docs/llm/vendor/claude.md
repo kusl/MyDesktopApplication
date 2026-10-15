@@ -20819,3 +20819,582 @@ if there are a lot of files that need to change
     NEVER EVER EVER write code comments. 
     in fact, never, ever write comments at all. 
     markdown files such as readme.md are the exception but even these should be as concise and terse as possible.
+
+
+/
+please review the whole code base and upgrade everything to the newest stable versions of all packages
+and all newest versions of all github actions that we use 
+
+please analyze the problem carefully and fix it thoroughly
+use the latest dotnet 10 idioms and functionality
+update everything as necessary
+
+If only a few files (under five or there about) need to change, give me the full path of the files that need to change and the FULL file 
+if there are a lot of files that need to change 
+    Delivery
+    Whole project as one tar.gz, unambiguous file placement
+    Any files to delete on updates called out explicitly
+    No bespoke sed/patch scripts — full files only for anything that changes
+    Docs updated alongside code changes
+    Low verbosity, no code comments
+    NEVER EVER EVER write code comments. 
+    in fact, never, ever write comments at all. 
+    markdown files such as readme.md are the exception but even these should be as concise and terse as possible.
+
+Read 2 files, ran 6 commands, and 4 more tools
+Live NuGet confirms Avalonia 12.1.4 — matching the user’s fresh outdated report exactly. That validates the report as authoritative for all referenced packages. The referenced packages already at latest (CommunityToolkit.Mvvm 8.4.2, Shouldly 4.3.0, NSubstitute 6.2.0) don’t appear in the outdated list, so they’re current. Now verifying the unreferenced declarations in Directory.Packages.props:
+
+Searched the web, read 3 pages, and 3 more tools
+All version strings live in just three files, plus a README doc-sync. Here’s the complete, verified upgrade.
+
+Every version below was confirmed against live NuGet / the GitHub API / the official dotnet/core release index (dated 2026‑10‑13) — not memory. Already-latest packages (CommunityToolkit.Mvvm 8.4.2, Shouldly 4.3.0, NSubstitute 6.2.0, Serilog.Extensions.Logging 10.0.0, Serilog.Sinks.Console/File 6.0.0) and already-latest actions (checkout@v7, setup-dotnet@v6, setup-java@v6) are left untouched.
+
+Thing	From	To
+Avalonia*	12.1.2	12.1.4
+EF Core*	10.0.12	10.0.13
+Microsoft.Extensions*	10.0.12	10.0.13
+OpenTelemetry*	1.19.0	1.20.0
+FluentValidation*	12.1.1	12.2.0
+Serilog	4.3.1	4.4.0
+Testcontainers*	4.11.0	4.16.0
+Npgsql.EntityFrameworkCore.PostgreSQL	10.0.1	10.0.3
+Dapper	2.1.35	2.1.89
+Bogus	35.6.1	35.6.5
+xunit.v3	4.0.1	4.0.2
+xunit.runner.visualstudio	4.0.0	4.0.1
+Microsoft.NET.Test.Sdk	18.10.1	18.11.0
+coverlet.collector	10.0.1	10.1.0
+.NET SDK pin	10.0.104	10.0.113
+upload-artifact	v4	v7
+download-artifact	v4	v8
+softprops/action-gh-release	v2	v3
+checkout (update-data)	v6	v7
+setup-python (update-data)	v6	v7
+No files to delete. Source .cs/.axaml and the other .csproj files are left as-is: every bump is patch/minor with no breaking API change touching this code, so churning the green build (26/26) isn’t warranted.
+
+Directory.Packages.props
+
+xml
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+
+    <AvaloniaVersion>12.1.4</AvaloniaVersion>
+    <EFCoreVersion>10.0.13</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.13</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.20.0</OpenTelemetryVersion>
+    <SerilogVersion>4.4.0</SerilogVersion>
+    <TestcontainersVersion>4.16.0</TestcontainersVersion>
+    <FluentValidationVersion>12.2.0</FluentValidationVersion>
+  </PropertyGroup>
+
+  <ItemGroup Label="Avalonia">
+    <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="MVVM">
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <ItemGroup Label="EntityFramework">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
+  </ItemGroup>
+
+  <ItemGroup Label="Configuration">
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="DependencyInjection">
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Logging">
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Serilog" Version="$(SerilogVersion)" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="OpenTelemetry">
+    <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+    <PackageVersion Include="Bogus" Version="35.6.5" />
+    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
+  </ItemGroup>
+</Project>
+global.json
+
+json
+{
+  "sdk": {
+    "version": "10.0.113",
+    "rollForward": "latestFeature"
+  },
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
+  }
+}
+.github/workflows/build-and-release.yml
+
+yaml
+name: Build and Release
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet test --configuration Release --no-build --verbosity normal \
+            --filter "FullyQualifiedName!~Android"
+
+  build-desktop:
+    needs: build-and-test
+    if: github.event_name == 'push'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            artifact: linux-x64
+          - os: ubuntu-latest
+            rid: linux-arm64
+            artifact: linux-arm64
+          - os: windows-latest
+            rid: win-x64
+            artifact: win-x64
+          - os: windows-latest
+            rid: win-arm64
+            artifact: win-arm64
+          - os: macos-latest
+            rid: osx-x64
+            artifact: osx-x64
+          - os: macos-latest
+            rid: osx-arm64
+            artifact: osx-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        shell: bash
+        run: |
+          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+            --configuration Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:Version=1.0.${{ github.run_number }} \
+            --output ./publish
+
+      - name: Create archive (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          cd ./publish
+          tar -czvf ../MyDesktopApplication-${{ matrix.artifact }}.tar.gz .
+
+      - name: Create archive (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.artifact }}
+          path: |
+            ./MyDesktopApplication-${{ matrix.artifact }}.tar.gz
+            ./MyDesktopApplication-${{ matrix.artifact }}.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  build-android:
+    needs: build-and-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Setup Keystore
+        id: keystore
+        shell: bash
+        run: |
+          if [[ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]]; then
+            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/android.keystore"
+            echo "path=$GITHUB_WORKSPACE/android.keystore" >> "$GITHUB_OUTPUT"
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Android APK (Signed)
+        if: steps.keystore.outputs.available == 'true'
+        shell: bash
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            --configuration Release \
+            -p:ApplicationVersion=${{ github.run_number }} \
+            -p:ApplicationDisplayVersion=1.0.${{ github.run_number }} \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore="${{ steps.keystore.outputs.path }}" \
+            -p:AndroidSigningStorePass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
+            -p:AndroidSigningKeyPass="${{ secrets.ANDROID_SIGNING_PASSWORD }}" \
+            -p:AndroidSigningKeyAlias=myalias \
+            -p:AndroidUseAapt2Daemon=false \
+            --output ./publish/android
+
+      - name: Build Android APK (Unsigned)
+        if: steps.keystore.outputs.available != 'true'
+        shell: bash
+        run: |
+          dotnet publish src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj \
+            --configuration Release \
+            -p:ApplicationVersion=${{ github.run_number }} \
+            -p:ApplicationDisplayVersion=1.0.${{ github.run_number }} \
+            -p:AndroidUseAapt2Daemon=false \
+            --output ./publish/android
+
+      - name: Rename APK
+        shell: bash
+        run: |
+          APK_PATH=$(find ./publish/android -name "*-Signed.apk" -o -name "*.apk" | grep -v "\.aab$" | head -1)
+          if [[ -n "$APK_PATH" ]]; then
+            FINAL_NAME="MyDesktopApplication-android-${{ github.run_number }}.apk"
+            cp "$APK_PATH" "./$FINAL_NAME"
+            echo "APK renamed to: $FINAL_NAME"
+            ls -la "./$FINAL_NAME"
+          else
+            echo "ERROR: No APK found!"
+            find ./publish -type f -name "*.apk" || echo "No APK files found anywhere"
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: ./MyDesktopApplication-android-${{ github.run_number }}.apk
+          if-no-files-found: error
+          retention-days: 7
+
+  create-release:
+    needs: [build-desktop, build-android]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: ./artifacts
+
+      - name: Prepare release files
+        shell: bash
+        run: |
+          echo "=== Downloaded artifacts structure ==="
+          find ./artifacts -type f
+          echo ""
+          mkdir -p ./release
+          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
+          echo "=== Release files ==="
+          ls -la ./release/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: ./release/*
+          body: |
+            ## MyDesktopApplication v1.0.${{ github.run_number }}
+
+            ### Downloads
+
+            | Platform | File |
+            |----------|------|
+            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
+            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
+            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
+            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
+            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
+            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
+            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
+
+            ### Android Users (Obtainium)
+
+            **Version Code**: `${{ github.run_number }}`
+
+            Point Obtainium to this repository's releases for automatic updates.
+            The APK version code increments with each release.
+
+            ### Changes
+
+            See commit history for details.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+.github/workflows/update-data.yml
+
+yaml
+name: Update Country Data
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Refresh country data
+        run: python3 scripts/update_country_data.py
+
+      - name: Open pull request if data changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet -- src/MyDesktopApplication.Shared/Data/CountryData.cs; then
+            echo "No data changes - nothing to do."
+            exit 0
+          fi
+
+          BRANCH="data/refresh-${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/MyDesktopApplication.Shared/Data/CountryData.cs
+          git commit -m "chore(data): refresh country statistics from World Bank"
+          git push --set-upstream origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(data): monthly country statistics refresh" \
+            --body "Automated refresh of bundled country statistics from the World Bank API via \`scripts/update_country_data.py\`. HDI and identity fields are untouched. Please review the diff before merging." \
+            --base master \
+            --head "$BRANCH"
+README.md (badges now point to the real workflow; release section reflects the actual push-to-release behavior)
+
+markdown
+# MyDesktopApplication
+
+[![Build and Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Cross-platform application built with **Avalonia UI** and **.NET 10**.
+
+## Downloads
+
+| Platform | Architecture | Download |
+|----------|--------------|----------|
+| Windows | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Windows | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Linux | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Linux | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| macOS | x64 (Intel) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| macOS | ARM64 (Apple Silicon) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Android | APK | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+
+## Quick Start
+
+### Desktop
+
+```bash
+dotnet restore
+dotnet build
+dotnet run --project src/MyDesktopApplication.Desktop
+```
+
+### Android (requires Android workload)
+
+```bash
+dotnet workload install android
+dotnet build src/MyDesktopApplication.Android -c Release
+```
+
+## Run Tests
+
+```bash
+dotnet test
+```
+
+## Releases
+
+Every push to `master` or `main` publishes a release tagged `v1.0.{run_number}` with binaries for all platforms. No manual tagging required.
+
+## Project Structure
+├── src/
+│ ├── MyDesktopApplication.Core/ # Domain logic
+│ ├── MyDesktopApplication.Infrastructure/ # Data access
+│ ├── MyDesktopApplication.Shared/ # Shared ViewModels
+│ ├── MyDesktopApplication.Desktop/ # Desktop (Windows/Linux/macOS)
+│ └── MyDesktopApplication.Android/ # Android
+└── tests/
+├── MyDesktopApplication.Core.Tests/
+├── MyDesktopApplication.Integration.Tests/
+└── MyDesktopApplication.UI.Tests/
+
+
+## Supported Platforms
+
+| Platform | Status |
+|----------|--------|
+| Windows x64 | ✅ |
+| Windows ARM64 | ✅ |
+| Linux x64 | ✅ |
+| Linux ARM64 | ✅ |
+| macOS x64 | ✅ |
+| macOS ARM64 | ✅ |
+| Android | ✅ |
+| iOS | ❌ (requires Apple Developer account - $99/year) |
+
+## License
+
+MIT License - Free for any use.
+
+All dependencies are MIT, Apache-2.0, BSD, or Public Domain licensed.
+Two things to know before you build:
+
+The SDK pin moved to 10.0.113 (runtime 10.0.13, the 2026‑10‑13 servicing release). With rollForward: latestFeature any newer band (e.g. 10.0.402) still satisfies it, but your Fedora box must have SDK ≥ 10.0.113 installed or dotnet will report the SDK as missing. If you’d rather not require it, drop the pin to 10.0.100.
+upload-artifact v4→v7 / download-artifact v4→v8 are major bumps but wire-compatible (the only break was v3→v4). Your artifact names are already unique per job and the release step flattens with find, so no behavior change. action-gh-release v2→v3 keeps the same inputs.
+The update-data.yml workflow still needs the one-time repo setting Settings → Actions → General → Workflow permissions → “Allow GitHub Actions to create and approve pull requests” — that note lived in a comment I stripped, so it’s here instead.
+
+Run dotnet restore && dotnet build && dotnet test to confirm green, then sh export.sh for the next dump.
+
+
+
+
+Claude is AI and can make mistakes. Please double-check cited sources.
+
+
+
+
+Claude finished the response
+
+24
+36
+
+
+
+
+
+
+
+
+
+
+
+
+

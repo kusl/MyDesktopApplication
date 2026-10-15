@@ -1,7 +1,6 @@
 # MyDesktopApplication
 
-[![CI](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml)
-[![Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml)
+[![Build and Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Cross-platform application built with **Avalonia UI** and **.NET 10**.
@@ -31,10 +30,7 @@ dotnet run --project src/MyDesktopApplication.Desktop
 ### Android (requires Android workload)
 
 ```bash
-# Install Android workload (one-time)
 dotnet workload install android
-
-# Build APK
 dotnet build src/MyDesktopApplication.Android -c Release
 ```
 
@@ -44,29 +40,22 @@ dotnet build src/MyDesktopApplication.Android -c Release
 dotnet test
 ```
 
-## Create Release
+## Releases
 
-Push a tag to create a release with binaries for all platforms:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+Every push to `master` or `main` publishes a release tagged `v1.0.{run_number}` with binaries for all platforms. No manual tagging required.
 
 ## Project Structure
-
-```
 ├── src/
-│   ├── MyDesktopApplication.Core/          # Domain logic
-│   ├── MyDesktopApplication.Infrastructure/ # Data access
-│   ├── MyDesktopApplication.Shared/        # Shared ViewModels
-│   ├── MyDesktopApplication.Desktop/       # Desktop (Windows/Linux/macOS)
-│   └── MyDesktopApplication.Android/       # Android
+│ ├── MyDesktopApplication.Core/ # Domain logic
+│ ├── MyDesktopApplication.Infrastructure/ # Data access
+│ ├── MyDesktopApplication.Shared/ # Shared ViewModels
+│ ├── MyDesktopApplication.Desktop/ # Desktop (Windows/Linux/macOS)
+│ └── MyDesktopApplication.Android/ # Android
 └── tests/
-    ├── MyDesktopApplication.Core.Tests/
-    ├── MyDesktopApplication.Integration.Tests/
-    └── MyDesktopApplication.UI.Tests/
-```
+├── MyDesktopApplication.Core.Tests/
+├── MyDesktopApplication.Integration.Tests/
+└── MyDesktopApplication.UI.Tests/
+
 
 ## Supported Platforms
 

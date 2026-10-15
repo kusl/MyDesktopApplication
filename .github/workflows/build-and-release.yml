@@ -1,10 +1,3 @@
-# =============================================================================
-# Build and Release Workflow
-# =============================================================================
-# Every push to master/main creates a release with version 1.0.{run_number}
-# No git tags required - uses github.run_number for automatic versioning
-# =============================================================================
-
 name: Build and Release
 
 on:
@@ -19,9 +12,6 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
-  # ===========================================================================
-  # Build and Test
-  # ===========================================================================
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -55,9 +45,6 @@ jobs:
           dotnet test --configuration Release --no-build --verbosity normal \
             --filter "FullyQualifiedName!~Android"
 
-  # ===========================================================================
-  # Build Desktop Binaries (Matrix)
-  # ===========================================================================
   build-desktop:
     needs: build-and-test
     if: github.event_name == 'push'
@@ -119,7 +106,7 @@ jobs:
           Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: |
@@ -128,9 +115,6 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # ===========================================================================
-  # Build Android APK
-  # ===========================================================================
   build-android:
     needs: build-and-test
     if: github.event_name == 'push'
@@ -197,9 +181,7 @@ jobs:
       - name: Rename APK
         shell: bash
         run: |
-          # Find the APK (could be -Signed.apk or just .apk)
           APK_PATH=$(find ./publish/android -name "*-Signed.apk" -o -name "*.apk" | grep -v "\.aab$" | head -1)
-          
           if [[ -n "$APK_PATH" ]]; then
             FINAL_NAME="MyDesktopApplication-android-${{ github.run_number }}.apk"
             cp "$APK_PATH" "./$FINAL_NAME"
@@ -212,16 +194,13 @@ jobs:
           fi
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android
           path: ./MyDesktopApplication-android-${{ github.run_number }}.apk
           if-no-files-found: error
           retention-days: 7
 
-  # ===========================================================================
-  # Create GitHub Release
-  # ===========================================================================
   create-release:
     needs: [build-desktop, build-android]
     if: github.event_name == 'push'
@@ -230,7 +209,7 @@ jobs:
       contents: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: ./artifacts
 
@@ -240,18 +219,13 @@ jobs:
           echo "=== Downloaded artifacts structure ==="
           find ./artifacts -type f
           echo ""
-          
-          # Create flat release directory
           mkdir -p ./release
-          
-          # Copy all archives and APK to release folder (flatten structure)
           find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
-          
           echo "=== Release files ==="
           ls -la ./release/
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
@@ -261,9 +235,9 @@ jobs:
           files: ./release/*
           body: |
             ## MyDesktopApplication v1.0.${{ github.run_number }}
-            
+
             ### Downloads
-            
+
             | Platform | File |
             |----------|------|
             | Windows x64 | `MyDesktopApplication-win-x64.zip` |
@@ -273,16 +247,16 @@ jobs:
             | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
             | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
             | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
-            
+
             ### Android Users (Obtainium)
-            
+
             **Version Code**: `${{ github.run_number }}`
-            
+
             Point Obtainium to this repository's releases for automatic updates.
             The APK version code increments with each release.
-            
+
             ### Changes
-            
+
             See commit history for details.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

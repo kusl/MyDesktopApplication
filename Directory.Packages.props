@@ -3,22 +3,15 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <!-- Version variables for grouped packages -->
-    <AvaloniaVersion>12.1.2</AvaloniaVersion>
-    <EFCoreVersion>10.0.12</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.19.0</OpenTelemetryVersion>
-    <SerilogVersion>4.3.1</SerilogVersion>
-    <TestcontainersVersion>4.11.0</TestcontainersVersion>
-    <FluentValidationVersion>12.1.1</FluentValidationVersion>
+    <AvaloniaVersion>12.1.4</AvaloniaVersion>
+    <EFCoreVersion>10.0.13</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.13</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.20.0</OpenTelemetryVersion>
+    <SerilogVersion>4.4.0</SerilogVersion>
+    <TestcontainersVersion>4.16.0</TestcontainersVersion>
+    <FluentValidationVersion>12.2.0</FluentValidationVersion>
   </PropertyGroup>
 
-  <!--
-    NOTE: Avalonia.Diagnostics was REMOVED in Avalonia 12. Its replacement
-    (AvaloniaUI.DiagnosticsSupport + Avalonia Plus Dev Tools) is a commercial
-    product, which violates our FOSS-only rule. We therefore ship without an
-    in-app visual tree inspector. Use logging/OpenTelemetry for diagnostics.
-  -->
   <ItemGroup Label="Avalonia">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
@@ -36,8 +29,8 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
-    <PackageVersion Include="Dapper" Version="2.1.35" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
   </ItemGroup>
 
   <ItemGroup Label="Configuration">
@@ -75,28 +68,15 @@
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
-    <!-- xUnit.net v3 - Apache 2.0 License. v3 test projects are self-executing
-         (OutputType=Exe, set centrally in Directory.Build.props). The visualstudio
-         runner 4.x runs v1/v2/v3 under `dotnet test` (VSTest), so no CI change. -->
-    <PackageVersion Include="xunit.v3" Version="4.0.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
-
-    <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-
-    <!-- NSubstitute - BSD-3-Clause License -->
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
-
-    <!-- Bogus - MIT License -->
-    <PackageVersion Include="Bogus" Version="35.6.1" />
-
-    <!-- Testcontainers - MIT License -->
+    <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
-
-    <!-- Coverage -->
-    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
   </ItemGroup>
 </Project>
