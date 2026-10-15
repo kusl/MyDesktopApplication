@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Oct 15 12:32:29 PM EDT 2026
+Generated: Thu Oct 15 01:32:28 PM EDT 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -205,15 +205,8 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 9.63 KB
+SIZE: 8.19 KB
 ================================================================================
-
-# =============================================================================
-# Build and Release Workflow
-# =============================================================================
-# Every push to master/main creates a release with version 1.0.{run_number}
-# No git tags required - uses github.run_number for automatic versioning
-# =============================================================================
 
 name: Build and Release
 
@@ -229,9 +222,6 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
-  # ===========================================================================
-  # Build and Test
-  # ===========================================================================
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -265,9 +255,6 @@ jobs:
           dotnet test --configuration Release --no-build --verbosity normal \
             --filter "FullyQualifiedName!~Android"
 
-  # ===========================================================================
-  # Build Desktop Binaries (Matrix)
-  # ===========================================================================
   build-desktop:
     needs: build-and-test
     if: github.event_name == 'push'
@@ -329,7 +316,7 @@ jobs:
           Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: |
@@ -338,9 +325,6 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # ===========================================================================
-  # Build Android APK
-  # ===========================================================================
   build-android:
     needs: build-and-test
     if: github.event_name == 'push'
@@ -407,9 +391,7 @@ jobs:
       - name: Rename APK
         shell: bash
         run: |
-          # Find the APK (could be -Signed.apk or just .apk)
           APK_PATH=$(find ./publish/android -name "*-Signed.apk" -o -name "*.apk" | grep -v "\.aab$" | head -1)
-          
           if [[ -n "$APK_PATH" ]]; then
             FINAL_NAME="MyDesktopApplication-android-${{ github.run_number }}.apk"
             cp "$APK_PATH" "./$FINAL_NAME"
@@ -422,16 +404,13 @@ jobs:
           fi
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android
           path: ./MyDesktopApplication-android-${{ github.run_number }}.apk
           if-no-files-found: error
           retention-days: 7
 
-  # ===========================================================================
-  # Create GitHub Release
-  # ===========================================================================
   create-release:
     needs: [build-desktop, build-android]
     if: github.event_name == 'push'
@@ -440,7 +419,7 @@ jobs:
       contents: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: ./artifacts
 
@@ -450,18 +429,13 @@ jobs:
           echo "=== Downloaded artifacts structure ==="
           find ./artifacts -type f
           echo ""
-          
-          # Create flat release directory
           mkdir -p ./release
-          
-          # Copy all archives and APK to release folder (flatten structure)
           find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
-          
           echo "=== Release files ==="
           ls -la ./release/
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
@@ -471,9 +445,9 @@ jobs:
           files: ./release/*
           body: |
             ## MyDesktopApplication v1.0.${{ github.run_number }}
-            
+
             ### Downloads
-            
+
             | Platform | File |
             |----------|------|
             | Windows x64 | `MyDesktopApplication-win-x64.zip` |
@@ -483,16 +457,16 @@ jobs:
             | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
             | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
             | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
-            
+
             ### Android Users (Obtainium)
-            
+
             **Version Code**: `${{ github.run_number }}`
-            
+
             Point Obtainium to this repository's releases for automatic updates.
             The APK version code increments with each release.
-            
+
             ### Changes
-            
+
             See commit history for details.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -500,28 +474,15 @@ jobs:
 
 ================================================================================
 FILE: .github/workflows/update-data.yml
-SIZE: 2.33 KB
+SIZE: 1.52 KB
 ================================================================================
-
-# =============================================================================
-# Scheduled Country Data Refresh
-# =============================================================================
-# Runs the World Bank data generator on a schedule and opens a pull request when
-# the bundled data changes. The app still ships the data in the repo, so it never
-# needs a network connection at runtime - this only keeps the committed data
-# current, with a human reviewing every refresh via the PR.
-#
-# Repo setting required (one time):
-#   Settings -> Actions -> General -> Workflow permissions ->
-#     "Allow GitHub Actions to create and approve pull requests"
-# =============================================================================
 
 name: Update Country Data
 
 on:
   schedule:
-    - cron: "0 6 1 * *"   # 06:00 UTC on the 1st of every month
-  workflow_dispatch: {}     # allow manual runs from the Actions tab
+    - cron: "0 6 1 * *"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -532,10 +493,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -673,7 +634,7 @@ SIZE: 1.92 KB
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 5.44 KB
+SIZE: 4.57 KB
 ================================================================================
 
 <Project>
@@ -681,22 +642,15 @@ SIZE: 5.44 KB
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <!-- Version variables for grouped packages -->
-    <AvaloniaVersion>12.1.2</AvaloniaVersion>
-    <EFCoreVersion>10.0.12</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.12</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.19.0</OpenTelemetryVersion>
-    <SerilogVersion>4.3.1</SerilogVersion>
-    <TestcontainersVersion>4.11.0</TestcontainersVersion>
-    <FluentValidationVersion>12.1.1</FluentValidationVersion>
+    <AvaloniaVersion>12.1.4</AvaloniaVersion>
+    <EFCoreVersion>10.0.13</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.13</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.20.0</OpenTelemetryVersion>
+    <SerilogVersion>4.4.0</SerilogVersion>
+    <TestcontainersVersion>4.16.0</TestcontainersVersion>
+    <FluentValidationVersion>12.2.0</FluentValidationVersion>
   </PropertyGroup>
 
-  <!--
-    NOTE: Avalonia.Diagnostics was REMOVED in Avalonia 12. Its replacement
-    (AvaloniaUI.DiagnosticsSupport + Avalonia Plus Dev Tools) is a commercial
-    product, which violates our FOSS-only rule. We therefore ship without an
-    in-app visual tree inspector. Use logging/OpenTelemetry for diagnostics.
-  -->
   <ItemGroup Label="Avalonia">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
@@ -714,8 +668,8 @@ SIZE: 5.44 KB
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
-    <PackageVersion Include="Dapper" Version="2.1.35" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
   </ItemGroup>
 
   <ItemGroup Label="Configuration">
@@ -753,29 +707,16 @@ SIZE: 5.44 KB
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="Testing - All BSD/MIT/Apache Licensed (Free of Cost)">
-    <!-- xUnit.net v3 - Apache 2.0 License. v3 test projects are self-executing
-         (OutputType=Exe, set centrally in Directory.Build.props). The visualstudio
-         runner 4.x runs v1/v2/v3 under `dotnet test` (VSTest), so no CI change. -->
-    <PackageVersion Include="xunit.v3" Version="4.0.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
-
-    <!-- Shouldly - BSD-3-Clause License (replaces FluentAssertions) -->
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-
-    <!-- NSubstitute - BSD-3-Clause License -->
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
-
-    <!-- Bogus - MIT License -->
-    <PackageVersion Include="Bogus" Version="35.6.1" />
-
-    <!-- Testcontainers - MIT License -->
+    <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
-
-    <!-- Coverage -->
-    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
   </ItemGroup>
 </Project>
 
@@ -803,13 +744,12 @@ SIZE: .85 KB
 
 ================================================================================
 FILE: README.md
-SIZE: 2.68 KB
+SIZE: 2.47 KB
 ================================================================================
 
 # MyDesktopApplication
 
-[![CI](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/ci.yml)
-[![Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/release.yml)
+[![Build and Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Cross-platform application built with **Avalonia UI** and **.NET 10**.
@@ -839,10 +779,7 @@ dotnet run --project src/MyDesktopApplication.Desktop
 ### Android (requires Android workload)
 
 ```bash
-# Install Android workload (one-time)
 dotnet workload install android
-
-# Build APK
 dotnet build src/MyDesktopApplication.Android -c Release
 ```
 
@@ -852,29 +789,22 @@ dotnet build src/MyDesktopApplication.Android -c Release
 dotnet test
 ```
 
-## Create Release
+## Releases
 
-Push a tag to create a release with binaries for all platforms:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+Every push to `master` or `main` publishes a release tagged `v1.0.{run_number}` with binaries for all platforms. No manual tagging required.
 
 ## Project Structure
-
-```
 ├── src/
-│   ├── MyDesktopApplication.Core/          # Domain logic
-│   ├── MyDesktopApplication.Infrastructure/ # Data access
-│   ├── MyDesktopApplication.Shared/        # Shared ViewModels
-│   ├── MyDesktopApplication.Desktop/       # Desktop (Windows/Linux/macOS)
-│   └── MyDesktopApplication.Android/       # Android
+│ ├── MyDesktopApplication.Core/ # Domain logic
+│ ├── MyDesktopApplication.Infrastructure/ # Data access
+│ ├── MyDesktopApplication.Shared/ # Shared ViewModels
+│ ├── MyDesktopApplication.Desktop/ # Desktop (Windows/Linux/macOS)
+│ └── MyDesktopApplication.Android/ # Android
 └── tests/
-    ├── MyDesktopApplication.Core.Tests/
-    ├── MyDesktopApplication.Integration.Tests/
-    └── MyDesktopApplication.UI.Tests/
-```
+├── MyDesktopApplication.Core.Tests/
+├── MyDesktopApplication.Integration.Tests/
+└── MyDesktopApplication.UI.Tests/
+
 
 ## Supported Platforms
 
@@ -936,7 +866,7 @@ SIZE: .13 KB
 
 {
   "sdk": {
-    "version": "10.0.104",
+    "version": "10.0.113",
     "rollForward": "latestFeature"
   },
   "test": {

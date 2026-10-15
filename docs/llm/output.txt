@@ -285,5 +285,217 @@ Export Complete: docs/llm/dump.txt
 
 real	0m0.685s
 user	0m0.339s
-sys	0m0.459s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh;
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'clean' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.012s
+user	0m0.001s
+sys	0m0.001s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'restore' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'build' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'test' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.001s
+sys	0m0.001s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'list' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.001s
+sys	0m0.000s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'list' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.000s
+sys	0m0.002s
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application 'format' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      A compatible .NET SDK was not found.
+
+Requested SDK version: 10.0.113
+global.json file: /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Installed SDKs:
+10.0.112 [/usr/lib64/dotnet/sdk]
+
+Install the [10.0.113] .NET SDK or update [/home/kushal/src/dotnet/MyDesktopApplication/global.json] to match an installed SDK.
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+real	0m0.002s
+user	0m0.000s
+sys	0m0.002s
+==============================================
+  Generating Clean Project Export
+==============================================
+Generating directory structure...
+Collecting and cleaning file contents...
+Processed: .gitattributes
+Processed: .github/dependabot.yml
+Processed: .github/workflows/build-and-release.yml
+Processed: .github/workflows/update-data.yml
+Processed: .gitignore
+Processed: Directory.Build.props
+Processed: Directory.Packages.props
+Processed: MyDesktopApplication.slnx
+Processed: README.md
+Processed: docs/thoughts.md
+Processed: global.json
+Processed: scripts/update_country_data.py
+Processed: src/MyDesktopApplication.Android/AndroidApp.cs
+Processed: src/MyDesktopApplication.Android/AndroidManifest.xml
+Processed: src/MyDesktopApplication.Android/App.axaml
+Processed: src/MyDesktopApplication.Android/App.axaml.cs
+Processed: src/MyDesktopApplication.Android/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Android/MainActivity.cs
+Processed: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processed: src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processed: src/MyDesktopApplication.Core/Entities/Country.cs
+Processed: src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processed: src/MyDesktopApplication.Core/Entities/GameState.cs
+Processed: src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processed: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processed: src/MyDesktopApplication.Desktop/App.axaml
+Processed: src/MyDesktopApplication.Desktop/App.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/Converters/Converters.cs
+Processed: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processed: src/MyDesktopApplication.Desktop/Program.cs
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/app.manifest
+Processed: src/MyDesktopApplication.Desktop/appsettings.json
+Processed: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processed: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processed: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processed: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processed: src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processed: src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processed: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processed: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processed: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processed: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processed: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processed: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processed: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+Export Complete: docs/llm/dump.txt
+
+real	0m0.637s
+user	0m0.325s
+sys	0m0.436s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
