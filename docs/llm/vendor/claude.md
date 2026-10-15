@@ -20798,3 +20798,21 @@ Claude is AI and can make mistakes. Please double-check responses.
 
 
 
+please review the whole code base and upgrade everything to the newest stable versions of all packages
+and all newest versions of all github actions that we use 
+
+please analyze the problem carefully and fix it thoroughly
+use the latest dotnet 10 idioms and functionality
+update everything as necessary
+
+If only a few files (under five or there about) need to change, give me the full path of the files that need to change and the FULL file 
+if there are a lot of files that need to change 
+    Delivery
+    Whole project as one tar.gz, unambiguous file placement
+    Any files to delete on updates called out explicitly
+    No bespoke sed/patch scripts — full files only for anything that changes
+    Docs updated alongside code changes
+    Low verbosity, no code comments
+    NEVER EVER EVER write code comments. 
+    in fact, never, ever write comments at all. 
+    markdown files such as readme.md are the exception but even these should be as concise and terse as possible.
