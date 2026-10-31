@@ -4,9 +4,9 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
     <AvaloniaVersion>12.1.4</AvaloniaVersion>
-    <EFCoreVersion>10.0.13</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.13</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.20.0</OpenTelemetryVersion>
+    <EFCoreVersion>10.0.14</EFCoreVersion>
+    <MicrosoftExtensionsVersion>10.0.14</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.20.1</OpenTelemetryVersion>
     <SerilogVersion>4.4.0</SerilogVersion>
     <TestcontainersVersion>4.16.0</TestcontainersVersion>
     <FluentValidationVersion>12.2.0</FluentValidationVersion>
