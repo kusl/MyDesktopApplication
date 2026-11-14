@@ -4,8 +4,8 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
     <AvaloniaVersion>12.1.4</AvaloniaVersion>
-    <EFCoreVersion>10.0.14</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.14</MicrosoftExtensionsVersion>
+    <EFCoreVersion>10.0.15</EFCoreVersion>
+    <MicrosoftExtensionsVersion>11.0.0</MicrosoftExtensionsVersion>
     <OpenTelemetryVersion>1.20.1</OpenTelemetryVersion>
     <SerilogVersion>4.4.0</SerilogVersion>
     <TestcontainersVersion>4.16.0</TestcontainersVersion>
@@ -71,7 +71,7 @@
   <ItemGroup Label="Testing">
     <PackageVersion Include="xunit.v3" Version="4.0.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
