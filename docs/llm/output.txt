@@ -662,4 +662,834 @@ Matched fields: name
 real	0m0.548s
 user	0m0.437s
 sys	0m0.162s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh; time dotnet --info; time dnf info dotnet-sdk-11.0.x86_64; time dnf search dotnet-sdk;
+  MyDesktopApplication.UI.Tests net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.UI.Tests/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Core net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Core/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Shared net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Shared/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Desktop net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Core.Tests net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Core.Tests/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Infrastructure net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Infrastructure/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Integration.Tests net11.0 failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/tests/MyDesktopApplication.Integration.Tests/obj/project.assets.json' doesn't have a target for 'net11.0'. Ensure that restore has run and that you have included 'net11.0' in the TargetFrameworks for your project.
+  MyDesktopApplication.Android net11.0-android failed with 1 error(s) (0.1s)
+    /usr/lib64/dotnet/sdk/11.0.100/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets(266,5): error NETSDK1005: Assets file '/home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/obj/project.assets.json' doesn't have a target for 'net11.0-android'. Ensure that restore has run and that you have included 'net11.0-android' in the TargetFrameworks for your project.
+
+Build failed with 8 error(s) in 0.7s
+
+real	0m0.909s
+user	0m0.119s
+sys	0m0.039s
+Restore complete (1.4s)
+
+Build succeeded in 1.5s
+
+real	0m1.571s
+user	0m0.191s
+sys	0m0.033s
+Restore complete (0.3s)
+  MyDesktopApplication.Core net11.0 succeeded (1.3s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net11.0 succeeded (0.5s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net11.0 succeeded (0.5s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.6s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net11.0 succeeded (1.1s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net11.0 failed with 1 error(s) (0.5s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/obj/Debug/net11.0/Microsoft.Interop.LibraryImportGenerator/Microsoft.Interop.LibraryImportGenerator/LibraryImports.g.cs(7,10): error CS0227: Unsafe code may only appear if compiling with /unsafe
+  MyDesktopApplication.UI.Tests net11.0 succeeded (0.6s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net11.0-android failed with 1 error(s) (2.0s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(12,20): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+
+Build failed with 2 error(s) in 4.5s
+
+real	0m4.646s
+user	0m0.420s
+sys	0m0.048s
+Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64)
+Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64)
+Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (542ms)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (544ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 003ms)
+
+Test run summary: Passed!
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (544ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (542ms)
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 003ms)
+
+  total: 26
+  failed: 0
+  succeeded: 26
+  skipped: 0
+  duration: 1s 179ms
+
+real	0m3.383s
+user	0m4.465s
+sys	0m0.646s
+Restore complete (0.2s)
+
+Build succeeded in 0.2s
+Project 'MyDesktopApplication.Android' has the following package references
+   [net11.0-android]: 
+   Top-level Package                                  Requested    Resolved
+   > Avalonia                                         12.2.0       12.2.0  
+   > Avalonia.Android                                 12.2.0       12.2.0  
+   > Avalonia.Fonts.Inter                             12.2.0       12.2.0  
+   > Avalonia.Themes.Fluent2                          12.2.0       12.2.0  
+   > CommunityToolkit.Mvvm                            8.4.2        8.4.2   
+   > Microsoft.EntityFrameworkCore                    11.0.0       11.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite             11.0.0       11.0.0  
+   > Microsoft.Extensions.DependencyInjection         11.0.0       11.0.0  
+   > Microsoft.Extensions.Logging                     11.0.0       11.0.0  
+   > Microsoft.NET.ILLink.Tasks                 (A)   [11.0.0, )   11.0.0  
+   > OpenTelemetry                                    1.21.0       1.21.0  
+   > OpenTelemetry.Exporter.Console                   1.21.0       1.21.0  
+   > OpenTelemetry.Extensions.Hosting                 1.21.0       1.21.0  
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net11.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia.Desktop                              12.2.0      12.2.0  
+   > Avalonia.Fonts.Inter                          12.2.0      12.2.0  
+   > Avalonia.Themes.Fluent2                       12.2.0      12.2.0  
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 11.0.0      11.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite          11.0.0      11.0.0  
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+   > Microsoft.Extensions.Logging                  11.0.0      11.0.0  
+   > OpenTelemetry                                 1.21.0      1.21.0  
+   > OpenTelemetry.Exporter.Console                1.21.0      1.21.0  
+   > OpenTelemetry.Extensions.Hosting              1.21.0      1.21.0  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia                                      12.2.0      12.2.0  
+   > CommunityToolkit.Mvvm                         8.4.2       8.4.2   
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.1.1      10.1.1  
+   > Microsoft.NET.Test.Sdk         18.12.0     18.12.0 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.1       4.0.1   
+   > xunit.v3                       4.0.3       4.0.3   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          10.1.1      10.1.1  
+   > Microsoft.EntityFrameworkCore.InMemory      11.0.0      11.0.0  
+   > Microsoft.NET.Test.Sdk                      18.12.0     18.12.0 
+   > NSubstitute                                 6.2.0       6.2.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit.runner.visualstudio                   4.0.1       4.0.1   
+   > xunit.v3                                    4.0.3       4.0.3   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.1.1      10.1.1  
+   > Microsoft.NET.Test.Sdk         18.12.0     18.12.0 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.1       4.0.1   
+   > xunit.v3                       4.0.3       4.0.3   
+
+(A) : Auto-referenced package.
+
+real	0m1.588s
+user	0m1.244s
+sys	0m0.420s
+Restore complete (0.1s)
+
+Build succeeded in 0.2s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m3.700s
+user	0m3.062s
+sys	0m0.486s
+
+real	0m6.110s
+user	0m9.288s
+sys	0m0.908s
+==============================================
+  Generating Clean Project Export
+==============================================
+Generating directory structure...
+Collecting and cleaning file contents...
+Processed: .gitattributes
+Processed: .github/dependabot.yml
+Processed: .github/workflows/build-and-release.yml
+Processed: .github/workflows/update-data.yml
+Processed: .gitignore
+Processed: Directory.Build.props
+Processed: Directory.Packages.props
+Processed: MyDesktopApplication.slnx
+Processed: README.md
+Processed: docs/thoughts.md
+Processed: global.json
+Processed: scripts/update_country_data.py
+Processed: src/MyDesktopApplication.Android/AndroidApp.cs
+Processed: src/MyDesktopApplication.Android/AndroidFeedbackService.cs
+Processed: src/MyDesktopApplication.Android/AndroidManifest.xml
+Processed: src/MyDesktopApplication.Android/App.axaml
+Processed: src/MyDesktopApplication.Android/App.axaml.cs
+Processed: src/MyDesktopApplication.Android/MainActivity.cs
+Processed: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processed: src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processed: src/MyDesktopApplication.Core/Entities/Country.cs
+Processed: src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processed: src/MyDesktopApplication.Core/Entities/GameState.cs
+Processed: src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IFeedbackService.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processed: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processed: src/MyDesktopApplication.Desktop/App.axaml
+Processed: src/MyDesktopApplication.Desktop/App.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/DesktopFeedbackService.cs
+Processed: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processed: src/MyDesktopApplication.Desktop/Program.cs
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/app.manifest
+Processed: src/MyDesktopApplication.Desktop/appsettings.json
+Processed: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processed: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processed: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processed: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processed: src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processed: src/MyDesktopApplication.Shared/Audio/ToneSynthesizer.cs
+Processed: src/MyDesktopApplication.Shared/Converters/GameConverters.cs
+Processed: src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processed: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processed: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processed: src/MyDesktopApplication.Shared/ServiceCollectionExtensions.cs
+Processed: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processed: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processed: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processed: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processed: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+Export Complete: docs/llm/dump.txt
+
+real	0m0.725s
+user	0m0.400s
+sys	0m0.465s
+.NET SDK:
+ Version:           11.0.100
+ Commit:            297acf930f
+ Workload version:  11.0.100.1
+ MSBuild version:   18.12.2-1.26529.118+297acf930
+
+Runtime Environment:
+ OS Name:     fedora
+ OS Version:  45
+ OS Platform: Linux
+ RID:         fedora.45-x64
+ Base Path:   /usr/lib64/dotnet/sdk/11.0.100
+
+.NET workloads installed:
+ [android]
+   Installation Source: SDK 11.0.100
+   Manifest Version:    37.2.31/11.0.100
+   Manifest Path:       /home/kushal/.dotnet/sdk-manifests/11.0.100/microsoft.net.sdk.android/37.2.31/WorkloadManifest.json
+   Install Type:        FileBased
+
+Configured to use workload sets when installing new manifests.
+
+Host:
+  Version:      11.0.0
+  Architecture: x64
+  Commit:       297acf930f
+
+.NET SDKs installed:
+  10.0.115 [/usr/lib64/dotnet/sdk]
+  11.0.100 [/usr/lib64/dotnet/sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 10.0.15 [/usr/lib64/dotnet/shared/Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 11.0.0 [/usr/lib64/dotnet/shared/Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 10.0.15 [/usr/lib64/dotnet/shared/Microsoft.NETCore.App]
+  Microsoft.NETCore.App 11.0.0 [/usr/lib64/dotnet/shared/Microsoft.NETCore.App]
+
+Other architectures found:
+  None
+
+Environment variables:
+  Not set
+
+global.json file:
+  /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+real	0m0.036s
+user	0m0.013s
+sys	0m0.009s
+Updating and loading repositories:
+Last metadata expiration check: 4:44:51 ago on 2026-11-26 07:37:07.
+Repositories loaded.
+Installed packages
+Name            : dotnet-sdk-11.0
+Epoch           : 0
+Version         : 11.0.100
+Release         : 1.fc45
+Architecture    : x86_64
+Installed size  : 262.6 MiB
+Source          : dotnet11.0-11.0.100-1.fc45.src.rpm
+From repository : updates
+Summary         : .NET 11.0 Software Development Kit
+URL             : https://github.com/dotnet/
+License         : 0BSD AND Apache-2.0 AND (Apache-2.0 WITH LLVM-exception) AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND bzip2-1.0.6 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND C
+                : C-PDDC AND CNRI-Python AND EPL-1.0 AND GPL-2.0-only AND (GPL-2.0-only WITH GCC-exception-2.0) AND GPL-2.0-or-later AND GPL-3.0-only AND ICU AND ISC AND LGPL-2.1-only AND LGPL-2.1-or-later AND Li
+                : censeRef-Fedora-Public-Domain AND LicenseRef-ISO-8879 AND MIT AND MIT-Wu AND MS-PL AND MS-RL AND NCSA AND OFL-1.1 AND OpenSSL AND Unicode-DFS-2015 AND Unicode-DFS-2016 AND W3C-19980720 AND X11 A
+                : ND Zlib
+Description     : The .NET SDK is a collection of command line applications to
+                : create, build, publish and run .NET applications.
+                : 
+                : .NET is a fast, lightweight and modular platform for creating
+                : cross platform applications that work on Linux, Mac and Windows.
+                : 
+                : It particularly focuses on creating console applications, web
+                : applications and micro-services.
+Vendor          : Fedora Project
+
+real	0m0.661s
+user	0m0.429s
+sys	0m0.188s
+Updating and loading repositories:
+Last metadata expiration check: 4:44:51 ago on 2026-11-26 07:37:07.
+Repositories loaded.
+Matched fields: name
+ dotnet-sdk-10.0.x86_64	.NET 10.0 Software Development Kit
+ dotnet-sdk-10.0-source-built-artifacts.x86_64	Internal package for building .NET 10.0 Software Development Kit
+ dotnet-sdk-11.0.x86_64	.NET 11.0 Software Development Kit
+ dotnet-sdk-11.0-source-built-artifacts.x86_64	Internal package for building .NET 11.0 Software Development Kit
+ dotnet-sdk-aot-10.0.x86_64	Ahead-of-Time (AOT) support for the .NET 10.0 Software Development Kit
+ dotnet-sdk-aot-11.0.x86_64	Ahead-of-Time (AOT) support for the .NET 11.0 Software Development Kit
+ dotnet-sdk-dbg-10.0.x86_64	Managed debug symbols for the .NET 10.0 Software Development Kit
+ dotnet-sdk-dbg-11.0.x86_64	Managed debug symbols for the .NET 11.0 Software Development Kit
+
+real	0m0.527s
+user	0m0.432s
+sys	0m0.147s
+kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd /home/kushal/src/dotnet/MyDesktopApplication; time dotnet workload restore; time dotnet clean; time dotnet restore; time dotnet build; time dotnet test; time dotnet list package; time dotnet list package --outdated; time dotnet format; time sh export.sh; time dotnet --info; time dnf info dotnet-sdk-11.0.x86_64; time dnf search dotnet-sdk;
+
+Skipping NuGet package signature verification.
+Updated advertising manifest microsoft.net.workloads.
+No workload update found.
+Pack Microsoft.Android.Sdk.Linux version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Sdk.Linux version 37.2.31...
+Pack Microsoft.Android.Sdk.Linux version 36.1.118 is already installed.
+Writing workload pack installation record for Microsoft.Android.Sdk.Linux version 36.1.118...
+Pack Microsoft.Android.Ref.37 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Ref.37 version 37.2.31...
+Pack Microsoft.Android.Runtime.37.android version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.37.android version 37.2.31...
+Pack Microsoft.Android.Runtime.Mono.37.android-arm version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.37.android-arm version 37.2.31...
+Pack Microsoft.Android.Runtime.Mono.37.android-arm64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.37.android-arm64 version 37.2.31...
+Pack Microsoft.Android.Runtime.Mono.37.android-x86 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.37.android-x86 version 37.2.31...
+Pack Microsoft.Android.Runtime.Mono.37.android-x64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.Mono.37.android-x64 version 37.2.31...
+Pack Microsoft.Android.Runtime.CoreCLR.37.android-arm version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.CoreCLR.37.android-arm version 37.2.31...
+Pack Microsoft.Android.Runtime.CoreCLR.37.android-arm64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.CoreCLR.37.android-arm64 version 37.2.31...
+Pack Microsoft.Android.Runtime.CoreCLR.37.android-x64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.CoreCLR.37.android-x64 version 37.2.31...
+Pack Microsoft.Android.Runtime.NativeAOT.37.android-arm version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.NativeAOT.37.android-arm version 37.2.31...
+Pack Microsoft.Android.Runtime.NativeAOT.37.android-arm64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.NativeAOT.37.android-arm64 version 37.2.31...
+Pack Microsoft.Android.Runtime.NativeAOT.37.android-x64 version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Runtime.NativeAOT.37.android-x64 version 37.2.31...
+Pack Microsoft.Android.Templates version 37.2.31 is already installed.
+Writing workload pack installation record for Microsoft.Android.Templates version 37.2.31...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x64 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x64 version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x86 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x86 version 10.0.15...
+Pack Microsoft.NET.Runtime.MonoAOTCompiler.Task version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoAOTCompiler.Task version 10.0.15...
+Pack Microsoft.NET.Runtime.MonoTargets.Sdk version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoTargets.Sdk version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 10.0.15 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 10.0.15...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-arm64 version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x64 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x64 version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.Mono.android-x86 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.Mono.android-x86 version 11.0.0...
+Pack Microsoft.NET.Runtime.MonoAOTCompiler.Task version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoAOTCompiler.Task version 11.0.0...
+Pack Microsoft.NET.Runtime.MonoTargets.Sdk version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NET.Runtime.MonoTargets.Sdk version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x86 version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-x64 version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm version 11.0.0...
+Pack Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 11.0.0 is already installed.
+Writing workload pack installation record for Microsoft.NETCore.App.Runtime.AOT.linux-x64.Cross.android-arm64 version 11.0.0...
+Garbage collecting for SDK feature band(s) 10.0.100 11.0.100...
+
+Successfully updated workload(s): android.
+
+Build started 11/26/2026 7:22:17 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.18
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.02
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.07
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.03
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.04
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.03
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.06
+Build started 11/26/2026 7:22:18 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.06
+Installing workloads: 
+
+
+real	0m1.619s
+user	0m1.253s
+sys	0m0.282s
+
+Build succeeded in 0.3s
+
+real	0m0.389s
+user	0m0.098s
+sys	0m0.036s
+Restore complete (0.1s)
+
+Build succeeded in 0.2s
+
+real	0m0.303s
+user	0m0.106s
+sys	0m0.037s
+Restore complete (0.1s)
+  MyDesktopApplication.Core net11.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net11.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.4s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net11.0 succeeded (0.6s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net11.0 failed with 1 error(s) (0.1s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/obj/Debug/net11.0/Microsoft.Interop.LibraryImportGenerator/Microsoft.Interop.LibraryImportGenerator/LibraryImports.g.cs(7,10): error CS0227: Unsafe code may only appear if compiling with /unsafe
+  MyDesktopApplication.UI.Tests net11.0 succeeded (0.3s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net11.0-android failed with 1 error(s) (1.0s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(12,20): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+
+Build failed with 2 error(s) in 1.8s
+
+real	0m1.935s
+user	0m0.315s
+sys	0m0.062s
+Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64)
+Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64)
+Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (546ms)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (547ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (986ms)
+
+Test run summary: Passed!
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (547ms)
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (986ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (546ms)
+
+  total: 26
+  failed: 0
+  succeeded: 26
+  skipped: 0
+  duration: 1s 161ms
+
+real	0m2.923s
+user	0m4.467s
+sys	0m0.536s
+Restore complete (0.1s)
+
+Build succeeded in 0.2s
+Project 'MyDesktopApplication.Android' has the following package references
+   [net11.0-android]: 
+   Top-level Package                                  Requested    Resolved
+   > Avalonia                                         12.2.0       12.2.0  
+   > Avalonia.Android                                 12.2.0       12.2.0  
+   > Avalonia.Fonts.Inter                             12.2.0       12.2.0  
+   > Avalonia.Themes.Fluent2                          12.2.0       12.2.0  
+   > CommunityToolkit.Mvvm                            8.4.2        8.4.2   
+   > Microsoft.EntityFrameworkCore                    11.0.0       11.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite             11.0.0       11.0.0  
+   > Microsoft.Extensions.DependencyInjection         11.0.0       11.0.0  
+   > Microsoft.Extensions.Logging                     11.0.0       11.0.0  
+   > Microsoft.NET.ILLink.Tasks                 (A)   [11.0.0, )   11.0.0  
+   > OpenTelemetry                                    1.21.0       1.21.0  
+   > OpenTelemetry.Exporter.Console                   1.21.0       1.21.0  
+   > OpenTelemetry.Extensions.Hosting                 1.21.0       1.21.0  
+
+Project 'MyDesktopApplication.Core' has the following package references
+   [net11.0]: No packages were found for this framework.
+Project 'MyDesktopApplication.Desktop' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia.Desktop                              12.2.0      12.2.0  
+   > Avalonia.Fonts.Inter                          12.2.0      12.2.0  
+   > Avalonia.Themes.Fluent2                       12.2.0      12.2.0  
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+
+Project 'MyDesktopApplication.Infrastructure' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Microsoft.EntityFrameworkCore                 11.0.0      11.0.0  
+   > Microsoft.EntityFrameworkCore.Sqlite          11.0.0      11.0.0  
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+   > Microsoft.Extensions.Logging                  11.0.0      11.0.0  
+   > OpenTelemetry                                 1.21.0      1.21.0  
+   > OpenTelemetry.Exporter.Console                1.21.0      1.21.0  
+   > OpenTelemetry.Extensions.Hosting              1.21.0      1.21.0  
+
+Project 'MyDesktopApplication.Shared' has the following package references
+   [net11.0]: 
+   Top-level Package                               Requested   Resolved
+   > Avalonia                                      12.2.0      12.2.0  
+   > CommunityToolkit.Mvvm                         8.4.2       8.4.2   
+   > Microsoft.Extensions.DependencyInjection      11.0.0      11.0.0  
+
+Project 'MyDesktopApplication.Core.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.1.1      10.1.1  
+   > Microsoft.NET.Test.Sdk         18.12.0     18.12.0 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.1       4.0.1   
+   > xunit.v3                       4.0.3       4.0.3   
+
+Project 'MyDesktopApplication.Integration.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          10.1.1      10.1.1  
+   > Microsoft.EntityFrameworkCore.InMemory      11.0.0      11.0.0  
+   > Microsoft.NET.Test.Sdk                      18.12.0     18.12.0 
+   > NSubstitute                                 6.2.0       6.2.0   
+   > Shouldly                                    4.3.0       4.3.0   
+   > xunit.runner.visualstudio                   4.0.1       4.0.1   
+   > xunit.v3                                    4.0.3       4.0.3   
+
+Project 'MyDesktopApplication.UI.Tests' has the following package references
+   [net11.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             10.1.1      10.1.1  
+   > Microsoft.NET.Test.Sdk         18.12.0     18.12.0 
+   > NSubstitute                    6.2.0       6.2.0   
+   > Shouldly                       4.3.0       4.3.0   
+   > xunit.runner.visualstudio      4.0.1       4.0.1   
+   > xunit.v3                       4.0.3       4.0.3   
+
+(A) : Auto-referenced package.
+
+real	0m1.553s
+user	0m1.262s
+sys	0m0.398s
+Restore complete (0.1s)
+
+Build succeeded in 0.1s
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+The given project `MyDesktopApplication.Android` has no updates given the current sources.
+The given project `MyDesktopApplication.Core` has no updates given the current sources.
+The given project `MyDesktopApplication.Desktop` has no updates given the current sources.
+The given project `MyDesktopApplication.Infrastructure` has no updates given the current sources.
+The given project `MyDesktopApplication.Shared` has no updates given the current sources.
+The given project `MyDesktopApplication.Core.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
+The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
+
+real	0m2.105s
+user	0m2.068s
+sys	0m0.394s
+
+real	0m5.937s
+user	0m9.081s
+sys	0m0.983s
+==============================================
+  Generating Clean Project Export
+==============================================
+Generating directory structure...
+Collecting and cleaning file contents...
+Processed: .gitattributes
+Processed: .github/dependabot.yml
+Processed: .github/workflows/build-and-release.yml
+Processed: .github/workflows/update-data.yml
+Processed: .gitignore
+Processed: Directory.Build.props
+Processed: Directory.Packages.props
+Processed: MyDesktopApplication.slnx
+Processed: README.md
+Processed: docs/thoughts.md
+Processed: global.json
+Processed: scripts/update_country_data.py
+Processed: src/MyDesktopApplication.Android/AndroidApp.cs
+Processed: src/MyDesktopApplication.Android/AndroidFeedbackService.cs
+Processed: src/MyDesktopApplication.Android/AndroidManifest.xml
+Processed: src/MyDesktopApplication.Android/App.axaml
+Processed: src/MyDesktopApplication.Android/App.axaml.cs
+Processed: src/MyDesktopApplication.Android/MainActivity.cs
+Processed: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
+Processed: src/MyDesktopApplication.Android/Resources/drawable/icon.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/strings.xml
+Processed: src/MyDesktopApplication.Android/Resources/values/styles.xml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml
+Processed: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
+Processed: src/MyDesktopApplication.Core/Entities/Country.cs
+Processed: src/MyDesktopApplication.Core/Entities/EntityBase.cs
+Processed: src/MyDesktopApplication.Core/Entities/GameState.cs
+Processed: src/MyDesktopApplication.Core/Entities/QuestionType.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IFeedbackService.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IGameTelemetry.cs
+Processed: src/MyDesktopApplication.Core/Interfaces/IRepository.cs
+Processed: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
+Processed: src/MyDesktopApplication.Desktop/App.axaml
+Processed: src/MyDesktopApplication.Desktop/App.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/DesktopFeedbackService.cs
+Processed: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
+Processed: src/MyDesktopApplication.Desktop/Program.cs
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
+Processed: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
+Processed: src/MyDesktopApplication.Desktop/app.manifest
+Processed: src/MyDesktopApplication.Desktop/appsettings.json
+Processed: src/MyDesktopApplication.Infrastructure/Data/AppDbContext.cs
+Processed: src/MyDesktopApplication.Infrastructure/Data/DesignTimeDbContextFactory.cs
+Processed: src/MyDesktopApplication.Infrastructure/DependencyInjection.cs
+Processed: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
+Processed: src/MyDesktopApplication.Infrastructure/Observability/AppTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/GameTelemetry.cs
+Processed: src/MyDesktopApplication.Infrastructure/Observability/ObservabilityExtensions.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/GameStateRepository.cs
+Processed: src/MyDesktopApplication.Infrastructure/Repositories/Repository.cs
+Processed: src/MyDesktopApplication.Shared/Audio/ToneSynthesizer.cs
+Processed: src/MyDesktopApplication.Shared/Converters/GameConverters.cs
+Processed: src/MyDesktopApplication.Shared/Data/CountryData.cs
+Processed: src/MyDesktopApplication.Shared/Data/MotivationalMessages.cs
+Processed: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
+Processed: src/MyDesktopApplication.Shared/ServiceCollectionExtensions.cs
+Processed: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+Processed: tests/MyDesktopApplication.Core.Tests/GameStateTests.cs
+Processed: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
+Processed: tests/MyDesktopApplication.Core.Tests/QuestionTypeTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/GameStateRepositoryTests.cs
+Processed: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
+Processed: tests/MyDesktopApplication.UI.Tests/CountryQuizViewModelTests.cs
+Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
+
+Export Complete: docs/llm/dump.txt
+
+real	0m0.695s
+user	0m0.377s
+sys	0m0.436s
+.NET SDK:
+ Version:           11.0.100
+ Commit:            297acf930f
+ Workload version:  11.0.100.1
+ MSBuild version:   18.12.2-1.26529.118+297acf930
+
+Runtime Environment:
+ OS Name:     fedora
+ OS Version:  45
+ OS Platform: Linux
+ RID:         fedora.45-x64
+ Base Path:   /usr/lib64/dotnet/sdk/11.0.100
+
+.NET workloads installed:
+ [android]
+   Installation Source: SDK 11.0.100
+   Manifest Version:    37.2.31/11.0.100
+   Manifest Path:       /home/kushal/.dotnet/sdk-manifests/11.0.100/microsoft.net.sdk.android/37.2.31/WorkloadManifest.json
+   Install Type:        FileBased
+
+Configured to use workload sets when installing new manifests.
+
+Host:
+  Version:      11.0.0
+  Architecture: x64
+  Commit:       297acf930f
+
+.NET SDKs installed:
+  10.0.115 [/usr/lib64/dotnet/sdk]
+  11.0.100 [/usr/lib64/dotnet/sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 10.0.15 [/usr/lib64/dotnet/shared/Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 11.0.0 [/usr/lib64/dotnet/shared/Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 10.0.15 [/usr/lib64/dotnet/shared/Microsoft.NETCore.App]
+  Microsoft.NETCore.App 11.0.0 [/usr/lib64/dotnet/shared/Microsoft.NETCore.App]
+
+Other architectures found:
+  None
+
+Environment variables:
+  Not set
+
+global.json file:
+  /home/kushal/src/dotnet/MyDesktopApplication/global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+real	0m0.033s
+user	0m0.012s
+sys	0m0.009s
+Updating and loading repositories:
+Last metadata expiration check: 4:45:28 ago on 2026-11-26 07:37:07.
+Repositories loaded.
+Installed packages
+Name            : dotnet-sdk-11.0
+Epoch           : 0
+Version         : 11.0.100
+Release         : 1.fc45
+Architecture    : x86_64
+Installed size  : 262.6 MiB
+Source          : dotnet11.0-11.0.100-1.fc45.src.rpm
+From repository : updates
+Summary         : .NET 11.0 Software Development Kit
+URL             : https://github.com/dotnet/
+License         : 0BSD AND Apache-2.0 AND (Apache-2.0 WITH LLVM-exception) AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND bzip2-1.0.6 AND CC0-1.0 AND CC-BY-3.0 AND CC-BY-4.0 AND C
+                : C-PDDC AND CNRI-Python AND EPL-1.0 AND GPL-2.0-only AND (GPL-2.0-only WITH GCC-exception-2.0) AND GPL-2.0-or-later AND GPL-3.0-only AND ICU AND ISC AND LGPL-2.1-only AND LGPL-2.1-or-later AND Li
+                : censeRef-Fedora-Public-Domain AND LicenseRef-ISO-8879 AND MIT AND MIT-Wu AND MS-PL AND MS-RL AND NCSA AND OFL-1.1 AND OpenSSL AND Unicode-DFS-2015 AND Unicode-DFS-2016 AND W3C-19980720 AND X11 A
+                : ND Zlib
+Description     : The .NET SDK is a collection of command line applications to
+                : create, build, publish and run .NET applications.
+                : 
+                : .NET is a fast, lightweight and modular platform for creating
+                : cross platform applications that work on Linux, Mac and Windows.
+                : 
+                : It particularly focuses on creating console applications, web
+                : applications and micro-services.
+Vendor          : Fedora Project
+
+real	0m0.560s
+user	0m0.426s
+sys	0m0.179s
+Updating and loading repositories:
+Last metadata expiration check: 4:45:28 ago on 2026-11-26 07:37:07.
+Repositories loaded.
+Matched fields: name
+ dotnet-sdk-10.0.x86_64	.NET 10.0 Software Development Kit
+ dotnet-sdk-10.0-source-built-artifacts.x86_64	Internal package for building .NET 10.0 Software Development Kit
+ dotnet-sdk-11.0.x86_64	.NET 11.0 Software Development Kit
+ dotnet-sdk-11.0-source-built-artifacts.x86_64	Internal package for building .NET 11.0 Software Development Kit
+ dotnet-sdk-aot-10.0.x86_64	Ahead-of-Time (AOT) support for the .NET 10.0 Software Development Kit
+ dotnet-sdk-aot-11.0.x86_64	Ahead-of-Time (AOT) support for the .NET 11.0 Software Development Kit
+ dotnet-sdk-dbg-10.0.x86_64	Managed debug symbols for the .NET 10.0 Software Development Kit
+ dotnet-sdk-dbg-11.0.x86_64	Managed debug symbols for the .NET 11.0 Software Development Kit
+
+real	0m0.544s
+user	0m0.429s
+sys	0m0.168s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 

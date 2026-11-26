@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Nov 26 06:20:58 AM EST 2026
+Generated: Thu Nov 26 07:22:33 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -22,6 +22,7 @@ DIRECTORY STRUCTURE:
 │   │   ├── dump.txt
 │   │   ├── output.txt
 │   │   └── vendor
+│   │       ├── MyDesktopApplication-net11.tar.gz
 │   │       ├── claude.md
 │   │       ├── commands.txt
 │   │       ├── gemini.md
@@ -36,11 +37,10 @@ DIRECTORY STRUCTURE:
 ├── src
 │   ├── MyDesktopApplication.Android
 │   │   ├── AndroidApp.cs
+│   │   ├── AndroidFeedbackService.cs
 │   │   ├── AndroidManifest.xml
 │   │   ├── App.axaml
 │   │   ├── App.axaml.cs
-│   │   ├── Converters
-│   │   │   └── Converters.cs
 │   │   ├── MainActivity.cs
 │   │   ├── MyDesktopApplication.Android.csproj
 │   │   ├── Resources
@@ -60,6 +60,7 @@ DIRECTORY STRUCTURE:
 │   │   │   ├── GameState.cs
 │   │   │   └── QuestionType.cs
 │   │   ├── Interfaces
+│   │   │   ├── IFeedbackService.cs
 │   │   │   ├── IGameStateRepository.cs
 │   │   │   ├── IGameTelemetry.cs
 │   │   │   └── IRepository.cs
@@ -69,8 +70,7 @@ DIRECTORY STRUCTURE:
 │   │   ├── App.axaml.cs
 │   │   ├── Assets
 │   │   │   └── avalonia-logo.ico
-│   │   ├── Converters
-│   │   │   └── Converters.cs
+│   │   ├── DesktopFeedbackService.cs
 │   │   ├── MyDesktopApplication.Desktop.csproj
 │   │   ├── Program.cs
 │   │   ├── Views
@@ -92,10 +92,15 @@ DIRECTORY STRUCTURE:
 │   │       ├── GameStateRepository.cs
 │   │       └── Repository.cs
 │   └── MyDesktopApplication.Shared
+│       ├── Audio
+│       │   └── ToneSynthesizer.cs
+│       ├── Converters
+│       │   └── GameConverters.cs
 │       ├── Data
 │       │   ├── CountryData.cs
 │       │   └── MotivationalMessages.cs
 │       ├── MyDesktopApplication.Shared.csproj
+│       ├── ServiceCollectionExtensions.cs
 │       └── ViewModels
 │           └── CountryQuizViewModel.cs
 └── tests
@@ -162,7 +167,7 @@ SIZE: .48 KB
 
 ================================================================================
 FILE: .github/dependabot.yml
-SIZE: .81 KB
+SIZE: .66 KB
 ================================================================================
 
 version: 2
@@ -185,17 +190,13 @@ updates:
       testing:
         patterns:
           - "xunit*"
-          - "Shouldly*"
-          - "NSubstitute*"
-          - "Bogus"
+          - "Shouldly"
+          - "NSubstitute"
           - "coverlet*"
-          - "Testcontainers*"
     ignore:
-      # Ignore FluentAssertions (commercial license)
       - dependency-name: "FluentAssertions"
-      # Ignore Moq (compromised)
       - dependency-name: "Moq"
-      
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -205,7 +206,7 @@ updates:
 
 ================================================================================
 FILE: .github/workflows/build-and-release.yml
-SIZE: 8.19 KB
+SIZE: 9.31 KB
 ================================================================================
 
 name: Build and Release
@@ -216,6 +217,13 @@ on:
   pull_request:
     branches: [master, main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -224,6 +232,7 @@ env:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -233,7 +242,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Setup Java
         uses: actions/setup-java@v6
@@ -242,44 +251,49 @@ jobs:
           java-version: '21'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet workload install android && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Restore
-        run: dotnet restore
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet restore && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: |
-          dotnet test --configuration Release --no-build --verbosity normal \
-            --filter "FullyQualifiedName!~Android"
+        run: dotnet test --configuration Release --no-build
 
   build-desktop:
     needs: build-and-test
     if: github.event_name == 'push'
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
             rid: linux-x64
-            artifact: linux-x64
           - os: ubuntu-latest
             rid: linux-arm64
-            artifact: linux-arm64
           - os: windows-latest
             rid: win-x64
-            artifact: win-x64
           - os: windows-latest
             rid: win-arm64
-            artifact: win-arm64
           - os: macos-latest
             rid: osx-x64
-            artifact: osx-x64
           - os: macos-latest
             rid: osx-arm64
-            artifact: osx-arm64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -288,40 +302,43 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Publish
         shell: bash
         run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            -r ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:Version=1.0.${{ github.run_number }} \
-            --output ./publish
+          for attempt in 1 2 3; do
+            dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+              --configuration Release \
+              -r ${{ matrix.rid }} \
+              --self-contained true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:Version=1.0.${{ github.run_number }} \
+              --output ./publish && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Create archive (Unix)
         if: runner.os != 'Windows'
         shell: bash
         run: |
           cd ./publish
-          tar -czvf ../MyDesktopApplication-${{ matrix.artifact }}.tar.gz .
+          tar -czvf ../MyDesktopApplication-${{ matrix.rid }}.tar.gz .
 
       - name: Create archive (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: |
-          Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.rid }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact }}
+          name: ${{ matrix.rid }}
           path: |
-            ./MyDesktopApplication-${{ matrix.artifact }}.tar.gz
-            ./MyDesktopApplication-${{ matrix.artifact }}.zip
+            ./MyDesktopApplication-${{ matrix.rid }}.tar.gz
+            ./MyDesktopApplication-${{ matrix.rid }}.zip
           if-no-files-found: error
           retention-days: 7
 
@@ -329,8 +346,7 @@ jobs:
     needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    env:
-      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -338,7 +354,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Setup Java
         uses: actions/setup-java@v6
@@ -347,7 +363,13 @@ jobs:
           java-version: '21'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet workload install android && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Setup Keystore
         id: keystore
@@ -392,16 +414,13 @@ jobs:
         shell: bash
         run: |
           APK_PATH=$(find ./publish/android -name "*-Signed.apk" -o -name "*.apk" | grep -v "\.aab$" | head -1)
-          if [[ -n "$APK_PATH" ]]; then
-            FINAL_NAME="MyDesktopApplication-android-${{ github.run_number }}.apk"
-            cp "$APK_PATH" "./$FINAL_NAME"
-            echo "APK renamed to: $FINAL_NAME"
-            ls -la "./$FINAL_NAME"
-          else
+          if [[ -z "$APK_PATH" ]]; then
             echo "ERROR: No APK found!"
             find ./publish -type f -name "*.apk" || echo "No APK files found anywhere"
             exit 1
           fi
+          cp "$APK_PATH" "./MyDesktopApplication-android-${{ github.run_number }}.apk"
+          ls -la "./MyDesktopApplication-android-${{ github.run_number }}.apk"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
@@ -412,27 +431,67 @@ jobs:
           retention-days: 7
 
   create-release:
-    needs: [build-desktop, build-android]
-    if: github.event_name == 'push'
+    needs: [build-and-test, build-desktop, build-android]
+    if: ${{ !cancelled() && github.event_name == 'push' && needs.build-and-test.result == 'success' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           path: ./artifacts
 
-      - name: Prepare release files
+      - name: Prepare release
+        id: prepare
         shell: bash
         run: |
-          echo "=== Downloaded artifacts structure ==="
-          find ./artifacts -type f
-          echo ""
-          mkdir -p ./release
-          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
-          echo "=== Release files ==="
-          ls -la ./release/
+          N=${{ github.run_number }}
+          mkdir -p release
+          if [[ -d artifacts ]]; then
+            find artifacts -type f \( -name '*.tar.gz' -o -name '*.zip' -o -name '*.apk' \) -exec cp {} release/ \;
+          fi
+
+          files=(win-x64.zip win-arm64.zip linux-x64.tar.gz linux-arm64.tar.gz osx-x64.tar.gz osx-arm64.tar.gz "android-$N.apk")
+          labels=("Windows x64" "Windows ARM64" "Linux x64" "Linux ARM64" "macOS x64 (Intel)" "macOS ARM64 (Apple Silicon)" "Android")
+          rows=""
+          missing=()
+          for i in "${!files[@]}"; do
+            file="MyDesktopApplication-${files[$i]}"
+            if [[ -f "release/$file" ]]; then
+              rows+="| ${labels[$i]} | \`$file\` |"$'\n'
+            else
+              missing+=("${labels[$i]}")
+              echo "::warning::${labels[$i]} was not built; releasing without it"
+            fi
+          done
+
+          if [[ -z "$rows" ]]; then
+            echo "::error::No platform built successfully; nothing to release"
+            exit 1
+          fi
+
+          {
+            echo "## MyDesktopApplication v1.0.$N"
+            echo
+            echo "| Platform | File |"
+            echo "|----------|------|"
+            printf '%s' "$rows"
+            if (( ${#missing[@]} > 0 )); then
+              echo
+              printf '**Partial release.** Not built this run: %s. Marked as pre-release so `latest` and Obtainium stay on the last complete release.\n' "$(printf '%s, ' "${missing[@]}" | sed 's/, $//')"
+            fi
+            echo
+            echo "### Android (Obtainium)"
+            echo
+            echo "Point Obtainium at this repository's releases. The APK version code is the CI run number."
+          } > release-notes.md
+
+          echo "prerelease=$([[ ${#missing[@]} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          cat release-notes.md
+          ls -la release
 
       - name: Create Release
         uses: softprops/action-gh-release@v3
@@ -440,34 +499,10 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.prepare.outputs.prerelease }}
           generate_release_notes: true
+          body_path: release-notes.md
           files: ./release/*
-          body: |
-            ## MyDesktopApplication v1.0.${{ github.run_number }}
-
-            ### Downloads
-
-            | Platform | File |
-            |----------|------|
-            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
-            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
-            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
-            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
-            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
-            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
-            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
-
-            ### Android Users (Obtainium)
-
-            **Version Code**: `${{ github.run_number }}`
-
-            Point Obtainium to this repository's releases for automatic updates.
-            The APK version code increments with each release.
-
-            ### Changes
-
-            See commit history for details.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -578,63 +613,45 @@ android.keystore.base64
 
 ================================================================================
 FILE: Directory.Build.props
-SIZE: 1.92 KB
+SIZE: 1.20 KB
 ================================================================================
 
 <Project>
   <PropertyGroup>
-    <!-- Common project settings -->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    
-    <!-- Version properties - can be overridden via MSBuild properties -->
-    <!-- Default values for local development -->
+
     <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
-    
-    <!-- Build number for CI - defaults to 0 for local builds -->
     <BuildNumber Condition="'$(BuildNumber)' == ''">1</BuildNumber>
-    
-    <!-- Assembly versioning -->
     <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
     <FileVersion>1.0.$(BuildNumber).0</FileVersion>
     <InformationalVersion>1.0.$(BuildNumber)</InformationalVersion>
-    
-    <!-- Treat warnings as errors in Release -->
+
     <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
-    
-    <!-- Deterministic builds for reproducibility -->
+
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
-    
-    <!-- Source Link for debugging -->
+
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(CI)' == 'true'">
-    <!-- Ensure reproducible builds in CI -->
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
 
-  <!--
-    xUnit.net v3 test projects are self-executing programs, so they must be
-    built as executables. We set this once here for every project whose name
-    ends in ".Tests" instead of repeating it in each test .csproj.
-  -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 </Project>
 
 
 ================================================================================
 FILE: Directory.Packages.props
-SIZE: 4.57 KB
+SIZE: 2.48 KB
 ================================================================================
 
 <Project>
@@ -642,81 +659,49 @@ SIZE: 4.57 KB
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <AvaloniaVersion>12.1.4</AvaloniaVersion>
-    <EFCoreVersion>10.0.14</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.14</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.20.1</OpenTelemetryVersion>
-    <SerilogVersion>4.4.0</SerilogVersion>
-    <TestcontainersVersion>4.16.0</TestcontainersVersion>
-    <FluentValidationVersion>12.2.0</FluentValidationVersion>
+    <AvaloniaVersion>12.2.0</AvaloniaVersion>
+    <EFCoreVersion>11.0.0</EFCoreVersion>
+    <MicrosoftExtensionsVersion>11.0.0</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.21.0</OpenTelemetryVersion>
   </PropertyGroup>
 
-  <ItemGroup Label="Avalonia">
+  <ItemGroup Label="Avalonia - MIT">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent2" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="MVVM">
+  <ItemGroup Label="MVVM - MIT">
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
-  <ItemGroup Label="EntityFramework">
+  <ItemGroup Label="EntityFramework - MIT">
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-    <PackageVersion Include="Dapper" Version="2.1.89" />
   </ItemGroup>
 
-  <ItemGroup Label="Configuration">
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="DependencyInjection">
+  <ItemGroup Label="Microsoft.Extensions - MIT">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="Logging">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Serilog" Version="$(SerilogVersion)" />
-    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup Label="OpenTelemetry">
+  <ItemGroup Label="OpenTelemetry - Apache-2.0">
     <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="Validation">
-    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="Testing">
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+  <ItemGroup Label="Testing - Apache-2.0 / BSD / MIT">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
-    <PackageVersion Include="Bogus" Version="35.6.5" />
-    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
-    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
-    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.1" />
   </ItemGroup>
 </Project>
 
@@ -744,7 +729,7 @@ SIZE: .85 KB
 
 ================================================================================
 FILE: README.md
-SIZE: 2.47 KB
+SIZE: 4.19 KB
 ================================================================================
 
 # MyDesktopApplication
@@ -752,23 +737,22 @@ SIZE: 2.47 KB
 [![Build and Release](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/kusl/MyDesktopApplication/actions/workflows/build-and-release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Cross-platform application built with **Avalonia UI** and **.NET 10**.
+Country statistics quiz built with **Avalonia UI 12.2**, **.NET 11**, and **C# 15**. Desktop (Windows, Linux, macOS) and Android from one solution, one shared ViewModel. No ads, no payments, no tracking. Free forever.
 
 ## Downloads
 
 | Platform | Architecture | Download |
 |----------|--------------|----------|
-| Windows | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Windows | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Linux | x64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Linux | ARM64 | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| macOS | x64 (Intel) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| macOS | ARM64 (Apple Silicon) | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
-| Android | APK | [Download](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Windows | x64, ARM64 | [latest release](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Linux | x64, ARM64 | [latest release](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| macOS | x64 (Intel), ARM64 (Apple Silicon) | [latest release](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+| Android 7.0+ (API 24) | APK | [latest release](https://github.com/kusl/MyDesktopApplication/releases/latest) |
+
+Android: point [Obtainium](https://github.com/ImranR98/Obtainium) at the releases. `versionCode` is the CI run number.
+
+If a platform build fails or GitHub cancels its runner, the other platforms still ship as a **pre-release** that lists what is missing; `latest` and Obtainium stay on the last complete release.
 
 ## Quick Start
-
-### Desktop
 
 ```bash
 dotnet restore
@@ -776,7 +760,7 @@ dotnet build
 dotnet run --project src/MyDesktopApplication.Desktop
 ```
 
-### Android (requires Android workload)
+Android (requires the workload):
 
 ```bash
 dotnet workload install android
@@ -789,41 +773,65 @@ dotnet build src/MyDesktopApplication.Android -c Release
 dotnet test
 ```
 
-## Releases
+## Feedback
 
-Every push to `master` or `main` publishes a release tagged `v1.0.{run_number}` with binaries for all platforms. No manual tagging required.
+Every button gives feedback:
+
+- **Sound:** short tones synthesised in code (`ToneSynthesizer`) — no audio assets, no audio packages. Desktop plays them with `winmm` (`PlaySound`) on Windows, `afplay` on macOS, and the first available of `pw-play`, `paplay`, or `aplay` on Linux. Android uses `SoundPool`.
+- **Haptics:** Android only (`Vibrator` / `VibratorManager`, requires the `VIBRATE` permission). Desktop has none.
+- **Visual:** buttons scale down briefly while pressed, on every platform.
+
+Cues: tap (any button), correct, incorrect. A 🔊/🔇 toggle in the footer mutes sound and haptics for the session (not persisted — no database change, so existing saves are untouched).
 
 ## Project Structure
-├── src/
-│ ├── MyDesktopApplication.Core/ # Domain logic
-│ ├── MyDesktopApplication.Infrastructure/ # Data access
-│ ├── MyDesktopApplication.Shared/ # Shared ViewModels
-│ ├── MyDesktopApplication.Desktop/ # Desktop (Windows/Linux/macOS)
-│ └── MyDesktopApplication.Android/ # Android
-└── tests/
-├── MyDesktopApplication.Core.Tests/
-├── MyDesktopApplication.Integration.Tests/
-└── MyDesktopApplication.UI.Tests/
 
+```
+src/
+  MyDesktopApplication.Core            entities, interfaces (no UI, no IO)
+  MyDesktopApplication.Infrastructure  EF Core SQLite, repositories, OpenTelemetry
+  MyDesktopApplication.Shared          CountryQuizViewModel, converters, tone synthesis
+  MyDesktopApplication.Desktop         Windows/Linux/macOS head
+  MyDesktopApplication.Android         Android head
+tests/
+  MyDesktopApplication.Core.Tests
+  MyDesktopApplication.Integration.Tests
+  MyDesktopApplication.UI.Tests
+```
+
+One `.slnx`, one workflow, one build. Converters and app bootstrap live in `Shared` (no per-platform duplication). Each platform head only registers its own services (database path, feedback implementation).
+
+## Build System
+
+- `global.json` pins the .NET 11 SDK with `rollForward: latestFeature` and `allowPrerelease: true`, so a local `11.0.100-rc` or any newer `11.0.1xx` both work. CI installs `11.0.x`.
+- Central Package Management via `Directory.Packages.props`; common settings in `Directory.Build.props`.
+- `TreatWarningsAsErrors` in Release.
+- Android runs on **CoreCLR** (Mono was removed in .NET 11); the old `RunAOTCompilation` / `UseInterpreter` properties are gone.
+
+## Dependencies
+
+All MIT, Apache-2.0, or BSD. No package whose use depends on payment of any kind.
+
+| | |
+|---|---|
+| UI | Avalonia 12.2.0 (Fluent2 theme) |
+| MVVM | CommunityToolkit.Mvvm 8.4.2 |
+| Data | EF Core SQLite 11.0.0 |
+| Telemetry | OpenTelemetry 1.21.0 |
+| Tests | xunit.v3 4.0.3, Shouldly 4.3.0, NSubstitute 6.2.0, coverlet 10.1.1 |
 
 ## Supported Platforms
 
 | Platform | Status |
 |----------|--------|
-| Windows x64 | ✅ |
-| Windows ARM64 | ✅ |
-| Linux x64 | ✅ |
-| Linux ARM64 | ✅ |
-| macOS x64 | ✅ |
-| macOS ARM64 | ✅ |
-| Android | ✅ |
-| iOS | ❌ (requires Apple Developer account - $99/year) |
+| Windows x64 / ARM64 | ✅ |
+| Linux x64 / ARM64 | ✅ |
+| macOS x64 / ARM64 | ✅ |
+| Android 7.0+ | ✅ |
+| iOS | ❌ (requires Apple Developer account — $99/year) |
 
 ## License
 
-MIT License - Free for any use.
-
-All dependencies are MIT, Apache-2.0, BSD, or Public Domain licensed.
+MIT License — free for any use. All dependencies are MIT, Apache-2.0, BSD, or Public Domain licensed.
 
 
 ================================================================================
@@ -861,12 +869,13 @@ so it gets fixed as quickly as possible.
 
 ================================================================================
 FILE: global.json
-SIZE: .13 KB
+SIZE: .17 KB
 ================================================================================
 
 {
   "sdk": {
-    "version": "10.0.112",
+    "version": "11.0.100-rc.1",
+    "allowPrerelease": true,
     "rollForward": "latestFeature"
   },
   "test": {
@@ -1084,21 +1093,115 @@ public class AndroidApp : AvaloniaAndroidApplication<App>
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Android/AndroidFeedbackService.cs
+SIZE: 2.52 KB
+================================================================================
+
+using Android.Content;
+using Android.Media;
+using Android.OS;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Shared.Audio;
+using Application = Android.App.Application;
+
+namespace MyDesktopApplication.Android;
+
+public sealed class AndroidFeedbackService : IFeedbackService
+{
+    private readonly SoundPool _pool;
+    private readonly Dictionary<FeedbackCue, int> _soundIds = [];
+    private readonly Vibrator? _vibrator;
+
+    public AndroidFeedbackService()
+    {
+        var attributes = new AudioAttributes.Builder()!
+            .SetUsage(AudioUsageKind.Game)!
+            .SetContentType(AudioContentType.Sonification)!
+            .Build();
+
+        _pool = new SoundPool.Builder()
+            .SetMaxStreams(4)!
+            .SetAudioAttributes(attributes)!
+            .Build()!;
+
+        foreach (var cue in Enum.GetValues<FeedbackCue>())
+        {
+            _soundIds[cue] = _pool.Load(WriteWav(cue), 1);
+        }
+
+        _vibrator = ResolveVibrator();
+    }
+
+    public void Play(FeedbackCue cue)
+    {
+        if (_soundIds.TryGetValue(cue, out var id))
+        {
+            _pool.Play(id, 1f, 1f, 1, 0, 1f);
+        }
+
+        Vibrate(cue switch
+        {
+            FeedbackCue.Incorrect => 40,
+            FeedbackCue.Correct => 25,
+            _ => 15
+        });
+    }
+
+    private static string WriteWav(FeedbackCue cue)
+    {
+        var directory = Application.Context.CacheDir!.AbsolutePath;
+        var path = System.IO.Path.Combine(directory, $"cue-{cue}.wav");
+        System.IO.File.WriteAllBytes(path, ToneSynthesizer.ForCue(cue));
+        return path;
+    }
+
+    private static Vibrator? ResolveVibrator()
+    {
+        var context = Application.Context;
+#pragma warning disable CA1416, CA1422, CS0618
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+        {
+            var manager = (VibratorManager?)context.GetSystemService(Context.VibratorManagerService);
+            return manager?.DefaultVibrator;
+        }
+        return (Vibrator?)context.GetSystemService(Context.VibratorService);
+#pragma warning restore CA1416, CA1422, CS0618
+    }
+
+    private void Vibrate(long milliseconds)
+    {
+        if (_vibrator is not { HasVibrator: true }) return;
+#pragma warning disable CA1416, CA1422, CS0618
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+        {
+            _vibrator.Vibrate(VibrationEffect.CreateOneShot(milliseconds, VibrationEffect.DefaultAmplitude));
+        }
+        else
+        {
+            _vibrator.Vibrate(milliseconds);
+        }
+#pragma warning restore CA1416, CA1422, CS0618
+    }
+}
+
+
+================================================================================
 FILE: src/MyDesktopApplication.Android/AndroidManifest.xml
-SIZE: .49 KB
+SIZE: .55 KB
 ================================================================================
 
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application 
-        android:allowBackup="true" 
-        android:icon="@drawable/icon" 
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyTheme.NoActionBar">
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>
 
 
@@ -1112,14 +1215,14 @@ SIZE: .30 KB
              x:Class="MyDesktopApplication.Android.App"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <FluentTheme />
+        <Fluent2Theme />
     </Application.Styles>
 </Application>
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/App.axaml.cs
-SIZE: 1.87 KB
+SIZE: 1.98 KB
 ================================================================================
 
 using Avalonia.Controls;
@@ -1127,9 +1230,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Infrastructure.Data;
 using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android;
@@ -1152,7 +1257,8 @@ public partial class App : Avalonia.Application
         var services = new ServiceCollection();
         services.AddInfrastructure(dbPath);
         services.AddObservability();
-        services.AddTransient<CountryQuizViewModel>();
+        services.AddSingleton<IFeedbackService, AndroidFeedbackService>();
+        services.AddCountryQuizApp();
 
         var serviceProvider = services.BuildServiceProvider();
         Services = serviceProvider;
@@ -1175,90 +1281,9 @@ public partial class App : Avalonia.Application
     private static Control CreateMainView()
     {
         var viewModel = Services!.GetRequiredService<CountryQuizViewModel>();
-
-        var view = new MainView
-        {
-            DataContext = viewModel
-        };
-
+        var view = new MainView { DataContext = viewModel };
         _ = viewModel.InitializeAsync();
-
         return view;
-    }
-}
-
-
-================================================================================
-FILE: src/MyDesktopApplication.Android/Converters/Converters.cs
-SIZE: 2.41 KB
-================================================================================
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using Avalonia.Media;
-using MyDesktopApplication.Core.Entities;
-
-namespace MyDesktopApplication.Android.Converters;
-
-/// <summary>
-/// Converts QuestionType enum to human-readable label.
-/// </summary>
-public class QuestionTypeLabelConverter : IValueConverter
-{
-    public static readonly QuestionTypeLabelConverter Instance = new();
-
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (value is QuestionType qt)
-            return qt.GetLabel();
-        return value?.ToString() ?? "";
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
-}
-
-/// <summary>
-/// Converts (IsCorrect, IsWrong) booleans to a background color.
-/// ONLY the selected button will have IsCorrect=true or IsWrong=true.
-/// Unselected buttons will have both as false → default color.
-/// </summary>
-public class AnswerStateToBackgroundConverter : IMultiValueConverter
-{
-    public static readonly AnswerStateToBackgroundConverter Instance = new();
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
-        {
-            if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 139, 34));   // Green
-            if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(220, 53, 69));   // Red
-        }
-        return new SolidColorBrush(Color.FromRgb(30, 41, 59)); // Default slate
-    }
-}
-
-/// <summary>
-/// Converts (IsCorrect, IsWrong) booleans to a border color.
-/// </summary>
-public class AnswerStateToBorderConverter : IMultiValueConverter
-{
-    public static readonly AnswerStateToBorderConverter Instance = new();
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
-        {
-            if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 197, 94));
-            if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(239, 68, 68));
-        }
-        return new SolidColorBrush(Color.FromRgb(55, 65, 81)); // Gray default
     }
 }
 
@@ -1286,7 +1311,7 @@ public class MainActivity : AvaloniaMainActivity
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/MyDesktopApplication.Android.csproj
-SIZE: 3.04 KB
+SIZE: 2.53 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -1307,7 +1332,7 @@ SIZE: 3.04 KB
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net10.0-android</TargetFramework>
+    <TargetFramework>net11.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
@@ -1317,29 +1342,14 @@ SIZE: 3.04 KB
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
 
-    <RunAOTCompilation>false</RunAOTCompilation>
-    <PublishAot>false</PublishAot>
-    <UseInterpreter>true</UseInterpreter>
     <PublishTrimmed>false</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
-
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Themes.Fluent2" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
@@ -1408,13 +1418,13 @@ SIZE: .33 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml
-SIZE: 12.13 KB
+SIZE: 12.74 KB
 ================================================================================
 
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-             xmlns:conv="using:MyDesktopApplication.Android.Converters"
+             xmlns:conv="using:MyDesktopApplication.Shared.Converters"
              x:Class="MyDesktopApplication.Android.Views.MainView"
              x:DataType="vm:CountryQuizViewModel">
 
@@ -1424,13 +1434,25 @@ SIZE: 12.13 KB
         <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
     </UserControl.Resources>
 
+    <UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="RenderTransform" Value="scale(1)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.08"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.96)"/>
+        </Style>
+    </UserControl.Styles>
+
     <Panel Background="#0f172a">
-        <!-- Main scrollable content -->
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto">
             <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12,8">
 
-                <!-- Row 0: Compact header -->
                 <Border Grid.Row="0" Background="#1e293b" CornerRadius="10" Padding="12" Margin="0,0,0,8">
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel Spacing="2">
@@ -1458,7 +1480,6 @@ SIZE: 12.13 KB
                     </Grid>
                 </Border>
 
-                <!-- Row 1: Question text -->
                 <TextBlock Grid.Row="1"
                            Text="{Binding QuestionText}"
                            FontSize="15" FontWeight="SemiBold"
@@ -1466,10 +1487,8 @@ SIZE: 12.13 KB
                            TextWrapping="Wrap" TextAlignment="Center"
                            Margin="0,0,0,8"/>
 
-                <!-- Row 2: Country cards stacked vertically for phones -->
                 <StackPanel Grid.Row="2" Spacing="8">
 
-                    <!-- Country 1 -->
                     <Button Command="{Binding SelectCountryCommand}"
                             CommandParameter="1"
                             IsEnabled="{Binding !HasAnswered}"
@@ -1510,11 +1529,9 @@ SIZE: 12.13 KB
                         </Grid>
                     </Button>
 
-                    <!-- VS separator -->
                     <TextBlock Text="VS" FontSize="14" FontWeight="Bold"
                                Foreground="#475569" TextAlignment="Center"/>
 
-                    <!-- Country 2 -->
                     <Button Command="{Binding SelectCountryCommand}"
                             CommandParameter="2"
                             IsEnabled="{Binding !HasAnswered}"
@@ -1555,7 +1572,6 @@ SIZE: 12.13 KB
                         </Grid>
                     </Button>
 
-                    <!-- Result message -->
                     <Border Background="#1e293b" CornerRadius="8" Padding="12"
                             IsVisible="{Binding HasAnswered}">
                         <TextBlock Text="{Binding ResultMessage}"
@@ -1564,14 +1580,12 @@ SIZE: 12.13 KB
                                    TextAlignment="Center" TextWrapping="Wrap"/>
                     </Border>
 
-                    <!-- Country details after answering -->
                     <TextBlock Text="{Binding CountryDetailsText}"
                             FontSize="12" Foreground="#94a3b8"
                             TextWrapping="Wrap"
                             IsVisible="{Binding HasAnswered}"
                             Margin="0,8,0,0"/>
 
-                    <!-- Next Round -->
                     <Button Content="Next Round"
                             Command="{Binding NextRoundCommand}"
                             IsVisible="{Binding HasAnswered}"
@@ -1583,8 +1597,18 @@ SIZE: 12.13 KB
                             CornerRadius="8"/>
                 </StackPanel>
 
-                <!-- Row 3: Reset button -->
-                <StackPanel Grid.Row="3" HorizontalAlignment="Center" Margin="0,8,0,8">
+                <StackPanel Grid.Row="3" Orientation="Horizontal"
+                            HorizontalAlignment="Center" Margin="0,8,0,8" Spacing="12">
+                    <Button Command="{Binding ToggleSoundCommand}"
+                            MinWidth="120" MinHeight="40"
+                            Background="#334155" Foreground="White"
+                            HorizontalContentAlignment="Center"
+                            CornerRadius="6" FontSize="13">
+                        <Panel>
+                            <TextBlock Text="🔊 Sound" IsVisible="{Binding SoundEnabled}"/>
+                            <TextBlock Text="🔇 Muted" IsVisible="{Binding !SoundEnabled}"/>
+                        </Panel>
+                    </Button>
                     <Button Content="Reset Game"
                             Command="{Binding RequestResetGameCommand}"
                             MinWidth="120" MinHeight="40"
@@ -1595,7 +1619,6 @@ SIZE: 12.13 KB
             </Grid>
         </ScrollViewer>
 
-        <!-- Reset confirmation overlay -->
         <Border IsVisible="{Binding IsResetConfirmationVisible}"
                 Background="#CC000000"
                 HorizontalAlignment="Stretch"
@@ -1639,10 +1662,12 @@ SIZE: 12.13 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-SIZE: .18 KB
+SIZE: .46 KB
 ================================================================================
 
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android.Views;
 
@@ -1651,7 +1676,11 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
+        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
     }
+
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
+        => (DataContext as CountryQuizViewModel)?.OnButtonPressed();
 }
 
 
@@ -1933,6 +1962,26 @@ public static class QuestionTypeExtensions
 
 
 ================================================================================
+FILE: src/MyDesktopApplication.Core/Interfaces/IFeedbackService.cs
+SIZE: .17 KB
+================================================================================
+
+namespace MyDesktopApplication.Core.Interfaces;
+
+public enum FeedbackCue
+{
+    Tap,
+    Correct,
+    Incorrect
+}
+
+public interface IFeedbackService
+{
+    void Play(FeedbackCue cue);
+}
+
+
+================================================================================
 FILE: src/MyDesktopApplication.Core/Interfaces/IGameStateRepository.cs
 SIZE: .33 KB
 ================================================================================
@@ -1992,16 +2041,10 @@ public interface IRepository<T> where T : EntityBase
 
 ================================================================================
 FILE: src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj
-SIZE: .20 KB
+SIZE: .03 KB
 ================================================================================
 
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-</Project>
+<Project Sdk="Microsoft.NET.Sdk" />
 
 
 ================================================================================
@@ -2014,22 +2057,24 @@ SIZE: .30 KB
              x:Class="MyDesktopApplication.Desktop.App"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <FluentTheme />
+        <Fluent2Theme />
     </Application.Styles>
 </Application>
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/App.axaml.cs
-SIZE: 1.23 KB
+SIZE: 1.36 KB
 ================================================================================
 
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Desktop.Views;
 using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop;
@@ -2048,7 +2093,8 @@ public partial class App : Avalonia.Application
         var services = new ServiceCollection();
         services.AddInfrastructure();
         services.AddObservability();
-        services.AddTransient<CountryQuizViewModel>();
+        services.AddSingleton<IFeedbackService, DesktopFeedbackService>();
+        services.AddCountryQuizApp();
 
         _services = services.BuildServiceProvider();
         _services.StartObservability();
@@ -2067,72 +2113,89 @@ public partial class App : Avalonia.Application
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Desktop/Converters/Converters.cs
-SIZE: 1.96 KB
+FILE: src/MyDesktopApplication.Desktop/DesktopFeedbackService.cs
+SIZE: 2.16 KB
 ================================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using Avalonia.Media;
-using MyDesktopApplication.Core.Entities;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using MyDesktopApplication.Core.Interfaces;
+using MyDesktopApplication.Shared.Audio;
 
-namespace MyDesktopApplication.Desktop.Converters;
+namespace MyDesktopApplication.Desktop;
 
-public class QuestionTypeLabelConverter : IValueConverter
+public sealed partial class DesktopFeedbackService : IFeedbackService
 {
-    public static readonly QuestionTypeLabelConverter Instance = new();
+    private const uint SndFilename = 0x00020000;
+    private const uint SndAsync = 0x0001;
+    private const uint SndNodefault = 0x0002;
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    private static readonly string[] LinuxPlayers = ["pw-play", "paplay", "aplay"];
+    private readonly ConcurrentDictionary<FeedbackCue, string> _files = new();
+
+    [LibraryImport("winmm.dll", EntryPoint = "PlaySoundW", StringMarshalling = StringMarshalling.Utf16)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool PlaySound(string? pszSound, IntPtr hmod, uint fdwSound);
+
+    public void Play(FeedbackCue cue)
     {
-        if (value is QuestionType qt)
-            return qt.GetLabel();
-        return value?.ToString() ?? "";
+        try
+        {
+            var path = _files.GetOrAdd(cue, WriteWav);
+            if (OperatingSystem.IsWindows())
+            {
+                PlaySound(path, IntPtr.Zero, SndFilename | SndAsync | SndNodefault);
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Launch("afplay", path);
+            }
+            else
+            {
+                foreach (var player in LinuxPlayers)
+                {
+                    if (Launch(player, path)) break;
+                }
+            }
+        }
+        catch
+        {
+        }
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
-}
-
-public class AnswerStateToBackgroundConverter : IMultiValueConverter
-{
-    public static readonly AnswerStateToBackgroundConverter Instance = new();
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    private static string WriteWav(FeedbackCue cue)
     {
-        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
-        {
-            if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 139, 34));
-            if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(220, 53, 69));
-        }
-        return new SolidColorBrush(Color.FromRgb(30, 41, 59));
+        var path = Path.Combine(Path.GetTempPath(), $"countryquiz-{cue}.wav");
+        File.WriteAllBytes(path, ToneSynthesizer.ForCue(cue));
+        return path;
     }
-}
 
-public class AnswerStateToBorderConverter : IMultiValueConverter
-{
-    public static readonly AnswerStateToBorderConverter Instance = new();
-
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    private static bool Launch(string fileName, string argument)
     {
-        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        try
         {
-            if (isCorrect)
-                return new SolidColorBrush(Color.FromRgb(34, 197, 94));
-            if (isWrong)
-                return new SolidColorBrush(Color.FromRgb(239, 68, 68));
+            using var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = fileName,
+                ArgumentList = { argument },
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            });
+            return process != null;
         }
-        return new SolidColorBrush(Color.FromRgb(55, 65, 81));
+        catch
+        {
+            return false;
+        }
     }
 }
 
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.30 KB
+SIZE: 1.13 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -2142,16 +2205,10 @@ SIZE: 1.30 KB
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 
-    <!-- Application metadata -->
     <Product>Country Quiz</Product>
     <Company>MyDesktopApplication</Company>
-    <Copyright>Copyright © 2025</Copyright>
+    <Copyright>Copyright © 2026</Copyright>
     <Description>A cross-platform country quiz game built with Avalonia UI</Description>
-
-    <!--
-      Desktop versioning uses the same BuildNumber from Directory.Build.props
-      This ensures consistency across all platforms.
-    -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -2162,7 +2219,7 @@ SIZE: 1.30 KB
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Themes.Fluent2" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
@@ -2194,13 +2251,13 @@ sealed class Program
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml
-SIZE: 14.58 KB
+SIZE: 14.75 KB
 ================================================================================
 
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-        xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+        xmlns:conv="using:MyDesktopApplication.Shared.Converters"
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
         x:DataType="vm:CountryQuizViewModel"
         Title="Country Quiz"
@@ -2214,8 +2271,19 @@ SIZE: 14.58 KB
         <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
     </Window.Resources>
 
-    <!-- Responsive font sizes via Styles -->
     <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="RenderTransform" Value="scale(1)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.08"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.96)"/>
+        </Style>
+
         <Style Selector="TextBlock.header-title">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -2251,15 +2319,12 @@ SIZE: 14.58 KB
     </Window.Styles>
 
     <Panel>
-        <!-- Main content -->
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto">
             <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
 
-                <!-- Row 0: Header with score and category selector -->
                 <Border Grid.Row="0" Background="#1e293b" CornerRadius="12" Padding="16" Margin="0,0,0,12">
                     <Grid ColumnDefinitions="*,Auto">
-                        <!-- Score info -->
                         <StackPanel Spacing="4">
                             <TextBlock Classes="header-title" Text="Country Quiz"/>
                             <StackPanel Orientation="Horizontal" Spacing="12">
@@ -2270,7 +2335,6 @@ SIZE: 14.58 KB
                             <TextBlock Classes="stat-text" Text="{Binding AccuracyText}"/>
                         </StackPanel>
 
-                        <!-- Category selector -->
                         <ComboBox Grid.Column="1"
                                   ItemsSource="{Binding QuestionTypes}"
                                   SelectedItem="{Binding SelectedQuestionType}"
@@ -2288,18 +2352,14 @@ SIZE: 14.58 KB
                     </Grid>
                 </Border>
 
-                <!-- Row 1: Question text -->
                 <Border Grid.Row="1" Margin="0,0,0,12">
                     <TextBlock Classes="question-text" Text="{Binding QuestionText}"/>
                 </Border>
 
-                <!-- Row 2: Country cards + result -->
                 <StackPanel Grid.Row="2" Spacing="12">
 
-                    <!-- Country selection buttons side-by-side -->
                     <Grid ColumnDefinitions="*,Auto,*">
 
-                        <!-- Country 1 Button -->
                         <Button Grid.Column="0"
                                 Command="{Binding SelectCountryCommand}"
                                 CommandParameter="1"
@@ -2323,7 +2383,6 @@ SIZE: 14.58 KB
                                     <Binding Path="IsCountry1Wrong"/>
                                 </MultiBinding>
                             </Button.BorderBrush>
-                            <!-- Keep full opacity when disabled (after answering) -->
                             <Button.Styles>
                                 <Style Selector="Button:disabled">
                                     <Setter Property="Opacity" Value="1"/>
@@ -2344,7 +2403,6 @@ SIZE: 14.58 KB
                             </StackPanel>
                         </Button>
 
-                        <!-- VS separator -->
                         <TextBlock Grid.Column="1"
                                    Text="VS"
                                    FontSize="16" FontWeight="Bold"
@@ -2352,7 +2410,6 @@ SIZE: 14.58 KB
                                    VerticalAlignment="Center"
                                    Margin="12,0"/>
 
-                        <!-- Country 2 Button -->
                         <Button Grid.Column="2"
                                 Command="{Binding SelectCountryCommand}"
                                 CommandParameter="2"
@@ -2397,7 +2454,6 @@ SIZE: 14.58 KB
                         </Button>
                     </Grid>
 
-                    <!-- Result message -->
                     <Border Background="#1e293b" CornerRadius="8" Padding="16"
                             IsVisible="{Binding HasAnswered}">
                         <TextBlock Text="{Binding ResultMessage}"
@@ -2405,15 +2461,13 @@ SIZE: 14.58 KB
                                    TextAlignment="Center" TextWrapping="Wrap"
                                    Foreground="#e2e8f0"/>
                     </Border>
-                    
-                    <!-- Country details after answering -->
+
                     <TextBlock Text="{Binding CountryDetailsText}"
                             FontSize="12" Foreground="#94a3b8"
                             TextWrapping="Wrap"
                             IsVisible="{Binding HasAnswered}"
-                            Margin="0,8,0,0"/>                    
+                            Margin="0,8,0,0"/>
 
-                    <!-- Next Round button -->
                     <Button Content="Next Round"
                             Command="{Binding NextRoundCommand}"
                             IsVisible="{Binding HasAnswered}"
@@ -2424,19 +2478,28 @@ SIZE: 14.58 KB
                             CornerRadius="8" Cursor="Hand"/>
                 </StackPanel>
 
-                <!-- Row 3: Footer with Reset -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal"
                             HorizontalAlignment="Center" Margin="0,12,0,0" Spacing="16">
+                    <Button Command="{Binding ToggleSoundCommand}"
+                            MinWidth="120"
+                            Background="#334155" Foreground="White"
+                            HorizontalContentAlignment="Center"
+                            CornerRadius="6">
+                        <Panel>
+                            <TextBlock Text="🔊 Sound" IsVisible="{Binding SoundEnabled}"/>
+                            <TextBlock Text="🔇 Muted" IsVisible="{Binding !SoundEnabled}"/>
+                        </Panel>
+                    </Button>
                     <Button Content="Reset Game"
                             Command="{Binding RequestResetGameCommand}"
                             MinWidth="120"
                             Background="#475569" Foreground="White"
+                            HorizontalContentAlignment="Center"
                             CornerRadius="6"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
 
-        <!-- Reset confirmation overlay -->
         <Border IsVisible="{Binding IsResetConfirmationVisible}"
                 Background="#CC000000"
                 HorizontalAlignment="Stretch"
@@ -2485,10 +2548,11 @@ SIZE: 14.58 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/Views/MainWindow.axaml.cs
-SIZE: .46 KB
+SIZE: .64 KB
 ================================================================================
 
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop.Views;
@@ -2499,7 +2563,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        // Initialize the ViewModel when the window loads
+        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
+
         Loaded += async (_, _) =>
         {
             if (DataContext is CountryQuizViewModel vm)
@@ -2508,6 +2573,9 @@ public partial class MainWindow : Window
             }
         };
     }
+
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
+        => (DataContext as CountryQuizViewModel)?.OnButtonPressed();
 }
 
 
@@ -2688,15 +2756,10 @@ public static class DependencyInjection
 
 ================================================================================
 FILE: src/MyDesktopApplication.Infrastructure/MyDesktopApplication.Infrastructure.csproj
-SIZE: .80 KB
+SIZE: .64 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
@@ -2984,6 +3047,131 @@ public class Repository<T> : IRepository<T> where T : EntityBase
 
     public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         => await DbSet.AnyAsync(e => e.Id == id, ct);
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Shared/Audio/ToneSynthesizer.cs
+SIZE: 1.89 KB
+================================================================================
+
+using MyDesktopApplication.Core.Interfaces;
+
+namespace MyDesktopApplication.Shared.Audio;
+
+public static class ToneSynthesizer
+{
+    private const int SampleRate = 44100;
+
+    public static byte[] ForCue(FeedbackCue cue) => cue switch
+    {
+        FeedbackCue.Correct => CreateWav([(660, 70), (990, 110)], 0.45),
+        FeedbackCue.Incorrect => CreateWav([(220, 200)], 0.45),
+        _ => CreateWav([(880, 45)], 0.35)
+    };
+
+    public static byte[] CreateWav((double FrequencyHz, int DurationMs)[] segments, double volume)
+    {
+        var samples = new List<short>();
+        foreach (var (frequency, durationMs) in segments)
+        {
+            var count = SampleRate * durationMs / 1000;
+            var fade = Math.Min(count / 2, SampleRate / 400);
+            for (var i = 0; i < count; i++)
+            {
+                var envelope = 1.0;
+                if (i < fade) envelope = (double)i / fade;
+                else if (i > count - fade) envelope = (double)(count - i) / fade;
+
+                var value = Math.Sin(2.0 * Math.PI * frequency * i / SampleRate) * volume * envelope;
+                samples.Add((short)(value * short.MaxValue));
+            }
+        }
+
+        var dataBytes = samples.Count * 2;
+        using var stream = new MemoryStream(44 + dataBytes);
+        using var writer = new BinaryWriter(stream);
+
+        writer.Write("RIFF"u8.ToArray());
+        writer.Write(36 + dataBytes);
+        writer.Write("WAVE"u8.ToArray());
+        writer.Write("fmt "u8.ToArray());
+        writer.Write(16);
+        writer.Write((short)1);
+        writer.Write((short)1);
+        writer.Write(SampleRate);
+        writer.Write(SampleRate * 2);
+        writer.Write((short)2);
+        writer.Write((short)16);
+        writer.Write("data"u8.ToArray());
+        writer.Write(dataBytes);
+        foreach (var sample in samples) writer.Write(sample);
+
+        writer.Flush();
+        return stream.ToArray();
+    }
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Shared/Converters/GameConverters.cs
+SIZE: 2.09 KB
+================================================================================
+
+using System.Globalization;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
+using MyDesktopApplication.Core.Entities;
+
+namespace MyDesktopApplication.Shared.Converters;
+
+public sealed class QuestionTypeLabelConverter : IValueConverter
+{
+    public static readonly QuestionTypeLabelConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is QuestionType qt ? qt.GetLabel() : value?.ToString() ?? "";
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}
+
+public sealed class AnswerStateToBackgroundConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToBackgroundConverter Instance = new();
+
+    private static readonly SolidColorBrush Correct = new(Color.FromRgb(34, 139, 34));
+    private static readonly SolidColorBrush Wrong = new(Color.FromRgb(220, 53, 69));
+    private static readonly SolidColorBrush Default = new(Color.FromRgb(30, 41, 59));
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect) return Correct;
+            if (isWrong) return Wrong;
+        }
+        return Default;
+    }
+}
+
+public sealed class AnswerStateToBorderConverter : IMultiValueConverter
+{
+    public static readonly AnswerStateToBorderConverter Instance = new();
+
+    private static readonly SolidColorBrush Correct = new(Color.FromRgb(34, 197, 94));
+    private static readonly SolidColorBrush Wrong = new(Color.FromRgb(239, 68, 68));
+    private static readonly SolidColorBrush Default = new(Color.FromRgb(55, 65, 81));
+
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Count >= 2 && values[0] is bool isCorrect && values[1] is bool isWrong)
+        {
+            if (isCorrect) return Correct;
+            if (isWrong) return Wrong;
+        }
+        return Default;
+    }
 }
 
 
@@ -3294,34 +3482,47 @@ public static class MotivationalMessages
 
 ================================================================================
 FILE: src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj
-SIZE: .45 KB
+SIZE: .36 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>
 
 
 ================================================================================
-FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
-SIZE: 8.18 KB
+FILE: src/MyDesktopApplication.Shared/ServiceCollectionExtensions.cs
+SIZE: .35 KB
 ================================================================================
 
-using System;
+using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Shared;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddCountryQuizApp(this IServiceCollection services)
+    {
+        services.AddTransient<CountryQuizViewModel>();
+        return services;
+    }
+}
+
+
+================================================================================
+FILE: src/MyDesktopApplication.Shared/ViewModels/CountryQuizViewModel.cs
+SIZE: 8.57 KB
+================================================================================
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
@@ -3334,6 +3535,7 @@ public partial class CountryQuizViewModel : ObservableObject
 {
     private readonly IGameStateRepository? _gameStateRepository;
     private readonly IGameTelemetry? _telemetry;
+    private readonly IFeedbackService? _feedback;
     private readonly Random _random = new();
     private readonly List<Country> _countries;
     private GameState _gameState = new();
@@ -3362,6 +3564,8 @@ public partial class CountryQuizViewModel : ObservableObject
 
     [ObservableProperty] private bool _isResetConfirmationVisible;
 
+    [ObservableProperty] private bool _soundEnabled = true;
+
     public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
     public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
     public bool IsCountry2Correct => HasAnswered && SelectedCountry == 2 && IsCorrectAnswer;
@@ -3379,11 +3583,15 @@ public partial class CountryQuizViewModel : ObservableObject
 
     public CountryQuizViewModel() : this(null, null) { }
 
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository, IGameTelemetry? telemetry = null)
+    public CountryQuizViewModel(
+        IGameStateRepository? gameStateRepository,
+        IGameTelemetry? telemetry = null,
+        IFeedbackService? feedback = null)
     {
         _gameStateRepository = gameStateRepository;
         _telemetry = telemetry;
-        _countries = CountryData.GetAllCountries().ToList();
+        _feedback = feedback;
+        _countries = [.. CountryData.GetAllCountries()];
         GenerateNewQuestion();
     }
 
@@ -3395,6 +3603,13 @@ public partial class CountryQuizViewModel : ObservableObject
             SyncScoresFromGameState();
         }
         GenerateNewQuestion();
+    }
+
+    public void OnButtonPressed() => Play(FeedbackCue.Tap);
+
+    private void Play(FeedbackCue cue)
+    {
+        if (SoundEnabled) _feedback?.Play(cue);
     }
 
     private void SyncScoresFromGameState()
@@ -3433,6 +3648,9 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ToggleSound() => SoundEnabled = !SoundEnabled;
+
+    [RelayCommand]
     private async Task SelectCountryAsync(string countryNumberStr)
     {
         if (!int.TryParse(countryNumberStr, out var countryNumber)) return;
@@ -3444,6 +3662,8 @@ public partial class CountryQuizViewModel : ObservableObject
         var selectedCountry = countryNumber == 1 ? Country1 : Country2;
         var isCorrect = selectedCountry?.Name == _correctCountry.Name;
         IsCorrectAnswer = isCorrect;
+
+        Play(isCorrect ? FeedbackCue.Correct : FeedbackCue.Incorrect);
 
         _gameState.RecordAnswer(isCorrect);
         _telemetry?.RecordAnswer(isCorrect, SelectedQuestionType);
@@ -3461,7 +3681,6 @@ public partial class CountryQuizViewModel : ObservableObject
         }
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
-
         CountryDetailsText = BuildCountryDetails();
 
         if (_gameStateRepository != null)
@@ -3472,16 +3691,10 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NextRound()
-    {
-        GenerateNewQuestion();
-    }
+    private void NextRound() => GenerateNewQuestion();
 
     [RelayCommand]
-    private void RequestResetGame()
-    {
-        IsResetConfirmationVisible = true;
-    }
+    private void RequestResetGame() => IsResetConfirmationVisible = true;
 
     [RelayCommand]
     private async Task ConfirmResetGameAsync()
@@ -3501,10 +3714,7 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void CancelResetGame()
-    {
-        IsResetConfirmationVisible = false;
-    }
+    private void CancelResetGame() => IsResetConfirmationVisible = false;
 
     private string BuildCountryDetails()
     {
@@ -3655,19 +3865,10 @@ public class GameStateTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Core.Tests/MyDesktopApplication.Core.Tests.csproj
-SIZE: 1.08 KB
+SIZE: .82 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
@@ -3900,19 +4101,10 @@ public class GameStateRepositoryTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.Integration.Tests/MyDesktopApplication.Integration.Tests.csproj
-SIZE: 1.28 KB
+SIZE: 1.01 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
@@ -4012,19 +4204,10 @@ public class CountryQuizViewModelTests
 
 ================================================================================
 FILE: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csproj
-SIZE: 1.39 KB
+SIZE: .93 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
@@ -4040,11 +4223,6 @@ SIZE: 1.39 KB
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
 
-  <!--
-    The quiz ViewModel now lives in the Shared project (one implementation for
-    every platform), so these tests reference Shared + Core and no longer need a
-    reference to the Desktop head.
-  -->
   <ItemGroup>
     <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="../../src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />
