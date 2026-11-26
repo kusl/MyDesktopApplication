@@ -61,7 +61,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --configuration Release --no-build
+        run: dotnet test --test-modules "tests/*/bin/Release/net11.0/*.Tests.dll"
 
   build-desktop:
     needs: build-and-test
@@ -234,7 +234,6 @@ jobs:
           path: ./artifacts
 
       - name: Prepare release
-        id: prepare
         shell: bash
         run: |
           N=${{ github.run_number }}
@@ -243,24 +242,22 @@ jobs:
             find artifacts -type f \( -name '*.tar.gz' -o -name '*.zip' -o -name '*.apk' \) -exec cp {} release/ \;
           fi
 
+          if [[ -z "$(ls -A release 2>/dev/null)" ]]; then
+            echo "::error::No platform built successfully; nothing to release"
+            exit 1
+          fi
+
           files=(win-x64.zip win-arm64.zip linux-x64.tar.gz linux-arm64.tar.gz osx-x64.tar.gz osx-arm64.tar.gz "android-$N.apk")
           labels=("Windows x64" "Windows ARM64" "Linux x64" "Linux ARM64" "macOS x64 (Intel)" "macOS ARM64 (Apple Silicon)" "Android")
           rows=""
-          missing=()
           for i in "${!files[@]}"; do
             file="MyDesktopApplication-${files[$i]}"
             if [[ -f "release/$file" ]]; then
               rows+="| ${labels[$i]} | \`$file\` |"$'\n'
             else
-              missing+=("${labels[$i]}")
-              echo "::warning::${labels[$i]} was not built; releasing without it"
+              echo "::warning::${labels[$i]} was not built; releasing the platforms that were"
             fi
           done
-
-          if [[ -z "$rows" ]]; then
-            echo "::error::No platform built successfully; nothing to release"
-            exit 1
-          fi
 
           {
             echo "## MyDesktopApplication v1.0.$N"
@@ -268,17 +265,12 @@ jobs:
             echo "| Platform | File |"
             echo "|----------|------|"
             printf '%s' "$rows"
-            if (( ${#missing[@]} > 0 )); then
-              echo
-              printf '**Partial release.** Not built this run: %s. Marked as pre-release so `latest` and Obtainium stay on the last complete release.\n' "$(printf '%s, ' "${missing[@]}" | sed 's/, $//')"
-            fi
             echo
             echo "### Android (Obtainium)"
             echo
             echo "Point Obtainium at this repository's releases. The APK version code is the CI run number."
           } > release-notes.md
 
-          echo "prerelease=$([[ ${#missing[@]} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           cat release-notes.md
           ls -la release
 
@@ -288,7 +280,7 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
           draft: false
-          prerelease: ${{ steps.prepare.outputs.prerelease }}
+          prerelease: false
           generate_release_notes: true
           body_path: release-notes.md
           files: ./release/*

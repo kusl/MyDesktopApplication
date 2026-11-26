@@ -16,7 +16,7 @@ Country statistics quiz built with **Avalonia UI 12.2**, **.NET 11**, and **C# 1
 
 Android: point [Obtainium](https://github.com/ImranR98/Obtainium) at the releases. `versionCode` is the CI run number.
 
-If a platform build fails or GitHub cancels its runner, the other platforms still ship as a **pre-release** that lists what is missing; `latest` and Obtainium stay on the last complete release.
+If a platform build fails or GitHub cancels its runner, the other platforms still ship as a full release.
 
 ## Quick Start
 
