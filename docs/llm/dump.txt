@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT (GIT TRACKED ONLY)
-Generated: Thu Nov 26 07:25:32 AM EST 2026
+Generated: Thu Nov 26 07:34:34 AM EST 2026
 Project Path: /home/kushal/src/dotnet/MyDesktopApplication
 ===============================================================================
 
@@ -1662,7 +1662,7 @@ SIZE: 12.74 KB
 
 ================================================================================
 FILE: src/MyDesktopApplication.Android/Views/MainView.axaml.cs
-SIZE: .46 KB
+SIZE: .48 KB
 ================================================================================
 
 using Avalonia.Controls;
@@ -1676,7 +1676,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
+        AddHandler(Avalonia.Controls.Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
     }
 
     private void OnButtonClick(object? sender, RoutedEventArgs e)
@@ -2195,7 +2195,7 @@ public sealed partial class DesktopFeedbackService : IFeedbackService
 
 ================================================================================
 FILE: src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj
-SIZE: 1.13 KB
+SIZE: 1.17 KB
 ================================================================================
 
 <Project Sdk="Microsoft.NET.Sdk">
@@ -2204,6 +2204,7 @@ SIZE: 1.13 KB
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <Product>Country Quiz</Product>
     <Company>MyDesktopApplication</Company>

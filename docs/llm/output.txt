@@ -77,56 +77,56 @@ Garbage collecting for SDK feature band(s) 10.0.100 11.0.100...
 
 Successfully updated workload(s): android.
 
-Build started 11/26/2026 7:25:17 AM.
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.19
-Build started 11/26/2026 7:25:17 AM.
+Time Elapsed 00:00:00.20
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.02
-Build started 11/26/2026 7:25:17 AM.
+Time Elapsed 00:00:00.01
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.08
-Build started 11/26/2026 7:25:17 AM.
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.04
-Build started 11/26/2026 7:25:17 AM.
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:00.05
-Build started 11/26/2026 7:25:17 AM.
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.04
-Build started 11/26/2026 7:25:17 AM.
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.06
-Build started 11/26/2026 7:25:17 AM.
+Time Elapsed 00:00:00.04
+Build started 11/26/2026 7:34:01 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.09
+Build started 11/26/2026 7:34:01 AM.
 
 Build succeeded.
     0 Warning(s)
@@ -136,63 +136,64 @@ Time Elapsed 00:00:00.07
 Installing workloads: 
 
 
-real	0m1.658s
-user	0m1.340s
-sys	0m0.290s
+real	0m1.737s
+user	0m1.328s
+sys	0m0.306s
 
-Build succeeded in 0.3s
+Build succeeded in 0.2s
 
-real	0m0.386s
-user	0m0.098s
-sys	0m0.036s
+real	0m0.305s
+user	0m0.096s
+sys	0m0.035s
 Restore complete (0.1s)
 
 Build succeeded in 0.1s
 
-real	0m0.281s
-user	0m0.111s
-sys	0m0.031s
+real	0m0.261s
+user	0m0.108s
+sys	0m0.029s
 Restore complete (0.1s)
   MyDesktopApplication.Core net11.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net11.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.Shared net11.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Desktop net11.0 failed with 1 error(s) (0.2s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/obj/Debug/net11.0/Microsoft.Interop.LibraryImportGenerator/Microsoft.Interop.LibraryImportGenerator/LibraryImports.g.cs(7,10): error CS0227: Unsafe code may only appear if compiling with /unsafe
+  MyDesktopApplication.Core.Tests net11.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Shared net11.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
   MyDesktopApplication.UI.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
-  MyDesktopApplication.Android net11.0-android failed with 1 error(s) (1.0s)
-    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(12,20): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+  MyDesktopApplication.Desktop net11.0 succeeded (1.0s) → src/MyDesktopApplication.Desktop/bin/Debug/net11.0/MyDesktopApplication.Desktop.dll
+  MyDesktopApplication.Core net11.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net11.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Shared net11.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net11.0-android succeeded (17.1s) → src/MyDesktopApplication.Android/bin/Debug/net11.0-android/MyDesktopApplication.Android.dll
 
-Build failed with 2 error(s) in 1.3s
+Build succeeded in 17.9s
 
-real	0m1.460s
-user	0m0.227s
-sys	0m0.042s
+real	0m18.013s
+user	0m0.496s
+sys	0m0.064s
 Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64)
-Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64)
 Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64)
-tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (582ms)
-tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (592ms)
-tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 048ms)
+Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (567ms)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (567ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 002ms)
 
 Test run summary: Passed!
-  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (582ms)
-  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 048ms)
-  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (592ms)
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 002ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (567ms)
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (567ms)
 
   total: 26
   failed: 0
   succeeded: 26
   skipped: 0
-  duration: 1s 221ms
+  duration: 1s 170ms
 
-real	0m2.991s
-user	0m4.515s
-sys	0m0.586s
+real	0m3.003s
+user	0m4.269s
+sys	0m0.575s
 Restore complete (0.1s)
 
-Build succeeded in 0.1s
+Build succeeded in 0.2s
 Project 'MyDesktopApplication.Android' has the following package references
    [net11.0-android]: 
    Top-level Package                                  Requested    Resolved
@@ -271,12 +272,12 @@ Project 'MyDesktopApplication.UI.Tests' has the following package references
 
 (A) : Auto-referenced package.
 
-real	0m1.552s
-user	0m1.245s
-sys	0m0.415s
+real	0m1.674s
+user	0m1.307s
+sys	0m0.433s
 Restore complete (0.1s)
 
-Build succeeded in 0.1s
+Build succeeded in 0.2s
 
 The following sources were used:
    https://api.nuget.org/v3/index.json
@@ -290,13 +291,13 @@ The given project `MyDesktopApplication.Core.Tests` has no updates given the cur
 The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
 The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 
-real	0m1.931s
-user	0m1.613s
-sys	0m0.426s
+real	0m2.363s
+user	0m2.075s
+sys	0m0.455s
 
-real	0m6.155s
-user	0m9.205s
-sys	0m1.034s
+real	0m6.431s
+user	0m9.519s
+sys	0m1.053s
 ==============================================
   Generating Clean Project Export
 ==============================================
@@ -370,9 +371,9 @@ Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csp
 
 Export Complete: docs/llm/dump.txt
 
-real	0m0.714s
-user	0m0.373s
-sys	0m0.463s
+real	0m0.706s
+user	0m0.352s
+sys	0m0.469s
 .NET SDK:
  Version:           11.0.100
  Commit:            297acf930f
@@ -425,11 +426,11 @@ Learn more:
 Download .NET:
   https://aka.ms/dotnet/download
 
-real	0m0.019s
-user	0m0.013s
-sys	0m0.007s
+real	0m0.032s
+user	0m0.015s
+sys	0m0.008s
 Updating and loading repositories:
-Last metadata expiration check: 4:48:27 ago on 2026-11-26 07:37:07.
+Last metadata expiration check: 4:57:28 ago on 2026-11-26 07:37:07.
 Repositories loaded.
 Installed packages
 Name            : dotnet-sdk-11.0
@@ -456,11 +457,11 @@ Description     : The .NET SDK is a collection of command line applications to
                 : applications and micro-services.
 Vendor          : Fedora Project
 
-real	0m0.640s
-user	0m0.427s
-sys	0m0.187s
+real	0m0.942s
+user	0m0.447s
+sys	0m0.273s
 Updating and loading repositories:
-Last metadata expiration check: 4:48:27 ago on 2026-11-26 07:37:07.
+Last metadata expiration check: 4:57:29 ago on 2026-11-26 07:37:07.
 Repositories loaded.
 Matched fields: name
  dotnet-sdk-10.0.x86_64	.NET 10.0 Software Development Kit
@@ -472,7 +473,7 @@ Matched fields: name
  dotnet-sdk-dbg-10.0.x86_64	Managed debug symbols for the .NET 10.0 Software Development Kit
  dotnet-sdk-dbg-11.0.x86_64	Managed debug symbols for the .NET 11.0 Software Development Kit
 
-real	0m0.541s
-user	0m0.429s
-sys	0m0.164s
+real	0m0.563s
+user	0m0.428s
+sys	0m0.186s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
