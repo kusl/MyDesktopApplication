@@ -77,120 +77,120 @@ Garbage collecting for SDK feature band(s) 10.0.100 11.0.100...
 
 Successfully updated workload(s): android.
 
-Build started 11/26/2026 7:34:01 AM.
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.20
-Build started 11/26/2026 7:34:01 AM.
+Time Elapsed 00:00:00.25
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.01
-Build started 11/26/2026 7:34:01 AM.
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.08
-Build started 11/26/2026 7:34:01 AM.
+Time Elapsed 00:00:00.11
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.04
-Build started 11/26/2026 7:34:01 AM.
-
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:00.04
-Build started 11/26/2026 7:34:01 AM.
+Time Elapsed 00:00:00.05
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.04
-Build started 11/26/2026 7:34:01 AM.
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.09
-Build started 11/26/2026 7:34:01 AM.
+Time Elapsed 00:00:00.04
+Build started 11/26/2026 7:55:26 AM.
 
 Build succeeded.
     0 Warning(s)
     0 Error(s)
 
 Time Elapsed 00:00:00.07
+Build started 11/26/2026 7:55:27 AM.
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.08
 Installing workloads: 
 
 
-real	0m1.737s
-user	0m1.328s
-sys	0m0.306s
+real	0m2.010s
+user	0m1.597s
+sys	0m0.343s
 
-Build succeeded in 0.2s
+Build succeeded in 1.3s
 
-real	0m0.305s
-user	0m0.096s
-sys	0m0.035s
-Restore complete (0.1s)
+real	0m1.502s
+user	0m0.184s
+sys	0m0.043s
+Restore complete (0.5s)
 
-Build succeeded in 0.1s
+Build succeeded in 0.6s
 
-real	0m0.261s
-user	0m0.108s
-sys	0m0.029s
-Restore complete (0.1s)
+real	0m0.701s
+user	0m0.127s
+sys	0m0.042s
+Restore complete (0.2s)
+  MyDesktopApplication.Core net11.0 succeeded (1.6s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net11.0 succeeded (0.6s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net11.0 succeeded (0.7s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.7s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net11.0 succeeded (1.4s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.UI.Tests net11.0 succeeded (0.7s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Desktop net11.0 succeeded (1.8s) → src/MyDesktopApplication.Desktop/bin/Debug/net11.0/MyDesktopApplication.Desktop.dll
   MyDesktopApplication.Core net11.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
   MyDesktopApplication.Infrastructure net11.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Core.Tests net11.0 succeeded (0.1s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
-  MyDesktopApplication.Shared net11.0 succeeded (0.3s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
-  MyDesktopApplication.UI.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
-  MyDesktopApplication.Desktop net11.0 succeeded (1.0s) → src/MyDesktopApplication.Desktop/bin/Debug/net11.0/MyDesktopApplication.Desktop.dll
-  MyDesktopApplication.Core net11.0 succeeded (0.0s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
-  MyDesktopApplication.Infrastructure net11.0 succeeded (0.0s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
-  MyDesktopApplication.Shared net11.0 succeeded (0.0s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
-  MyDesktopApplication.Android net11.0-android succeeded (17.1s) → src/MyDesktopApplication.Android/bin/Debug/net11.0-android/MyDesktopApplication.Android.dll
+  MyDesktopApplication.Shared net11.0 succeeded (0.1s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Android net11.0-android succeeded (21.1s) → src/MyDesktopApplication.Android/bin/Debug/net11.0-android/MyDesktopApplication.Android.dll
 
-Build succeeded in 17.9s
+Build succeeded in 24.7s
 
-real	0m18.013s
-user	0m0.496s
-sys	0m0.064s
-Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64)
+real	0m24.855s
+user	0m0.614s
+sys	0m0.113s
 Running tests from tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64)
 Running tests from tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64)
-tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (567ms)
-tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (567ms)
-tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 002ms)
+Running tests from tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64)
+tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (611ms)
+tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (612ms)
+tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 136ms)
 
 Test run summary: Passed!
-  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 002ms)
-  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (567ms)
-  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (567ms)
+  tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll (net11.0|x64) passed [✓6/x0/↓0] (612ms)
+  tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll (net11.0|x64) passed [✓16/x0/↓0] (611ms)
+  tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll (net11.0|x64) passed [✓4/x0/↓0] (1s 136ms)
 
   total: 26
   failed: 0
   succeeded: 26
   skipped: 0
-  duration: 1s 170ms
+  duration: 1s 325ms
 
-real	0m3.003s
-user	0m4.269s
-sys	0m0.575s
+real	0m3.745s
+user	0m5.304s
+sys	0m0.710s
 Restore complete (0.1s)
 
 Build succeeded in 0.2s
@@ -272,12 +272,12 @@ Project 'MyDesktopApplication.UI.Tests' has the following package references
 
 (A) : Auto-referenced package.
 
-real	0m1.674s
-user	0m1.307s
-sys	0m0.433s
+real	0m1.704s
+user	0m1.437s
+sys	0m0.430s
 Restore complete (0.1s)
 
-Build succeeded in 0.2s
+Build succeeded in 0.1s
 
 The following sources were used:
    https://api.nuget.org/v3/index.json
@@ -291,13 +291,13 @@ The given project `MyDesktopApplication.Core.Tests` has no updates given the cur
 The given project `MyDesktopApplication.Integration.Tests` has no updates given the current sources.
 The given project `MyDesktopApplication.UI.Tests` has no updates given the current sources.
 
-real	0m2.363s
-user	0m2.075s
-sys	0m0.455s
+real	0m3.874s
+user	0m3.634s
+sys	0m0.517s
 
-real	0m6.431s
-user	0m9.519s
-sys	0m1.053s
+real	0m6.911s
+user	0m10.073s
+sys	0m1.090s
 ==============================================
   Generating Clean Project Export
 ==============================================
@@ -371,9 +371,9 @@ Processed: tests/MyDesktopApplication.UI.Tests/MyDesktopApplication.UI.Tests.csp
 
 Export Complete: docs/llm/dump.txt
 
-real	0m0.706s
-user	0m0.352s
-sys	0m0.469s
+real	0m0.749s
+user	0m0.362s
+sys	0m0.508s
 .NET SDK:
  Version:           11.0.100
  Commit:            297acf930f
@@ -427,10 +427,10 @@ Download .NET:
   https://aka.ms/dotnet/download
 
 real	0m0.032s
-user	0m0.015s
-sys	0m0.008s
+user	0m0.013s
+sys	0m0.010s
 Updating and loading repositories:
-Last metadata expiration check: 4:57:28 ago on 2026-11-26 07:37:07.
+Last metadata expiration check: 5:19:05 ago on 2026-11-26 07:37:07.
 Repositories loaded.
 Installed packages
 Name            : dotnet-sdk-11.0
@@ -457,11 +457,11 @@ Description     : The .NET SDK is a collection of command line applications to
                 : applications and micro-services.
 Vendor          : Fedora Project
 
-real	0m0.942s
-user	0m0.447s
-sys	0m0.273s
+real	0m0.900s
+user	0m0.511s
+sys	0m0.267s
 Updating and loading repositories:
-Last metadata expiration check: 4:57:29 ago on 2026-11-26 07:37:07.
+Last metadata expiration check: 5:19:05 ago on 2026-11-26 07:37:07.
 Repositories loaded.
 Matched fields: name
  dotnet-sdk-10.0.x86_64	.NET 10.0 Software Development Kit
@@ -473,7 +473,7 @@ Matched fields: name
  dotnet-sdk-dbg-10.0.x86_64	Managed debug symbols for the .NET 10.0 Software Development Kit
  dotnet-sdk-dbg-11.0.x86_64	Managed debug symbols for the .NET 11.0 Software Development Kit
 
-real	0m0.563s
-user	0m0.428s
-sys	0m0.186s
+real	0m0.583s
+user	0m0.462s
+sys	0m0.175s
 kushal@fedora:~/src/dotnet/MyDesktopApplication$ 
