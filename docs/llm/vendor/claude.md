@@ -24498,3 +24498,9 @@ After dropping these in, the remaining unverified surface is the same as before:
 
 
 
+I gave you all the context and you still screwed up anyways 
+Run dotnet test --configuration Release --no-build
+No devices are available for this project.
+Unable to run this project because multiple devices are available. Please specify which device to use by passing the --device argument with one of the following values:
+Error: Process completed with exit code 1.
+https://github.com/kusl/MyDesktopApplication/actions/runs/45820992780/job/139912879509
