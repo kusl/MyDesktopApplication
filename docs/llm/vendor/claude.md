@@ -24504,3 +24504,27 @@ No devices are available for this project.
 Unable to run this project because multiple devices are available. Please specify which device to use by passing the --device argument with one of the following values:
 Error: Process completed with exit code 1.
 https://github.com/kusl/MyDesktopApplication/actions/runs/45820992780/job/139912879509
+I couldn't believe it so I had to do it twice 
+Run dotnet test --configuration Release --no-build
+  dotnet test --configuration Release --no-build
+  shell: /usr/bin/bash -e {0}
+  env:
+    DOTNET_NOLOGO: true
+    DOTNET_CLI_TELEMETRY_OPTOUT: true
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    DOTNET_ROOT: /usr/share/dotnet
+    JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.13-9/x64
+    JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.13-9/x64
+    MAVEN_ARGS: -ntp
+No devices are available for this project.
+Unable to run this project because multiple devices are available. Please specify which device to use by passing the --device argument with one of the following values:
+Error: Process completed with exit code 1.
+https://github.com/kusl/MyDesktopApplication/actions/runs/45824493927/job/139925038431
+Please fix all defects 
+oh and while you are at it, 
+we NEVER do pre release here 
+if it builds and can generate an apk or a release 
+it is a full release 
+even if macOS can't boot on github actions 
+the rest of them are full releases 
+every single time 
