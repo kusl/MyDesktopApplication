@@ -24298,3 +24298,19 @@ One thing I left alone on purpose: `MotivationalMessages.cs` is dead (the view-m
 
 
 
+82
+55
+
+I got two errors here 
+Restore complete (0.1s)
+  MyDesktopApplication.Core net11.0 succeeded (0.1s) → src/MyDesktopApplication.Core/bin/Debug/net11.0/MyDesktopApplication.Core.dll
+  MyDesktopApplication.Infrastructure net11.0 succeeded (0.1s) → src/MyDesktopApplication.Infrastructure/bin/Debug/net11.0/MyDesktopApplication.Infrastructure.dll
+  MyDesktopApplication.Core.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.Core.Tests/bin/Debug/net11.0/MyDesktopApplication.Core.Tests.dll
+  MyDesktopApplication.Integration.Tests net11.0 succeeded (0.1s) → tests/MyDesktopApplication.Integration.Tests/bin/Debug/net11.0/MyDesktopApplication.Integration.Tests.dll
+  MyDesktopApplication.Shared net11.0 succeeded (0.2s) → src/MyDesktopApplication.Shared/bin/Debug/net11.0/MyDesktopApplication.Shared.dll
+  MyDesktopApplication.Desktop net11.0 failed with 1 error(s) (0.2s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Desktop/obj/Debug/net11.0/Microsoft.Interop.LibraryImportGenerator/Microsoft.Interop.LibraryImportGenerator/LibraryImports.g.cs(7,10): error CS0227: Unsafe code may only appear if compiling with /unsafe
+  MyDesktopApplication.UI.Tests net11.0 succeeded (0.2s) → tests/MyDesktopApplication.UI.Tests/bin/Debug/net11.0/MyDesktopApplication.UI.Tests.dll
+  MyDesktopApplication.Android net11.0-android failed with 1 error(s) (1.0s)
+    /home/kushal/src/dotnet/MyDesktopApplication/src/MyDesktopApplication.Android/Views/MainView.axaml.cs(12,20): error CS0104: 'Button' is an ambiguous reference between 'Avalonia.Controls.Button' and 'Android.Widget.Button'
+Build failed with 2 error(s) in 1.3s
