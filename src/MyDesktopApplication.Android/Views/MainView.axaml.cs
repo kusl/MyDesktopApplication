@@ -9,7 +9,7 @@ public partial class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
+        AddHandler(Avalonia.Controls.Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
     }
 
     private void OnButtonClick(object? sender, RoutedEventArgs e)

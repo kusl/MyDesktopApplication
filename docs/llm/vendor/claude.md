@@ -24398,3 +24398,103 @@ Build failed with 2 error(s) in 1.3s
 
 
 
+Two clean errors, both mine, and both one-line fixes — everything else (the .NET 11 bump, package pruning, converter consolidation, Shared/Infra/Core/tests) compiled. Under five files, so here are the full corrected files.
+
+**1. `src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj`** — `[LibraryImport]` generates `unsafe` marshalling code, so the project needs `AllowUnsafeBlocks`:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <Product>Country Quiz</Product>
+    <Company>MyDesktopApplication</Company>
+    <Copyright>Copyright © 2026</Copyright>
+    <Description>A cross-platform country quiz game built with Avalonia UI</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyDesktopApplication.Shared\MyDesktopApplication.Shared.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Core\MyDesktopApplication.Core.csproj" />
+    <ProjectReference Include="..\MyDesktopApplication.Infrastructure\MyDesktopApplication.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+</Project>
+```
+
+**2. `src/MyDesktopApplication.Android/Views/MainView.axaml.cs`** — on Android, `Button` is ambiguous (`Avalonia.Controls.Button` vs `Android.Widget.Button` from the Android global usings), so I fully-qualify it:
+
+```csharp
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using MyDesktopApplication.Shared.ViewModels;
+
+namespace MyDesktopApplication.Android.Views;
+
+public partial class MainView : UserControl
+{
+    public MainView()
+    {
+        InitializeComponent();
+        AddHandler(Avalonia.Controls.Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
+    }
+
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
+        => (DataContext as CountryQuizViewModel)?.OnButtonPressed();
+}
+```
+
+Both are isolated to the two heads; Core/Shared/Infrastructure/tests are unaffected. The desktop `MainWindow.axaml.cs` doesn't need the qualification (no `Android.Widget` there), but it's harmless if you ever want them symmetric.
+
+After dropping these in, the remaining unverified surface is the same as before: XAML compilation, the Android APK packaging, and the actual audio/haptics on a device. If the XAML compiler surfaces anything, send me the log.
+
+82
+55
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
