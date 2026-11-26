@@ -1,49 +1,31 @@
 <Project>
   <PropertyGroup>
-    <!-- Common project settings -->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    
-    <!-- Version properties - can be overridden via MSBuild properties -->
-    <!-- Default values for local development -->
+
     <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">local</VersionSuffix>
-    
-    <!-- Build number for CI - defaults to 0 for local builds -->
     <BuildNumber Condition="'$(BuildNumber)' == ''">1</BuildNumber>
-    
-    <!-- Assembly versioning -->
     <AssemblyVersion>1.0.$(BuildNumber).0</AssemblyVersion>
     <FileVersion>1.0.$(BuildNumber).0</FileVersion>
     <InformationalVersion>1.0.$(BuildNumber)</InformationalVersion>
-    
-    <!-- Treat warnings as errors in Release -->
+
     <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
-    
-    <!-- Deterministic builds for reproducibility -->
+
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
-    
-    <!-- Source Link for debugging -->
+
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(CI)' == 'true'">
-    <!-- Ensure reproducible builds in CI -->
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
 
-  <!--
-    xUnit.net v3 test projects are self-executing programs, so they must be
-    built as executables. We set this once here for every project whose name
-    ends in ".Tests" instead of repeating it in each test .csproj.
-  -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 </Project>

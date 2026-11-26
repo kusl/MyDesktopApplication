@@ -18,17 +18,13 @@ updates:
       testing:
         patterns:
           - "xunit*"
-          - "Shouldly*"
-          - "NSubstitute*"
-          - "Bogus"
+          - "Shouldly"
+          - "NSubstitute"
           - "coverlet*"
-          - "Testcontainers*"
     ignore:
-      # Ignore FluentAssertions (commercial license)
       - dependency-name: "FluentAssertions"
-      # Ignore Moq (compromised)
       - dependency-name: "Moq"
-      
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

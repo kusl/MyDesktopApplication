@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net10.0-android</TargetFramework>
+    <TargetFramework>net11.0-android</TargetFramework>
     <OutputType>Exe</OutputType>
     <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
     <ApplicationId>com.mydesktopapplication.app</ApplicationId>
@@ -26,29 +26,14 @@
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' == ''">1.0.0-local</ApplicationDisplayVersion>
     <ApplicationDisplayVersion Condition="'$(BuildNumber)' != ''">1.0.$(BuildNumber)</ApplicationDisplayVersion>
 
-    <RunAOTCompilation>false</RunAOTCompilation>
-    <PublishAot>false</PublishAot>
-    <UseInterpreter>true</UseInterpreter>
     <PublishTrimmed>false</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
-
     <AndroidUseAapt2Daemon>false</AndroidUseAapt2Daemon>
-
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <TrimmerRootAssembly Include="MyDesktopApplication.Core" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Shared" />
-    <TrimmerRootAssembly Include="MyDesktopApplication.Infrastructure" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Android" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Themes.Fluent2" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />

@@ -3,80 +3,48 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <AvaloniaVersion>12.1.4</AvaloniaVersion>
-    <EFCoreVersion>10.0.14</EFCoreVersion>
-    <MicrosoftExtensionsVersion>10.0.14</MicrosoftExtensionsVersion>
-    <OpenTelemetryVersion>1.20.1</OpenTelemetryVersion>
-    <SerilogVersion>4.4.0</SerilogVersion>
-    <TestcontainersVersion>4.16.0</TestcontainersVersion>
-    <FluentValidationVersion>12.2.0</FluentValidationVersion>
+    <AvaloniaVersion>12.2.0</AvaloniaVersion>
+    <EFCoreVersion>11.0.0</EFCoreVersion>
+    <MicrosoftExtensionsVersion>11.0.0</MicrosoftExtensionsVersion>
+    <OpenTelemetryVersion>1.21.0</OpenTelemetryVersion>
   </PropertyGroup>
 
-  <ItemGroup Label="Avalonia">
+  <ItemGroup Label="Avalonia - MIT">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Android" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Themes.Fluent2" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="MVVM">
+  <ItemGroup Label="MVVM - MIT">
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
-  <ItemGroup Label="EntityFramework">
+  <ItemGroup Label="EntityFramework - MIT">
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EFCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EFCoreVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-    <PackageVersion Include="Dapper" Version="2.1.89" />
   </ItemGroup>
 
-  <ItemGroup Label="Configuration">
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(MicrosoftExtensionsVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="DependencyInjection">
+  <ItemGroup Label="Microsoft.Extensions - MIT">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="Logging">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
-    <PackageVersion Include="Serilog" Version="$(SerilogVersion)" />
-    <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
-    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup Label="OpenTelemetry">
+  <ItemGroup Label="OpenTelemetry - Apache-2.0">
     <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="$(OpenTelemetryVersion)" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
   </ItemGroup>
 
-  <ItemGroup Label="Validation">
-    <PackageVersion Include="FluentValidation" Version="$(FluentValidationVersion)" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="$(FluentValidationVersion)" />
-  </ItemGroup>
-
-  <ItemGroup Label="Testing">
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+  <ItemGroup Label="Testing - Apache-2.0 / BSD / MIT">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
-    <PackageVersion Include="Bogus" Version="35.6.5" />
-    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
-    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
-    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
+    <PackageVersion Include="coverlet.collector" Version="10.1.1" />
   </ItemGroup>
 </Project>

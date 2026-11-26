@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [master, main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -14,6 +21,7 @@ env:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -23,7 +31,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Setup Java
         uses: actions/setup-java@v6
@@ -32,44 +40,49 @@ jobs:
           java-version: '21'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet workload install android && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Restore
-        run: dotnet restore
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet restore && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: |
-          dotnet test --configuration Release --no-build --verbosity normal \
-            --filter "FullyQualifiedName!~Android"
+        run: dotnet test --configuration Release --no-build
 
   build-desktop:
     needs: build-and-test
     if: github.event_name == 'push'
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
             rid: linux-x64
-            artifact: linux-x64
           - os: ubuntu-latest
             rid: linux-arm64
-            artifact: linux-arm64
           - os: windows-latest
             rid: win-x64
-            artifact: win-x64
           - os: windows-latest
             rid: win-arm64
-            artifact: win-arm64
           - os: macos-latest
             rid: osx-x64
-            artifact: osx-x64
           - os: macos-latest
             rid: osx-arm64
-            artifact: osx-arm64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -78,40 +91,43 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Publish
         shell: bash
         run: |
-          dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
-            --configuration Release \
-            -r ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:Version=1.0.${{ github.run_number }} \
-            --output ./publish
+          for attempt in 1 2 3; do
+            dotnet publish src/MyDesktopApplication.Desktop/MyDesktopApplication.Desktop.csproj \
+              --configuration Release \
+              -r ${{ matrix.rid }} \
+              --self-contained true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:Version=1.0.${{ github.run_number }} \
+              --output ./publish && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Create archive (Unix)
         if: runner.os != 'Windows'
         shell: bash
         run: |
           cd ./publish
-          tar -czvf ../MyDesktopApplication-${{ matrix.artifact }}.tar.gz .
+          tar -czvf ../MyDesktopApplication-${{ matrix.rid }}.tar.gz .
 
       - name: Create archive (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: |
-          Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.artifact }}.zip
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./MyDesktopApplication-${{ matrix.rid }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact }}
+          name: ${{ matrix.rid }}
           path: |
-            ./MyDesktopApplication-${{ matrix.artifact }}.tar.gz
-            ./MyDesktopApplication-${{ matrix.artifact }}.zip
+            ./MyDesktopApplication-${{ matrix.rid }}.tar.gz
+            ./MyDesktopApplication-${{ matrix.rid }}.zip
           if-no-files-found: error
           retention-days: 7
 
@@ -119,8 +135,7 @@ jobs:
     needs: build-and-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    env:
-      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -128,7 +143,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       - name: Setup Java
         uses: actions/setup-java@v6
@@ -137,7 +152,13 @@ jobs:
           java-version: '21'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            dotnet workload install android && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
 
       - name: Setup Keystore
         id: keystore
@@ -182,16 +203,13 @@ jobs:
         shell: bash
         run: |
           APK_PATH=$(find ./publish/android -name "*-Signed.apk" -o -name "*.apk" | grep -v "\.aab$" | head -1)
-          if [[ -n "$APK_PATH" ]]; then
-            FINAL_NAME="MyDesktopApplication-android-${{ github.run_number }}.apk"
-            cp "$APK_PATH" "./$FINAL_NAME"
-            echo "APK renamed to: $FINAL_NAME"
-            ls -la "./$FINAL_NAME"
-          else
+          if [[ -z "$APK_PATH" ]]; then
             echo "ERROR: No APK found!"
             find ./publish -type f -name "*.apk" || echo "No APK files found anywhere"
             exit 1
           fi
+          cp "$APK_PATH" "./MyDesktopApplication-android-${{ github.run_number }}.apk"
+          ls -la "./MyDesktopApplication-android-${{ github.run_number }}.apk"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
@@ -202,27 +220,67 @@ jobs:
           retention-days: 7
 
   create-release:
-    needs: [build-desktop, build-android]
-    if: github.event_name == 'push'
+    needs: [build-and-test, build-desktop, build-android]
+    if: ${{ !cancelled() && github.event_name == 'push' && needs.build-and-test.result == 'success' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           path: ./artifacts
 
-      - name: Prepare release files
+      - name: Prepare release
+        id: prepare
         shell: bash
         run: |
-          echo "=== Downloaded artifacts structure ==="
-          find ./artifacts -type f
-          echo ""
-          mkdir -p ./release
-          find ./artifacts -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.apk" \) -exec cp {} ./release/ \;
-          echo "=== Release files ==="
-          ls -la ./release/
+          N=${{ github.run_number }}
+          mkdir -p release
+          if [[ -d artifacts ]]; then
+            find artifacts -type f \( -name '*.tar.gz' -o -name '*.zip' -o -name '*.apk' \) -exec cp {} release/ \;
+          fi
+
+          files=(win-x64.zip win-arm64.zip linux-x64.tar.gz linux-arm64.tar.gz osx-x64.tar.gz osx-arm64.tar.gz "android-$N.apk")
+          labels=("Windows x64" "Windows ARM64" "Linux x64" "Linux ARM64" "macOS x64 (Intel)" "macOS ARM64 (Apple Silicon)" "Android")
+          rows=""
+          missing=()
+          for i in "${!files[@]}"; do
+            file="MyDesktopApplication-${files[$i]}"
+            if [[ -f "release/$file" ]]; then
+              rows+="| ${labels[$i]} | \`$file\` |"$'\n'
+            else
+              missing+=("${labels[$i]}")
+              echo "::warning::${labels[$i]} was not built; releasing without it"
+            fi
+          done
+
+          if [[ -z "$rows" ]]; then
+            echo "::error::No platform built successfully; nothing to release"
+            exit 1
+          fi
+
+          {
+            echo "## MyDesktopApplication v1.0.$N"
+            echo
+            echo "| Platform | File |"
+            echo "|----------|------|"
+            printf '%s' "$rows"
+            if (( ${#missing[@]} > 0 )); then
+              echo
+              printf '**Partial release.** Not built this run: %s. Marked as pre-release so `latest` and Obtainium stay on the last complete release.\n' "$(printf '%s, ' "${missing[@]}" | sed 's/, $//')"
+            fi
+            echo
+            echo "### Android (Obtainium)"
+            echo
+            echo "Point Obtainium at this repository's releases. The APK version code is the CI run number."
+          } > release-notes.md
+
+          echo "prerelease=$([[ ${#missing[@]} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          cat release-notes.md
+          ls -la release
 
       - name: Create Release
         uses: softprops/action-gh-release@v3
@@ -230,33 +288,9 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           name: Release v1.0.${{ github.run_number }}
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.prepare.outputs.prerelease }}
           generate_release_notes: true
+          body_path: release-notes.md
           files: ./release/*
-          body: |
-            ## MyDesktopApplication v1.0.${{ github.run_number }}
-
-            ### Downloads
-
-            | Platform | File |
-            |----------|------|
-            | Windows x64 | `MyDesktopApplication-win-x64.zip` |
-            | Windows ARM64 | `MyDesktopApplication-win-arm64.zip` |
-            | Linux x64 | `MyDesktopApplication-linux-x64.tar.gz` |
-            | Linux ARM64 | `MyDesktopApplication-linux-arm64.tar.gz` |
-            | macOS x64 (Intel) | `MyDesktopApplication-osx-x64.tar.gz` |
-            | macOS ARM64 (Apple Silicon) | `MyDesktopApplication-osx-arm64.tar.gz` |
-            | Android | `MyDesktopApplication-android-${{ github.run_number }}.apk` |
-
-            ### Android Users (Obtainium)
-
-            **Version Code**: `${{ github.run_number }}`
-
-            Point Obtainium to this repository's releases for automatic updates.
-            The APK version code increments with each release.
-
-            ### Changes
-
-            See commit history for details.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

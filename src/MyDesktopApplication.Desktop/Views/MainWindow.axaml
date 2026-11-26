@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:MyDesktopApplication.Shared.ViewModels"
-        xmlns:conv="using:MyDesktopApplication.Desktop.Converters"
+        xmlns:conv="using:MyDesktopApplication.Shared.Converters"
         x:Class="MyDesktopApplication.Desktop.Views.MainWindow"
         x:DataType="vm:CountryQuizViewModel"
         Title="Country Quiz"
@@ -15,8 +15,19 @@
         <conv:AnswerStateToBorderConverter x:Key="AnswerStateBorderConverter"/>
     </Window.Resources>
 
-    <!-- Responsive font sizes via Styles -->
     <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="RenderTransform" Value="scale(1)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.08"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.96)"/>
+        </Style>
+
         <Style Selector="TextBlock.header-title">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -52,15 +63,12 @@
     </Window.Styles>
 
     <Panel>
-        <!-- Main content -->
         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto">
             <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
 
-                <!-- Row 0: Header with score and category selector -->
                 <Border Grid.Row="0" Background="#1e293b" CornerRadius="12" Padding="16" Margin="0,0,0,12">
                     <Grid ColumnDefinitions="*,Auto">
-                        <!-- Score info -->
                         <StackPanel Spacing="4">
                             <TextBlock Classes="header-title" Text="Country Quiz"/>
                             <StackPanel Orientation="Horizontal" Spacing="12">
@@ -71,7 +79,6 @@
                             <TextBlock Classes="stat-text" Text="{Binding AccuracyText}"/>
                         </StackPanel>
 
-                        <!-- Category selector -->
                         <ComboBox Grid.Column="1"
                                   ItemsSource="{Binding QuestionTypes}"
                                   SelectedItem="{Binding SelectedQuestionType}"
@@ -89,18 +96,14 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 1: Question text -->
                 <Border Grid.Row="1" Margin="0,0,0,12">
                     <TextBlock Classes="question-text" Text="{Binding QuestionText}"/>
                 </Border>
 
-                <!-- Row 2: Country cards + result -->
                 <StackPanel Grid.Row="2" Spacing="12">
 
-                    <!-- Country selection buttons side-by-side -->
                     <Grid ColumnDefinitions="*,Auto,*">
 
-                        <!-- Country 1 Button -->
                         <Button Grid.Column="0"
                                 Command="{Binding SelectCountryCommand}"
                                 CommandParameter="1"
@@ -124,7 +127,6 @@
                                     <Binding Path="IsCountry1Wrong"/>
                                 </MultiBinding>
                             </Button.BorderBrush>
-                            <!-- Keep full opacity when disabled (after answering) -->
                             <Button.Styles>
                                 <Style Selector="Button:disabled">
                                     <Setter Property="Opacity" Value="1"/>
@@ -145,7 +147,6 @@
                             </StackPanel>
                         </Button>
 
-                        <!-- VS separator -->
                         <TextBlock Grid.Column="1"
                                    Text="VS"
                                    FontSize="16" FontWeight="Bold"
@@ -153,7 +154,6 @@
                                    VerticalAlignment="Center"
                                    Margin="12,0"/>
 
-                        <!-- Country 2 Button -->
                         <Button Grid.Column="2"
                                 Command="{Binding SelectCountryCommand}"
                                 CommandParameter="2"
@@ -198,7 +198,6 @@
                         </Button>
                     </Grid>
 
-                    <!-- Result message -->
                     <Border Background="#1e293b" CornerRadius="8" Padding="16"
                             IsVisible="{Binding HasAnswered}">
                         <TextBlock Text="{Binding ResultMessage}"
@@ -206,15 +205,13 @@
                                    TextAlignment="Center" TextWrapping="Wrap"
                                    Foreground="#e2e8f0"/>
                     </Border>
-                    
-                    <!-- Country details after answering -->
+
                     <TextBlock Text="{Binding CountryDetailsText}"
                             FontSize="12" Foreground="#94a3b8"
                             TextWrapping="Wrap"
                             IsVisible="{Binding HasAnswered}"
-                            Margin="0,8,0,0"/>                    
+                            Margin="0,8,0,0"/>
 
-                    <!-- Next Round button -->
                     <Button Content="Next Round"
                             Command="{Binding NextRoundCommand}"
                             IsVisible="{Binding HasAnswered}"
@@ -225,19 +222,28 @@
                             CornerRadius="8" Cursor="Hand"/>
                 </StackPanel>
 
-                <!-- Row 3: Footer with Reset -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal"
                             HorizontalAlignment="Center" Margin="0,12,0,0" Spacing="16">
+                    <Button Command="{Binding ToggleSoundCommand}"
+                            MinWidth="120"
+                            Background="#334155" Foreground="White"
+                            HorizontalContentAlignment="Center"
+                            CornerRadius="6">
+                        <Panel>
+                            <TextBlock Text="🔊 Sound" IsVisible="{Binding SoundEnabled}"/>
+                            <TextBlock Text="🔇 Muted" IsVisible="{Binding !SoundEnabled}"/>
+                        </Panel>
+                    </Button>
                     <Button Content="Reset Game"
                             Command="{Binding RequestResetGameCommand}"
                             MinWidth="120"
                             Background="#475569" Foreground="White"
+                            HorizontalContentAlignment="Center"
                             CornerRadius="6"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
 
-        <!-- Reset confirmation overlay -->
         <Border IsVisible="{Binding IsResetConfirmationVisible}"
                 Background="#CC000000"
                 HorizontalAlignment="Stretch"

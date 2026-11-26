@@ -3,9 +3,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using MyDesktopApplication.Android.Views;
+using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Infrastructure.Data;
 using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Android;
@@ -28,7 +30,8 @@ public partial class App : Avalonia.Application
         var services = new ServiceCollection();
         services.AddInfrastructure(dbPath);
         services.AddObservability();
-        services.AddTransient<CountryQuizViewModel>();
+        services.AddSingleton<IFeedbackService, AndroidFeedbackService>();
+        services.AddCountryQuizApp();
 
         var serviceProvider = services.BuildServiceProvider();
         Services = serviceProvider;
@@ -51,14 +54,8 @@ public partial class App : Avalonia.Application
     private static Control CreateMainView()
     {
         var viewModel = Services!.GetRequiredService<CountryQuizViewModel>();
-
-        var view = new MainView
-        {
-            DataContext = viewModel
-        };
-
+        var view = new MainView { DataContext = viewModel };
         _ = viewModel.InitializeAsync();
-
         return view;
     }
 }

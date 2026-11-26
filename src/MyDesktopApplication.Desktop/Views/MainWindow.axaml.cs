@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop.Views;
@@ -9,7 +10,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        // Initialize the ViewModel when the window loads
+        AddHandler(Button.ClickEvent, OnButtonClick, RoutingStrategies.Bubble);
+
         Loaded += async (_, _) =>
         {
             if (DataContext is CountryQuizViewModel vm)
@@ -18,4 +20,7 @@ public partial class MainWindow : Window
             }
         };
     }
+
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
+        => (DataContext as CountryQuizViewModel)?.OnButtonPressed();
 }

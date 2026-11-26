@@ -1,9 +1,11 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using MyDesktopApplication.Core.Interfaces;
 using MyDesktopApplication.Desktop.Views;
 using MyDesktopApplication.Infrastructure;
 using MyDesktopApplication.Infrastructure.Observability;
+using MyDesktopApplication.Shared;
 using MyDesktopApplication.Shared.ViewModels;
 
 namespace MyDesktopApplication.Desktop;
@@ -22,7 +24,8 @@ public partial class App : Avalonia.Application
         var services = new ServiceCollection();
         services.AddInfrastructure();
         services.AddObservability();
-        services.AddTransient<CountryQuizViewModel>();
+        services.AddSingleton<IFeedbackService, DesktopFeedbackService>();
+        services.AddCountryQuizApp();
 
         _services = services.BuildServiceProvider();
         _services.StartObservability();

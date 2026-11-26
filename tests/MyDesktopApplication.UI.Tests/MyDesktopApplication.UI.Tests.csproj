@@ -1,13 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
@@ -23,11 +14,6 @@
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
 
-  <!--
-    The quiz ViewModel now lives in the Shared project (one implementation for
-    every platform), so these tests reference Shared + Core and no longer need a
-    reference to the Desktop head.
-  -->
   <ItemGroup>
     <ProjectReference Include="../../src/MyDesktopApplication.Core/MyDesktopApplication.Core.csproj" />
     <ProjectReference Include="../../src/MyDesktopApplication.Shared/MyDesktopApplication.Shared.csproj" />

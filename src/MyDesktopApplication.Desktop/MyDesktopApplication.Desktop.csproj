@@ -5,16 +5,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 
-    <!-- Application metadata -->
     <Product>Country Quiz</Product>
     <Company>MyDesktopApplication</Company>
-    <Copyright>Copyright © 2025</Copyright>
+    <Copyright>Copyright © 2026</Copyright>
     <Description>A cross-platform country quiz game built with Avalonia UI</Description>
-
-    <!--
-      Desktop versioning uses the same BuildNumber from Directory.Build.props
-      This ensures consistency across all platforms.
-    -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Themes.Fluent2" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>

@@ -1,7 +1,4 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyDesktopApplication.Core.Entities;
@@ -14,6 +11,7 @@ public partial class CountryQuizViewModel : ObservableObject
 {
     private readonly IGameStateRepository? _gameStateRepository;
     private readonly IGameTelemetry? _telemetry;
+    private readonly IFeedbackService? _feedback;
     private readonly Random _random = new();
     private readonly List<Country> _countries;
     private GameState _gameState = new();
@@ -42,6 +40,8 @@ public partial class CountryQuizViewModel : ObservableObject
 
     [ObservableProperty] private bool _isResetConfirmationVisible;
 
+    [ObservableProperty] private bool _soundEnabled = true;
+
     public bool IsCountry1Correct => HasAnswered && SelectedCountry == 1 && IsCorrectAnswer;
     public bool IsCountry1Wrong => HasAnswered && SelectedCountry == 1 && !IsCorrectAnswer;
     public bool IsCountry2Correct => HasAnswered && SelectedCountry == 2 && IsCorrectAnswer;
@@ -59,11 +59,15 @@ public partial class CountryQuizViewModel : ObservableObject
 
     public CountryQuizViewModel() : this(null, null) { }
 
-    public CountryQuizViewModel(IGameStateRepository? gameStateRepository, IGameTelemetry? telemetry = null)
+    public CountryQuizViewModel(
+        IGameStateRepository? gameStateRepository,
+        IGameTelemetry? telemetry = null,
+        IFeedbackService? feedback = null)
     {
         _gameStateRepository = gameStateRepository;
         _telemetry = telemetry;
-        _countries = CountryData.GetAllCountries().ToList();
+        _feedback = feedback;
+        _countries = [.. CountryData.GetAllCountries()];
         GenerateNewQuestion();
     }
 
@@ -75,6 +79,13 @@ public partial class CountryQuizViewModel : ObservableObject
             SyncScoresFromGameState();
         }
         GenerateNewQuestion();
+    }
+
+    public void OnButtonPressed() => Play(FeedbackCue.Tap);
+
+    private void Play(FeedbackCue cue)
+    {
+        if (SoundEnabled) _feedback?.Play(cue);
     }
 
     private void SyncScoresFromGameState()
@@ -113,6 +124,9 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ToggleSound() => SoundEnabled = !SoundEnabled;
+
+    [RelayCommand]
     private async Task SelectCountryAsync(string countryNumberStr)
     {
         if (!int.TryParse(countryNumberStr, out var countryNumber)) return;
@@ -124,6 +138,8 @@ public partial class CountryQuizViewModel : ObservableObject
         var selectedCountry = countryNumber == 1 ? Country1 : Country2;
         var isCorrect = selectedCountry?.Name == _correctCountry.Name;
         IsCorrectAnswer = isCorrect;
+
+        Play(isCorrect ? FeedbackCue.Correct : FeedbackCue.Incorrect);
 
         _gameState.RecordAnswer(isCorrect);
         _telemetry?.RecordAnswer(isCorrect, SelectedQuestionType);
@@ -141,7 +157,6 @@ public partial class CountryQuizViewModel : ObservableObject
         }
 
         ResultMessage = isCorrect ? GetCorrectMessage() : GetIncorrectMessage();
-
         CountryDetailsText = BuildCountryDetails();
 
         if (_gameStateRepository != null)
@@ -152,16 +167,10 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NextRound()
-    {
-        GenerateNewQuestion();
-    }
+    private void NextRound() => GenerateNewQuestion();
 
     [RelayCommand]
-    private void RequestResetGame()
-    {
-        IsResetConfirmationVisible = true;
-    }
+    private void RequestResetGame() => IsResetConfirmationVisible = true;
 
     [RelayCommand]
     private async Task ConfirmResetGameAsync()
@@ -181,10 +190,7 @@ public partial class CountryQuizViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void CancelResetGame()
-    {
-        IsResetConfirmationVisible = false;
-    }
+    private void CancelResetGame() => IsResetConfirmationVisible = false;
 
     private string BuildCountryDetails()
     {

@@ -3,6 +3,6 @@
              x:Class="MyDesktopApplication.Android.App"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <FluentTheme />
+        <Fluent2Theme />
     </Application.Styles>
 </Application>
